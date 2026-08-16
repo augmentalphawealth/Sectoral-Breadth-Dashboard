@@ -35,7 +35,7 @@ nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.
 symbol_to_token = dict(zip(nse_stocks['symbol'], nse_stocks['token']))
 all_symbols = list(symbol_to_token.keys())
 
-# --- THE SELF-HEALING PERSISTENT CRAWLER ---
+# --- THE MASS BULK CRAWLER (UNLEASHED) ---
 industry_cache_file = "master_stock_industry.parquet"
 if os.path.exists(industry_cache_file):
     df_ind = pd.read_parquet(industry_cache_file)
@@ -43,10 +43,10 @@ if os.path.exists(industry_cache_file):
 else:
     sym_to_ind = {}
 
-# 1. Instant Bulk-Load from NiftyIndices (These still contain Industry data)
+# 1. Instant Bulk-Load from NiftyIndices
 try:
     headers = {"User-Agent": "Mozilla/5.0"}
-    indices = ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv"]
+    indices = ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv", "ind_niftytotalmarket_list.csv"]
     for filename in indices:
         resp = requests.get(f"https://niftyindices.com/IndexConstituent/{filename}", headers=headers, timeout=10)
         if resp.status_code == 200:
@@ -64,20 +64,29 @@ for sym in all_symbols:
 
 missing_symbols = [sym for sym, ind in sym_to_ind.items() if ind == "Emerging Equities"]
 
-# 3. Slow-Drip Yahoo Finance Crawler (Max 25 per run to prevent IP Bans)
+# 3. MASS YAHOO CRAWLER (NO LIMITS)
 if missing_symbols:
-    batch_to_process = missing_symbols[:25]
-    print(f"Crawling Yahoo Finance for {len(batch_to_process)} microcaps today...")
+    print(f"🚀 MASS CRAWLER ACTIVATED: Fetching {len(missing_symbols)} missing stocks via Yahoo Finance. This will take ~15 minutes...")
     
-    for sym in batch_to_process:
+    # Custom session to prevent Yahoo blocks
+    yf_session = requests.Session()
+    yf_session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+    
+    for i, sym in enumerate(missing_symbols):
         clean_sym = sym.replace('-EQ', '')
         try:
-            info = yf.Ticker(f"{clean_sym}.NS").info
+            ticker = yf.Ticker(f"{clean_sym}.NS", session=yf_session)
+            info = ticker.info
             raw_ind = info.get('industry') or info.get('sector') or "Emerging Equities"
             sym_to_ind[sym] = raw_ind.title()
         except Exception:
-            pass # Leave as Emerging Equities, will retry tomorrow
-        time.sleep(0.5) # Polite delay to avoid firewall triggers
+            pass 
+            
+        # This will print progress into your GitHub Action logs!
+        if (i + 1) % 100 == 0 or (i + 1) == len(missing_symbols):
+            print(f"Mapped {i + 1} / {len(missing_symbols)} microcaps...")
+            
+        time.sleep(0.3) # 0.3s delay to prevent Yahoo from crashing the robot
 
 # 4. Institutional Granularity Filter (Splits Banks & NBFCs)
 psu_banks = {"SBIN", "PNB", "BOB", "CANBK", "UNIONBANK", "INDIANB", "BANKINDIA", "CENTRALBK", "IOB", "UCOBANK", "MAHABANK", "PSB"}
@@ -91,7 +100,7 @@ for sym, ind in sym_to_ind.items():
         elif is_insurance: sym_to_ind[sym] = "Insurance"
         else: sym_to_ind[sym] = "NBFC"
 
-# Permanently save the growing database
+# Permanently save the perfected mapping
 pd.DataFrame(list(sym_to_ind.items()), columns=["Symbol", "Industry"]).to_parquet(industry_cache_file, index=False)
 
 # --- BATCH EOD PRICE DATA FETCH ---
@@ -122,8 +131,10 @@ df_today = pd.DataFrame(fetched_data)
 hist_file = "industry_historical_cache.parquet"
 if os.path.exists(hist_file):
     df_hist = pd.read_parquet(hist_file)
-    # The Cure: Instantly applies newly crawled names to the entire history
+    
+    # ⚡ THE CURE: Instantly rewrites the 6-year history with the new correct names
     df_hist['Industry'] = df_hist['Symbol'].map(sym_to_ind).fillna("Emerging Equities")
+    
     df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
     df_combined = pd.concat([df_hist[df_hist['Date'] != today_dt], df_today], ignore_index=True)
 else:
