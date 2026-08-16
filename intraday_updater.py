@@ -40,7 +40,8 @@ nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.
 tokens = list(dict(zip(nse_stocks['symbol'], nse_stocks['token'])).values())
 chunks = [tokens[i:i + 35] for i in range(0, len(tokens), 35)]
 
-now_ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, 30)))
+# Fixed Syntax Error for timedelta
+now_ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30)))
 today_dt = pd.to_datetime(now_ist.strftime("%Y-%m-%d"))
 fetched = []
 
