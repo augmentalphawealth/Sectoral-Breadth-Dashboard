@@ -14,12 +14,11 @@ import logging
 
 logzero.logger.setLevel(logging.FATAL)
 
-# --- ANGEL ONE AUTHENTICATION ---
+# --- AUTHENTICATION ---
 api_key = os.environ.get("ANGEL_API_KEY")
 client_code = os.environ.get("ANGEL_CLIENT_CODE")
 login_pin = os.environ.get("ANGEL_PIN")
 totp_secret = os.environ.get("ANGEL_TOTP")
-
 if not all([api_key, client_code, login_pin, totp_secret]): exit(1)
 
 try:
@@ -28,155 +27,171 @@ try:
     if not session.get('status'): exit(1)
 except Exception: exit(1)
 
-scrip_url = "https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json"
-scrip_master = requests.get(scrip_url, timeout=30).json()
+scrip_master = requests.get("https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json", timeout=30).json()
 df_scrip = pd.DataFrame(scrip_master)
 nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.endswith('-EQ'))].copy()
 symbol_to_token = dict(zip(nse_stocks['symbol'], nse_stocks['token']))
 all_symbols = list(symbol_to_token.keys())
 
-# --- THE MASS BULK CRAWLER (UNLEASHED) ---
+# --- TAXONOMY CRAWLER (ISIN / NIFTY / YAHOO) ---
 industry_cache_file = "master_stock_industry.parquet"
-if os.path.exists(industry_cache_file):
-    df_ind = pd.read_parquet(industry_cache_file)
-    sym_to_ind = dict(zip(df_ind['Symbol'], df_ind['Industry']))
-else:
-    sym_to_ind = {}
+sym_to_ind = dict(zip(pd.read_parquet(industry_cache_file)['Symbol'], pd.read_parquet(industry_cache_file)['Industry'])) if os.path.exists(industry_cache_file) else {}
 
-# 1. Instant Bulk-Load from NiftyIndices
 try:
-    headers = {"User-Agent": "Mozilla/5.0"}
-    indices = ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv", "ind_niftytotalmarket_list.csv"]
-    for filename in indices:
-        resp = requests.get(f"https://niftyindices.com/IndexConstituent/{filename}", headers=headers, timeout=10)
+    for filename in ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv", "ind_niftytotalmarket_list.csv"]:
+        resp = requests.get(f"https://niftyindices.com/IndexConstituent/{filename}", headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
         if resp.status_code == 200:
             for r in csv.DictReader(StringIO(resp.content.decode("utf-8-sig", errors="replace"))):
-                sym = f"{str(r.get('Symbol')).strip().upper()}-EQ"
-                ind = str(r.get("Industry") or "").strip().title()
-                if sym in all_symbols and ind and ind.upper() not in ["", "NAN", "NONE"]: 
-                    sym_to_ind[sym] = ind
+                sym, ind = f"{str(r.get('Symbol')).strip().upper()}-EQ", str(r.get("Industry") or "").strip().title()
+                if sym in all_symbols and ind and ind.upper() not in ["", "NAN", "NONE"]: sym_to_ind[sym] = ind
 except: pass
 
-# 2. Find who is still missing
 for sym in all_symbols:
-    if sym not in sym_to_ind:
-        sym_to_ind[sym] = "Emerging Equities"
+    if sym not in sym_to_ind: sym_to_ind[sym] = "Emerging Equities"
 
 missing_symbols = [sym for sym, ind in sym_to_ind.items() if ind == "Emerging Equities"]
-
-# 3. MASS YAHOO CRAWLER (NO LIMITS)
 if missing_symbols:
-    print(f"🚀 MASS CRAWLER ACTIVATED: Fetching {len(missing_symbols)} missing stocks via Yahoo Finance. This will take ~15 minutes...")
-    
-    # Custom session to prevent Yahoo blocks
     yf_session = requests.Session()
-    yf_session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
-    
-    for i, sym in enumerate(missing_symbols):
-        clean_sym = sym.replace('-EQ', '')
+    yf_session.headers.update({"User-Agent": "Mozilla/5.0"})
+    for sym in missing_symbols[:50]: # Drip crawl 50 per day to avoid bans
         try:
-            ticker = yf.Ticker(f"{clean_sym}.NS", session=yf_session)
-            info = ticker.info
-            raw_ind = info.get('industry') or info.get('sector') or "Emerging Equities"
-            sym_to_ind[sym] = raw_ind.title()
-        except Exception:
-            pass 
-            
-        # This will print progress into your GitHub Action logs!
-        if (i + 1) % 100 == 0 or (i + 1) == len(missing_symbols):
-            print(f"Mapped {i + 1} / {len(missing_symbols)} microcaps...")
-            
-        time.sleep(0.3) # 0.3s delay to prevent Yahoo from crashing the robot
+            info = yf.Ticker(f"{sym.replace('-EQ', '')}.NS", session=yf_session).info
+            sym_to_ind[sym] = (info.get('industry') or info.get('sector') or "Emerging Equities").title()
+        except: pass
+        time.sleep(0.3)
 
-# 4. Institutional Granularity Filter (Splits Banks & NBFCs)
 psu_banks = {"SBIN", "PNB", "BOB", "CANBK", "UNIONBANK", "INDIANB", "BANKINDIA", "CENTRALBK", "IOB", "UCOBANK", "MAHABANK", "PSB"}
 for sym, ind in sym_to_ind.items():
     clean_sym = sym.replace("-EQ", "").upper()
-    ind_upper = str(ind).upper()
-    if ind_upper in ["FINANCIAL SERVICES", "BANKS", "FINANCE", "REGIONAL BANKS", "CREDIT SERVICES"]:
-        is_bank = "BANK" in clean_sym or "BANC" in clean_sym or clean_sym in psu_banks or clean_sym in {"HDFCBANK", "ICICIBANK", "AXISBANK", "KOTAKBANK"}
-        is_insurance = "INSUR" in clean_sym or "LIFE" in clean_sym or "ASSURANCE" in clean_sym or clean_sym in {"LIC", "GICRE", "LICI"}
-        if is_bank: sym_to_ind[sym] = "PSU Bank" if clean_sym in psu_banks else "Private Bank"
-        elif is_insurance: sym_to_ind[sym] = "Insurance"
+    if str(ind).upper() in ["FINANCIAL SERVICES", "BANKS", "FINANCE", "REGIONAL BANKS", "CREDIT SERVICES"]:
+        if "BANK" in clean_sym or "BANC" in clean_sym or clean_sym in psu_banks or clean_sym in {"HDFCBANK", "ICICIBANK", "AXISBANK", "KOTAKBANK"}: sym_to_ind[sym] = "PSU Bank" if clean_sym in psu_banks else "Private Bank"
+        elif "INSUR" in clean_sym or "LIFE" in clean_sym or clean_sym in {"LIC", "GICRE", "LICI"}: sym_to_ind[sym] = "Insurance"
         else: sym_to_ind[sym] = "NBFC"
 
-# Permanently save the perfected mapping
 pd.DataFrame(list(sym_to_ind.items()), columns=["Symbol", "Industry"]).to_parquet(industry_cache_file, index=False)
 
-# --- BATCH EOD PRICE DATA FETCH ---
+# --- DAILY DATA FETCH ---
 ist_tz = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 today_dt = pd.to_datetime(datetime.datetime.now(ist_tz).strftime("%Y-%m-%d"))
-
-all_tokens = list(symbol_to_token.values())
-chunks = [all_tokens[i:i + 35] for i in range(0, len(all_tokens), 35)]
+chunks = [list(symbol_to_token.values())[i:i + 35] for i in range(0, len(symbol_to_token), 35)]
 fetched_data = []
 
-print("Fetching EOD Quotes...")
 for chunk in chunks:
     for attempt in range(4):
         try:
             res = smartApi.getMarketData("FULL", {"NSE": chunk})
-            if res and res.get('status') and res.get('data'):
+            if res and res.get('data'):
                 for item in res['data'].get('fetched', []):
                     sym = item.get('tradingSymbol', '')
                     if sym: fetched_data.append({"Date": today_dt, "Symbol": sym, "Industry": sym_to_ind.get(sym, "Emerging Equities"), "Open": float(item.get('open', 0)), "High": float(item.get('high', 0)), "Low": float(item.get('low', 0)), "Close": float(item.get('ltp', 0)), "Volume": float(item.get('tradeVolume', 0) or 0)})
                 break
         except: time.sleep(1.5)
-    time.sleep(0.12)
+    time.sleep(0.1)
 
 if not fetched_data: exit(1)
-df_today = pd.DataFrame(fetched_data)
 
-# --- DATA MERGE & AUTO-CURE FOR HISTORICAL DATA ---
+# --- MERGE & VECTORIZED STOCK MATH ---
 hist_file = "industry_historical_cache.parquet"
 if os.path.exists(hist_file):
     df_hist = pd.read_parquet(hist_file)
-    
-    # ⚡ THE CURE: Instantly rewrites the 6-year history with the new correct names
     df_hist['Industry'] = df_hist['Symbol'].map(sym_to_ind).fillna("Emerging Equities")
-    
     df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
-    df_combined = pd.concat([df_hist[df_hist['Date'] != today_dt], df_today], ignore_index=True)
+    df_combined = pd.concat([df_hist[df_hist['Date'] != today_dt], pd.DataFrame(fetched_data)], ignore_index=True)
 else:
-    df_combined = df_today.copy()
+    df_combined = pd.DataFrame(fetched_data)
 
 df_combined['Date'] = pd.to_datetime(df_combined['Date']).dt.tz_localize(None).dt.normalize()
-df_combined = df_combined[df_combined['Date'] >= (today_dt - pd.Timedelta(days=2500))].sort_values(['Symbol', 'Date']).reset_index(drop=True)
+df_combined = df_combined.sort_values(['Symbol', 'Date']).reset_index(drop=True)
 
-print("Crunching EMAs and Volumetric Thrusts...")
+print("Calculating 8 Institutional Parameters...")
+
+# 1. Simple Exponential Moving Averages (EMA)
 df_combined['EMA_20'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=20, adjust=False, min_periods=10).mean())
 df_combined['EMA_50'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=50, adjust=False, min_periods=20).mean())
 df_combined['EMA_200'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=200, adjust=False, min_periods=50).mean())
-df_combined['Daily_Pct'] = df_combined.groupby('Symbol')['Close'].pct_change() * 100
-df_combined['Daily_Pct'] = df_combined['Daily_Pct'].replace([np.inf, -np.inf], 0).fillna(0)
-df_combined['Vol_20D_Avg'] = df_combined.groupby('Symbol')['Volume'].transform(lambda x: x.rolling(20, min_periods=5).mean())
-df_combined['Vol_Shock'] = (df_combined['Volume'] > (df_combined['Vol_20D_Avg'] * 1.5)) & (df_combined['Daily_Pct'] > 0)
-df_combined['Rolling_52W_High'] = df_combined.groupby('Symbol')['High'].transform(lambda x: x.rolling(252, min_periods=30).max())
-df_combined['Dist_52W_High'] = ((df_combined['Close'] - df_combined['Rolling_52W_High']) / df_combined['Rolling_52W_High']) * 100
-df_combined['Near_52W_High'] = df_combined['Dist_52W_High'] >= -3.0
-df_combined['Above_20'] = df_combined['Close'] > df_combined['EMA_20']
-df_combined['Above_50'] = df_combined['Close'] > df_combined['EMA_50']
-df_combined['Above_200'] = df_combined['Close'] > df_combined['EMA_200']
 
+df_combined['Above_20E'] = (df_combined['Close'] > df_combined['EMA_20']).astype(int)
+df_combined['Above_50E'] = (df_combined['Close'] > df_combined['EMA_50']).astype(int)
+df_combined['Above_200E'] = (df_combined['Close'] > df_combined['EMA_200']).astype(int)
+
+# 2. Advance/Decline & Volume Splitting
+df_combined['Prev_Close'] = df_combined.groupby('Symbol')['Close'].shift(1)
+df_combined['Is_Advance'] = (df_combined['Close'] > df_combined['Prev_Close']).astype(int)
+df_combined['Is_Decline'] = (df_combined['Close'] < df_combined['Prev_Close']).astype(int)
+df_combined['Up_Vol'] = df_combined['Volume'] * df_combined['Is_Advance']
+df_combined['Down_Vol'] = df_combined['Volume'] * df_combined['Is_Decline']
+
+# 3. NH / NL (2% Threshold)
+df_combined['52W_High'] = df_combined.groupby('Symbol')['High'].transform(lambda x: x.rolling(252, min_periods=30).max())
+df_combined['52W_Low'] = df_combined.groupby('Symbol')['Low'].transform(lambda x: x.rolling(252, min_periods=30).min())
+df_combined['Is_NH'] = (df_combined['Close'] >= (df_combined['52W_High'] * 0.98)).astype(int)
+df_combined['Is_NL'] = (df_combined['Close'] <= (df_combined['52W_Low'] * 1.02)).astype(int)
+
+# 4. 1-Month 25% Movers
+df_combined['Close_20D_Ago'] = df_combined.groupby('Symbol')['Close'].shift(20)
+df_combined['Is_25P_Mover'] = ((df_combined['Close'] / df_combined['Close_20D_Ago'] - 1) >= 0.25).astype(int)
+
+# 5. Volatility / Thrust safety
+df_combined['Daily_Pct'] = df_combined['Close'].pct_change() * 100
+df_combined['Daily_Pct'] = df_combined['Daily_Pct'].replace([np.inf, -np.inf], 0).fillna(0)
+
+# Save raw cache
+cutoff = today_dt - pd.Timedelta(days=1500)
+df_combined = df_combined[df_combined['Date'] >= cutoff].copy()
 df_combined.to_parquet(hist_file, index=False)
 
-# --- THE TIME MACHINE: BUILD 6-YEAR HISTORICAL MATRIX ---
-hist_matrix = df_combined.groupby(['Date', 'Industry']).agg(Total_Stocks=('Symbol', 'count'), Avg_Daily_Gain=('Daily_Pct', 'mean'), Above_20=('Above_20', 'sum'), Above_50=('Above_50', 'sum'), Above_200=('Above_200', 'sum'), Vol_Shock_Count=('Vol_Shock', 'sum'), Near_52W_Count=('Near_52W_High', 'sum')).reset_index()
-hist_matrix = hist_matrix[hist_matrix['Total_Stocks'] >= 3].copy()
+# --- INDUSTRY AGGREGATION & COMPLEX OSCILLATORS ---
+print("Aggregating Industry Breadth Matrix...")
+agg_df = df_combined.groupby(['Date', 'Industry']).agg(
+    Universe=('Symbol', 'count'),
+    Avg_Return=('Daily_Pct', 'mean'),
+    Above_20E=('Above_20E', 'sum'),
+    Above_50E=('Above_50E', 'sum'),
+    Above_200E=('Above_200E', 'sum'),
+    Advances=('Is_Advance', 'sum'),
+    Declines=('Is_Decline', 'sum'),
+    UpVol=('Up_Vol', 'sum'),
+    DownVol=('Down_Vol', 'sum'),
+    NH=('Is_NH', 'sum'),
+    NL=('Is_NL', 'sum'),
+    Movers_25P=('Is_25P_Mover', 'sum')
+).reset_index()
 
-for col, agg_col in [('Pct_Above_20', 'Above_20'), ('Pct_Above_50', 'Above_50'), ('Pct_Above_200', 'Above_200'), ('Pct_Near_52W', 'Near_52W_Count')]:
-    hist_matrix[col] = (hist_matrix[agg_col] / hist_matrix['Total_Stocks'] * 100).round(1)
+agg_df = agg_df.sort_values(['Industry', 'Date']).reset_index(drop=True)
 
-hist_matrix['Thrust_Score'] = ((hist_matrix['Pct_Above_20'] * 0.30) + (hist_matrix['Pct_Above_50'] * 0.25) + (hist_matrix['Pct_Above_200'] * 0.20) + (hist_matrix['Pct_Near_52W'] * 0.15) + ((hist_matrix['Vol_Shock_Count'] / hist_matrix['Total_Stocks'] * 100).clip(upper=100) * 0.10)).round(0).astype(int)
-hist_matrix['Avg_Daily_Gain'] = hist_matrix['Avg_Daily_Gain'].round(2)
-hist_matrix.to_parquet("historical_breadth_matrix.parquet", index=False)
+# Math: Percentages
+for col, agg_col in [('Pct_20E', 'Above_20E'), ('Pct_50E', 'Above_50E'), ('Pct_200E', 'Above_200E'), ('Pct_NH', 'NH'), ('Pct_NL', 'NL'), ('Pct_Froth', 'Movers_25P')]:
+    agg_df[col] = (agg_df[agg_col] / agg_df['Universe'] * 100).round(1)
 
-# --- LIVE EOD SNAPSHOT FOR DASHBOARD ---
-latest_df = df_combined[df_combined['Date'] == today_dt].copy()
-latest_df[['Symbol', 'Industry', 'Close', 'Daily_Pct', 'Volume', 'Vol_20D_Avg', 'Dist_52W_High', 'Above_20', 'Above_50', 'Above_200', 'Vol_Shock']].to_parquet("latest_stocks_snapshot.parquet", index=False)
+# Math: Volume Breadth Ratio
+agg_df['Vol_Breadth'] = (agg_df['UpVol'] / agg_df['DownVol'].replace(0, np.nan)).fillna(1.0).round(2)
 
-matrix = hist_matrix[hist_matrix['Date'] == today_dt].sort_values('Thrust_Score', ascending=False).reset_index(drop=True)
-matrix.to_csv("industry_breadth_matrix.csv", index=False)
+# Math: 3-Day Breakout Thrust
+agg_df['Adv_3D_Sum'] = agg_df.groupby('Industry')['Advances'].transform(lambda x: x.rolling(3).sum())
+agg_df['Dec_3D_Sum'] = agg_df.groupby('Industry')['Declines'].transform(lambda x: x.rolling(3).sum())
+agg_df['Thrust_3D'] = (agg_df['Adv_3D_Sum'] / agg_df['Dec_3D_Sum'].replace(0, np.nan)).fillna(1.0).round(2)
+
+# Math: TRIN & MCO (Strictly bounded by Universe >= 10)
+agg_df['Net_Adv'] = agg_df['Advances'] - agg_df['Declines']
+agg_df['MCO'] = agg_df.groupby('Industry')['Net_Adv'].transform(lambda x: x.ewm(span=19, adjust=False).mean() - x.ewm(span=39, adjust=False).mean())
+
+ad_ratio = agg_df['Advances'] / agg_df['Declines'].replace(0, 0.001)
+vol_ratio = agg_df['UpVol'] / agg_df['DownVol'].replace(0, 0.001)
+agg_df['TRIN'] = (ad_ratio / vol_ratio.replace(0, 0.001)).round(2)
+
+mask_small = agg_df['Universe'] < 10
+agg_df.loc[mask_small, 'MCO'] = np.nan
+agg_df.loc[mask_small, 'TRIN'] = np.nan
+agg_df['MCO'] = agg_df['MCO'].round(1)
+
+cols_to_keep = ['Date', 'Industry', 'Universe', 'Avg_Return', 'Pct_20E', 'Pct_50E', 'Pct_200E', 'Pct_NH', 'Pct_NL', 'Vol_Breadth', 'Thrust_3D', 'Pct_Froth', 'TRIN', 'MCO']
+final_matrix = agg_df[cols_to_keep].copy()
+
+final_matrix.to_parquet("historical_breadth_matrix.parquet", index=False)
+
+live_matrix = final_matrix[final_matrix['Date'] == today_dt].copy()
+live_matrix.to_csv("industry_breadth_matrix.csv", index=False)
 
 with open("last_sync.txt", "w") as f:
     f.write(datetime.datetime.now(ist_tz).strftime('%d %b %Y, %I:%M %p IST (EOD Sync)'))
+    
