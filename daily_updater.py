@@ -8,11 +8,13 @@ import csv
 import time
 from io import StringIO
 from SmartApi import SmartConnect
+import yfinance as yf
 import logzero
 import logging
 
 logzero.logger.setLevel(logging.FATAL)
 
+# --- ANGEL ONE AUTHENTICATION ---
 api_key = os.environ.get("ANGEL_API_KEY")
 client_code = os.environ.get("ANGEL_CLIENT_CODE")
 login_pin = os.environ.get("ANGEL_PIN")
@@ -33,37 +35,61 @@ nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.
 symbol_to_token = dict(zip(nse_stocks['symbol'], nse_stocks['token']))
 all_symbols = list(symbol_to_token.keys())
 
-# --- THE BULLETPROOF TAXONOMY SYNC ---
-nse_map = {}
-if os.path.exists("sector_map.csv"):
+# --- ZERO-DOWNLOAD TAXONOMY SYNC (100% CLOUD AUTOMATED) ---
+industry_cache_file = "master_stock_industry.parquet"
+if os.path.exists(industry_cache_file):
+    df_ind = pd.read_parquet(industry_cache_file)
+    sym_to_ind = dict(zip(df_ind['Symbol'], df_ind['Industry']))
+else:
+    sym_to_ind = {}
+
+missing_symbols = [sym for sym in all_symbols if sym not in sym_to_ind or sym_to_ind[sym] == "Emerging Equities"]
+
+if missing_symbols:
+    print(f"Updating taxonomy for {len(missing_symbols)} missing symbols...")
+    
+    # 1. Fast Bulk Update via NiftyIndices
     try:
-        with open("sector_map.csv", newline="", encoding="utf-8") as f:
-            for row in csv.DictReader(f):
-                sym, ind = (row.get("Symbol") or "").strip().upper(), (row.get("Industry") or row.get("Sector") or "").strip()
-                if sym and ind: nse_map[f"{sym}-EQ"] = ind
+        indices = ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv", "ind_niftytotalmarket_list.csv"]
+        for filename in indices:
+            resp = requests.get(f"https://niftyindices.com/IndexConstituent/{filename}", headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
+            if resp.status_code == 200:
+                for r in csv.DictReader(StringIO(resp.content.decode("utf-8-sig", errors="replace"))):
+                    sym = f"{str(r.get('Symbol')).strip().upper()}-EQ"
+                    ind = str(r.get("Industry") or "").strip().title()
+                    if sym in missing_symbols and ind and ind.upper() not in ["", "NAN", "NONE"]: 
+                        sym_to_ind[sym] = ind
     except: pass
+    
+    missing_symbols = [sym for sym in all_symbols if sym not in sym_to_ind or sym_to_ind[sym] == "Emerging Equities"]
+    
+    # 2. Deep Fetch via Yahoo Finance (Bypasses Firewalls)
+    if missing_symbols:
+        print(f"Fetching {len(missing_symbols)} microcaps via Yahoo Finance...")
+        for sym in missing_symbols:
+            clean_sym = sym.replace('-EQ', '')
+            try:
+                info = yf.Ticker(f"{clean_sym}.NS").info
+                raw_ind = info.get('industry') or info.get('sector') or "Emerging Equities"
+                sym_to_ind[sym] = raw_ind.title()
+            except Exception:
+                sym_to_ind[sym] = "Emerging Equities"
+            time.sleep(0.1) # Be polite to Yahoo servers
 
-try:
-    indices = ["ind_nifty500list.csv", "ind_niftymicrocap250_list.csv", "ind_niftysmallcap250list.csv"]
-    for filename in indices:
-        resp = requests.get(f"https://niftyindices.com/IndexConstituent/{filename}", headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
-        if resp.status_code == 200:
-            for r in csv.DictReader(StringIO(resp.content.decode("utf-8-sig", errors="replace"))):
-                sym = f"{str(r.get('Symbol')).strip().upper()}-EQ"
-                ind = str(r.get("Industry") or "").strip()
-                if sym and ind and sym not in nse_map: nse_map[sym] = ind.title()
-except: pass
+# 3. Apply Institutional Granularity Filter (Splits Banks & NBFCs)
+psu_banks = {"SBIN", "PNB", "BOB", "CANBK", "UNIONBANK", "INDIANB", "BANKINDIA", "CENTRALBK", "IOB", "UCOBANK", "MAHABANK", "PSB"}
+for sym, ind in sym_to_ind.items():
+    clean_sym = sym.replace("-EQ", "").upper()
+    ind_upper = str(ind).upper()
+    if ind_upper in ["FINANCIAL SERVICES", "BANKS", "FINANCE", "REGIONAL BANKS", "CREDIT SERVICES"]:
+        is_bank = "BANK" in clean_sym or "BANC" in clean_sym or clean_sym in psu_banks or clean_sym in {"HDFCBANK", "ICICIBANK", "AXISBANK", "KOTAKBANK"}
+        is_insurance = "INSUR" in clean_sym or "LIFE" in clean_sym or "ASSURANCE" in clean_sym or clean_sym in {"LIC", "GICRE", "LICI"}
+        if is_bank: sym_to_ind[sym] = "PSU Bank" if clean_sym in psu_banks else "Private Bank"
+        elif is_insurance: sym_to_ind[sym] = "Insurance"
+        else: sym_to_ind[sym] = "NBFC"
 
-sym_to_ind = {}
-for sym in all_symbols:
-    if sym in nse_map: sym_to_ind[sym] = nse_map[sym]
-    else:
-        clean_sym, refined_ind = sym.replace("-EQ", "").upper(), "Emerging Equities"
-        for kw, tag in [("BANK", "Private Sector Bank"), ("FIN", "NBFC"), ("TECH", "IT Services"), ("AUTO", "Auto Components"), ("PHARMA", "Pharmaceuticals"), ("CHEM", "Specialty Chemicals")]:
-            if kw in clean_sym: refined_ind = tag; break
-        sym_to_ind[sym] = refined_ind
-
-pd.DataFrame(list(sym_to_ind.items()), columns=["Symbol", "Industry"]).to_parquet("master_stock_industry.parquet", index=False)
+# Permanently save the perfected mapping
+pd.DataFrame(list(sym_to_ind.items()), columns=["Symbol", "Industry"]).to_parquet(industry_cache_file, index=False)
 
 # --- BATCH EOD PRICE DATA FETCH ---
 ist_tz = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
@@ -73,6 +99,7 @@ all_tokens = list(symbol_to_token.values())
 chunks = [all_tokens[i:i + 35] for i in range(0, len(all_tokens), 35)]
 fetched_data = []
 
+print("Fetching EOD Quotes...")
 for chunk in chunks:
     for attempt in range(4):
         try:
@@ -88,20 +115,23 @@ for chunk in chunks:
 if not fetched_data: exit(1)
 df_today = pd.DataFrame(fetched_data)
 
-# --- DATA MERGE & 6-YEAR EXPANSION ---
+# --- DATA MERGE & AUTO-CURE FOR HISTORICAL DATA ---
 hist_file = "industry_historical_cache.parquet"
 if os.path.exists(hist_file):
     df_hist = pd.read_parquet(hist_file)
+    
+    # ⚡ THE CURE: Instantly rewrites the 6-year history with the new correct names
     df_hist['Industry'] = df_hist['Symbol'].map(sym_to_ind).fillna("Emerging Equities")
+    
     df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
     df_combined = pd.concat([df_hist[df_hist['Date'] != today_dt], df_today], ignore_index=True)
 else:
     df_combined = df_today.copy()
 
 df_combined['Date'] = pd.to_datetime(df_combined['Date']).dt.tz_localize(None).dt.normalize()
-# Expanded memory up to 6.8 years (2500 days)
 df_combined = df_combined[df_combined['Date'] >= (today_dt - pd.Timedelta(days=2500))].sort_values(['Symbol', 'Date']).reset_index(drop=True)
 
+print("Crunching EMAs and Volumetric Thrusts...")
 df_combined['EMA_20'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=20, adjust=False, min_periods=10).mean())
 df_combined['EMA_50'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=50, adjust=False, min_periods=20).mean())
 df_combined['EMA_200'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=200, adjust=False, min_periods=50).mean())
@@ -119,7 +149,6 @@ df_combined['Above_200'] = df_combined['Close'] > df_combined['EMA_200']
 df_combined.to_parquet(hist_file, index=False)
 
 # --- THE TIME MACHINE: BUILD 6-YEAR HISTORICAL MATRIX ---
-print("Building 6-Year Historical Timeline Matrix...")
 hist_matrix = df_combined.groupby(['Date', 'Industry']).agg(Total_Stocks=('Symbol', 'count'), Avg_Daily_Gain=('Daily_Pct', 'mean'), Above_20=('Above_20', 'sum'), Above_50=('Above_50', 'sum'), Above_200=('Above_200', 'sum'), Vol_Shock_Count=('Vol_Shock', 'sum'), Near_52W_Count=('Near_52W_High', 'sum')).reset_index()
 hist_matrix = hist_matrix[hist_matrix['Total_Stocks'] >= 3].copy()
 
@@ -130,7 +159,7 @@ hist_matrix['Thrust_Score'] = ((hist_matrix['Pct_Above_20'] * 0.30) + (hist_matr
 hist_matrix['Avg_Daily_Gain'] = hist_matrix['Avg_Daily_Gain'].round(2)
 hist_matrix.to_parquet("historical_breadth_matrix.parquet", index=False)
 
-# --- LIVE EOD SNAPSHOT FOR FAST DASHBOARD ---
+# --- LIVE EOD SNAPSHOT FOR DASHBOARD ---
 latest_df = df_combined[df_combined['Date'] == today_dt].copy()
 latest_df[['Symbol', 'Industry', 'Close', 'Daily_Pct', 'Volume', 'Vol_20D_Avg', 'Dist_52W_High', 'Above_20', 'Above_50', 'Above_200', 'Vol_Shock']].to_parquet("latest_stocks_snapshot.parquet", index=False)
 
