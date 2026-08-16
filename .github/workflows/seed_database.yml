@@ -1,0 +1,44 @@
+name: Seed Initial Database
+
+on:
+  workflow_dispatch: # This adds the manual "Run" button
+
+permissions:
+  contents: write
+
+jobs:
+  seed-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Database Seeder
+        env:
+          ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+          ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+          ANGEL_PIN: ${{ secrets.ANGEL_PIN }}
+          ANGEL_TOTP: ${{ secrets.ANGEL_TOTP }}
+        run: |
+          python seed_database.py
+
+      - name: Commit and Push Large File
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add industry_historical_cache.parquet master_stock_industry.parquet
+          git diff-index --quiet HEAD || git commit -m "Initial Database Seed: Added 1 Year History"
+          git pull origin main --rebase -X ours || true
+          git push origin main
