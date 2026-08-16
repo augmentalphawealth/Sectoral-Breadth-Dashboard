@@ -24,14 +24,15 @@ try:
     if not session.get('status'): exit(1)
 except Exception: exit(1)
 
-hist_file = "industry_historical_cache.parquet"
-if not os.path.exists(hist_file):
-    print("No cache found. Run EOD first.")
-    exit(1)
+if not os.path.exists("industry_historical_cache.parquet"): exit(1)
 
-df_hist = pd.read_parquet(hist_file)
-# ⚡ FIX: Stripping timezones here so aware/naive match perfectly!
+# ⚡ LIVE MEMORY SHIELD: Only load last 300 days for Intraday to keep server fast
+now_ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30)))
+today_dt = pd.to_datetime(now_ist.strftime("%Y-%m-%d"))
+
+df_hist = pd.read_parquet("industry_historical_cache.parquet")
 df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
+df_hist = df_hist[(df_hist['Date'] != today_dt) & (df_hist['Date'] >= (today_dt - pd.Timedelta(days=300)))]
 
 ind_master = pd.read_parquet("master_stock_industry.parquet") if os.path.exists("master_stock_industry.parquet") else pd.DataFrame()
 sym_to_ind = dict(zip(ind_master['Symbol'], ind_master['Industry'])) if not ind_master.empty else {}
@@ -41,33 +42,22 @@ df_scrip = pd.DataFrame(scrip_master)
 nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.endswith('-EQ'))]
 tokens = list(dict(zip(nse_stocks['symbol'], nse_stocks['token'])).values())
 chunks = [tokens[i:i + 35] for i in range(0, len(tokens), 35)]
-
-now_ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30)))
-today_dt = pd.to_datetime(now_ist.strftime("%Y-%m-%d"))
 fetched = []
 
 for chunk in chunks:
     for attempt in range(3):
         try:
             res = smartApi.getMarketData("FULL", {"NSE": chunk})
-            if res and isinstance(res, dict) and res.get('status') and res.get('data'):
+            if res and res.get('status') and res.get('data'):
                 for item in res['data'].get('fetched', []):
                     sym = item.get('tradingSymbol', '')
-                    fetched.append({
-                        "Date": today_dt, "Symbol": sym, "Industry": sym_to_ind.get(sym, "Emerging Equities"),
-                        "Open": float(item.get('open', 0)), "High": float(item.get('high', 0)),
-                        "Low": float(item.get('low', 0)), "Close": float(item.get('ltp', 0)),
-                        "Volume": float(item.get('tradeVolume', 0) or 0)
-                    })
+                    fetched.append({"Date": today_dt, "Symbol": sym, "Industry": sym_to_ind.get(sym, "Emerging Equities"), "Open": float(item.get('open', 0)), "High": float(item.get('high', 0)), "Low": float(item.get('low', 0)), "Close": float(item.get('ltp', 0)), "Volume": float(item.get('tradeVolume', 0) or 0)})
                 break
         except Exception: time.sleep(1)
     time.sleep(0.1)
 
 if not fetched: exit(1)
-df_live = pd.DataFrame(fetched)
-
-df_hist = df_hist[df_hist['Date'] != today_dt]
-df_combined = pd.concat([df_hist, df_live], ignore_index=True)
+df_combined = pd.concat([df_hist, pd.DataFrame(fetched)], ignore_index=True)
 df_combined['Date'] = pd.to_datetime(df_combined['Date']).dt.tz_localize(None).dt.normalize()
 df_combined = df_combined.sort_values(['Symbol', 'Date']).reset_index(drop=True)
 
@@ -88,20 +78,15 @@ df_combined['Above_200'] = df_combined['Close'] > df_combined['EMA_200']
 latest_df = df_combined[df_combined['Date'] == today_dt].copy()
 latest_df[['Symbol', 'Industry', 'Close', 'Daily_Pct', 'Volume', 'Vol_20D_Avg', 'Dist_52W_High', 'Above_20', 'Above_50', 'Above_200', 'Vol_Shock']].to_parquet("latest_stocks_snapshot.parquet", index=False)
 
-matrix = latest_df.groupby('Industry').agg(
-    Total_Stocks=('Symbol', 'count'), Avg_Daily_Gain=('Daily_Pct', 'mean'), Above_20=('Above_20', 'sum'), Above_50=('Above_50', 'sum'),
-    Above_200=('Above_200', 'sum'), Vol_Shock_Count=('Vol_Shock', 'sum'), Near_52W_Count=('Near_52W_High', 'sum')
-).reset_index()
-
+matrix = latest_df.groupby('Industry').agg(Total_Stocks=('Symbol', 'count'), Avg_Daily_Gain=('Daily_Pct', 'mean'), Above_20=('Above_20', 'sum'), Above_50=('Above_50', 'sum'), Above_200=('Above_200', 'sum'), Vol_Shock_Count=('Vol_Shock', 'sum'), Near_52W_Count=('Near_52W_High', 'sum')).reset_index()
 matrix = matrix[matrix['Total_Stocks'] >= 3].copy()
+
 for col, agg_col in [('Pct_Above_20', 'Above_20'), ('Pct_Above_50', 'Above_50'), ('Pct_Above_200', 'Above_200'), ('Pct_Near_52W', 'Near_52W_Count')]:
     matrix[col] = (matrix[agg_col] / matrix['Total_Stocks'] * 100).round(1)
 
 matrix['Thrust_Score'] = ((matrix['Pct_Above_20'] * 0.30) + (matrix['Pct_Above_50'] * 0.25) + (matrix['Pct_Above_200'] * 0.20) + (matrix['Pct_Near_52W'] * 0.15) + ((matrix['Vol_Shock_Count'] / matrix['Total_Stocks'] * 100).clip(upper=100) * 0.10)).round(0).astype(int)
 matrix['Avg_Daily_Gain'] = matrix['Avg_Daily_Gain'].round(2)
-matrix = matrix.sort_values('Thrust_Score', ascending=False).reset_index(drop=True)
-matrix.to_csv("industry_breadth_matrix.csv", index=False)
+matrix.sort_values('Thrust_Score', ascending=False).reset_index(drop=True).to_csv("industry_breadth_matrix.csv", index=False)
 
 with open("last_sync.txt", "w") as f:
     f.write(now_ist.strftime('%d %b %Y, %I:%M %p IST (⚡ LIVE)'))
-print("✅ Intraday Run Complete.")
