@@ -84,7 +84,8 @@ if new_listings:
 sym_to_ind = dict(zip(df_ind['Symbol'], df_ind['Industry']))
 
 # --- BATCH EOD PRICE DATA FETCH ---
-ist_timezone = datetime.timezone(datetime.timedelta(hours=5, 30))
+# Fixed Syntax Error for the timedelta
+ist_timezone = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 today_dt = pd.to_datetime(datetime.datetime.now(ist_timezone).strftime("%Y-%m-%d"))
 
 all_tokens = list(symbol_to_token.values())
