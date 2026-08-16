@@ -35,7 +35,16 @@ with c2:
     st.markdown(f"<div style='text-align:center; font-size:12px; color:#38bdf8; font-weight:600;'>Last Sync: {last_sync}</div>", unsafe_allow_html=True)
 
 if hist_df.empty:
-    st.warning("Data compiling. Awaiting GitHub Action.")
+    st.warning("Data compiling. Awaiting initial GitHub Action run.")
+    st.stop()
+
+# --- SCHEMA VALIDATION SHIELD ---
+# Prevents raw Python crashes if Streamlit boots before the backend finishes updating the Parquet file.
+required_columns = ['Pct_50E', 'MCO', 'Thrust_3D', 'TRIN', 'Pct_Froth', 'Pct_200E', 'Pct_20E']
+missing_cols = [col for col in required_columns if col not in hist_df.columns]
+
+if missing_cols:
+    st.warning(f"⚠️ **Database Upgrade in Progress.** The backend engine is currently building the new institutional metrics. Please wait for the GitHub Action to finish writing the new data. (Missing columns: {', '.join(missing_cols)})")
     st.stop()
 
 # --- UNIVERSAL TIME MACHINE ---
