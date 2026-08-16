@@ -16,6 +16,31 @@ print("=========================================================")
 print("  ONE-TIME CLOUD DATABASE SEEDER (1-YEAR HISTORY)")
 print("=========================================================")
 
+# --- THE INSTITUTIONAL INDUSTRY REFINEMENT ENGINE ---
+def refine_industry(raw_industry, symbol):
+    ind = str(raw_industry).strip().upper()
+    sym = str(symbol).replace("-EQ", "").strip().upper()
+    
+    # 1. Surgical Split for the Massive Financial Sector
+    if ind in ["FINANCIAL SERVICES", "BANKS", "FINANCE"]:
+        psu_banks = {"SBIN", "PNB", "BOB", "CANBK", "UNIONBANK", "INDIANB", "BANKINDIA", "CENTRALBK", "IOB", "UCOBANK", "MAHABANK", "PSB"}
+        is_bank = "BANK" in sym or "BANC" in sym or sym in psu_banks or sym in {"HDFCBANK", "ICICIBANK", "AXISBANK", "KOTAKBANK"}
+        is_insurance = "INSUR" in sym or "LIFE" in sym or "ASSURANCE" in sym or sym in {"LIC", "GICRE", "LICI", "NEWINDIA"}
+        
+        if is_bank: return "PSU Bank" if sym in psu_banks else "Private Bank"
+        elif is_insurance: return "Insurance"
+        else: return "NBFC"
+        
+    # 2. Algorithmic Fallback for blank/missing NSE data
+    if ind in ["", "NAN", "NONE", "EMERGING EQUITIES"]:
+        for kw, tag in [("BANK", "Private Bank"), ("FIN", "NBFC"), ("TECH", "Software & IT"), ("AUTO", "Automobiles & Parts"), ("PHARMA", "Pharmaceuticals"), ("CHEM", "Specialty Chemicals"), ("POWER", "Power Generation"), ("METAL", "Metals & Mining")]:
+            if kw in sym: return tag
+        return "Emerging Equities"
+        
+    # 3. Clean Formatting for everything else
+    return str(raw_industry).title()
+
+# --- ANGEL ONE AUTHENTICATION ---
 api_key = os.environ.get("ANGEL_API_KEY")
 client_code = os.environ.get("ANGEL_CLIENT_CODE")
 login_pin = os.environ.get("ANGEL_PIN")
@@ -37,16 +62,14 @@ except Exception as e:
     print("❌ Auth Error:", e)
     sys.exit(1)
 
-# 1. Fetch Master List
-print("Fetching Scrip Master...")
+# --- FETCH MASTER LIST & NSE REGISTRY ---
+print("Fetching Scrip Master & NSE Registry...")
 scrip_url = "https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json"
 scrip_master = requests.get(scrip_url, timeout=30).json()
 df_scrip = pd.DataFrame(scrip_master)
 nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.endswith('-EQ'))]
 tokens_to_fetch = nse_stocks[['symbol', 'token']].to_dict('records')
 
-# 2. Map Industries
-print("Mapping Industries...")
 nse_map = {}
 try:
     nse_res = requests.get("https://nsearchives.nseindia.com/content/equities/EQUITY_L.csv", headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
@@ -58,17 +81,16 @@ try:
 except Exception:
     pass
 
-# 3. Fetch 1 Year of Data (Needed for 200 EMA & 52W High)
+# --- FETCH 1 YEAR OF DATA ---
 end_date = datetime.datetime.now()
 start_date = end_date - datetime.timedelta(days=365)
-
 from_date_str = start_date.strftime("%Y-%m-%d 09:15")
 to_date_str = end_date.strftime("%Y-%m-%d 15:30")
 
 all_ohlc_data = []
 total_stocks = len(tokens_to_fetch)
 
-print(f"Downloading historical data for {total_stocks} stocks. This will take ~15 minutes to avoid rate limits...")
+print(f"Downloading historical data for {total_stocks} stocks. This will take ~15 minutes...")
 
 for i, stock in enumerate(tokens_to_fetch):
     for attempt in range(3):
@@ -91,15 +113,9 @@ for i, stock in enumerate(tokens_to_fetch):
                 df_temp = pd.DataFrame(hist_data['data'], columns=['Timestamp', 'Open', 'High', 'Low', 'Close', 'Volume'])
                 df_temp['Symbol'] = stock['symbol']
                 
-                # Apply Industry mapping or fallback
-                clean_name = stock['symbol'].replace("-EQ", "")
-                ind = nse_map.get(stock['symbol'])
-                if not ind:
-                    for kw, tag in [("BANK", "Banking"), ("FIN", "Financial Services"), ("TECH", "Software & IT"), ("AUTO", "Automobiles"), ("PHARMA", "Pharmaceuticals"), ("CHEM", "Chemicals"), ("POWER", "Power"), ("METAL", "Metals")]:
-                        if kw in clean_name:
-                            ind = tag
-                            break
-                df_temp['Industry'] = ind or "Emerging Equities"
+                # Apply Intelligent Industry Mapping
+                raw_ind = nse_map.get(stock['symbol'], "")
+                df_temp['Industry'] = refine_industry(raw_ind, stock['symbol'])
                 
                 all_ohlc_data.append(df_temp)
             break 
@@ -110,23 +126,23 @@ for i, stock in enumerate(tokens_to_fetch):
     if (i + 1) % 100 == 0:
         print(f"Progress: {i + 1} / {total_stocks} stocks fetched...")
         
-    time.sleep(0.4) # Strict pause to respect Angel One rate limits
+    time.sleep(0.4) # Strict rate limiting protection
 
-# 4. Save and Compile
+# --- SAVE & COMPILE ---
 if all_ohlc_data:
     final_df = pd.concat(all_ohlc_data, ignore_index=True)
     final_df['Timestamp'] = pd.to_datetime(final_df['Timestamp']).dt.normalize()
     final_df = final_df.rename(columns={'Timestamp': 'Date'})
     
-    # Save the master industry mapping file too
-    master_ind = final_df[['Symbol', 'Industry']].drop_duplicates()
+    # Extract unique stocks and their refined industries
+    master_ind = final_df[['Symbol', 'Industry']].drop_duplicates(subset=['Symbol'], keep='last')
     master_ind.to_parquet("master_stock_industry.parquet", index=False)
     
-    # Save historical cache
+    # Save the huge price history file
     output_file = "industry_historical_cache.parquet"
     final_df.to_parquet(output_file, index=False)
     
-    print(f"✅ SUCCESS! Database generated and saved to {output_file}.")
+    print(f"✅ SUCCESS! 1-Year Database generated and saved to {output_file}.")
 else:
     print("❌ Failed to fetch data.")
     sys.exit(1)
