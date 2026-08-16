@@ -1,0 +1,46 @@
+name: EOD Industry Breadth Update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 11 * * 1-5' # Runs at 4:30 PM IST (Mon-Fri)
+
+permissions:
+  contents: write
+
+jobs:
+  update-eod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run EOD Industry Data Engine
+        env:
+          ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+          ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+          ANGEL_PIN: ${{ secrets.ANGEL_PIN }}
+          ANGEL_TOTP: ${{ secrets.ANGEL_TOTP }}
+        run: |
+          python daily_updater.py
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || git commit -m "Auto-update: Daily Industry Breadth"
+          git pull origin main --rebase -X ours || true
+          git push origin main
