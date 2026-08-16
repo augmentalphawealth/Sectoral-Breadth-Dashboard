@@ -1,0 +1,766 @@
+Symbol,Industry
+360ONE,NBFC
+3MINDIA,Diversified
+AADHARHFC,NBFC
+AARTIDRUGS,Healthcare
+AARTIIND,Chemicals
+AARTIPHARM,Healthcare
+AAVAS,NBFC
+ABB,Capital Goods
+ABBOTINDIA,Healthcare
+ABCAPITAL,NBFC
+ABDL,Fast Moving Consumer Goods
+ABFRL,Consumer Services
+ABLBL,Consumer Services
+ABREL,Realty
+ABSLAMC,Insurance
+ACC,Construction Materials
+ACE,Capital Goods
+ACI,Chemicals
+ACMESOLAR,Power
+ACUTAAS,Healthcare
+ADANIENSOL,Power
+ADANIENT,Metals & Mining
+ADANIGREEN,Power
+ADANIPORTS,Services
+ADANIPOWER,Power
+ADVENZYMES,Healthcare
+AEGISLOG,Oil Gas & Consumable Fuels
+AEGISVOPAK,Oil Gas & Consumable Fuels
+AEQUS,Capital Goods
+AETHER,Chemicals
+AFCONS,Construction
+AFFLE,Information Technology
+AGARWALEYE,Healthcare
+AHLUCONT,Construction
+AIAENG,Capital Goods
+AIIL,NBFC
+AJANTPHARM,Healthcare
+AKUMS,Healthcare
+ALIVUS,Healthcare
+ALKEM,Healthcare
+ALKYLAMINE,Chemicals
+ALOKINDS,Textiles
+AMBER,Consumer Durables
+AMBUJACEM,Construction Materials
+ANANDRATHI,NBFC
+ANANTRAJ,Realty
+ANGELONE,NBFC
+ANTHEM,Healthcare
+ANUP,Capital Goods
+ANURAS,Chemicals
+APARINDS,Capital Goods
+APLAPOLLO,Capital Goods
+APLLTD,Healthcare
+APOLLO,Capital Goods
+APOLLOHOSP,Healthcare
+APOLLOTYRE,Automobile And Auto Components
+APTUS,NBFC
+ARE&M,Automobile And Auto Components
+ARVIND,Textiles
+ARVINDFASN,Consumer Services
+ASAHIINDIA,Automobile And Auto Components
+ASHAPURMIN,Metals & Mining
+ASHOKA,Construction
+ASHOKLEY,Capital Goods
+ASIANPAINT,Consumer Durables
+ASKAUTOLTD,Automobile And Auto Components
+ASTERDM,Healthcare
+ASTRAL,Capital Goods
+ASTRAMICRO,Capital Goods
+ATGL,Oil Gas & Consumable Fuels
+ATHERENERG,Automobile And Auto Components
+ATLANTAELE,Capital Goods
+ATUL,Chemicals
+AUBANK,Private Bank
+AURIONPRO,Information Technology
+AUROPHARMA,Healthcare
+AVALON,Capital Goods
+AVANTIFEED,Fast Moving Consumer Goods
+AVL,Consumer Services
+AWFIS,Services
+AWL,Fast Moving Consumer Goods
+AXISBANK,Private Bank
+AXISCADES,Capital Goods
+AZAD,Capital Goods
+BAJAJ-AUTO,Automobile And Auto Components
+BAJAJELEC,Consumer Durables
+BAJAJFINSV,NBFC
+BAJAJHFL,NBFC
+BAJAJHLDNG,NBFC
+BAJFINANCE,NBFC
+BALAMINES,Chemicals
+BALKRISIND,Automobile And Auto Components
+BALRAMCHIN,Fast Moving Consumer Goods
+BALUFORGE,Capital Goods
+BANCOINDIA,Automobile And Auto Components
+BANDHANBNK,Private Bank
+BANKBARODA,Private Bank
+BANKINDIA,PSU Bank
+BANKNIFTY,Index / Derivatives
+BATAINDIA,Consumer Durables
+BAYERCROP,Chemicals
+BBOX,Information Technology
+BBTC,Fast Moving Consumer Goods
+BDL,Capital Goods
+BECTORFOOD,Fast Moving Consumer Goods
+BEL,Capital Goods
+BELRISE,Automobile And Auto Components
+BEML,Capital Goods
+BERGEPAINT,Consumer Durables
+BHARATFORG,Automobile And Auto Components
+BHARTIARTL,Telecommunication
+BHARTIHEXA,Telecommunication
+BHEL,Capital Goods
+BIKAJI,Fast Moving Consumer Goods
+BIOCON,Healthcare
+BIRLACORPN,Construction Materials
+BLACKBUCK,Services
+BLS,Consumer Services
+BLUEDART,Services
+BLUEJET,Healthcare
+BLUESTARCO,Consumer Durables
+BLUESTONE,Consumer Durables
+BORORENEW,Capital Goods
+BOSCHLTD,Automobile And Auto Components
+BPCL,Oil Gas & Consumable Fuels
+BRIGADE,Realty
+BRITANNIA,Fast Moving Consumer Goods
+BSE,NBFC
+BSOFT,Information Technology
+CAMPUS,Consumer Durables
+CAMS,NBFC
+CANBK,PSU Bank
+CANFINHOME,NBFC
+CANHLIFE,Insurance
+CAPILLARY,Information Technology
+CAPLIPOINT,Healthcare
+CARBORUNIV,Capital Goods
+CARTRADE,Consumer Services
+CASTROLIND,Oil Gas & Consumable Fuels
+CCAVENUE,NBFC
+CCL,Fast Moving Consumer Goods
+CDSL,NBFC
+CEATLTD,Automobile And Auto Components
+CELLO,Consumer Durables
+CEMPRO,Construction
+CENTRALBK,PSU Bank
+CENTURYPLY,Consumer Durables
+CERA,Consumer Durables
+CESC,Power
+CGCL,NBFC
+CGPOWER,Capital Goods
+CHALET,Consumer Services
+CHAMBLFERT,Chemicals
+CHENNPETRO,Oil Gas & Consumable Fuels
+CHOICEIN,NBFC
+CHOLAFIN,NBFC
+CHOLAHLDNG,NBFC
+CHOLAHOLD,NBFC
+CIEINDIA,Automobile And Auto Components
+CIPLA,Healthcare
+CLEAN,Chemicals
+CMSINFO,Services
+COALINDIA,Oil Gas & Consumable Fuels
+COCHINSHIP,Capital Goods
+COFORGE,Information Technology
+COHANCE,Healthcare
+COLPAL,Fast Moving Consumer Goods
+CONCOR,Services
+CONCORDBIO,Healthcare
+COROMANDEL,Chemicals
+CORONA,Healthcare
+CPPLUS,Capital Goods
+CRAFTSMAN,Automobile And Auto Components
+CRAMC,NBFC
+CREDITACC,NBFC
+CRISIL,NBFC
+CRIZAC,Consumer Services
+CROMPTON,Consumer Durables
+CSBBANK,Private Bank
+CUB,Private Bank
+CUMMINSIND,Capital Goods
+CUPID,Fast Moving Consumer Goods
+CYIENT,Information Technology
+DABUR,Fast Moving Consumer Goods
+DALBHARAT,Construction Materials
+DATAMATICS,Information Technology
+DATAPATTNS,Capital Goods
+DBCORP,Media Entertainment & Publication
+DBL,Construction
+DBREALTY,Realty
+DCBBANK,Private Bank
+DCMSHRIRAM,Diversified
+DEEPAKFERT,Chemicals
+DEEPAKNTR,Chemicals
+DELHIVERY,Services
+DEVYANI,Consumer Services
+DIACABS,Capital Goods
+DIVISLAB,Healthcare
+DIXON,Consumer Durables
+DLF,Realty
+DMART,Consumer Services
+DOMS,Fast Moving Consumer Goods
+DRREDDY,Healthcare
+DUMMYINXGN,Construction
+DUMMYTRVN,Capital Goods
+DYNAMATECH,Capital Goods
+ECLERX,Services
+EDELWEISS,NBFC
+EICHERMOT,Automobile And Auto Components
+EIDPARRY,Fast Moving Consumer Goods
+EIEL,Utilities
+EIHOTEL,Consumer Services
+ELECON,Capital Goods
+ELECTCAST,Capital Goods
+ELGIEQUIP,Capital Goods
+ELLEN,Chemicals
+EMAMILTD,Fast Moving Consumer Goods
+EMBDL,Realty
+EMCURE,Healthcare
+EMIL,Consumer Services
+EMMVEE,Capital Goods
+ENDURANCE,Automobile And Auto Components
+ENGINERSIN,Construction
+ENRIN,Capital Goods
+ENTERO,Consumer Services
+EPL,Capital Goods
+EQUITASBNK,Private Bank
+ERIS,Healthcare
+ESCORTS,Capital Goods
+ETERNAL,Consumer Services
+ETHOSLTD,Consumer Durables
+EUREKAFORB,Consumer Durables
+EXIDEIND,Automobile And Auto Components
+FACT,Chemicals
+FEDERALBNK,Private Bank
+FEDFINA,Private Bank
+FIEMIND,Automobile And Auto Components
+FINCABLES,Capital Goods
+FINNIFTY,Index / Derivatives
+FINPIPE,Capital Goods
+FIRSTCRY,Consumer Services
+FIVESTAR,NBFC
+FLUOROCHEM,Chemicals
+FORCEMOT,Automobile And Auto Components
+FORTIS,Healthcare
+FSL,Services
+GABRIEL,Automobile And Auto Components
+GAEL,Fast Moving Consumer Goods
+GAIL,Oil Gas & Consumable Fuels
+GALLANTT,Capital Goods
+GESHIP,Services
+GHCL,Chemicals
+GICRE,Insurance
+GILLETTE,Fast Moving Consumer Goods
+GLAND,Healthcare
+GLAXO,Healthcare
+GLENMARK,Healthcare
+GMDCLTD,Metals & Mining
+GMMPFAUDLR,Capital Goods
+GMRAIRPORT,Services
+GMRP&UI,Power
+GNFC,Chemicals
+GODFRYPHLP,Fast Moving Consumer Goods
+GODIGIT,Insurance
+GODREJAGRO,Fast Moving Consumer Goods
+GODREJCP,Fast Moving Consumer Goods
+GODREJIND,Diversified
+GODREJPROP,Realty
+GOKEX,Textiles
+GOKULAGRO,Fast Moving Consumer Goods
+GOLDIAM,"Gems, Jewellery And Watches"
+GPIL,Capital Goods
+GPPL,Services
+GRANULES,Healthcare
+GRAPHITE,Capital Goods
+GRASIM,Construction Materials
+GRAVITA,Metals & Mining
+GREAVESCOT,Capital Goods
+GRINDWELL,Capital Goods
+GROWW,NBFC
+GRSE,Capital Goods
+GRWRHITECH,Capital Goods
+GSFC,Chemicals
+GVT&D,Capital Goods
+HAL,Capital Goods
+HAPPSTMNDS,Information Technology
+HATHWAY,Media Entertainment & Publication
+HAVELLS,Consumer Durables
+HBLENGINE,Capital Goods
+HCC,Construction
+HCG,Healthcare
+HCLTECH,Information Technology
+HDBFS,NBFC
+HDFCAMC,NBFC
+HDFCBANK,Private Bank
+HDFCLIFE,Insurance
+HEG,Capital Goods
+HEMIPROP,Services
+HERITGFOOD,Fast Moving Consumer Goods
+HEROMOTOCO,Automobile And Auto Components
+HEXT,Information Technology
+HFCL,Telecommunication
+HGINFRA,Construction
+HINDALCO,Metals & Mining
+HINDCOPPER,Metals & Mining
+HINDPETRO,Oil Gas & Consumable Fuels
+HINDUNILVR,Fast Moving Consumer Goods
+HINDZINC,Metals & Mining
+HOMEFIRST,NBFC
+HONASA,Fast Moving Consumer Goods
+HONAUT,Capital Goods
+HSCL,Chemicals
+HUDCO,NBFC
+HYUNDAI,Automobile And Auto Components
+ICICIAMC,NBFC
+ICICIBANK,Private Bank
+ICICIGI,Insurance
+ICICIPRULI,Insurance
+ICIL,Textiles
+IDBI,Private Bank
+IDEA,Telecommunication
+IDFCFIRSTB,Private Bank
+IEX,NBFC
+IFBIND,Consumer Durables
+IFCI,NBFC
+IGIL,Services
+IGL,Oil Gas & Consumable Fuels
+IIFL,NBFC
+IIFLCAPS,NBFC
+IKS,Information Technology
+IMFA,Metals & Mining
+INDGN,Healthcare
+INDHOTEL,Consumer Services
+INDIACEM,Construction Materials
+INDIAGLYCO,Fast Moving Consumer Goods
+INDIAMART,Consumer Services
+INDIANB,PSU Bank
+INDIASHLTR,NBFC
+INDIGO,Services
+INDIGOPNTS,Consumer Durables
+INDUSINDBK,Private Bank
+INDUSTOWER,Telecommunication
+INFY,Information Technology
+INOXGREEN,Services
+INOXINDIA,Capital Goods
+INOXWIND,Capital Goods
+INTELLECT,Information Technology
+IOB,PSU Bank
+IOC,Oil Gas & Consumable Fuels
+IONEXCHANG,Utilities
+IPCALAB,Healthcare
+IRB,Construction
+IRCON,Construction
+IRCTC,Consumer Services
+IREDA,NBFC
+IRFC,NBFC
+ITC,Fast Moving Consumer Goods
+ITCHOTELS,Consumer Services
+ITI,Telecommunication
+IXIGO,Consumer Services
+J&KBANK,Private Bank
+JAIBALAJI,Metals & Mining
+JAINREC,Metals & Mining
+JAMNAAUTO,Automobile And Auto Components
+JAYNECOIND,Capital Goods
+JBMA,Automobile And Auto Components
+JINDALSAW,Capital Goods
+JINDALSTEL,Metals & Mining
+JIOFIN,NBFC
+JKCEMENT,Construction Materials
+JKLAKSHMI,Construction Materials
+JKPAPER,Forest Materials
+JKTYRE,Automobile And Auto Components
+JLHL,Healthcare
+JMFINANCIL,NBFC
+JPPOWER,Power
+JSFB,Private Bank
+JSL,Metals & Mining
+JSLL,Consumer Services
+JSWCEMENT,Construction Materials
+JSWDULUX,Consumer Durables
+JSWENERGY,Power
+JSWINFRA,Services
+JSWSTEEL,Metals & Mining
+JUBLFOOD,Consumer Services
+JUBLINGREA,Chemicals
+JUBLPHARMA,Healthcare
+JUSTDIAL,Consumer Services
+JWL,Capital Goods
+JYOTHYLAB,Fast Moving Consumer Goods
+JYOTICNC,Capital Goods
+KAJARIACER,Consumer Durables
+KALYANKJIL,Consumer Durables
+KANSAINER,Consumer Durables
+KARURVYSYA,Private Bank
+KAYNES,Capital Goods
+KEC,Construction
+KEI,Capital Goods
+KFINTECH,NBFC
+KIMS,Healthcare
+KIRLOSBROS,Capital Goods
+KIRLOSENG,Capital Goods
+KIRLPNU,Capital Goods
+KITEX,Textiles
+KNRCON,Construction
+KOTAKBANK,Private Bank
+KPIGREEN,Power
+KPIL,Construction
+KPITTECH,Information Technology
+KPRMILL,Textiles
+KRBL,Fast Moving Consumer Goods
+KRN,Capital Goods
+KSB,Capital Goods
+KSCL,Fast Moving Consumer Goods
+KTKBANK,Private Bank
+LALPATHLAB,Healthcare
+LATENTVIEW,Information Technology
+LAURUSLABS,Healthcare
+LEMONTREE,Consumer Services
+LENSKART,Consumer Services
+LGEINDIA,Consumer Durables
+LICHSGFIN,NBFC
+LICI,Insurance
+LINDEINDIA,Chemicals
+LLOYDSENGG,Capital Goods
+LLOYDSENT,Metals & Mining
+LLOYDSME,Metals & Mining
+LODHA,Realty
+LOTUSDEV,Realty
+LT,Construction
+LTF,NBFC
+LTFOODS,Fast Moving Consumer Goods
+LTM,Information Technology
+LTTS,Information Technology
+LUMAXTECH,Automobile And Auto Components
+LUPIN,Healthcare
+LXCHEM,Chemicals
+M&M,Automobile And Auto Components
+M&MFIN,NBFC
+MAHABANK,PSU Bank
+MAHSCOOTER,NBFC
+MAHSEAMLES,Capital Goods
+MANAPPURAM,NBFC
+MANKIND,Healthcare
+MANORAMA,Fast Moving Consumer Goods
+MANYAVAR,Consumer Services
+MAPMYINDIA,Information Technology
+MARICO,Fast Moving Consumer Goods
+MARKSANS,Healthcare
+MARUTI,Automobile And Auto Components
+MASTEK,Information Technology
+MAXHEALTH,Healthcare
+MAZDOCK,Capital Goods
+MCX,NBFC
+MEDANTA,Healthcare
+MEDPLUS,Consumer Services
+MEESHO,Consumer Services
+METROPOLIS,Healthcare
+MFSL,NBFC
+MGL,Oil Gas & Consumable Fuels
+MIDCPNIFTY,Index / Derivatives
+MIDHANI,Capital Goods
+MINDACORP,Automobile And Auto Components
+MMTC,Services
+MOIL,Metals & Mining
+MOTHERSON,Automobile And Auto Components
+MOTILALOFS,NBFC
+MPHASIS,Information Technology
+MRF,Automobile And Auto Components
+MRPL,Oil Gas & Consumable Fuels
+MSTCLTD,Services
+MSUMI,Automobile And Auto Components
+MTARTECH,Capital Goods
+MUTHOOTFIN,NBFC
+NAM-INDIA,Insurance
+NATCOPHARM,Healthcare
+NATIONALUM,Metals & Mining
+NAUKRI,Consumer Services
+NAVA,Power
+NAVINFLUOR,Chemicals
+NAZARA,Media Entertainment & Publication
+NBCC,Construction
+NCC,Construction
+NEOGEN,Chemicals
+NESCO,Services
+NESTLEIND,Fast Moving Consumer Goods
+NETWEB,Information Technology
+NETWORK18,Media Entertainment & Publication
+NEULANDLAB,Healthcare
+NEWGEN,Information Technology
+NFL,Chemicals
+NH,Healthcare
+NHPC,Power
+NIACL,Insurance
+NIFTY,Index / Derivatives
+NIVABUPA,Insurance
+NLCINDIA,Power
+NMDC,Metals & Mining
+NRBBEARING,Auto Components
+NSLNISP,Metals & Mining
+NTPC,Power
+NTPCGREEN,Power
+NUVAMA,NBFC
+NUVOCO,Construction Materials
+NYKAA,Consumer Services
+OBEROIRLTY,Realty
+OFSS,Information Technology
+OIL,Oil Gas & Consumable Fuels
+OLAELEC,Automobile And Auto Components
+OLECTRA,Automobile And Auto Components
+ONESOURCE,Healthcare
+ONGC,Oil Gas & Consumable Fuels
+OPTIEMUS,Telecommunication
+ORIENTCEM,Construction Materials
+ORKLAINDIA,Fast Moving Consumer Goods
+OSWALPUMPS,Capital Goods
+PAGEIND,Textiles
+PARADEEP,Chemicals
+PARAS,Capital Goods
+PARKHOSPS,Healthcare
+PATANJALI,Fast Moving Consumer Goods
+PAYTM,NBFC
+PCBL,Chemicals
+PCJEWELLER,Consumer Durables
+PERSISTENT,Information Technology
+PETRONET,Oil Gas & Consumable Fuels
+PFC,NBFC
+PFIZER,Healthcare
+PFOCUS,Media Entertainment & Publication
+PGEL,Consumer Durables
+PGIL,Textiles
+PHOENIXLTD,Realty
+PICCADIL,Fast Moving Consumer Goods
+PIDILITIND,Chemicals
+PIIND,Chemicals
+PINELABS,NBFC
+PIRAMALFIN,NBFC
+PNB,PSU Bank
+PNBHOUSING,NBFC
+PNCINFRA,Construction
+PNGJL,Consumer Durables
+POLICYBZR,NBFC
+POLYCAB,Capital Goods
+POLYMED,Healthcare
+POONAWALLA,NBFC
+POWERGRID,Power
+POWERINDIA,Capital Goods
+POWERMECH,Construction
+PPLPHARMA,Healthcare
+PRAJIND,Capital Goods
+PREMIERENE,Capital Goods
+PRESTIGE,Realty
+PRICOLLTD,Automobile And Auto Components
+PRIVISCL,Chemicals
+PRSMJOHNSN,Construction Materials
+PRUDENT,NBFC
+PSB,PSU Bank
+PTC,Power
+PTCIL,Capital Goods
+PURVA,Realty
+PVRINOX,Media Entertainment & Publication
+PWL,Consumer Services
+QPOWER,Capital Goods
+QUESS,Services
+RADICO,Fast Moving Consumer Goods
+RAILTEL,Telecommunication
+RAIN,Chemicals
+RAINBOW,Healthcare
+RALLIS,Chemicals
+RAMCOCEM,Construction Materials
+RATEGAIN,Information Technology
+RATNAMANI,Capital Goods
+RAYMONDLSL,Textiles
+RBA,Consumer Services
+RBLBANK,Private Bank
+RCF,Chemicals
+RECLTD,NBFC
+REDINGTON,Services
+REDTAPE,Consumer Durables
+REFEX,Utilities
+RELAXO,Consumer Durables
+RELIANCE,Oil Gas & Consumable Fuels
+RELIGARE,NBFC
+RENUKA,Fast Moving Consumer Goods
+RHIM,Capital Goods
+RITES,Construction
+RKFORGE,Automobile And Auto Components
+ROUTE,Telecommunication
+RPOWER,Power
+RRKABEL,Capital Goods
+RTNINDIA,Consumer Services
+RTNPOWER,Power
+RUBICON,Healthcare
+RVNL,Construction
+SAATVIKGL,Capital Goods
+SAFARI,Consumer Durables
+SAGILITY,Information Technology
+SAIL,Metals & Mining
+SAILIFE,Healthcare
+SAMHI,Consumer Services
+SAMMAANCAP,NBFC
+SANDUMA,Metals & Mining
+SANOFICONR,Healthcare
+SANSERA,Automobile And Auto Components
+SAPPHIRE,Consumer Services
+SARDAEN,Metals & Mining
+SAREGAMA,Media Entertainment & Publication
+SBFC,NBFC
+SBICARD,NBFC
+SBILIFE,Insurance
+SBIN,PSU Bank
+SCHAEFFLER,Automobile And Auto Components
+SCHNEIDER,Capital Goods
+SCI,Services
+SENCO,Consumer Durables
+SENSEX,Index / Derivatives
+SFL,Consumer Durables
+SGMART,B2B E-Commerce
+SHAILY,Consumer Durables
+SHAKTIPUMP,Capital Goods
+SHARDACROP,Chemicals
+SHAREINDIA,NBFC
+SHILPAMED,Healthcare
+SHREECEM,Construction Materials
+SHRIPISTON,Automobile And Auto Components
+SHRIRAMFIN,NBFC
+SHYAMMETL,Capital Goods
+SIEMENS,Capital Goods
+SIGNATURE,Realty
+SJVN,Power
+SKFINDIA,Automobile And Auto Components
+SKFINDUS,Capital Goods
+SKIPPER,Capital Goods
+SKYGOLD,Consumer Durables
+SMARTWORKS,Services
+SMLMAH,Capital Goods
+SOBHA,Realty
+SOLARINDS,Chemicals
+SONACOMS,Automobile And Auto Components
+SONATSOFTW,Information Technology
+SOUTHBANK,Private Bank
+SPARC,Healthcare
+SPLPETRO,Chemicals
+SRF,Chemicals
+STAR,Healthcare
+STARCEMENT,Construction Materials
+STARHEALTH,Insurance
+STLTECH,Telecommunication
+STYL,NBFC
+STYRENIX,Chemicals
+SUBROS,Capital Goods
+SUDARSCHEM,Chemicals
+SUDEEPPHRM,Chemicals
+SUMICHEM,Chemicals
+SUNDARMFIN,NBFC
+SUNPHARMA,Healthcare
+SUNTECK,Realty
+SUNTV,Media Entertainment & Publication
+SUPREMEIND,Capital Goods
+SUPRIYA,Healthcare
+SURYAROSNI,Capital Goods
+SUZLON,Capital Goods
+SWANCORP,Chemicals
+SWIGGY,Consumer Services
+SWSOLAR,Construction
+SYNGENE,Healthcare
+SYRMA,Capital Goods
+TANLA,Information Technology
+TARC,Realty
+TARIL,Capital Goods
+TATACAP,NBFC
+TATACHEM,Chemicals
+TATACOMM,Telecommunication
+TATACONSUM,Fast Moving Consumer Goods
+TATAELXSI,Information Technology
+TATAINVEST,NBFC
+TATAPOWER,Power
+TATASTEEL,Metals & Mining
+TATATECH,Information Technology
+TBOTEK,Consumer Services
+TCS,Information Technology
+TDPOWERSYS,Capital Goods
+TECHM,Information Technology
+TECHNOE,Construction
+TEGA,Capital Goods
+TEJASNET,Telecommunication
+TENNIND,Automobile And Auto Components
+TEXRAIL,Capital Goods
+THANGAMAYL,Consumer Durables
+THELEELA,Consumer Services
+THERMAX,Capital Goods
+THOMASCOOK,Consumer Services
+THYROCARE,Healthcare
+TI,Fast Moving Consumer Goods
+TIINDIA,Automobile And Auto Components
+TIMETECHNO,Capital Goods
+TIMKEN,Capital Goods
+TIPSMUSIC,Media Entertainment & Publication
+TITAGARH,Capital Goods
+TITAN,Consumer Durables
+TMB,Private Bank
+TMCV,Capital Goods
+TMPV,Automobile And Auto Components
+TORNTPHARM,Healthcare
+TORNTPOWER,Power
+TRANSRAILL,Capital Goods
+TRAVELFOOD,Consumer Services
+TRENT,Consumer Services
+TRIDENT,Textiles
+TRITURBINE,Capital Goods
+TRIVENI,Fast Moving Consumer Goods
+TSFINV,NBFC
+TTML,Telecommunication
+TVSMOTOR,Automobile And Auto Components
+TVSSCS,Services
+UBL,Fast Moving Consumer Goods
+UCOBANK,PSU Bank
+UJJIVANSFB,Private Bank
+ULTRACEMCO,Construction Materials
+UNIONBANK,PSU Bank
+UNITDSPR,Fast Moving Consumer Goods
+UNOMINDA,Automobile And Auto Components
+UPL,Chemicals
+URBANCO,Consumer Services
+USHAMART,Capital Goods
+UTIAMC,NBFC
+UTLSOLAR,Capital Goods
+V2RETAIL,Consumer Services
+VAIBHAVGBL,Consumer Durables
+VAML,Metals & Mining
+VARROC,Automobile And Auto Components
+VBL,Fast Moving Consumer Goods
+VEDL,Metals & Mining
+VGUARD,Consumer Durables
+VIJAYA,Healthcare
+VIKRAMSOLR,Capital Goods
+VIPIND,Consumer Durables
+VIYASH,Healthcare
+VMART,Consumer Services
+VMM,Consumer Services
+VOLTAMP,Capital Goods
+VOLTAS,Consumer Durables
+VTL,Textiles
+WAAREEENER,Capital Goods
+WAAREERTL,Capital Goods
+WABAG,Utilities
+WAKEFIT,Consumer Durables
+WEBELSOLAR,Capital Goods
+WELCORP,Capital Goods
+WELENT,Construction
+WELSPUNLIV,Textiles
+WESTLIFE,Consumer Services
+WEWORK,Services
+WHIRLPOOL,Consumer Durables
+WIPRO,Information Technology
+WOCKPHARMA,Healthcare
+YATHARTH,Healthcare
+YESBANK,Private Bank
+ZAGGLE,Information Technology
+ZEEL,Media Entertainment & Publication
+ZENSARTECH,Information Technology
+ZENTEC,Capital Goods
+ZFCVINDIA,Automobile And Auto Components
+ZYDUSLIFE,Healthcare
+ZYDUSWELL,Fast Moving Consumer Goods
