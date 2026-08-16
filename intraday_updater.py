@@ -28,8 +28,10 @@ hist_file = "industry_historical_cache.parquet"
 if not os.path.exists(hist_file):
     print("No cache found. Run EOD first.")
     exit(1)
+
 df_hist = pd.read_parquet(hist_file)
-df_hist['Date'] = pd.to_datetime(df_hist['Date'])
+# ⚡ FIX: Stripping timezones here so aware/naive match perfectly!
+df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
 
 ind_master = pd.read_parquet("master_stock_industry.parquet") if os.path.exists("master_stock_industry.parquet") else pd.DataFrame()
 sym_to_ind = dict(zip(ind_master['Symbol'], ind_master['Industry'])) if not ind_master.empty else {}
@@ -40,7 +42,6 @@ nse_stocks = df_scrip[(df_scrip['exch_seg'] == 'NSE') & (df_scrip['symbol'].str.
 tokens = list(dict(zip(nse_stocks['symbol'], nse_stocks['token'])).values())
 chunks = [tokens[i:i + 35] for i in range(0, len(tokens), 35)]
 
-# Fixed Syntax Error for timedelta
 now_ist = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30)))
 today_dt = pd.to_datetime(now_ist.strftime("%Y-%m-%d"))
 fetched = []
@@ -66,7 +67,9 @@ if not fetched: exit(1)
 df_live = pd.DataFrame(fetched)
 
 df_hist = df_hist[df_hist['Date'] != today_dt]
-df_combined = pd.concat([df_hist, df_live], ignore_index=True).sort_values(['Symbol', 'Date']).reset_index(drop=True)
+df_combined = pd.concat([df_hist, df_live], ignore_index=True)
+df_combined['Date'] = pd.to_datetime(df_combined['Date']).dt.tz_localize(None).dt.normalize()
+df_combined = df_combined.sort_values(['Symbol', 'Date']).reset_index(drop=True)
 
 df_combined['EMA_20'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=20, adjust=False, min_periods=10).mean())
 df_combined['EMA_50'] = df_combined.groupby('Symbol')['Close'].transform(lambda x: x.ewm(span=50, adjust=False, min_periods=20).mean())
