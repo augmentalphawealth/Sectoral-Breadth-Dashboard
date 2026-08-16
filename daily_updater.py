@@ -84,7 +84,6 @@ if new_listings:
 sym_to_ind = dict(zip(df_ind['Symbol'], df_ind['Industry']))
 
 # --- BATCH EOD PRICE DATA FETCH ---
-# Fixed Syntax Error for the timedelta
 ist_timezone = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
 today_dt = pd.to_datetime(datetime.datetime.now(ist_timezone).strftime("%Y-%m-%d"))
 
@@ -132,12 +131,14 @@ else:
     df_hist = pd.DataFrame()
 
 if not df_hist.empty:
-    df_hist['Date'] = pd.to_datetime(df_hist['Date'])
+    # ⚡ FIX: Stripping timezones here so aware/naive match perfectly!
+    df_hist['Date'] = pd.to_datetime(df_hist['Date']).dt.tz_localize(None).dt.normalize()
     df_hist = df_hist[df_hist['Date'] != today_dt]
     df_combined = pd.concat([df_hist, df_today], ignore_index=True)
 else:
     df_combined = df_today.copy()
 
+df_combined['Date'] = pd.to_datetime(df_combined['Date']).dt.tz_localize(None).dt.normalize()
 cutoff_date = today_dt - pd.Timedelta(days=300)
 df_combined = df_combined[df_combined['Date'] >= cutoff_date]
 df_combined = df_combined.sort_values(['Symbol', 'Date']).reset_index(drop=True)
