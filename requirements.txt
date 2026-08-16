@@ -10,3 +10,4 @@ fastparquet
 logzero
 websocket-client
 matplotlib
+yfinance
