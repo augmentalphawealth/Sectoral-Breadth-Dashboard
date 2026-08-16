@@ -1,141 +1,109 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.graph_objects as go
-import requests
-import time
 import os
+import time
+import requests
 
-st.set_page_config(page_title="Industry Engine", layout="wide", initial_sidebar_state="collapsed")
-
-if 'sync_in_progress' not in st.session_state:
-    st.session_state.sync_in_progress, st.session_state.sync_start_time, st.session_state.pre_sync_time = False, 0, ""
+st.set_page_config(page_title="Situational Awareness", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
     <style>
-    .main { background-color: #f8fafc; }
-    .block-container { padding-top: 1rem; padding-bottom: 2rem; max-width: 98%; }
-    header { visibility: hidden; }
-    div[data-testid="stVerticalBlockBorderWrapper"] { background-color: #ffffff; border-radius: 12px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; margin-bottom: 12px; }
-    .card-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; }
-    .metric-value { font-size: 26px; font-weight: 800; color: #0f172a; }
-    .metric-sub { font-size: 12px; font-weight: 600; color: #64748b; margin-top: 2px; }
-    .exec-banner { background-color: #0f172a; color: #f8fafc; padding: 14px 18px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #38bdf8; }
-    .exec-heading { font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 8px; }
-    .exec-bullet { font-size: 12.5px; color: #e2e8f0; margin-bottom: 4px; line-height: 1.4; }
-    .stButton>button { border-radius: 6px; font-weight: 600; font-size: 12px; padding: 0.35rem 0.6rem; }
+    .main { background-color: #0f172a; color: #f8fafc; }
+    .block-container { padding-top: 1.5rem; max-width: 98%; }
+    div[data-testid="stVerticalBlockBorderWrapper"] { background-color: #1e293b; border-radius: 8px; border: 1px solid #334155; padding: 15px; }
+    .stSelectbox label, .stSlider label { color: #94a3b8 !important; font-weight: 600; font-size: 13px; }
+    .card-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .metric-val { font-size: 24px; font-weight: 800; color: #f8fafc; }
+    .stDataFrame { font-size: 12px; }
+    /* Force dark mode table rendering */
+    [data-testid="stDataFrame"] div[role="grid"] { background-color: #1e293b !important; color: white !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# Replace with your actual GitHub username
-REPO_OWNER = "augmentalphawealth"
-REPO_NAME = "Industry-Breadth-Dashboard"
-
-@st.cache_data(ttl=30, show_spinner=False)
+@st.cache_data(ttl=60, show_spinner=False)
 def load_data():
-    matrix = pd.read_csv("industry_breadth_matrix.csv") if os.path.exists("industry_breadth_matrix.csv") else pd.DataFrame()
-    stocks = pd.read_parquet("latest_stocks_snapshot.parquet") if os.path.exists("latest_stocks_snapshot.parquet") else pd.DataFrame()
-    history = pd.read_parquet("historical_breadth_matrix.parquet") if os.path.exists("historical_breadth_matrix.parquet") else pd.DataFrame()
-    sync_time = open("last_sync.txt", "r").read().strip() if os.path.exists("last_sync.txt") else "Unknown"
-    return matrix, stocks, history, sync_time
+    hist = pd.read_parquet("historical_breadth_matrix.parquet") if os.path.exists("historical_breadth_matrix.parquet") else pd.DataFrame()
+    sync = open("last_sync.txt", "r").read().strip() if os.path.exists("last_sync.txt") else "Unknown"
+    return hist, sync
 
-matrix_df, stocks_df, hist_df, last_sync = load_data()
+hist_df, last_sync = load_data()
 
-head_c1, head_c2 = st.columns([3.2, 1.8])
-with head_c1: st.markdown("<h2 style='margin:0; font-weight:800; color:#0f172a;'>🏭 INDUSTRY BREADTH ENGINE</h2>", unsafe_allow_html=True)
-with head_c2:
-    st.markdown(f"<div style='text-align:right; font-size:12px; font-weight:700; color:#475569;'>Last Sync: <span style='color:#0284c7;'>{last_sync}</span></div>", unsafe_allow_html=True)
-    if st.button("⚡ Trigger Live Sync", use_container_width=True):
-        token = st.secrets.get("GITHUB_TOKEN", None)
-        if token:
-            requests.post(f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/workflows/intraday_update.yml/dispatches", headers={"Accept": "application/vnd.github.v3+json", "Authorization": f"token {token}"}, json={"ref": "main"})
-            st.session_state.sync_in_progress, st.session_state.sync_start_time, st.session_state.pre_sync_time = True, time.time(), last_sync
-            st.rerun()
+c1, c2, c3 = st.columns([1, 2, 1])
+with c2:
+    st.markdown("<h2 style='text-align:center; margin-bottom: 0px;'>SITUATIONAL AWARENESS: SECTORAL BREADTH</h2>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align:center; font-size:12px; color:#38bdf8; font-weight:600;'>Last Sync: {last_sync}</div>", unsafe_allow_html=True)
 
-if st.session_state.sync_in_progress:
-    if time.time() - st.session_state.sync_start_time < 180:
-        st.warning("⏳ Live sync running... Dashboard will auto-refresh.")
-        time.sleep(10)
-        _, _, _, curr_time = load_data()
-        if curr_time != st.session_state.pre_sync_time: st.session_state.sync_in_progress = False; st.cache_data.clear()
-        st.rerun()
-    else: st.session_state.sync_in_progress = False
+if hist_df.empty:
+    st.warning("Data compiling. Awaiting GitHub Action.")
+    st.stop()
 
-if matrix_df.empty: st.warning("Data compiling. Run the GitHub Action first."); st.stop()
+# --- UNIVERSAL TIME MACHINE ---
+hist_df['Date'] = pd.to_datetime(hist_df['Date'])
+dates_avail = sorted(hist_df['Date'].dt.date.unique(), reverse=True)
 
-tab1, tab2 = st.tabs(["🔴 Live Market Dashboard", "🕰️ Historical Timeline & Trends"])
+st.markdown("<hr style='border-color: #334155; margin: 15px 0px;'>", unsafe_allow_html=True)
+sc1, sc2, sc3 = st.columns([1, 2, 1])
+with sc2:
+    selected_date = st.selectbox("📅 SELECT MARKET STATE DATE", options=dates_avail)
 
-rename_map = {'Total_Stocks': 'Universe', 'Thrust_Score': 'Thrust Score', 'Avg_Daily_Gain': 'Avg Gain %', 'Pct_Above_20': '% > 20 EMA', 'Pct_Above_50': '% > 50 EMA', 'Pct_Above_200': '% > 200 EMA', 'Pct_Near_52W': '% Near 52W High', 'Vol_Shock_Count': 'Vol Shocks'}
-format_dict = {'Avg Gain %': '{:.2f}%', '% > 20 EMA': '{:.1f}%', '% > 50 EMA': '{:.1f}%', '% > 200 EMA': '{:.1f}%', '% Near 52W High': '{:.1f}%'}
+df = hist_df[hist_df['Date'].dt.date == selected_date].copy()
 
-with tab1:
-    v_break = matrix_df[matrix_df['Vol_Shock_Count'] >= 2]['Industry'].head(3).tolist()
-    bottoms = matrix_df[(matrix_df['Pct_Above_20'] >= 50) & (matrix_df['Pct_Above_200'] < 40)]['Industry'].head(3).tolist()
-    exhaust = matrix_df[(matrix_df['Pct_Above_50'] >= 80) & (matrix_df['Pct_Above_20'] < 50)]['Industry'].head(3).tolist()
+# --- STATE MACHINE LOGIC (Using EMA) ---
+# Phase 1: Leading (Strong EMA, Positive MCO, High Thrust)
+leading = df[(df['Pct_50E'] > 60) & (df['MCO'] > 0) & (df['Thrust_3D'] > 1.2)]['Industry'].tolist()
+# Phase 2: Bottoming (Capitulation TRIN > 1.5, Price < 200E but 20E > 50E crossing)
+bottoming = df[(df['TRIN'] > 1.5) & (df['Pct_200E'] < 40) & (df['Pct_20E'] > df['Pct_50E'])]['Industry'].tolist()
+# Phase 3: Exhaustion (Speculative froth > 15%, Complacency TRIN < 0.6)
+exhausted = df[(df['Pct_Froth'] > 15) & (df['TRIN'] < 0.6)]['Industry'].tolist()
 
-    st.markdown(f"""
-    <div class='exec-banner'>
-        <div class='exec-heading'>⚡ Algorithmic Executive Briefing</div>
-        <div class='exec-bullet'>🚀 <b>Volume Breakouts:</b> {", ".join(v_break) if v_break else "None detected"}</div>
-        <div class='exec-bullet'>🌱 <b>Early Reversals:</b> {", ".join(bottoms) if bottoms else "None (Aligned with long trends)"}</div>
-        <div class='exec-bullet'>⚠️ <b>Exhaustion Risk:</b> {", ".join(exhaust) if exhaust else "None (Leaders holding fast momentum)"}</div>
-        <div class='exec-bullet'>🎯 <b>Top 3 Focus:</b> {" • ".join(matrix_df['Industry'].head(3).tolist())}</div>
-    </div>
-    """, unsafe_allow_html=True)
+m1, m2, m3, m4 = st.columns(4)
+with m1:
+    with st.container(border=True): st.markdown(f"<div class='card-title'>Total Sectors</div><div class='metric-val'>{len(df)}</div>", unsafe_allow_html=True)
+with m2:
+    with st.container(border=True): st.markdown(f"<div class='card-title'>Leading Momentum</div><div class='metric-val' style='color:#22c55e;'>{len(leading)}</div>", unsafe_allow_html=True)
+with m3:
+    with st.container(border=True): st.markdown(f"<div class='card-title'>Capitulation / Bottoming</div><div class='metric-val' style='color:#38bdf8;'>{len(bottoming)}</div>", unsafe_allow_html=True)
+with m4:
+    with st.container(border=True): st.markdown(f"<div class='card-title'>Exhaustion Risk</div><div class='metric-val' style='color:#ef4444;'>{len(exhausted)}</div>", unsafe_allow_html=True)
 
-    m1, m2, m3, m4 = st.columns(4)
-    with m1:
-        with st.container(border=True): st.markdown(f"<div class='card-title'>Tracked</div><div class='metric-value'>{len(matrix_df)}</div>", unsafe_allow_html=True)
-    with m2:
-        with st.container(border=True): st.markdown(f"<div class='card-title'>Leading</div><div class='metric-value' style='color:#16a34a;'>{len(matrix_df[matrix_df['Thrust_Score'] >= 70])}</div>", unsafe_allow_html=True)
-    with m3:
-        with st.container(border=True): st.markdown(f"<div class='card-title'>Neutral</div><div class='metric-value' style='color:#f59e0b;'>{len(matrix_df[(matrix_df['Thrust_Score'] >= 40) & (matrix_df['Thrust_Score'] < 70)])}</div>", unsafe_allow_html=True)
-    with m4:
-        with st.container(border=True): st.markdown(f"<div class='card-title'>Risk-Off</div><div class='metric-value' style='color:#dc2626;'>{len(matrix_df[matrix_df['Thrust_Score'] < 40])}</div>", unsafe_allow_html=True)
+st.markdown(f"""
+<div style='background-color:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155; margin-bottom: 20px;'>
+    <div style='font-size:13px; font-weight:800; color:#38bdf8; margin-bottom:8px;'>SITUATIONAL TAGS ({selected_date})</div>
+    <div style='font-size:13px; color:#cbd5e1; margin-bottom:4px;'>🟢 <b>Leading:</b> {", ".join(leading[:5]) if leading else "None"}</div>
+    <div style='font-size:13px; color:#cbd5e1; margin-bottom:4px;'>🔵 <b>Bottoming:</b> {", ".join(bottoming[:5]) if bottoming else "None"}</div>
+    <div style='font-size:13px; color:#cbd5e1;'>🔴 <b>Exhaustion/Froth:</b> {", ".join(exhausted[:5]) if exhausted else "None"}</div>
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown("### 📊 Live Industry Matrix")
-    display_df = matrix_df.rename(columns=rename_map)
-    cols = [c for c in ['Industry', 'Universe', 'Thrust Score', 'Avg Gain %', '% > 20 EMA', '% > 50 EMA', '% > 200 EMA', '% Near 52W High', 'Vol Shocks'] if c in display_df.columns]
-    st.dataframe(display_df[cols].style.background_gradient(subset=['Thrust Score', '% > 20 EMA', '% > 50 EMA', '% > 200 EMA'], cmap='RdYlGn', vmin=10, vmax=90).format(format_dict), use_container_width=True, height=400)
+# --- THE INSTITUTIONAL MATRIX ---
+st.markdown("### 🧬 Institutional Breadth Matrix")
 
-    st.markdown("### 🔍 Sub-Sector Constituent Drill-Down")
-    selected_ind = st.selectbox("Inspect Underlying Constituents:", options=matrix_df['Industry'].tolist())
-    if selected_ind and not stocks_df.empty:
-        sub_df = stocks_df[stocks_df['Industry'] == selected_ind].copy()
-        sub_df['EMA Status'] = np.where(sub_df['Above_20'] & sub_df['Above_50'] & sub_df['Above_200'], "🟢 Strong", np.where(sub_df['Above_200'], "🟡 >200", "🔴 Weak"))
-        sub_df['Vol Surge'] = (sub_df['Volume'] / sub_df['Vol_20D_Avg'].replace(0, np.nan)).round(1).astype(str) + "x"
-        sub_df['Daily_Pct'] = sub_df['Daily_Pct'].round(2).astype(str) + "%"
-        st.dataframe(sub_df[['Symbol', 'Close', 'Daily_Pct', 'Vol Surge', 'Dist_52W_High', 'EMA Status']].sort_values('Daily_Pct', ascending=False), use_container_width=True)
+df['TRIN'] = df['TRIN'].apply(lambda x: f"{x:.2f}" if pd.notna(x) else "Too Small")
+df['MCO'] = df['MCO'].apply(lambda x: f"{x:.1f}" if pd.notna(x) else "Too Small")
 
-with tab2:
-    if hist_df.empty:
-        st.info("Historical data is compiling. Run the 'EOD Update' GitHub Action to build the Time Machine.")
-    else:
-        st.markdown("### 📈 Capital Rotation & Long-Term Trends")
-        st.caption("Track institutional money flow by comparing Industry Thrust Scores over the past 6 years.")
-        
-        hist_df['Date'] = pd.to_datetime(hist_df['Date'])
-        all_inds = sorted(hist_df['Industry'].unique())
-        
-        # Plotly Trend Chart
-        sel_trend_inds = st.multiselect("Select Industries to Compare:", options=all_inds, default=all_inds[:2])
-        if sel_trend_inds:
-            fig = go.Figure()
-            for ind in sel_trend_inds:
-                t_df = hist_df[hist_df['Industry'] == ind].sort_values('Date')
-                fig.add_trace(go.Scatter(x=t_df['Date'], y=t_df['Thrust_Score'], mode='lines', name=ind))
-            fig.update_layout(height=450, margin=dict(l=10, r=10, t=30, b=10), plot_bgcolor="#f8fafc", yaxis_title="Thrust Score (0-100)", legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
-            st.plotly_chart(fig, use_container_width=True)
+rename_map = {
+    'Universe': 'Stocks',
+    'Avg_Return': 'Avg %',
+    'Pct_20E': '% > 20 EMA',
+    'Pct_50E': '% > 50 EMA',
+    'Pct_200E': '% > 200 EMA',
+    'Pct_NH': '% New Highs',
+    'Pct_NL': '% New Lows',
+    'Vol_Breadth': 'Vol Brdth',
+    'Thrust_3D': '3D Thrust',
+    'Pct_Froth': '% Froth (1M>25%)'
+}
+display_df = df.rename(columns=rename_map).sort_values('% > 20 EMA', ascending=False)
+cols = ['Industry', 'Stocks', 'Avg %', '% > 20 EMA', '% > 50 EMA', '% > 200 EMA', '% New Highs', '% New Lows', 'Vol Brdth', '3D Thrust', '% Froth (1M>25%)', 'TRIN', 'MCO']
 
-        st.markdown("<hr style='margin: 15px 0px;'>", unsafe_allow_html=True)
-        st.markdown("### 🕰️ The Time Machine")
-        st.caption("View the exact State of the Market on any specific day in history.")
-        
-        avail_dates = hist_df['Date'].dt.date.unique()
-        avail_dates[::-1].sort() # Sort descending
-        sel_date = st.selectbox("Select Historical Snapshot Date:", options=avail_dates)
-        
-        if sel_date:
-            snap_df = hist_df[hist_df['Date'].dt.date == sel_date].rename(columns=rename_map)
-            snap_cols = [c for c in ['Industry', 'Universe', 'Thrust Score', 'Avg Gain %', '% > 20 EMA', '% > 50 EMA', '% > 200 EMA', '% Near 52W High', 'Vol Shocks'] if c in snap_df.columns]
-            st.dataframe(snap_df[snap_cols].sort_values('Thrust Score', ascending=False).style.background_gradient(subset=['Thrust Score', '% > 20 EMA', '% > 50 EMA', '% > 200 EMA'], cmap='RdYlGn', vmin=10, vmax=90).format(format_dict), use_container_width=True, height=400)
+format_dict = {'Avg %': '{:.2f}%', '% > 20 EMA': '{:.1f}%', '% > 50 EMA': '{:.1f}%', '% > 200 EMA': '{:.1f}%', '% New Highs': '{:.1f}%', '% New Lows': '{:.1f}%', 'Vol Brdth': '{:.2f}x', '3D Thrust': '{:.2f}x', '% Froth (1M>25%)': '{:.1f}%'}
+
+st.dataframe(
+    display_df[cols].style
+        .background_gradient(subset=['% > 20 EMA', '% > 50 EMA', '% > 200 EMA', '% New Highs'], cmap='RdYlGn', vmin=10, vmax=90)
+        .background_gradient(subset=['% New Lows', '% Froth (1M>25%)'], cmap='Reds', vmin=0, vmax=20)
+        .format(format_dict),
+    use_container_width=True, 
+    height=600
+)
