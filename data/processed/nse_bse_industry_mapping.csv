@@ -899,3 +899,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 898,HARIOMPIPE,Hariom Pipe Industries Limited,EQ,INE00EV01017,543517,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
 899,HARRMALAYA,Harrisons  Malayalam Limited,EQ,INE544A01019,500467,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
 900,HARSHA,Harsha Engineers International Limited,EQ,INE0JUS01029,543600,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+901,HATHWAY,Hathway Cable & Datacom Limited,EQ,INE982F01036,533162,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+902,HATSUN,Hatsun Agro Product Limited,EQ,INE473B01035,531531,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+903,HAVELLS,Havells India Limited,EQ,INE176B01034,517354,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+904,HAVISHA,Sri Havisha Hospitality and Infrastructure Limited,EQ,INE293B01029,531322,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+905,HAWKINCOOK,Hawkins Cookers Limited,EQ,INE979B01015,508486,Consumer Discretionary,Houseware,Consumer Durables,Consumer Durables,Houseware,CLASSIFIED
+906,HAZOOR,Hazoor Multi Projects Limited,EQ,INE550F01049,532467,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+907,HBESD,HB Estate Developers Limited,EQ,INE640B01021,532334,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+908,HBLENGINE,HBL Engineering Limited,EQ,INE292B01021,517271,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+909,HBPOR,HB Portfolio Limited,EQ,INE638B01025,532333,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+910,HBSL,HB Stockholdings Limited,EQ,INE550B01022,532216,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+911,HCC,Hindustan Construction Company Limited,EQ,INE549A01026,500185,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+912,HCG,Healthcare Global Enterprises Limited,EQ,INE075I01017,539787,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+913,HCL-INSYS,HCL Infosystems Limited,EQ,INE236A01020,500179,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+914,HCLTECH,HCL Technologies Limited,EQ,INE860A01027,532281,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+915,HDBFS,HDB Financial Services Limited,EQ,INE756I01012,544429,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+916,HDFCAMC,HDFC Asset Management Company Limited,EQ,INE127D01025,541729,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+917,HDFCBANK,HDFC Bank Limited,EQ,INE040A01034,500180,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+918,HDFCLIFE,HDFC Life Insurance Company Limited,EQ,INE795G01014,540777,Financial Services,Life Insurance,Financial Services,Insurance,Life Insurance,CLASSIFIED
+919,HDIL,Housing Development and Infrastructure Limited,BZ,INE191I01012,532873,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+920,HEADSUP,Heads UP Ventures Limited,EQ,INE759V01019,540210,Consumer Discretionary,Trading - Textile Products,Textiles,Textiles & Apparels,Trading - Textile Products,CLASSIFIED
+921,HEALTHX,Health X Platform Limited,EQ,INE019J01013,533259,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+922,HECPROJECT,HEC Infra Projects Limited,EQ,INE558R01013,,,,,,,NOT_FOUND
+923,HEG,HEG Limited,EQ,INE545A01024,509631,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+924,HEIDELBERG,HeidelbergCement India Limited,EQ,INE578A01017,500292,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+925,HEMIPROP,Hemisphere Properties India Limited,EQ,INE0AJG01018,543242,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+926,HERANBA,Heranba Industries Limited,EQ,INE694N01015,543266,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+927,HERITGFOOD,Heritage Foods Limited,EQ,INE978A01027,519552,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+928,HEROMOTOCO,Hero MotoCorp Limited,EQ,INE158A01026,500182,Consumer Discretionary,2/3 Wheelers,Automobile and Auto Components,Automobiles,2/3 Wheelers,CLASSIFIED
+929,HESTERBIO,Hester Biosciences Limited,EQ,INE782E01017,524669,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+930,HEXAGON,Hexagon Nutrition Limited,BE,INE0JUI01012,544785,Fast Moving Consumer Goods,Other Food Products,Fast Moving Consumer Goods,Food Products,Other Food Products,CLASSIFIED
+931,HEXATRADEX,Hexa Tradex Limited,EQ,INE750M01017,534328,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+932,HEXT,Hexaware Technologies Limited,EQ,INE093A01041,544362,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+933,HFCL,HFCL Limited,EQ,INE548A01028,500183,Telecommunication,Telecom - Infrastructure,Telecommunication,Telecom - Services,Telecom - Infrastructure,CLASSIFIED
+934,HGINFRA,H.G. Infra Engineering Limited,EQ,INE926X01010,541019,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+935,HGM,HandsOn Global Management (HGM) Limited,EQ,INE596H01014,532761,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+936,HGS,Hinduja Global Solutions Limited,EQ,INE170I01016,532859,Services,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),Services,Commercial Services & Supplies,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),CLASSIFIED
+937,HIKAL,Hikal Limited,EQ,INE475B01022,524735,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+938,HILINFRA,Highway Infrastructure Limited,EQ,INE00RL01028,544477,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+939,HILTON,Hilton Metal Forging Limited,BE,INE788H01017,532847,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+940,HIMATSEIDE,Himatsingka Seide Limited,EQ,INE049A01027,514043,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+941,HINDADH,Hindustan Adhesives Limited,EQ,INE074C01013,514428,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+942,HINDALCO,Hindalco Industries Limited,EQ,INE038A01020,500440,Commodities,Aluminium,Metals & Mining,Non - Ferrous Metals,Aluminium,CLASSIFIED
+943,HINDALUMI,Hind Aluminium Industries Limited,EQ,INE227B01019,531979,Commodities,Aluminium,Metals & Mining,Non - Ferrous Metals,Aluminium,CLASSIFIED
+944,HINDCOMPOS,Hindustan Composites Limited,EQ,INE310C01029,509635,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+945,HINDCON,Hindcon Chemicals Limited,EQ,INE642Y01029,,,,,,,NOT_FOUND
+946,HINDCOPPER,Hindustan Copper Limited,EQ,INE531E01026,513599,Commodities,Copper,Metals & Mining,Non - Ferrous Metals,Copper,CLASSIFIED
+947,HINDOILEXP,Hindustan Oil Exploration Company Limited,EQ,INE345A01011,500186,Energy,Oil Exploration & Production,"Oil, Gas & Consumable Fuels",Oil,Oil Exploration & Production,CLASSIFIED
+948,HINDPETRO,Hindustan Petroleum Corporation Limited,EQ,INE094A01015,500104,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+949,HINDUNILVR,Hindustan Unilever Limited,EQ,INE030A01027,500696,Fast Moving Consumer Goods,Diversified FMCG,Fast Moving Consumer Goods,Diversified FMCG,Diversified FMCG,CLASSIFIED
+950,HINDWAREAP,Hindware Home Innovation Limited,EQ,INE05AN01011,542905,Consumer Discretionary,Sanitary Ware,Consumer Durables,Consumer Durables,Sanitary Ware,CLASSIFIED
+951,HINDZINC,Hindustan Zinc Limited,EQ,INE267A01025,500188,Commodities,Zinc,Metals & Mining,Non - Ferrous Metals,Zinc,CLASSIFIED
+952,HIRECT,Hirect Limited,EQ,INE835D01023,504036,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+953,HISARMETAL,Hisar Metal Industries Limited,EQ,INE598C01011,590018,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+954,HITECH,Hi-Tech Pipes Limited,EQ,INE106T01025,543411,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+955,HITECHCORP,Hitech Corporation Limited,BE,INE120D01012,526217,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+956,HITECHGEAR,The Hi-Tech Gears Limited,BE,INE127B01011,522073,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+957,HLEGLAS,HLE Glascoat Limited,EQ,INE461D01028,522215,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+958,HLVLTD,HLV LIMITED,EQ,INE102A01024,500193,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+959,HMAAGRO,HMA Agro Industries Limited,EQ,INE0ECP01024,543929,Fast Moving Consumer Goods,Meat Products including Poultry,Fast Moving Consumer Goods,Food Products,Meat Products including Poultry,CLASSIFIED
+960,HMT,HMT Limited,BZ,INE262A01018,500191,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+961,HMVL,Hindustan Media Ventures Limited,BE,INE871K01015,533217,Consumer Discretionary,Print Media,"Media, Entertainment & Publication",Media,Print Media,CLASSIFIED
+962,HNDFDS,Hindustan Foods Limited,EQ,INE254N01026,519126,Fast Moving Consumer Goods,Diversified FMCG,Fast Moving Consumer Goods,Diversified FMCG,Diversified FMCG,CLASSIFIED
+963,HOMEFIRST,Home First Finance Company India Limited,EQ,INE481N01025,543259,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+964,HONASA,Honasa Consumer Limited,EQ,INE0J5401028,544014,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+965,HONAUT,Honeywell Automation India Limited,EQ,INE671A01010,517174,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+966,HONDAPOWER,Honda India Power Products Limited,EQ,INE634A01018,522064,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+967,HPAL,HP Adhesives Limited,EQ,INE0GSL01024,543433,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+968,HPIL,Hindprakash Industries Limited,EQ,INE05X901010,543645,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+969,HPL,HPL Electric & Power Limited,EQ,INE495S01016,540136,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+970,HRYNSHP,Hariyana Ship Breakers Limited,EQ,INE400G01011,526931,Industrials,Ship Building & Allied Services,Capital Goods,Industrial Manufacturing,Ship Building & Allied Services,CLASSIFIED
+971,HSCL,Himadri Speciality Chemical Limited,EQ,INE019C01026,500184,Commodities,Carbon Black,Chemicals,Chemicals & Petrochemicals,Carbon Black,CLASSIFIED
+972,HTMEDIA,HT Media Limited,EQ,INE501G01024,532662,Consumer Discretionary,Print Media,"Media, Entertainment & Publication",Media,Print Media,CLASSIFIED
+973,HUBTOWN,Hubtown Limited,EQ,INE703H01016,532799,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+974,HUDCO,Housing & Urban Development Corporation Limited,EQ,INE031A01017,540530,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+975,HUHTAMAKI,Huhtamaki India Limited,EQ,INE275B01026,509820,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+976,HYBRIDFIN,Hybrid Financial Services Limited,BE,INE965B01022,500262,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+977,HYUNDAI,Hyundai Motor India Limited,EQ,INE0V6F01027,544274,Consumer Discretionary,Passenger Cars & Utility Vehicles,Automobile and Auto Components,Automobiles,Passenger Cars & Utility Vehicles,CLASSIFIED
+978,IBULLSLTD,Indiabulls Limited,EQ,INE126M01010,533520,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+979,ICDSLTD,ICDS Limited,EQ,INE613B01010,511194,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+980,ICEMAKE,Ice Make Refrigeration Limited,EQ,INE520Y01019,,,,,,,NOT_FOUND
+981,ICICIAMC,ICICI Prudential Asset Management Company Limited,EQ,INE346A01027,544658,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+982,ICICIBANK,ICICI Bank Limited,EQ,INE090A01021,532174,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+983,ICICIGI,ICICI Lombard General Insurance Company Limited,EQ,INE765G01017,540716,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+984,ICICIPRULI,ICICI Prudential Life Insurance Company Limited,EQ,INE726G01019,540133,Financial Services,Life Insurance,Financial Services,Insurance,Life Insurance,CLASSIFIED
+985,ICIL,Indo Count Industries Limited,EQ,INE483B01026,521016,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+986,ICRA,ICRA Limited,EQ,INE725G01011,532835,Financial Services,Ratings,Financial Services,Capital Markets,Ratings,CLASSIFIED
+987,IDBI,IDBI Bank Limited,EQ,INE008A01015,500116,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+988,IDEA,Vodafone Idea Limited,EQ,INE669E01016,532822,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+989,IDEAFORGE,Ideaforge Technology Limited,EQ,INE349Y01013,543932,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+990,IDFCFIRSTB,IDFC First Bank Limited,EQ,INE092T01019,539437,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+991,IEX,Indian Energy Exchange Limited,EQ,INE022Q01020,540750,Financial Services,Exchange and Data Platform,Financial Services,Capital Markets,Exchange and Data Platform,CLASSIFIED
+992,IFBAGRO,IFB Agro Industries Limited,EQ,INE076C01018,507438,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+993,IFBIND,IFB Industries Limited,EQ,INE559A01017,505726,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+994,IFCI,IFCI Limited,EQ,INE039A01010,500106,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+995,IFGLEXPOR,IFGL Refractories Limited,EQ,INE133Y01011,540774,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+996,IGARASHI,Igarashi Motors India Limited,EQ,INE188B01013,517380,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+997,IGCL,Indogulf Cropsciences Limited,EQ,INE05J901018,544432,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+998,IGIL,International Gemological Institute Limited,EQ,INE0Q9301021,544311,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+999,IGL,Indraprastha Gas Limited,EQ,INE203G01027,532514,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
+1000,IGPL,IG Petrochemicals Limited,EQ,INE204A01010,500199,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
