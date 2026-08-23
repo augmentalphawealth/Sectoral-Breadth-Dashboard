@@ -133,6 +133,9 @@ jobs:
             data/processed/dashboard_industry_latest.parquet \
             data/processed/dashboard_basic_industry_latest.parquet \
             data/processed/dashboard_stock_watchlist_latest.parquet \
+            data/processed/dashboard_industry_history.parquet \
+            data/processed/dashboard_basic_industry_history.parquet \
+            data/processed/dashboard_metadata.json \
             data/processed/last_sync.txt
 
           if git diff --cached --quiet; then
@@ -154,5 +157,8 @@ jobs:
             data/processed/dashboard_industry_latest.parquet
             data/processed/dashboard_basic_industry_latest.parquet
             data/processed/dashboard_stock_watchlist_latest.parquet
+            data/processed/dashboard_industry_history.parquet
+            data/processed/dashboard_basic_industry_history.parquet
+            data/processed/dashboard_metadata.json
             data/processed/last_sync.txt
           if-no-files-found: warn
