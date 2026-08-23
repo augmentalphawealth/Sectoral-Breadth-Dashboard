@@ -1799,3 +1799,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1798,RAIN,Rain Industries Limited,EQ,INE855B01025,500339,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
 1799,RAINBOW,Rainbow Childrens Medicare Limited,EQ,INE961O01016,543524,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
 1800,RAJESHEXPO,Rajesh Exports Limited,BZ,INE343B01030,531500,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1801,RAJMET,Rajnandini Metal Limited,EQ,INE00KV01022,,,,,,,NOT_FOUND
+1802,RAJOOENG,Rajoo Engineers Limited,BE,INE535F01024,522257,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1803,RAJPALAYAM,Rajapalayam Mills Limited,EQ,INE296E01026,532503,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1804,RAJRATAN,Rajratan Global Wire Limited,EQ,INE451D01029,517522,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1805,RAJRILTD,Raj Rayon Industries Limited,BE,INE533D01032,530699,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1806,RAJSREESUG,Rajshree Sugars & Chemicals Limited,EQ,INE562B01019,500354,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1807,RAJTV,Raj Television Network Limited,EQ,INE952H01027,532826,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+1808,RALLIS,Rallis India Limited,EQ,INE613A01020,500355,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1809,RAMANEWS,Shree Rama Newsprint Limited,EQ,INE278B01020,500356,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1810,RAMAPHO,Rama Phosphates Limited,EQ,INE809A01032,524037,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+1811,RAMASTEEL,Rama Steel Tubes Limited,BE,INE230R01035,539309,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1812,RAMBHAJO,Advit Jewels Limited,EQ,INE1SJO01012,544803,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1813,RAMCOCEM,The Ramco Cements Limited,EQ,INE331A01037,500260,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1814,RAMCOIND,Ramco Industries Limited,EQ,INE614A01028,532369,Commodities,Other Construction Materials,Construction Materials,Other Construction Materials,Other Construction Materials,CLASSIFIED
+1815,RAMCOSYS,Ramco Systems Limited,EQ,INE246B01019,532370,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+1816,RAMKY,Ramky Infrastructure Limited,EQ,INE874I01013,533262,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1817,RAMRAT,Ram Ratna Wires Limited,EQ,INE207E01023,522281,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1818,RANASUG,Rana Sugars Limited,EQ,INE625B01014,507490,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1819,RANEHOLDIN,Rane Holdings Limited,EQ,INE384A01010,505800,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+1820,RATEGAIN,Rategain Travel Technologies Limited,EQ,INE0CLI01024,543417,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1821,RATNAMANI,Ratnamani Metals & Tubes Limited,EQ,INE703B01027,520111,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1822,RATNAVEER,Ratnaveer Precision Engineering Limited,EQ,INE05CZ01011,543978,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1823,RAYMOND,Raymond Limited,EQ,INE301A01014,500330,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1824,RAYMONDLSL,Raymond Lifestyle Limited,EQ,INE02ID01020,544240,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1825,RAYMONDREL,Raymond Realty Limited,EQ,INE1SY401010,544420,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1826,RBA,Restaurant Brands Asia Limited,EQ,INE07T201019,543248,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+1827,RBLBANK,RBL Bank Limited,EQ,INE976G01028,540065,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1828,RBZJEWEL,RBZ Jewellers Limited,EQ,INE0PEQ01016,544060,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1829,RCF,Rashtriya Chemicals and Fertilizers Limited,EQ,INE027A01015,524230,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+1830,RCOM,Reliance Communications Limited,BE,INE330H01018,532712,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+1831,RECLTD,REC Limited,EQ,INE020B01018,532955,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+1832,REDINGTON,Redington Limited,EQ,INE891D01026,532805,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1833,REDTAPE,Redtape Limited,EQ,INE0LXT01019,543957,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+1834,REFEX,Refex Industries Limited,EQ,INE056I01025,532884,Utilities,Waste Management,Utilities,Other Utilities,Waste Management,CLASSIFIED
+1835,REGAAL,Regaal Resources Limited,EQ,INE0MHO01029,544485,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1836,REGENCERAM,Regency Ceramics Limited,EQ,INE277C01012,515018,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+1837,RELAXO,Relaxo Footwears Limited,EQ,INE131B01039,530517,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+1838,RELCHEMQ,Reliance Chemotex Industries Limited,EQ,INE750D01016,503162,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1839,RELIABLE,Reliable Data Services Limited,EQ,INE375Y01018,544207,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1840,RELIANCE,Reliance Industries Limited,EQ,INE002A01018,500325,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+1841,RELIGARE,Religare Enterprises Limited,EQ,INE621H01010,532915,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1842,RELINFRA,Reliance Infrastructure Limited,BE,INE036A01016,500390,Utilities,Integrated Power Utilities,Power,Power,Integrated Power Utilities,CLASSIFIED
+1843,RELTD,Ravindra Energy Limited,EQ,INE206N01018,504341,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1844,REMSONSIND,Remsons Industries Limited,EQ,INE474C01023,530919,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1845,RENUKA,Shree Renuka Sugars Limited,EQ,INE087H01022,532670,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1846,REPCOHOME,Repco Home Finance Limited,EQ,INE612J01015,535322,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+1847,REPL,Rudrabhishek Enterprises Limited,BE,INE364Z01019,,,,,,,NOT_FOUND
+1848,REPRO,Repro India Limited,EQ,INE461B01014,532687,Consumer Discretionary,Printing & Publication,"Media, Entertainment & Publication",Printing & Publication,Printing & Publication,CLASSIFIED
+1849,RESPONIND,Responsive Industries Limited,EQ,INE688D01026,505509,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+1850,RETAIL,JHS Svendgaard Retail Ventures Limited,EQ,INE03DD01011,544197,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+1851,RGL,Renaissance Global Limited,EQ,INE722H01024,532923,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1852,RHETAN,Rhetan TMT Limited,EQ,INE0KKN01029,543590,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1853,RHFL,Reliance Home Finance Limited,BZ,INE217K01011,540709,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+1854,RHIM,RHI MAGNESITA INDIA LIMITED,EQ,INE743M01012,534076,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+1855,RHL,Robust Hotels Limited,EQ,INE508K01013,543901,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1856,RICOAUTO,Rico Auto Industries Limited,EQ,INE209B01025,520008,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1857,RIIL,Reliance Industrial Infrastructure Limited,EQ,INE046A01015,523445,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1858,RIR,RIR Power Electronics Limited,EQ,INE302D01024,517035,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1859,RISHABH,Rishabh Instruments Limited,EQ,INE0N2P01017,543977,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1860,RITCO,Ritco Logistics Limited,EQ,INE01EG01016,542383,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1861,RITES,RITES Limited,EQ,INE320J01015,541556,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1862,RKDL,Ravi Kumar Distilleries Limited,EQ,INE722J01012,533294,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+1863,RKEC,RKEC Projects Limited,EQ,INE786W01010,,,,,,,NOT_FOUND
+1864,RKFORGE,Ramkrishna Forgings Limited,EQ,INE399G01023,532527,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1865,RKSWAMY,R K Swamy Limited,EQ,INE0NQ801033,544136,Consumer Discretionary,Advertising & Media Agencies,"Media, Entertainment & Publication",Media,Advertising & Media Agencies,CLASSIFIED
+1866,RMC,RMC Switchgears Limited,EQ,INE655V01019,540358,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1867,RMDRIP,R M Drip and Sprinklers Systems Limited,BE,INE219Y01026,544456,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1868,RML,Rane (Madras) Limited,EQ,INE050H01012,532661,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1869,RNBDENIMS,R&B Denims Limited,EQ,INE012Q01039,538119,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1870,ROHLTD,Royal Orchid Hotels Limited,EQ,INE283H01019,532699,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1871,ROLEXRINGS,Rolex Rings Limited,EQ,INE645S01024,543325,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1872,ROLLT,Rollatainers Limited,BE,INE927A01040,502448,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1873,ROML,Raj Oil Mills Limited,EQ,INE294G01026,533093,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+1874,ROSSARI,Rossari Biotech Limited,EQ,INE02A801020,543213,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1875,ROSSELLIND,Rossell India Limited,EQ,INE847C01020,533168,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1876,ROSSTECH,Rossell Techsys Limited,EQ,INE0OJW01016,544294,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1877,ROTO,Roto Pumps Limited,EQ,INE535D01037,517500,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1878,ROUTE,ROUTE MOBILE LIMITED,EQ,INE450U01017,543228,Telecommunication,Other Telecom Services,Telecommunication,Telecom - Services,Other Telecom Services,CLASSIFIED
+1879,RPEL,Raghav Productivity Enhancers Limited,EQ,INE912T01018,539837,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+1880,RPGLIFE,RPG Life Sciences Limited,EQ,INE105J01010,532983,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1881,RPOWER,Reliance Power Limited,EQ,INE614G01033,532939,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1882,RPPINFRA,R.P.P. Infra Projects Limited,EQ,INE324L01013,533284,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1883,RPPL,Rajshree Polypack Limited,BE,INE760W01023,,,,,,,NOT_FOUND
+1884,RPSGVENT,RPSG VENTURES LIMITED,EQ,INE425Y01011,542333,Services,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),Services,Commercial Services & Supplies,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),CLASSIFIED
+1885,RPTECH,Rashi Peripherals Limited,EQ,INE0J1F01024,544119,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+1886,RRECL,RDB Real Estate Constructions Limited,EQ,INE0AK901016,544346,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1887,RRIL,RRIL Limited,EQ,INE951M01037,531307,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1888,RRKABEL,R R Kabel Limited,EQ,INE777K01022,543981,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1889,RSDFIN,RSD Finance Limited,BE,INE616F01022,539875,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1890,RSL,Rajputana Stainless Limited,EQ,INE313L01016,544731,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1891,RSSOFTWARE,R. S. Software (India) Limited,EQ,INE165B01029,517447,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1892,RSWM,RSWM Limited,BE,INE611A01016,500350,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1893,RSYSTEMS,R Systems International Limited,EQ,INE411H01032,532735,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1894,RTNINDIA,RattanIndia Enterprises Limited,EQ,INE834M01019,534597,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+1895,RTNPOWER,RattanIndia Power Limited,EQ,INE399K01017,533122,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1896,RTSPOWR,RTS Power Corporation Limited,EQ,INE005C01017,531215,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1897,RUBFILA,Rubfila International Limited,EQ,INE642C01025,500367,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+1898,RUBICON,Rubicon Research Limited,EQ,INE506V01022,544578,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1899,RUBYMILLS,The Ruby Mills Limited,BE,INE301D01026,503169,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1900,RUCHINFRA,Ruchi Infrastructure Limited,EQ,INE413B01023,509020,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
