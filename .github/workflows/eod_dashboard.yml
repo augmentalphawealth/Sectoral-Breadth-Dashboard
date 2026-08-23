@@ -50,7 +50,7 @@ jobs:
           source_file = Path("/tmp/nse_6yr_historical.parquet")
           output_file = Path("data/processed/prices.parquet")
 
-          required_source_columns = [
+          source_columns = [
               "Date",
               "Open",
               "High",
@@ -61,10 +61,7 @@ jobs:
               "Turnover",
           ]
 
-          prices = pd.read_parquet(
-              source_file,
-              columns=required_source_columns,
-          )
+          prices = pd.read_parquet(source_file, columns=source_columns)
 
           prices = prices.rename(
               columns={
@@ -111,44 +108,51 @@ jobs:
           print(f"Symbols: {prices['symbol'].nunique()}")
           print(f"Start date: {prices['date'].min().date()}")
           print(f"Latest date: {prices['date'].max().date()}")
-          print(f"Temporary file: {output_file}")
           PY
 
       - name: Run EOD pipeline
         run: |
           python scripts/03_run_eod_pipeline.py
 
-      - name: Remove temporary large prices file
+      - name: Remove temporary and heavy files
         if: always()
         run: |
           rm -f data/processed/prices.parquet
+          rm -f data/processed/stock_daily_features.parquet
           rm -f /tmp/nse_6yr_historical.parquet
 
-      - name: Commit dashboard outputs
+      - name: Commit compact dashboard outputs
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A data/processed/
-
-          git reset -- data/processed/prices.parquet 2>/dev/null || true
+          git add \
+            data/processed/industry_daily_features.parquet \
+            data/processed/basic_industry_daily_features.parquet \
+            data/processed/dashboard_industry_latest.parquet \
+            data/processed/dashboard_basic_industry_latest.parquet \
+            data/processed/dashboard_stock_watchlist_latest.parquet \
+            data/processed/last_sync.txt
 
           if git diff --cached --quiet; then
-            echo "No dashboard output changes to commit."
+            echo "No compact dashboard changes to commit."
           else
             git commit -m "Update EOD sectoral breadth dashboard"
+            git pull --rebase origin main
             git push
           fi
 
-      - name: Upload dashboard outputs
+      - name: Upload compact dashboard outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: basic-industry-dashboard-eod
           path: |
-            data/processed/stock_daily_features.parquet
             data/processed/industry_daily_features.parquet
             data/processed/basic_industry_daily_features.parquet
+            data/processed/dashboard_industry_latest.parquet
+            data/processed/dashboard_basic_industry_latest.parquet
+            data/processed/dashboard_stock_watchlist_latest.parquet
             data/processed/last_sync.txt
           if-no-files-found: warn
