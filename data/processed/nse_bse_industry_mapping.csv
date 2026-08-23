@@ -2099,3 +2099,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2098,SNOWMAN,Snowman Logistics Limited,EQ,INE734N01019,538635,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
 2099,SOBHA,Sobha Limited,EQ,INE671H01015,532784,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
 2100,SOFTTECH,Softtech Engineers Limited,EQ,INE728Z01015,543470,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2101,SOLARA,Solara Active Pharma Sciences Limited,EQ,INE624Z01016,541540,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2102,SOLARINDS,Solar Industries India Limited,EQ,INE343H01029,532725,Commodities,Explosives,Chemicals,Chemicals & Petrochemicals,Explosives,CLASSIFIED
+2103,SOLARWORLD,Solarworld Energy Solutions Limited,EQ,INE0TY101024,544532,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2104,SOLEX,Solex Energy Limited,EQ,INE880Y01017,,,,,,,NOT_FOUND
+2105,SOMANYCERA,Somany Ceramics Limited,EQ,INE355A01028,531548,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+2106,SOMATEX,Soma Textiles & Industries Limited,EQ,INE314C01013,521034,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2107,SOMICONVEY,Somi Conveyor Beltings Limited,EQ,INE323J01019,533001,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2108,SONACOMS,Sona BLW Precision Forgings Limited,EQ,INE073K01018,543300,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2109,SONAL,Sonal Mercantile Limited,EQ,INE321M01017,538943,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2110,SONAMLTD,SONAM LIMITED,EQ,INE00LM01029,,,,,,,NOT_FOUND
+2111,SONATSOFTW,Sonata Software Limited,EQ,INE269A01021,532221,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2112,SOTL,Savita Oil Technologies Limited,EQ,INE035D01020,524667,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+2113,SOUTHBANK,The South Indian Bank Limited,EQ,INE683A01023,532218,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+2114,SOUTHWEST,South West Pinnacle Exploration Limited,EQ,INE980Y01015,543986,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+2115,SPAL,S. P. Apparels Limited,EQ,INE212I01016,540048,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2116,SPANDANA,Spandana Sphoorty Financial Limited,EQ,INE572J01011,542759,Financial Services,Microfinance Institutions,Financial Services,Finance,Microfinance Institutions,CLASSIFIED
+2117,SPARC,Sun Pharma Advanced Research Company Limited,EQ,INE232I01014,532872,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2118,SPCENET,Spacenet Enterprises India Limited,EQ,INE970N01027,,,,,,,NOT_FOUND
+2119,SPECIALITY,Speciality Restaurants Limited,BE,INE247M01014,534425,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+2120,SPECTRUM,Spectrum Electrical Industries Limited,BE,INE01EO01010,544386,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2121,SPELS,SPEL Semiconductor Limited,EQ,INE252A01019,517166,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2122,SPENCERS,Spencer's Retail Limited,EQ,INE020801028,542337,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+2123,SPIC,Southern Petrochemicals Industries Corporation  Limited,EQ,INE147A01011,590030,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+2124,SPLIL,SPL Industries Limited,EQ,INE978G01016,532651,Consumer Discretionary,Trading - Textile Products,Textiles,Textiles & Apparels,Trading - Textile Products,CLASSIFIED
+2125,SPLPETRO,Supreme Petrochem Limited,EQ,INE663A01033,500405,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+2126,SPMLINFRA,SPML Infra Limited,EQ,INE937A01023,,,,,,,NOT_FOUND
+2127,SPORTKING,Sportking India Limited,EQ,INE885H01029,539221,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2128,SRD,Shankar Lal Rampal Dye-Chem Limited,EQ,INE01NE01012,542232,Commodities,Trading - Chemicals,Chemicals,Chemicals & Petrochemicals,Trading - Chemicals,CLASSIFIED
+2129,SREEL,Sreeleathers Limited,EQ,INE099F01013,535601,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+2130,SRF,SRF Limited,EQ,INE647A01010,503806,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+2131,SRGHFL,SRG Housing Finance Limited,EQ,INE559N01010,534680,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+2132,SRHHYPOLTD,Sree Rayalaseema Hi-Strength Hypo Limited,EQ,INE917H01012,532842,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+2133,SRIKPRIND,Sri KPR Industries Limited,EQ,INE009C01019,514442,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+2134,SRM,SRM Contractors Limited,EQ,INE0R6Z01013,544158,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2135,SRTL,Shree Ram Twistex Limited,EQ,INE19GK01015,544716,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2136,SSDL,Saraswati Saree Depot Limited,EQ,INE0PQ101010,544230,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2137,SSWL,Steel Strips Wheels Limited,EQ,INE802C01033,513262,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2138,STALLION,Stallion India Fluorochemicals Limited,BE,INE0RYC01010,,,,,,,NOT_FOUND
+2139,STANLEY,Stanley Lifestyles Limited,EQ,INE01A001028,544202,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+2140,STAR,Strides Pharma Science Limited,EQ,INE939A01011,532531,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2141,STARCEMENT,Star Cement Limited,EQ,INE460H01021,540575,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2142,STARHEALTH,Star Health and Allied Insurance Company Limited,EQ,INE575P01011,543412,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+2143,STARPAPER,Star Paper Mills Limited,EQ,INE733A01018,516022,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+2144,STARTECK,Starteck Finance Limited,EQ,INE992I01013,512381,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2145,STCINDIA,The State Trading Corporation of India Limited,EQ,INE655A01013,512531,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2146,STEELCAS,Steelcast Limited,EQ,INE124E01038,513517,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+2147,STEELCITY,Steel City Securities Limited,EQ,INE395H01011,,,,,,,NOT_FOUND
+2148,STEELXIND,STEEL EXCHANGE INDIA LIMITED,EQ,INE503B01021,534748,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2149,STEL,Stel Holdings Limited,EQ,INE577L01016,533316,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2150,STERTOOLS,Sterling Tools Limited,BE,INE334A01023,530759,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2151,STLNETWORK,STL Networks Limited,EQ,INE1VXE01018,544395,Telecommunication,Other Telecom Services,Telecommunication,Telecom - Services,Other Telecom Services,CLASSIFIED
+2152,STLSTRINF,Steel Strips Infrastructures Limited,EQ,INE205F01016,513173,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2153,STLTECH,Sterlite Technologies Limited,BE,INE089C01029,532374,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+2154,STOVEKRAFT,Stove Kraft Limited,EQ,INE00IN01015,543260,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2155,STUDDS,Studds Accessories Limited,EQ,INE00Q601028,544599,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2156,STYL,Seshaasai Technologies Limited,EQ,INE04VU01023,544533,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+2157,STYLAMIND,Stylam Industries Limited,EQ,INE239C01020,526951,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+2158,STYLEBAAZA,Baazar Style Retail Limited,EQ,INE01FR01028,544243,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+2159,STYRENIX,Styrenix Performance Materials Limited,EQ,INE189B01011,506222,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2160,SUBEXLTD,Subex Limited,EQ,INE754A01055,532348,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+2161,SUBROS,Subros Limited,EQ,INE287B01021,517168,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+2162,SUDARCOLOR,Sudarshan Colorants India Limited,EQ,INE492A01029,506390,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+2163,SUDARSCHEM,Sudarshan Chemical Industries Limited,EQ,INE659A01023,506655,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+2164,SUDEEPPHRM,Sudeep Pharma Limited,EQ,INE0QPI01025,544619,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2165,SUKHJITS,Sukhjit Starch & Chemicals Limited,EQ,INE450E01029,524542,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+2166,SULA,Sula Vineyards Limited,EQ,INE142Q01026,543711,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+2167,SUMEDHA,Sumedha Fiscal Services Limited,EQ,INE886B01012,530419,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+2168,SUMEETINDS,Sumeet Industries Limited,EQ,INE235C01036,514211,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2169,SUMICHEM,Sumitomo Chemical India Limited,EQ,INE258G01013,542920,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+2170,SUMIT,Sumit Woods Limited,EQ,INE748Z01013,,,,,,,NOT_FOUND
+2171,SUMMITSEC,Summit Securities Limited,EQ,INE519C01017,533306,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2172,SUNCLAY,Sundaram Clayton Limited,EQ,INE0Q3R01026,544066,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2173,SUNDARAM,Sundaram Multi Pap Limited,EQ,INE108E01023,533166,Fast Moving Consumer Goods,Stationary,Fast Moving Consumer Goods,Household Products,Stationary,CLASSIFIED
+2174,SUNDARMFIN,Sundaram Finance Limited,EQ,INE660A01013,590071,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2175,SUNDRMBRAK,Sundaram Brake Linings Limited,BE,INE073D01013,590072,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2176,SUNDRMFAST,Sundram Fasteners Limited,EQ,INE387A01021,500403,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2177,SUNDROP,Sundrop Brands Limited,EQ,INE209A01019,500215,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+2178,SUNFLAG,Sunflag Iron And Steel Company Limited,EQ,INE947A01014,500404,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2179,SUNLOC,Sunil Healthcare Limited,EQ,INE671C01016,537253,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2180,SUNPHARMA,Sun Pharmaceutical Industries Limited,EQ,INE044A01036,524715,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2181,SUNRAKSHAK,Sunrakshakk Industries India Limited,EQ,INE671K01027,539300,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2182,SUNSHIEL,Sunshield Chemicals Limited,EQ,INE199E01014,530845,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2183,SUNTECK,Sunteck Realty Limited,EQ,INE805D01034,512179,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2184,SUNTV,Sun TV Network Limited,EQ,INE424H01027,532733,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2185,SUPERHOUSE,Superhouse Limited,EQ,INE712B01010,523283,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+2186,SUPERSPIN,Super Spinning Mills Limited,BE,INE662A01027,521180,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2187,SUPRAJIT,Suprajit Engineering Limited,EQ,INE399C01030,532509,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2188,SUPREME,Supreme Holdings & Hospitality (India) Limited,EQ,INE822E01011,530677,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2189,SUPREMEENG,Supreme Engineering Limited,BZ,INE319Z01021,,,,,,,NOT_FOUND
+2190,SUPREMEIND,Supreme Industries Limited,EQ,INE195A01028,509930,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+2191,SUPREMEINF,Supreme Infrastructure India Limited,EQ,INE550H01011,532904,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2192,SUPRIYA,Supriya Lifescience Limited,EQ,INE07RO01027,543434,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2193,SUPTANERY,Super Tannery Limited,EQ,INE460D01038,523842,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+2194,SURAJEST,Suraj Estate Developers Limited,EQ,INE843S01025,544054,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2195,SURAJLTD,Suraj Limited,EQ,INE713C01016,531638,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2196,SURAKSHA,Suraksha Diagnostic Limited,EQ,INE877V01027,544293,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+2197,SURANASOL,Surana Solar Limited,EQ,INE272L01022,533298,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2198,SURANAT&P,Surana Telecom and Power Limited,EQ,INE130B01031,517530,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+2199,SURYALA,Suryalata Spinning Mills Limited,EQ,INE132C01027,514138,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2200,SURYALAXMI,Suryalakshmi Cotton Mills Limited,EQ,INE713B01026,521200,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
