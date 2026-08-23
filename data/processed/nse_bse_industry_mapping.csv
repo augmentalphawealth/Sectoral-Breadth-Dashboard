@@ -999,3 +999,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 998,IGIL,International Gemological Institute Limited,EQ,INE0Q9301021,544311,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
 999,IGL,Indraprastha Gas Limited,EQ,INE203G01027,532514,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
 1000,IGPL,IG Petrochemicals Limited,EQ,INE204A01010,500199,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1001,IIFL,IIFL Finance Limited,EQ,INE530B01024,532636,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1002,IIFLCAPS,IIFL Capital Services Limited,EQ,INE489L01022,542773,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1003,IITL,Industrial Investment Trust Limited,EQ,INE886A01014,501295,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1004,IKIO,IKIO Technologies Limited,EQ,INE0LOJ01019,543923,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+1005,IKS,Inventurus Knowledge Solutions Limited,EQ,INE115Q01022,544309,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1006,IL&FSENGG,IL&FS Engineering and Construction Company Limited,BZ,INE369I01014,532907,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1007,IL&FSTRANS,IL&FS Transportation Networks Limited,BZ,INE975G01012,533177,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1008,IMAGICAA,Imagicaaworld Entertainment Limited,EQ,INE172N01012,539056,Consumer Discretionary,Amusement Parks/ Other Recreation,Consumer Services,Leisure Services,Amusement Parks/ Other Recreation,CLASSIFIED
+1009,IMFA,Indian Metals & Ferro Alloys Limited,EQ,INE919H01018,533047,Commodities,Ferro & Silica Manganese,Metals & Mining,Ferrous Metals,Ferro & Silica Manganese,CLASSIFIED
+1010,IMPAL,India Motor Parts and Accessories Limited,EQ,INE547E01014,590065,Consumer Discretionary,Trading - Auto Components,Automobile and Auto Components,Auto Components,Trading - Auto Components,CLASSIFIED
+1011,IMPEXFERRO,Impex Ferro Tech Limited,BZ,INE691G01015,532614,Commodities,Ferro & Silica Manganese,Metals & Mining,Ferrous Metals,Ferro & Silica Manganese,CLASSIFIED
+1012,INA,Insolation Energy Limited,EQ,INE0LGX01024,543620,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1013,INCREDIBLE,INCREDIBLE INDUSTRIES LIMITED,EQ,INE452L01012,538365,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1014,INDBANK,Indbank Merchant Banking Services Limited,EQ,INE841B01017,511473,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1015,INDGN,Indegene Limited,EQ,INE065X01017,544172,Healthcare,"Healthcare Research, Analytics & Technology",Healthcare,Healthcare Services,"Healthcare Research, Analytics & Technology",CLASSIFIED
+1016,INDHOTEL,The Indian Hotels Company Limited,EQ,INE053A01029,500850,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1017,INDIACEM,The India Cements Limited,EQ,INE383A01012,530005,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1018,INDIAGLYCO,India Glycols Limited,EQ,INE560A01023,500201,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+1019,INDIAMART,Indiamart Intermesh Limited,EQ,INE933S01016,542726,Consumer Discretionary,Internet & Catalogue Retail,Consumer Services,Retailing,Internet & Catalogue Retail,CLASSIFIED
+1020,INDIANB,Indian Bank,EQ,INE562A01011,532814,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+1021,INDIANCARD,Indian Card Clothing Company Limited,EQ,INE061A01014,509692,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1022,INDIANHUME,Indian Hume Pipe Company Limited,EQ,INE323C01030,504741,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1023,INDIASHLTR,India Shelter Finance Corporation Limited,EQ,INE922K01024,544044,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+1024,INDIGO,InterGlobe Aviation Limited,EQ,INE646L01027,539448,Services,Airline,Services,Transport Services,Airline,CLASSIFIED
+1025,INDIGOPNTS,Indigo Paints Limited,EQ,INE09VQ01012,543258,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+1026,INDIQUBE,Indiqube Spaces Limited,EQ,INE06ST01018,544454,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1027,INDNIPPON,India Nippon Electricals Limited,EQ,INE092B01025,532240,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1028,INDOAMIN,Indo Amines Limited,BE,INE760F01028,524648,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1029,INDOBORAX,Indo Borax & Chemicals Limited,EQ,INE803D01021,524342,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1030,INDOCO,Indoco Remedies Limited,EQ,INE873D01024,532612,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1031,INDOFARM,Indo Farm Equipment Limited,EQ,INE622H01018,544328,Industrials,Construction Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Construction Vehicles,CLASSIFIED
+1032,INDOKEM,Indokem Limited,EQ,INE716F01012,504092,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1033,INDOMIM,INDO-MIM Limited,EQ,INE084101034,544837,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1034,INDORAMA,Indo Rama Synthetics (India) Limited,EQ,INE156A01020,500207,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1035,INDOSTAR,IndoStar Capital Finance Limited,EQ,INE896L01010,541336,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1036,INDOTECH,Indo Tech Transformers Limited,EQ,INE332H01014,532717,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1037,INDOTHAI,Indo Thai Securities Limited,EQ,INE337M01021,533676,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1038,INDOUS,Indo Us Biotech Limited,EQ,INE250Z01010,541304,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1039,INDOWIND,Indowind Energy Limited,EQ,INE227G01018,532894,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1040,INDPRUD,Industrial & Prudential Investment Company Limited,EQ,INE620D01011,501298,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1041,INDRAMEDCO,Indraprastha Medical Corporation Limited,EQ,INE681B01017,532150,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1042,INDSWFTLAB,Ind-Swift Laboratories Limited,EQ,INE915B01019,532305,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1043,INDTERRAIN,Indian Terrain Fashions Limited,EQ,INE611L01021,533329,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1044,INDUSINDBK,IndusInd Bank Limited,EQ,INE095A01012,532187,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1045,INDUSTOWER,Indus Towers Limited,EQ,INE121J01017,534816,Telecommunication,Telecom - Infrastructure,Telecommunication,Telecom - Services,Telecom - Infrastructure,CLASSIFIED
+1046,INFOBEAN,InfoBeans Technologies Limited,EQ,INE344S01016,543644,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1047,INFOMEDIA,Infomedia Press Limited,EQ,INE669A01022,509069,Consumer Discretionary,Printing & Publication,"Media, Entertainment & Publication",Printing & Publication,Printing & Publication,CLASSIFIED
+1048,INFY,Infosys Limited,EQ,INE009A01021,500209,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1049,INGERRAND,Ingersoll Rand (India) Limited,EQ,INE177A01018,500210,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1050,INNOVACAP,Innova Captab Limited,EQ,INE0DUT01020,544067,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1051,INNOVANA,Innovana Thinklabs Limited,EQ,INE403Y01018,544302,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1052,INNOVISION,Innovision Limited,EQ,INE0ADB01012,544732,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+1053,INOXGREEN,Inox Green Energy Services Limited,EQ,INE510W01014,543667,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1054,INOXINDIA,INOX India Limited,EQ,INE616N01034,544046,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+1055,INOXWIND,Inox Wind Limited,EQ,INE066P01011,539083,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1056,INSECTICID,Insecticides (India) Limited,EQ,INE070I01018,532851,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1057,INSPIRISYS,Inspirisys Solutions Limited,BE,INE020G01017,532774,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1058,INTELLECT,Intellect Design Arena Limited,EQ,INE306R01017,538835,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1059,INTENTECH,Intense Technologies Limited,EQ,INE781A01025,532326,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1060,INTERARCH,Interarch Building Solutions Limited,EQ,INE00M901018,544232,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1061,INTLCONV,International Conveyors Limited,EQ,INE575C01027,509709,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1062,INVENTURE,Inventure Growth & Securities Limited,EQ,INE878H01024,533506,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1063,INVPRECQ,Investment & Precision Castings Limited,BE,INE155E01016,504786,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+1064,IOB,Indian Overseas Bank,EQ,INE565A01014,532388,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+1065,IOC,Indian Oil Corporation Limited,EQ,INE242A01010,530965,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+1066,IOLCP,IOL Chemicals and Pharmaceuticals Limited,EQ,INE485C01029,524164,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1067,IONEXCHANG,ION Exchange (India) Limited,EQ,INE570A01022,500214,Utilities,Water Supply & Management,Utilities,Other Utilities,Water Supply & Management,CLASSIFIED
+1068,IPCALAB,IPCA Laboratories Limited,EQ,INE571A01038,524494,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1069,IPL,India Pesticides Limited,EQ,INE0D6701023,543311,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1070,IPRINGLTD,IP Rings Limited,EQ,INE558A01019,523638,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1071,IRB,IRB Infrastructure Developers Limited,EQ,INE821I01022,532947,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1072,IRCON,Ircon International Limited,EQ,INE962Y01021,541956,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1073,IRCTC,Indian Railway Catering And Tourism Corporation Limited,EQ,INE335Y01020,542830,Consumer Discretionary,"Tour, Travel Related Services",Consumer Services,Leisure Services,"Tour, Travel Related Services",CLASSIFIED
+1074,IREDA,Indian Renewable Energy Development Agency Limited,EQ,INE202E01016,544026,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+1075,IRFC,Indian Railway Finance Corporation Limited,EQ,INE053F01010,543257,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+1076,IRIS,IRIS RegTech Solutions Limited,EQ,INE864K01010,540735,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+1077,IRISDOREME,Iris Clothings Limited,EQ,INE01GN01025,,,,,,,NOT_FOUND
+1078,IRMENERGY,IRM Energy Limited,EQ,INE07U701015,544004,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
+1079,ISFT,Intrasoft Technologies Limited,EQ,INE566K01011,533181,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+1080,ISGEC,Isgec Heavy Engineering Limited,EQ,INE858B01029,533033,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1081,ISHANCH,Ishan Dyes and Chemicals Limited,EQ,INE561M01018,531109,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1082,ISTLTD,I S T Limited,EQ,INE684B01029,508807,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1083,ITC,ITC Limited,EQ,INE154A01025,500875,Fast Moving Consumer Goods,Diversified FMCG,Fast Moving Consumer Goods,Diversified FMCG,Diversified FMCG,CLASSIFIED
+1084,ITCHOTELS,ITC Hotels Limited,EQ,INE379A01028,544325,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1085,ITDC,India Tourism Development Corporation Limited,EQ,INE353K01014,532189,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1086,ITI,ITI Limited,EQ,INE248A01017,523610,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+1087,ITL,ITL Industries Limited,EQ,INE478D01014,522183,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1088,IVALUE,Ivalue Infosolutions Limited,EQ,INE056801025,544523,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+1089,IVC,IL&FS Investment Managers Limited,EQ,INE050B01023,511208,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+1090,IVP,IVP Limited,BE,INE043C01018,507580,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1091,IWP,The Indian Wood Products Company Limited,EQ,INE586E01020,540954,Commodities,Forest Products,Forest Materials,"Paper, Forest & Jute Products",Forest Products,CLASSIFIED
+1092,IXIGO,Le Travenues Technology Limited,EQ,INE0HV901016,544192,Consumer Discretionary,"Tour, Travel Related Services",Consumer Services,Leisure Services,"Tour, Travel Related Services",CLASSIFIED
+1093,IZMO,IZMO Limited,EQ,INE848A01014,532341,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1094,J&KBANK,The Jammu & Kashmir Bank Limited,EQ,INE168A01041,532209,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1095,JAGRAN,Jagran Prakashan Limited,EQ,INE199G01027,532705,Consumer Discretionary,Print Media,"Media, Entertainment & Publication",Media,Print Media,CLASSIFIED
+1096,JAGSNPHARM,Jagsonpal Pharmaceuticals Limited,EQ,INE048B01035,507789,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1097,JAIBALAJI,Jai Balaji Industries Limited,EQ,INE091G01026,532976,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1098,JAICORPLTD,Jai Corp Limited,EQ,INE070D01027,512237,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1099,JAINREC,Jain Resource Recycling Limited,EQ,INE0YD401026,544537,Commodities,Diversified Metals,Metals & Mining,Diversified Metals,Diversified Metals,CLASSIFIED
+1100,JAIPURKURT,Nandani Creation Limited,EQ,INE696V01013,,,,,,,NOT_FOUND
