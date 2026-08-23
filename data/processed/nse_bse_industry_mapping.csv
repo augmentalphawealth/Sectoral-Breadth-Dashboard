@@ -1,0 +1,101 @@
+row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_industry_new,bse_i_group,bse_i_sub_group,classification_status
+1,20MICRONS,20 Microns Limited,EQ,INE144J01027,533022,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+2,21STCENMGM,21st Century Management Services Limited,EQ,INE253B01015,526921,Financial Services,Other Capital Market related Services,Financial Services,Capital Markets,Other Capital Market related Services,CLASSIFIED
+3,360ONE,360 ONE WAM LIMITED,EQ,INE466L01038,542772,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+4,3BBLACKBIO,3B Blackbio Dx Limited,EQ,INE994E01018,532067,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+5,3IINFOLTD,3i Infotech Limited,BE,INE748C01038,532628,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+6,3MINDIA,3M India Limited,EQ,INE470A01017,523395,Diversified,Diversified,Diversified,Diversified,Diversified,CLASSIFIED
+7,3PLAND,3P Land Holdings Limited,EQ,INE105C01023,516092,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+8,5PAISA,5Paisa Capital Limited,EQ,INE618L01018,540776,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+9,63MOONS,63 moons technologies limited,EQ,INE111B01023,526881,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+10,A2ZINFRA,A2Z Infra Engineering Limited,EQ,INE619I01012,533292,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+11,AAATECH,AAA Technologies Limited,EQ,INE0D0U01013,543671,Services,Consulting Services,Services,Commercial Services & Supplies,Consulting Services,CLASSIFIED
+12,AADHARHFC,Aadhar Housing Finance Limited,EQ,INE883F01010,544176,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+13,AAKASH,Aakash Exploration Services Limited,EQ,INE087Z01024,,,,,,,NOT_FOUND
+14,AAREYDRUGS,Aarey Drugs & Pharmaceuticals Limited,EQ,INE198H01019,524412,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+15,AARNAV,Aarnav Fashions Limited,BE,INE750R01016,539562,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+16,AARON,Aaron Industries Limited,EQ,INE721Z01010,,,,,,,NOT_FOUND
+17,AARTECH,Aartech Solonics Limited,BE,INE01C001026,542580,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+18,AARTIDRUGS,Aarti Drugs Limited,EQ,INE767A01016,524348,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+19,AARTIIND,Aarti Industries Limited,EQ,INE769A01020,524208,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+20,AARTIPHARM,Aarti Pharmalabs Limited,EQ,INE0LRU01027,543748,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+21,AARTISURF,Aarti Surfactants Limited,BE,INE09EO01013,543210,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+22,AARVI,Aarvi Encon Limited,EQ,INE754X01016,544850,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+23,AASTHA,Aastha Spintex Limited,EQ,INE2FMX01012,544808,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+24,AAVAS,Aavas Financiers Limited,EQ,INE216P01012,541988,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+25,ABAN,Aban Offshore Limited,BE,INE421A01028,523204,Energy,Offshore Support Solution Drilling,"Oil, Gas & Consumable Fuels",Oil,Offshore Support Solution Drilling,CLASSIFIED
+26,ABANSENT,Abans Enterprises Limited,EQ,INE365O01028,512165,Commodities,Trading - Metals,Metals & Mining,Metals & Minerals Trading,Trading - Metals,CLASSIFIED
+27,ABB,ABB India Limited,EQ,INE117A01022,500002,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+28,ABBOTINDIA,Abbott India Limited,EQ,INE358A01014,500488,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+29,ABCAPITAL,Aditya Birla Capital Limited,EQ,INE674K01013,540691,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+30,ABCOTS,A B Cotspin India Limited,EQ,INE08PH01015,544522,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+31,ABDL,Allied Blenders and Distillers Limited,EQ,INE552Z01027,544203,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+32,ABFRL,Aditya Birla Fashion and Retail Limited,EQ,INE647O01011,535755,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+33,ABINFRA,A B Infrabuild Limited,EQ,INE00YB01025,544281,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+34,ABLBL,Aditya Birla Lifestyle Brands Limited,EQ,INE14LE01019,544403,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+35,ABMINTLLTD,ABM International Limited,BE,INE251C01025,,,,,,,NOT_FOUND
+36,ABMKNO,ABM Knowledgeware Limited,EQ,INE850B01026,531161,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+37,ABREL,Aditya Birla Real Estate Limited,EQ,INE055A01016,500040,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+38,ABSLAMC,Aditya Birla Sun Life AMC Limited,EQ,INE404A01024,543374,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+39,ACC,ACC Limited,EQ,INE012A01025,500410,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+40,ACCELYA,Accelya Solutions India Limited,EQ,INE793A01012,532268,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+41,ACCURACY,Accuracy Shipping Limited,BE,INE648Z01023,544598,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+42,ACE,Action Construction Equipment Limited,EQ,INE731H01025,532762,Industrials,Construction Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Construction Vehicles,CLASSIFIED
+43,ACEINTEG,Ace Integrated Solutions Limited,EQ,INE543V01017,,,,,,,NOT_FOUND
+44,ACGL,Automobile Corporation of Goa Limited,EQ,INE451C01013,505036,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+45,ACI,Archean Chemical Industries Limited,EQ,INE128X01021,543657,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+46,ACL,Andhra Cements Limited,EQ,INE666E01020,532141,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+47,ACMESOLAR,Acme Solar Holdings Limited,EQ,INE622W01025,544283,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+48,ACSTECH,ACS Technologies Limited,EQ,INE366C01021,530745,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+49,ACUTAAS,Acutaas Chemicals Limited,EQ,INE00FF01025,543349,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+50,ADANIENSOL,Adani Energy Solutions Limited,EQ,INE931S01010,539254,Utilities,Power Distribution,Power,Power,Power Distribution,CLASSIFIED
+51,ADANIENT,Adani Enterprises Limited,EQ,INE423A01024,512599,Commodities,Trading - Minerals,Metals & Mining,Metals & Minerals Trading,Trading - Minerals,CLASSIFIED
+52,ADANIGREEN,Adani Green Energy Limited,EQ,INE364U01010,541450,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+53,ADANIPORTS,Adani Ports and Special Economic Zone Limited,EQ,INE742F01042,532921,Services,Port & Port services,Services,Transport Infrastructure,Port & Port services,CLASSIFIED
+54,ADANIPOWER,Adani Power Limited,EQ,INE814H01029,533096,Utilities,Integrated Power Utilities,Power,Power,Integrated Power Utilities,CLASSIFIED
+55,ADDIND,Addi Industries Limited,EQ,INE757C01021,507852,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+56,ADFFOODS,ADF Foods Limited,EQ,INE982B01027,519183,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+57,ADL,Archidply Decor Limited,EQ,INE0CHO01012,543231,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+58,ADOR,Ador Welding Limited,EQ,INE045A01017,517041,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+59,ADROITINFO,Adroit Infotech Limited,EQ,INE737B01033,532172,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+60,ADSL,Allied Digital Services Limited,EQ,INE102I01027,532875,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+61,ADVAIT,Advait Energy Transitions Limited,EQ,INE0ALI01010,543230,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+62,ADVANCE,Advance Agrolife Limited,EQ,INE1B0W01010,544562,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+63,ADVANIHOTR,Advani Hotels & Resorts (India) Limited,EQ,INE199C01026,523269,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+64,ADVENTHTL,Advent Hotels International Limited,EQ,INE28GN01010,544446,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+65,ADVENZYMES,Advanced Enzyme Technologies Limited,EQ,INE837H01020,540025,Healthcare,Biotechnology,Healthcare,Pharmaceuticals & Biotechnology,Biotechnology,CLASSIFIED
+66,ADVIKCA,Advik Capital Limited,EQ,INE178T01024,539773,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+67,AEGISLOG,Aegis Logistics Limited,EQ,INE208C01025,500003,Energy,Trading - Gas,"Oil, Gas & Consumable Fuels",Gas,Trading - Gas,CLASSIFIED
+68,AEGISVOPAK,Aegis Vopak Terminals Limited,EQ,INE0INX01018,544407,Energy,Oil Storage & Transportation,"Oil, Gas & Consumable Fuels",Oil,Oil Storage & Transportation,CLASSIFIED
+69,AEPL,Artemis Electricals and Projects Limited,EQ,INE757T01025,542670,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+70,AEQUS,Aequs Limited,EQ,INE947N01017,544634,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+71,AEROENTER,Aeroflex Enterprises Limited,EQ,INE065D01027,511076,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+72,AEROFLEX,Aeroflex Industries Limited,EQ,INE024001021,543972,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+73,AERONEU,Aeroflex Neu Limited,EQ,INE035801013,543743,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+74,AEROPLANE,Amir Chand Jagdish Kumar (Exports) Limited,EQ,INE05TO01019,544743,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+75,AETHER,Aether Industries Limited,EQ,INE0BWX01014,543534,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+76,AFCONS,Afcons Infrastructure Limited,EQ,INE101I01011,544280,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+77,AFFLE,Affle 3i Limited,EQ,INE00WC01027,542752,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+78,AFFORDABLE,Affordable Robotic & Automation Limited,BE,INE692Z01013,541402,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+79,AFIL,Akme Fintrade (India) Limited,EQ,INE916Y01027,544200,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+80,AFSL,Abans Financial Services Limited,EQ,INE00ZE01026,543712,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+81,AGARIND,Agarwal Industrial Corporation Limited,EQ,INE204E01012,531921,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+82,AGARWALEYE,Dr. Agarwal's Health Care Limited,EQ,INE943P01029,544350,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+83,AGI,AGI Greenpac Limited,EQ,INE415A01038,500187,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+84,AGIIL,Agi Infra Limited,EQ,INE976R01033,539042,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+85,AGL,Allcargo Global Limited,EQ,INE1YPB01014,544602,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+86,AGRITECH,Agri-Tech (India) Limited,EQ,INE449G01018,537292,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+87,AGROPHOS,Agro Phos India Limited,EQ,INE740V01019,,,,,,,NOT_FOUND
+88,AGSTRA,AGS Transact Technologies Limited,BZ,INE583L01014,543451,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+89,AHCL,Anlon Healthcare Limited,EQ,INE0Y8W01025,544497,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+90,AHLADA,Ahlada Engineers Limited,EQ,INE00PV01013,,,,,,,NOT_FOUND
+91,AHLEAST,Asian Hotels (East) Limited,EQ,INE926K01017,533227,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+92,AHLUCONT,Ahluwalia Contracts (India) Limited,EQ,INE758C01029,532811,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+93,AHLWEST,Asian Hotels (West) Limited,BE,INE915K01010,533221,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+94,AIAENG,AIA Engineering Limited,EQ,INE212H01026,532683,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+95,AIIL,Authum Investment & Infrastructure Limited,EQ,INE206F01022,539177,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+96,AIRAN,Airan Limited,EQ,INE645W01026,543811,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+97,AIROLAM,Airo Lam limited,EQ,INE801L01010,,,,,,,NOT_FOUND
+98,AJANTPHARM,Ajanta Pharma Limited,EQ,INE031B01049,532331,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+99,AJAXENGG,Ajax Engineering Limited,EQ,INE274Y01021,544356,Industrials,Construction Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Construction Vehicles,CLASSIFIED
+100,AJMERA,Ajmera Realty & Infra India Limited,EQ,INE298G01035,513349,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
