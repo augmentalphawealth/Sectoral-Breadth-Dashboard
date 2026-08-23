@@ -3,24 +3,446 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from nse_tools import download_nse_mainboard_list
-from bse_classification import classify_via_bse_api
-from yahoo_classification import classify_via_yahoo_finance
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
 MASTER_FILE = ROOT / "data" / "processed" / "nse_mainboard_master_bse_classified.parquet"
-BSE_MAPPING_FILE = ROOT / "data" / "processed" / "nse_bse_industry_mapping.csv"
-BSE_UNMAPPED_FILE = ROOT / "data" / "processed" / "nse_bse_still_unmapped.csv"
-YAHOO_MAPPING_FILE = ROOT / "data" / "processed" / "nse_yahoo_industry_mapping.csv"
-YAHOO_UNMAPPED_FILE = ROOT / "data" / "processed" / "nse_yahoo_still_unmapped.csv"
+
+
+NSE_MAINBOARD_URL = (
+    "https://www.nseindia.com/api/market-data/market-facts/equity-shares"
+)
+
+NSE_HEADERS = {
+    "Accept": "application/json",
+    "Accept-Language": "en-US,en;q=0.9",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    ),
+}
+
+
+BSE_SEARCH_URL = "https://api.bseindia.com/bseapi/SecuritySearch"
+BSE_DETAILS_URL = "https://api.bseindia.com/bseapi/SecurityDetails"
+
+BSE_API_CODE = "23082025"
+BSE_API_KEY = "7271323c40484e188961f1d653c4b923"
+
+
+YAHOO_SEARCH_URL = "https://query1.finance.yahoo.com/v1/finance/search"
+YAHOO_QUOTE_URL = "https://query1.finance.yahoo.com/v10/finance/quoteSummary"
+
+
+def download_nse_mainboard_list():
+    session = requests.Session()
+    session.headers.update(NSE_HEADERS)
+
+    try:
+        response = session.get(
+            NSE_MAINBOARD_URL,
+            timeout=20,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except Exception as error:
+        raise RuntimeError(f"Failed to download NSE list: {error}")
+
+    if not isinstance(data, dict):
+        raise RuntimeError("NSE response is not a JSON object")
+
+    records = data.get("records", [])
+    if not isinstance(records, list):
+        raise RuntimeError("NSE 'records' field is missing or invalid")
+
+    rows = []
+
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+
+        identifier = record.get("identifier", "")
+        if not identifier or not identifier.startswith("EQ"):
+            continue
+
+        symbol = identifier.replace("EQ", "").strip()
+        series = "EQ"
+
+        company_name = clean(record.get("companyName", ""))
+        isin = clean(record.get("isin", ""))
+        listing_date = clean(record.get("listingDate", ""))
+
+        if not symbol or not isin:
+            continue
+
+        rows.append({
+            "symbol": symbol,
+            "company_name": company_name,
+            "series": series,
+            "isin": isin,
+            "listing_date": listing_date,
+        })
+
+    if not rows:
+        raise RuntimeError("No valid NSE mainboard records found")
+
+    df = pd.DataFrame(rows)
+
+    for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
+        df[column] = df[column].fillna("").astype(str).str.strip()
+
+    df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
+
+    return df
 
 
 def clean(value):
     if value is None or pd.isna(value):
         return ""
     return str(value).strip()
+
+
+def classify_via_bse_api(symbol, company_name, series, isin):
+    session = requests.Session()
+
+    search_headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "bse-api-key": BSE_API_KEY,
+        "bse-api-code": BSE_API_CODE,
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+    }
+
+    search_payload = {
+        "AuthCode": BSE_API_CODE,
+        "ApiKey": BSE_API_KEY,
+        "SearchString": symbol,
+        "SecurityType": "EQ",
+    }
+
+    try:
+        search_response = session.post(
+            BSE_SEARCH_URL,
+            json=search_payload,
+            headers=search_headers,
+            timeout=15,
+        )
+        search_response.raise_for_status()
+        search_data = search_response.json()
+    except Exception:
+        return {
+            "status": "FAILED",
+            "reason": "BSE search request failed",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    if not isinstance(search_data, dict):
+        return {
+            "status": "FAILED",
+            "reason": "BSE search response invalid",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    body = search_data.get("body", {})
+    if not isinstance(body, dict):
+        return {
+            "status": "FAILED",
+            "reason": "BSE search body missing",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    results = body.get("results", [])
+    if not isinstance(results, list) or len(results) == 0:
+        return {
+            "status": "NOT_FOUND",
+            "reason": "No matching BSE security",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    matched = None
+
+    for candidate in results:
+        if not isinstance(candidate, dict):
+            continue
+
+        candidate_symbol = clean(candidate.get("SecurityCode", ""))
+        candidate_isin = clean(candidate.get("ISIN", ""))
+
+        if candidate_symbol == symbol and candidate_isin == isin:
+            matched = candidate
+            break
+
+    if matched is None:
+        for candidate in results:
+            if not isinstance(candidate, dict):
+                continue
+            candidate_isin = clean(candidate.get("ISIN", ""))
+            if candidate_isin == isin:
+                matched = candidate
+                break
+
+    if matched is None:
+        return {
+            "status": "NOT_FOUND",
+            "reason": "No exact BSE match",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    security_code = clean(matched.get("SecurityCode", ""))
+
+    details_payload = {
+        "AuthCode": BSE_API_CODE,
+        "ApiKey": BSE_API_KEY,
+        "SecurityCode": security_code,
+    }
+
+    try:
+        details_response = session.post(
+            BSE_DETAILS_URL,
+            json=details_payload,
+            headers=search_headers,
+            timeout=15,
+        )
+        details_response.raise_for_status()
+        details_data = details_response.json()
+    except Exception:
+        return {
+            "status": "FAILED",
+            "reason": "BSE details request failed",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    if not isinstance(details_data, dict):
+        return {
+            "status": "FAILED",
+            "reason": "BSE details response invalid",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    details_body = details_data.get("body", {})
+    if not isinstance(details_body, dict):
+        return {
+            "status": "FAILED",
+            "reason": "BSE details body missing",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    results_list = details_body.get("results", [])
+    if not isinstance(results_list, list) or len(results_list) == 0:
+        return {
+            "status": "FAILED",
+            "reason": "BSE details results missing",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    details = results_list[0]
+    if not isinstance(details, dict):
+        return {
+            "status": "FAILED",
+            "reason": "BSE details entry invalid",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    sector = clean(details.get("Sector", ""))
+    industry = clean(details.get("Industry", ""))
+    basic_industry = clean(details.get("BasicIndustry", ""))
+
+    if not sector and not industry and not basic_industry:
+        return {
+            "status": "FAILED",
+            "reason": "BSE details missing industry fields",
+            "sector": "",
+            "industry": "",
+            "basic_industry": "",
+        }
+
+    return {
+        "status": "CLASSIFIED",
+        "reason": "",
+        "sector": sector,
+        "industry": industry,
+        "basic_industry": basic_industry,
+    }
+
+
+def classify_via_yahoo_finance(symbol, company_name, series, isin):
+    session = requests.Session()
+
+    yahoo_headers = {
+        "Accept": "application/json",
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        ),
+    }
+
+    search_params = {
+        "q": f"{symbol} NSE",
+    }
+
+    try:
+        search_response = session.get(
+            YAHOO_SEARCH_URL,
+            params=search_params,
+            headers=yahoo_headers,
+            timeout=15,
+        )
+        search_response.raise_for_status()
+        search_data = search_response.json()
+    except Exception:
+        return {
+            "status": "FAILED",
+            "reason": "Yahoo search request failed",
+            "yahoo_ticker": "",
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    if not isinstance(search_data, dict):
+        return {
+            "status": "FAILED",
+            "reason": "Yahoo search response invalid",
+            "yahoo_ticker": "",
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    quotes = search_data.get("quotes", [])
+    if not isinstance(quotes, list) or len(quotes) == 0:
+        return {
+            "status": "NOT_FOUND",
+            "reason": "No Yahoo quote found",
+            "yahoo_ticker": "",
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    matched_quote = None
+
+    for quote in quotes:
+        if not isinstance(quote, dict):
+            continue
+        quote_symbol = clean(quote.get("symbol", ""))
+        if quote_symbol == f"{symbol}.NS":
+            matched_quote = quote
+            break
+
+    if matched_quote is None:
+        for quote in quotes:
+            if not isinstance(quote, dict):
+                continue
+            quote_symbol = clean(quote.get("symbol", ""))
+            if quote_symbol.endswith(".NS"):
+                matched_quote = quote
+                break
+
+    if matched_quote is None:
+        return {
+            "status": "NOT_FOUND",
+            "reason": "No suitable Yahoo ticker",
+            "yahoo_ticker": "",
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    yahoo_ticker = clean(matched_quote.get("symbol", ""))
+
+    quote_params = {
+        "symbol": yahoo_ticker,
+    }
+
+    try:
+        quote_response = session.get(
+            YAHOO_QUOTE_URL,
+            params=quote_params,
+            headers=yahoo_headers,
+            timeout=15,
+        )
+        quote_response.raise_for_status()
+        quote_data = quote_response.json()
+    except Exception:
+        return {
+            "status": "FAILED",
+            "reason": "Yahoo quote request failed",
+            "yahoo_ticker": yahoo_ticker,
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    if not isinstance(quote_data, dict):
+        return {
+            "status": "FAILED",
+            "reason": "Yahoo quote response invalid",
+            "yahoo_ticker": yahoo_ticker,
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    quote_summary = quote_data.get("quoteSummary", {})
+    if not isinstance(quote_summary, dict):
+        return {
+            "status": "FAILED",
+            "reason": "Yahoo quoteSummary missing",
+            "yahoo_ticker": yahoo_ticker,
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    asset_profile = quote_summary.get("assetProfile", {})
+    if not isinstance(asset_profile, dict):
+        return {
+            "status": "NOT_FOUND",
+            "reason": "Yahoo assetProfile missing",
+            "yahoo_ticker": yahoo_ticker,
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    yahoo_sector = clean(asset_profile.get("sector", ""))
+    yahoo_industry = clean(asset_profile.get("industry", ""))
+
+    if not yahoo_sector and not yahoo_industry:
+        return {
+            "status": "NOT_FOUND",
+            "reason": "Yahoo sector/industry missing",
+            "yahoo_ticker": yahoo_ticker,
+            "yahoo_sector": "",
+            "yahoo_industry": "",
+        }
+
+    return {
+        "status": "YAHOO_FALLBACK",
+        "reason": "",
+        "yahoo_ticker": yahoo_ticker,
+        "yahoo_sector": yahoo_sector,
+        "yahoo_industry": yahoo_industry,
+    }
 
 
 def main():
