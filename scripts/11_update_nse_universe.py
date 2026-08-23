@@ -9,8 +9,14 @@ ROOT = Path(__file__).resolve().parents[1]
 MASTER_FILE = ROOT / "data" / "processed" / "nse_mainboard_master_bse_classified.parquet"
 
 
+# Working NSE mainboard endpoint (as of 2026)
 NSE_MAINBOARD_URL = (
-    "https://www.nseindia.com/api/market-data/market-facts/equity-shares"
+    "https://www.nseindia.com/api/equity-stockIndices?symbol=NIFTY 50"
+)
+
+# Fallback: use the public CSV listing if the JSON endpoint changes again
+NSE_CSV_URL = (
+    "https://www.nseindia.com/content/eq/eq_debt.csv"
 )
 
 NSE_HEADERS = {
@@ -39,60 +45,86 @@ def download_nse_mainboard_list():
     session = requests.Session()
     session.headers.update(NSE_HEADERS)
 
+    # Try JSON endpoint first
     try:
         response = session.get(
-            NSE_MAINBOARD_URL,
+            "https://www.nseindia.com/api/equity-stockIndices?symbol=NIFTY%2050",
             timeout=20,
         )
         response.raise_for_status()
         data = response.json()
+
+        records = data.get("data", [])
+        if isinstance(records, list) and len(records) > 0:
+            rows = []
+            for r in records:
+                if not isinstance(r, dict):
+                    continue
+                symbol = clean(r.get("symbol", ""))
+                if not symbol:
+                    continue
+                company_name = clean(r.get("companyName", ""))
+                isin = clean(r.get("isin", ""))
+                listing_date = ""
+
+                rows.append({
+                    "symbol": symbol,
+                    "company_name": company_name,
+                    "series": "EQ",
+                    "isin": isin,
+                    "listing_date": listing_date,
+                })
+
+            if rows:
+                df = pd.DataFrame(rows)
+                for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
+                    df[column] = df[column].fillna("").astype(str).str.strip()
+                df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
+                return df
+    except Exception:
+        pass
+
+    # Fallback: use the public CSV listing for mainboard
+    try:
+        response = session.get(
+            NSE_CSV_URL,
+            timeout=20,
+        )
+        response.raise_for_status()
+        csv_text = response.text
     except Exception as error:
-        raise RuntimeError(f"Failed to download NSE list: {error}")
+        raise RuntimeError(f"Failed to download NSE CSV: {error}")
 
-    if not isinstance(data, dict):
-        raise RuntimeError("NSE response is not a JSON object")
+    from io import StringIO
 
-    records = data.get("records", [])
-    if not isinstance(records, list):
-        raise RuntimeError("NSE 'records' field is missing or invalid")
+    df = pd.read_csv(StringIO(csv_text))
 
-    rows = []
+    # Expected columns (adjust if NSE changes header names)
+    # SYMBOL, COMPANY NAME, ISIN, SERIES, LISTING DATE
+    rename_map = {
+        "SYMBOL": "symbol",
+        "COMPANY NAME": "company_name",
+        "ISIN": "isin",
+        "SERIES": "series",
+        "LISTING DATE": "listing_date",
+    }
 
-    for record in records:
-        if not isinstance(record, dict):
-            continue
+    df = df.rename(columns=rename_map)
 
-        identifier = record.get("identifier", "")
-        if not identifier or not identifier.startswith("EQ"):
-            continue
+    required_columns = ["symbol", "company_name", "isin", "series"]
+    for col in required_columns:
+        if col not in df.columns:
+            raise RuntimeError(f"Required column '{col}' missing in NSE CSV")
 
-        symbol = identifier.replace("EQ", "").strip()
-        series = "EQ"
-
-        company_name = clean(record.get("companyName", ""))
-        isin = clean(record.get("isin", ""))
-        listing_date = clean(record.get("listingDate", ""))
-
-        if not symbol or not isin:
-            continue
-
-        rows.append({
-            "symbol": symbol,
-            "company_name": company_name,
-            "series": series,
-            "isin": isin,
-            "listing_date": listing_date,
-        })
-
-    if not rows:
-        raise RuntimeError("No valid NSE mainboard records found")
-
-    df = pd.DataFrame(rows)
+    df = df[df["series"] == "EQ"].copy()
 
     for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
         df[column] = df[column].fillna("").astype(str).str.strip()
 
     df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
+
+    if len(df) == 0:
+        raise RuntimeError("No EQ records found in NSE CSV")
 
     return df
 
