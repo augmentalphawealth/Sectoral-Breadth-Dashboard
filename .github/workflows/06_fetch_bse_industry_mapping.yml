@@ -5,21 +5,23 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: bse-industry-classification
   cancel-in-progress: false
 
 jobs:
-  fetch-bse-industry-mapping:
+  fetch-and-continue:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WORKFLOW_PAT }}
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,11 +33,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch BSE classifications with checkpoints
+      - name: Fetch one BSE batch
         run: |
           python scripts/06_fetch_bse_industry_mapping.py
 
-      - name: Commit completed classifications
+      - name: Detect remaining securities
+        id: remaining
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          path = Path("data/processed/nse_mainboard_master_bse_classified.parquet")
+          df = pd.read_parquet(path)
+
+          status = df["classification_status"].fillna("").astype(str).str.strip()
+          remaining = int((~status.isin(["CLASSIFIED", "NOT_FOUND"])).sum())
+
+          print(f"remaining={remaining}" >> "$GITHUB_OUTPUT")
+          print(f"Remaining securities: {remaining}")
+          PY
+
+      - name: Commit this completed batch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -47,14 +66,21 @@ jobs:
           if git diff --cached --quiet; then
             echo "No output changes to commit."
           else
-            git commit -m "Update BSE industry classifications"
-            git push
+            git commit -m "Update BSE classifications"
+            git push origin main
           fi
 
-      - name: Upload classification outputs
+      - name: Start the next automatic batch
+        if: steps.remaining.outputs.remaining != '0'
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          gh workflow run 06_fetch_bse_industry_mapping.yml --ref main
+
+      - name: Upload this batch output
         uses: actions/upload-artifact@v4
         with:
-          name: nse-bse-classification-output
+          name: nse-bse-classification-batch
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_bse_industry_mapping.csv
