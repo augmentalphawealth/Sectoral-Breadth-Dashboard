@@ -499,3 +499,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 498,CONFIPET,Confidence Petroleum India Limited,EQ,INE552D01024,526829,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
 499,CONSOFINVT,Consolidated Finvest & Holdings Limited,BE,INE025A01027,,,,,,,NOT_FOUND
 500,CONTROLPR,Control Print Limited,EQ,INE663B01015,522295,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+501,CORALFINAC,Coral India Finance & Housing Limited,EQ,INE558D01021,531556,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+502,CORDELIA,Waterways Leisure Tourism Limited,EQ,INE0LZF01013,544802,Consumer Discretionary,"Tour, Travel Related Services",Consumer Services,Leisure Services,"Tour, Travel Related Services",CLASSIFIED
+503,CORDSCABLE,Cords Cable Industries Limited,BE,INE792I01017,532941,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+504,COROMANDEL,Coromandel International Limited,EQ,INE169A01031,506395,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+505,CORONA,CORONA Remedies Limited,EQ,INE02ZQ01018,544644,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+506,COSMOFIRST,COSMO FIRST LIMITED,EQ,INE757A01017,508814,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+507,COUNCODOS,Country Condo's Limited,BE,INE695B01025,531624,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+508,CPCAP,CP Capital Limited,EQ,INE521J01018,533260,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+509,CPEDU,Career Point Edutech Limited,EQ,INE0P6P01016,544499,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+510,CPL,Captain Polyplast Limited,EQ,INE536P01021,536974,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+511,CPPLUS,Aditya Infotech Limited,EQ,INE819V01029,544466,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+512,CRAFTSMAN,Craftsman Automation Limited,EQ,INE00LO01017,543276,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+513,CRAMC,Canara Robeco Asset Management Company Limited,EQ,INE218I01013,544580,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+514,CRAVATEX,Cravatex Limited,EQ,INE145E01017,509472,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+515,CREATIVEYE,Creative Eye Limited,EQ,INE230B01021,532392,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+516,CREDITACC,CREDITACCESS GRAMEEN LIMITED,EQ,INE741K01010,541770,,,,,,NOT_FOUND
+517,CREST,Crest Ventures Limited,EQ,INE559D01011,511413,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+518,CRISIL,Crisil Limited,EQ,INE007A01025,500092,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+519,CRIZAC,Crizac Limited,EQ,INE0S4R01014,544439,Consumer Discretionary,Internet & Catalogue Retail,Consumer Services,Retailing,Internet & Catalogue Retail,CLASSIFIED
+520,CROMPTON,Crompton Greaves Consumer Electricals Limited,EQ,INE299U01018,539876,,,,,,NOT_FOUND
+521,CROWN,Crown Lifters Limited,EQ,INE491V01019,,,,,,,NOT_FOUND
+522,CRSL,Cressanda Railway Solutions Limited,EQ,INE716D01033,512379,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+523,CSBBANK,CSB Bank Limited,EQ,INE679A01013,542867,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+524,CSLFINANCE,CSL Finance Limited,EQ,INE718F01018,530067,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+525,CSM,CSM Technologies Limited,EQ,INE0ZK601013,544806,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+526,CTE,Cambridge Technology Enterprises Limited,EQ,INE627H01017,532801,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+527,CUB,City Union Bank Limited,EQ,INE491A01021,532210,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+528,CUBEXTUB,Cubex Tubings Limited,EQ,INE144D01012,526027,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+529,CUMMINSIND,Cummins India Limited,EQ,INE298A01020,500480,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+530,CUPID,Cupid Limited,EQ,INE509F01029,530843,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+531,CURAA,Cura Technologies Limited,EQ,INE117B01020,532332,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+532,CYBERMEDIA,Cyber Media (India) Limited,EQ,INE278G01037,532640,Consumer Discretionary,Electronic Media,"Media, Entertainment & Publication",Media,Electronic Media,CLASSIFIED
+533,CYBERTECH,Cybertech Systems And Software Limited,BE,INE214A01019,532173,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+534,CYIENT,Cyient Limited,EQ,INE136B01020,532175,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+535,CYIENTDLM,Cyient DLM Limited,EQ,INE055S01018,543933,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+536,DABUR,Dabur India Limited,EQ,INE016A01026,500096,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+537,DAICHI,Dai-Ichi Karkaria Limited,EQ,INE928C01010,526821,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+538,DALBHARAT,Dalmia Bharat Limited,EQ,INE00R701025,542216,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+539,DALMIASUG,Dalmia Bharat Sugar and Industries Limited,EQ,INE495A01022,500097,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+540,DAMCAPITAL,Dam Capital Advisors Limited,EQ,INE284H01025,544316,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+541,DAMODARIND,Damodar Industries Limited,BE,INE497D01022,521220,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+542,DANGEE,Dangee Dums Limited,EQ,INE688Y01022,,,,,,,NOT_FOUND
+543,DATAMATICS,Datamatics Global Services Limited,EQ,INE365B01017,532528,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+544,DATAPATTNS,Data Patterns (India) Limited,EQ,INE0IX101010,,,,,,,NOT_FOUND
+545,DAVANGERE,Davangere Sugar Company Limited,EQ,INE179G01029,543267,Fast Moving Consumer Goods,Diversified FMCG,Fast Moving Consumer Goods,Diversified FMCG,Diversified FMCG,CLASSIFIED
+546,DBCORP,D.B.Corp Limited,EQ,INE950I01011,533151,Consumer Discretionary,Print Media,"Media, Entertainment & Publication",Media,Print Media,CLASSIFIED
+547,DBEIL,Deepak Builders & Engineers India Limited,BE,INE0OPA01027,544276,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+548,DBL,Dilip Buildcon Limited,EQ,INE917M01012,540047,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+549,DBOL,Dhampur Bio Organics Limited,EQ,INE0I3401014,543593,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+550,DBREALTY,Valor Estate Limited,EQ,INE879I01012,533160,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+551,DBSTOCKBRO,DB (International) Stock Brokers Limited,BE,INE921B01025,,,,,,,NOT_FOUND
+552,DCAL,Dishman Carbogen Amcis Limited,EQ,INE385W01011,540701,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+553,DCBBANK,DCB Bank Limited,EQ,INE503A01015,532772,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+554,DCI,Dc Infotech And Communication Limited,EQ,INE0A1101019,543636,,,,,,NOT_FOUND
+555,DCM,DCM  Limited,BE,INE498A01018,502820,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+556,DCMFINSERV,DCM Financial Services Limited,EQ,INE891B01012,511611,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+557,DCMNVL,DCM Nouvelle Limited,EQ,INE08KP01019,542729,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+558,DCMSHRIRAM,DCM Shriram Limited,EQ,INE499A01024,523367,Diversified,Diversified,Diversified,Diversified,Diversified,CLASSIFIED
+559,DCMSIL,DCM Shriram International Limited,EQ,INE0OU201013,544702,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+560,DCMSRIND,DCM Shriram Industries Limited,EQ,INE843D01027,523369,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+561,DCW,DCW Limited,EQ,INE500A01029,500117,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+562,DCXINDIA,DCX Systems Limited,EQ,INE0KL801015,543650,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+563,DDEVPLSTIK,Ddev Plastiks Industries Limited,EQ,INE0HR601026,543547,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+564,DECCANCE,Deccan Cements Limited,EQ,INE583C01021,502137,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+565,DECNGOLD,Deccan Gold Mines Limited,EQ,INE945F01025,512068,Commodities,Precious Metals,Metals & Mining,Non - Ferrous Metals,Precious Metals,CLASSIFIED
+566,DEEDEV,DEE Development Engineers Limited,EQ,INE841L01016,544198,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+567,DEEP,Deep Polymers Limited,EQ,INE00IY01012,541778,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+568,DEEPAKFERT,Deepak Fertilizers and Petrochemicals Corporation Limited,EQ,INE501A01019,500645,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+569,DEEPAKNTR,Deepak Nitrite Limited,EQ,INE288B01029,506401,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+570,DEEPINDS,Deep Industries Limited,EQ,INE0FHS01024,543288,Energy,Oil Equipment & Services,"Oil, Gas & Consumable Fuels",Oil,Oil Equipment & Services,CLASSIFIED
+571,DELHIVERY,Delhivery Limited,EQ,INE148O01028,543529,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+572,DELPHIFX,DELPHI WORLD MONEY LIMITED,BE,INE726L01027,533452,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+573,DELTACORP,Delta Corp Limited,EQ,INE124G01033,532848,Consumer Discretionary,Amusement Parks/ Other Recreation,Consumer Services,Leisure Services,Amusement Parks/ Other Recreation,CLASSIFIED
+574,DELTAMAGNT,Delta Manufacturing Limited,EQ,INE393A01011,504286,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+575,DEN,Den Networks Limited,EQ,INE947J01015,533137,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+576,DENORA,De Nora India Limited,EQ,INE244A01016,590031,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+577,DENTA,Denta Water and Infra Solutions Limited,EQ,INE0R4L01018,544345,Utilities,Water Supply & Management,Utilities,Other Utilities,Water Supply & Management,CLASSIFIED
+578,DEVIT,Dev Information Technology Limited,EQ,INE060X01034,543462,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+579,DEVX,Dev Accelerator Limited,EQ,INE0VOV01021,544513,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+580,DEVYANI,Devyani International Limited,EQ,INE872J01023,543330,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+581,DGCONTENT,Digicontent Limited,EQ,INE03JI01017,542685,Consumer Discretionary,Advertising & Media Agencies,"Media, Entertainment & Publication",Media,Advertising & Media Agencies,CLASSIFIED
+582,DHABRIYA,Dhabriya Polywood Limited,EQ,INE260R01016,538715,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+583,DHAMPURSUG,Dhampur Sugar Mills Limited,EQ,INE041A01016,500119,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+584,DHANBANK,Dhanlaxmi Bank Limited,EQ,INE680A01011,532180,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+585,DHANUKA,Dhanuka Agritech Limited,EQ,INE435G01025,507717,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+586,DHARAN,DHARAN INFRA-EPC LIMITED,BZ,INE278R01034,541161,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+587,DHARMAJ,Dharmaj Crop Guard Limited,EQ,INE00OQ01016,543687,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+588,DHATRE,Dhatre Udyog Limited,EQ,INE715T01031,540080,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+589,DHOOTTRANS,Dhoot Transmission Limited,EQ,INE01NH01023,544867,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+590,DHRUV,Dhruv Consultancy Services Limited,EQ,INE506Z01015,541302,Services,Consulting Services,Services,Commercial Services & Supplies,Consulting Services,CLASSIFIED
+591,DHUNINV,Dhunseri Investments Limited,EQ,INE320L01011,533336,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+592,DIACABS,Diamond Power Infrastructure Limited,BE,INE989C01038,522163,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+593,DIAMINESQ,Diamines & Chemicals Limited,EQ,INE591D01014,500120,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+594,DIAMONDYD,Prataap Snacks Limited,EQ,INE393P01035,540724,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+595,DICIND,DIC India Limited,EQ,INE303A01010,500089,Commodities,Printing Inks,Chemicals,Chemicals & Petrochemicals,Printing Inks,CLASSIFIED
+596,DIFFNKG,Diffusion Engineers Limited,EQ,INE184O01015,544264,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+597,DIGIDRIVE,Digidrive Distributors Limited,EQ,INE0PSC01024,544079,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+598,DIGISPICE,DiGiSPICE Technologies Limited,EQ,INE927C01020,517214,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+599,DIGITIDE,Digitide Solutions Limited,EQ,INE0U4701011,544413,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+600,DIGJAMLMTD,Digjam Limited,EQ,INE731U01028,539979,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
