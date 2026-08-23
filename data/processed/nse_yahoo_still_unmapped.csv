@@ -1,7 +1,1 @@
 symbol,company_name,series,isin,listing_date,industry,basic_industry,sector,classification_status,classification_source,fallback_bse_attempted,classification_failure_reason,yahoo_ticker,yahoo_sector,yahoo_industry,yahoo_quote_type,yahoo_attempted,yahoo_failure_reason
-VCL,Vaxtex Cotfab Limited,BE,INE098201036,2022-04-19,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
-VERTOZ,Vertoz Limited,BE,INE188Y01031,2020-05-14,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
-VITAL,Vital Chemtech Limited,BE,INE0L4K01016,2026-03-11,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
-VIVIANA,Viviana Power Tech Limited,BE,INE0MEG01014,2026-06-02,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
-WIPL,The Western India Plywoods Limited,EQ,INE215F01023,2017-04-17,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
-ZOTA,Zota Health Care LImited,EQ,INE358U01012,2019-08-19,,,,NOT_FOUND,,YES,COMPANY_NAME: IndexError: tuple index out of range,,,,,,
