@@ -3,23 +3,76 @@ name: basic-industry-dashboard-eod
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 13 * * 1-5'
+    - cron: "20 13 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: eod-dashboard
+  cancel-in-progress: false
 
 jobs:
   build-eod-dashboard:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          python-version: '3.11'
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Check dashboard and classified master files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          root = Path.cwd()
+          processed = root / "data" / "processed"
+
+          files = [
+              "security_master_with_kite.parquet",
+              "nse_mainboard_master_bse_classified.parquet",
+          ]
+
+          for file_name in files:
+              file_path = processed / file_name
+
+              print()
+              print("=" * 70)
+              print(file_name)
+              print("=" * 70)
+
+              if not file_path.exists():
+                  print("FILE NOT FOUND")
+                  continue
+
+              df = pd.read_parquet(file_path)
+
+              print(f"Rows: {len(df)}")
+              print("Columns:")
+              print(df.columns.tolist())
+
+              print()
+              print("First 3 rows:")
+              print(df.head(3).to_string(index=False))
+          PY
+
       - name: Run EOD pipeline
         run: |
           python scripts/03_run_eod_pipeline.py
+
       - name: Upload processed outputs
         uses: actions/upload-artifact@v4
         with:
