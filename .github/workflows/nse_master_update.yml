@@ -2,8 +2,6 @@ name: NSE Mainboard Master Update
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 18 * * 1-5"
 
 permissions:
   contents: write
@@ -15,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -26,14 +26,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas pyarrow requests
 
-      - name: Download and build NSE master
+      - name: Download and build legacy NSE master
         run: |
           python scripts/05_download_nse_master.py
 
-      - name: Commit updated master file
+      - name: Commit legacy master file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data/processed/nse_mainboard_master.parquet
-          git diff --cached --quiet || git commit -m "Update NSE mainboard master"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No legacy master changes to commit."
+          else
+            git commit -m "Update legacy NSE mainboard master"
+            git push
+          fi
