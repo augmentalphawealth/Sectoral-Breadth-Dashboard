@@ -2399,3 +2399,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2398,UYFINCORP,U. Y. Fincorp Limited,BE,INE152C01025,530579,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
 2399,V2RETAIL,V2 Retail Limited,EQ,INE945H01021,532867,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
 2400,VADILALIND,Vadilal Industries Limited,EQ,INE694D01016,519156,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+2401,VADILENT,Vadilal Enterprises Limited,EQ,INE693D01018,519152,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+2402,VAIBHAVGBL,Vaibhav Global Limited,EQ,INE884A01027,532156,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2403,VAISHALI,Vaishali Pharma Limited,EQ,INE972X01022,,,,,,,NOT_FOUND
+2404,VAKRANGEE,Vakrangee Limited,EQ,INE051B01021,511431,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2405,VALIANTLAB,Valiant Laboratories Limited,EQ,INE0JWS01017,543998,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2406,VALIANTORG,Valiant Organics Limited,BE,INE565V01010,540145,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2407,VAML,Vedanta Aluminium Metal Limited,EQ,INE1CDF01017,544780,Commodities,Aluminium,Metals & Mining,Non - Ferrous Metals,Aluminium,CLASSIFIED
+2408,VARDHACRLC,Vardhman Acrylics Limited,BE,INE116G01013,,,,,,,NOT_FOUND
+2409,VARDMNPOLY,Vardhman Polytex Limited,EQ,INE835A01029,514175,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2410,VARROC,Varroc Engineering Limited,EQ,INE665L01035,541578,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2411,VASCONEQ,Vascon Engineers Limited,EQ,INE893I01013,533156,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2412,VASUPRADA,Shri Vasuprada Plantations Limited,EQ,INE574G01013,538092,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+2413,VASWANI,Vaswani Industries Limited,EQ,INE590L01019,533576,Commodities,Sponge Iron,Metals & Mining,Ferrous Metals,Sponge Iron,CLASSIFIED
+2414,VBL,Varun Beverages Limited,EQ,INE200M01039,540180,Fast Moving Consumer Goods,Other Beverages,Fast Moving Consumer Goods,Beverages,Other Beverages,CLASSIFIED
+2415,VCL,Vaxtex Cotfab Limited,BE,INE098201036,,,,,,,NOT_FOUND
+2416,VEDAVAAG,VEDAVAAG Systems Limited,EQ,INE359B01010,533056,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2417,VEDL,Vedanta Limited,EQ,INE205A01025,500295,Commodities,Diversified Metals,Metals & Mining,Diversified Metals,Diversified Metals,CLASSIFIED
+2418,VEDPOWER,Vedanta Power Limited,EQ,INE694L01019,544781,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+2419,VEEDOL,Veedol Corporation Limited,EQ,INE484C01030,590005,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+2420,VELJAN,Veljan Denison Limited,BE,INE232E01013,505232,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2421,VENKEYS,Venky's (India) Limited,EQ,INE398A01010,523261,Fast Moving Consumer Goods,Meat Products including Poultry,Fast Moving Consumer Goods,Food Products,Meat Products including Poultry,CLASSIFIED
+2422,VENTIVE,Ventive Hospitality Limited,EQ,INE781S01027,544321,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+2423,VENUSPIPES,Venus Pipes & Tubes Limited,EQ,INE0JA001018,543528,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2424,VENUSREM,Venus Remedies Limited,BE,INE411B01019,526953,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2425,VERANDA,Veranda Learning Solutions Limited,EQ,INE0IQ001011,543514,Consumer Discretionary,E-Learning,Consumer Services,Other Consumer Services,E-Learning,CLASSIFIED
+2426,VERTOZ,Vertoz Limited,BE,INE188Y01031,,,,,,,NOT_FOUND
+2427,VESUVIUS,Vesuvius India Limited,EQ,INE386A01023,520113,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+2428,VETO,Veto Switchgears And Cables Limited,BE,INE918N01018,539331,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+2429,VGCL,Vibrant Global Capital Limited,EQ,INE761Q01015,538732,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2430,VGL,VARVEE GLOBAL LIMITED,EQ,INE273D01027,514274,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2431,VGUARD,V-Guard Industries Limited,EQ,INE951I01027,532953,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2432,VHL,Vardhman Holdings Limited,EQ,INE701A01023,500439,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2433,VHLTD,Viceroy Hotels Limited,BE,INE048C01025,523796,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+2434,VIDHIING,Vidhi Specialty Food Ingredients Limited,EQ,INE632C01026,531717,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2435,VIDYAWIRES,Vidya Wires Limited,EQ,INE14UN01029,544633,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+2436,VIJAYA,Vijaya Diagnostic Centre Limited,EQ,INE043W01024,543350,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+2437,VIJIFIN,Viji Finance Limited,BE,INE159N01027,537820,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2438,VIJSOLX,Vijay Solvex Limited,EQ,INE362D01010,531069,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+2439,VIKASECO,Vikas EcoTech Limited,EQ,INE806A01020,530961,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2440,VIKASLIFE,Vikas Lifecare Limited,EQ,INE161L01027,542655,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2441,VIKRAMSOLR,Vikram Solar Limited,EQ,INE078V01014,544488,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2442,VIKRAN,Vikran Engineering Limited,EQ,INE01R501028,544496,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2443,VIMTALABS,Vimta Labs Limited,EQ,INE579C01029,524394,Healthcare,"Healthcare Research, Analytics & Technology",Healthcare,Healthcare Services,"Healthcare Research, Analytics & Technology",CLASSIFIED
+2444,VINATIORGA,Vinati Organics Limited,EQ,INE410B01037,524200,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2445,VINCOFE,Vintage Coffee And Beverages Limited,EQ,INE498Q01014,538920,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+2446,VINDHYATEL,Vindhya Telelinks Limited,EQ,INE707A01012,517015,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2447,VINEETLAB,Vineet Laboratories Limited,EQ,INE505Y01010,543298,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2448,VINNY,Vinny Overseas Limited,EQ,INE01KI01027,543670,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2449,VINYLINDIA,Vinyl Chemicals (India) Limited,EQ,INE250B01029,524129,Commodities,Trading - Chemicals,Chemicals,Chemicals & Petrochemicals,Trading - Chemicals,CLASSIFIED
+2450,VIPCLOTHNG,VIP Clothing Limited,EQ,INE450G01024,532613,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2451,VIPIND,VIP Industries Limited,EQ,INE054A01027,507880,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+2452,VIPULLTD,Vipul Limited,BE,INE946H01037,511726,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2453,VIRAT,Virat Industries Limited,EQ,INE467D01017,530521,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2454,VIRINCHI,Virinchi Limited,EQ,INE539B01017,532372,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+2455,VIRTUALG,Virtual Global Education Limited,EQ,INE247C01023,534741,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+2456,VISACHROME,VISA Chrome Limited,EQ,INE286H01012,532721,Commodities,Ferro & Silica Manganese,Metals & Mining,Ferrous Metals,Ferro & Silica Manganese,CLASSIFIED
+2457,VISAKAIND,Visaka Industries Limited,EQ,INE392A01021,509055,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2458,VISHAL,Vishal Fabrics Limited,EQ,INE755Q01025,538598,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2459,VISHNU,Vishnu Chemicals Limited,EQ,INE270I01022,516072,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2460,VISHWARAJ,Vishwaraj Sugar Industries Limited,EQ,INE430N01022,542852,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2461,VISL,Vedanta Iron and Steel Limited,EQ,INE1CLE01013,544784,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+2462,VITAL,Vital Chemtech Limited,BE,INE0L4K01016,,,,,,,NOT_FOUND
+2463,VIVIANA,Viviana Power Tech Limited,BE,INE0MEG01014,,,,,,,NOT_FOUND
+2464,VIVIDHA,Visagar Polytex Limited,EQ,INE370E01029,506146,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2465,VIVIMEDLAB,Vivimed Labs Limited,BE,INE526G01021,532660,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2466,VIVOBIOT,Vivo Bio Tech Limited,EQ,INE380K01017,511509,Healthcare,Biotechnology,Healthcare,Pharmaceuticals & Biotechnology,Biotechnology,CLASSIFIED
+2467,VIYASH,Viyash Scientific Limited,EQ,INE807F01027,512529,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2468,VLEGOV,VL E-Governance & IT Solutions Limited,BE,INE03HW01020,543958,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2469,VLSFINANCE,VLS Finance Limited,EQ,INE709A01018,511333,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2470,VMART,V-Mart Retail Limited,EQ,INE665J01013,534976,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+2471,VMM,Vishal Mega Mart Limited,EQ,INE01EA01019,544307,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+2472,VMSTMT,VMS TMT Limited,EQ,INE0SJA01013,544521,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2473,VOEPL,Virtuoso Optoelectronics Limited,EQ,INE0I0T01010,543597,Consumer Discretionary,Diversified consumer products,Consumer Durables,Consumer Durables,Diversified consumer products,CLASSIFIED
+2474,VOGL,Vedanta Oil and Gas Limited,EQ,INE704J01044,544782,Energy,Oil Exploration & Production,"Oil, Gas & Consumable Fuels",Oil,Oil Exploration & Production,CLASSIFIED
+2475,VOITHPAPR,Voith Paper Fabrics India Limited,EQ,INE285C01015,522122,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2476,VOLTAMP,Voltamp Transformers Limited,EQ,INE540H01012,532757,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2477,VOLTAS,Voltas Limited,EQ,INE226A01021,500575,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2478,VPRPL,Vishnu Prakash R Punglia Limited,EQ,INE0AE001013,543974,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2479,VRAJ,Vraj Iron and Steel Limited,EQ,INE0S2V01010,544204,Commodities,Sponge Iron,Metals & Mining,Ferrous Metals,Sponge Iron,CLASSIFIED
+2480,VRLLOG,VRL Logistics Limited,EQ,INE366I01010,539118,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2481,VSSL,Vardhman Special Steels Limited,EQ,INE050M01012,534392,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2482,VSTIND,VST Industries Limited,EQ,INE710A01016,509966,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Cigarettes & Tobacco Products,CLASSIFIED
+2483,VSTL,Vibhor Steel Tubes Limited,EQ,INE0QTF01015,544124,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2484,VSTTILLERS,V.S.T Tillers Tractors Limited,EQ,INE764D01017,531266,Industrials,Tractors,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Tractors,CLASSIFIED
+2485,VTL,Vardhman Textiles Limited,EQ,INE825A01020,502986,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2486,VTMLTD,VTM Limited,EQ,INE222F01029,532893,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2487,WAAREEENER,Waaree Energies Limited,EQ,INE377N01017,544277,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2488,WAAREEINDO,Indosolar Limited,EQ,INE866K01023,533257,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2489,WAAREERTL,Waaree Renewable Technologies Limited,EQ,INE299N01021,534618,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2490,WABAG,VA Tech Wabag Limited,EQ,INE956G01038,533269,Utilities,Water Supply & Management,Utilities,Other Utilities,Water Supply & Management,CLASSIFIED
+2491,WAKEFIT,Wakefit Innovations Limited,EQ,INE0E7301029,544642,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+2492,WALCHANNAG,Walchandnagar Industries Limited,EQ,INE711A01022,507410,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2493,WANBURY,Wanbury Limited,EQ,INE107F01022,524212,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2494,WARDINMOBI,Wardwizard Innovations & Mobility Limited,EQ,INE945P01024,538970,Consumer Discretionary,2/3 Wheelers,Automobile and Auto Components,Automobiles,2/3 Wheelers,CLASSIFIED
+2495,WATERBASE,Waterbase Limited,EQ,INE054C01015,523660,Fast Moving Consumer Goods,Seafood,Fast Moving Consumer Goods,Food Products,Seafood,CLASSIFIED
+2496,WCIL,Western Carriers (India) Limited,EQ,INE0CJF01024,544258,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2497,WEALTH,Wealth First Portfolio Managers Limited,EQ,INE658T01017,544536,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+2498,WEBELSOLAR,Websol Energy System Limited,EQ,INE855C01023,517498,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2499,WEIZMANIND,Weizmann Limited,EQ,INE080A01014,523011,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2500,WEL,Wonder Electricals Limited,EQ,INE02WG01024,543449,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
