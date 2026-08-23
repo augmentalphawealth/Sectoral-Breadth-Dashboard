@@ -1,0 +1,106 @@
+name: 09 Resolve Yahoo Unmapped Securities
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: yahoo-unmapped-fallback
+  cancel-in-progress: false
+
+jobs:
+  resolve-and-continue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Resolve one Yahoo fallback batch
+        run: |
+          python scripts/09_resolve_yahoo_unmapped.py
+
+      - name: Count Yahoo candidates still pending
+        id: remaining
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+
+          import pandas as pd
+
+          path = Path(
+              "data/processed/nse_mainboard_master_bse_classified.parquet"
+          )
+          df = pd.read_parquet(path)
+
+          status = df["classification_status"].fillna("").astype(str).str.strip()
+          attempted = (
+              df["yahoo_attempted"]
+              .fillna("")
+              .astype(str)
+              .str.strip()
+          )
+
+          remaining = int(
+              (
+                  status.eq("NOT_FOUND")
+                  & ~attempted.eq("YES")
+              ).sum()
+          )
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"remaining={remaining}\n")
+
+          print(f"Yahoo fallback candidates remaining: {remaining}")
+          PY
+
+      - name: Commit Yahoo fallback results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            data/processed/nse_mainboard_master_bse_classified.parquet \
+            data/processed/nse_yahoo_industry_mapping.csv \
+            data/processed/nse_yahoo_still_unmapped.csv
+
+          if git diff --cached --quiet; then
+            echo "No output changes to commit."
+          else
+            git commit -m "Resolve Yahoo fallback classifications"
+            git push origin main
+          fi
+
+      - name: Start next Yahoo fallback batch
+        if: steps.remaining.outputs.remaining != '0'
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          gh workflow run 09_resolve_yahoo_unmapped.yml --ref main
+
+      - name: Upload Yahoo fallback output
+        uses: actions/upload-artifact@v4
+        with:
+          name: yahoo-unmapped-fallback-output
+          path: |
+            data/processed/nse_mainboard_master_bse_classified.parquet
+            data/processed/nse_yahoo_industry_mapping.csv
+            data/processed/nse_yahoo_still_unmapped.csv
