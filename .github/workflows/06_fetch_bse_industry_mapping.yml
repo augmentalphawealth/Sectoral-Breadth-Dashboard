@@ -2,23 +2,18 @@ name: 06 Fetch BSE Industry Mapping
 
 on:
   workflow_dispatch:
-    inputs:
-      start_index:
-        description: "Zero-based row index to start from"
-        required: true
-        default: "0"
-      batch_size:
-        description: "Number of stocks to process"
-        required: true
-        default: "100"
 
 permissions:
   contents: write
 
+concurrency:
+  group: bse-industry-classification
+  cancel-in-progress: false
+
 jobs:
   fetch-bse-industry-mapping:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 300
 
     steps:
       - name: Checkout repository
@@ -36,14 +31,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch one BSE classification batch
-        env:
-          START_INDEX: ${{ inputs.start_index }}
-          BATCH_SIZE: ${{ inputs.batch_size }}
+      - name: Fetch BSE classifications with checkpoints
         run: |
           python scripts/06_fetch_bse_industry_mapping.py
 
-      - name: Commit completed batch
+      - name: Commit completed classifications
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -55,14 +47,14 @@ jobs:
           if git diff --cached --quiet; then
             echo "No output changes to commit."
           else
-            git commit -m "Update BSE classifications rows ${{ inputs.start_index }}"
+            git commit -m "Update BSE industry classifications"
             git push
           fi
 
-      - name: Upload batch outputs
+      - name: Upload classification outputs
         uses: actions/upload-artifact@v4
         with:
-          name: nse-bse-classification-batch-${{ inputs.start_index }}
+          name: nse-bse-classification-output
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_bse_industry_mapping.csv
