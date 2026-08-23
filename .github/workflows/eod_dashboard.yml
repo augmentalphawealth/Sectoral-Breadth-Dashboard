@@ -124,19 +124,15 @@ jobs:
           rm -f data/processed/prices.parquet
           rm -f /tmp/nse_6yr_historical.parquet
 
-      - name: Commit small dashboard outputs
+      - name: Commit dashboard outputs
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            data/processed/stock_daily_features.parquet \
-            data/processed/industry_daily_features.parquet \
-            data/processed/basic_industry_daily_features.parquet \
-            data/processed/dashboard_*.parquet \
-            data/processed/dashboard_*.csv \
-            data/processed/last_sync.txt
+          git add -A data/processed/
+
+          git reset -- data/processed/prices.parquet 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "No dashboard output changes to commit."
@@ -154,7 +150,5 @@ jobs:
             data/processed/stock_daily_features.parquet
             data/processed/industry_daily_features.parquet
             data/processed/basic_industry_daily_features.parquet
-            data/processed/dashboard_*.parquet
-            data/processed/dashboard_*.csv
             data/processed/last_sync.txt
           if-no-files-found: warn
