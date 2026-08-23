@@ -59,22 +59,6 @@ def regime_color(regime: object) -> str:
     return palette.get(clean_text(regime), "#64748b")
 
 
-def regime_badge(regime: object) -> str:
-    label = clean_text(regime)
-    color = regime_color(label)
-    return (
-        "<span style='display:inline-block;"
-        "padding:3px 9px;"
-        "border-radius:999px;"
-        f"background:{color};"
-        "color:#ffffff;"
-        "font-size:0.76rem;"
-        "font-weight:700;'>"
-        f"{label}"
-        "</span>"
-    )
-
-
 def strength_badge(strength_score: float) -> str:
     if pd.isna(strength_score):
         return "Neutral"
@@ -87,29 +71,6 @@ def strength_badge(strength_score: float) -> str:
     if strength_score >= 25:
         return "Weak"
     return "Lagging"
-
-
-def strength_badge_html(strength_score: float) -> str:
-    band = strength_badge(strength_score)
-    palette = {
-        "Leader": "#0f9d58",
-        "Strong": "#2563eb",
-        "Neutral": "#64748b",
-        "Weak": "#ea580c",
-        "Lagging": "#dc2626",
-    }
-    color = palette.get(band, "#64748b")
-    return (
-        "<span style='display:inline-block;"
-        "padding:3px 9px;"
-        "border-radius:999px;"
-        f"background:{color};"
-        "color:#ffffff;"
-        "font-size:0.76rem;"
-        "font-weight:700;'>"
-        f"{band}"
-        "</span>"
-    )
 
 
 @st.cache_data(show_spinner=False)
@@ -484,14 +445,14 @@ def basic_industry_view(
     if sort_mode == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=True).reset_index(drop=True)
         table["Rank"] = range(1, len(table) + 1)
+    table["Regime"] = table["Regime"].apply(clean_text)
     table["Strength Band"] = table["Strength"].apply(strength_badge)
-    table["Regime Badge"] = table["Regime"].apply(regime_badge)
     event = st.dataframe(
         table[
             [
                 "Rank",
                 "Basic Industry",
-                "Regime Badge",
+                "Regime",
                 "Strength Band",
                 "Strength",
                 "Members",
@@ -555,8 +516,6 @@ def basic_industry_view(
         stock_table["Stock Strength Band"] = stock_table["Stock Strength"].apply(
             strength_badge
         )
-        stock_table["Regime"] = "Unclassified"
-        stock_table["Regime Badge"] = stock_table["Regime"].apply(regime_badge)
         st.dataframe(
             stock_table[
                 [
@@ -645,14 +604,14 @@ def industry_view(industry_history: pd.DataFrame) -> None:
     if sort_mode == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=True).reset_index(drop=True)
         table["Rank"] = range(1, len(table) + 1)
+    table["Regime"] = table["Regime"].apply(clean_text)
     table["Strength Band"] = table["Strength"].apply(strength_badge)
-    table["Regime Badge"] = table["Regime"].apply(regime_badge)
     st.dataframe(
         table[
             [
                 "Rank",
                 "Industry",
-                "Regime Badge",
+                "Regime",
                 "Strength Band",
                 "Strength",
                 "Members",
