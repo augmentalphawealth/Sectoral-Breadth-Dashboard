@@ -25,12 +25,15 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    .block-container { padding-top: 1.1rem; padding-bottom: 2rem; }
-    h1 { letter-spacing: -0.03em; }
+    .block-container { padding-top: 0.9rem; padding-bottom: 2rem; max-width: 1500px; }
+    h1 { letter-spacing: -0.03em; margin-bottom: 0.1rem; }
     h2, h3 { letter-spacing: -0.02em; }
-    [data-testid="stMetric"] { padding: 0.35rem 0.55rem; }
+    [data-testid="stMetric"] { padding: 0.3rem 0.45rem; }
     [data-testid="stDataFrame"] { border: 1px solid #e6eaf0; border-radius: 8px; }
     div[data-baseweb="select"] > div { min-height: 34px; }
+    div[data-testid="stDateInput"] label { display: none; }
+    div[data-testid="stDateInput"] { margin-top: 0.12rem; }
+    div[data-testid="stButton"] > button { min-height: 34px; padding: 0.1rem 0.35rem; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -46,14 +49,9 @@ def clean_text(value: object) -> str:
 
 def is_fraction_series(series: pd.Series) -> bool:
     numeric = pd.to_numeric(series, errors="coerce").dropna()
-    return not numeric.empty and numeric.abs().quantile(0.99) <= 1.01
-
-
-def percent_series(series: pd.Series) -> pd.Series:
-    numeric = pd.to_numeric(series, errors="coerce")
-    if is_fraction_series(numeric):
-        return numeric * 100.0
-    return numeric
+    if numeric.empty:
+        return False
+    return numeric.abs().quantile(0.99) <= 1.01
 
 
 def fmt_int(value: object) -> str:
@@ -71,10 +69,10 @@ def fmt_num(value: object, decimals: int = 2) -> str:
 def fmt_pct_value(value: object, source_is_fraction: bool) -> str:
     if value is None or pd.isna(value):
         return "—"
-    numeric = float(value)
+    number = float(value)
     if source_is_fraction:
-        numeric *= 100.0
-    return f"{numeric:,.2f}%"
+        number *= 100.0
+    return f"{number:,.2f}%"
 
 
 def strength_label(value: object) -> str:
@@ -93,14 +91,13 @@ def strength_label(value: object) -> str:
 
 
 def strength_color(value: object) -> str:
-    label = strength_label(value)
     return {
         "Leader": "#047857",
         "Strong": "#2563eb",
         "Neutral": "#64748b",
         "Weak": "#ea580c",
         "Lagging": "#b91c1c",
-    }.get(label, "#64748b")
+    }.get(strength_label(value), "#64748b")
 
 
 def regime_color(value: object) -> str:
@@ -113,40 +110,28 @@ def regime_color(value: object) -> str:
     }.get(clean_text(value), "#64748b")
 
 
-def style_strength_column(frame: pd.DataFrame, column: str = "Strength"):
-    if column not in frame.columns:
-        return frame.style
-    return frame.style.applymap(
-        lambda value: (
-            f"color: {strength_color(value)}; font-weight: 700;"
-        ),
-        subset=[column],
-    )
-
-
-def style_regime_column(frame: pd.DataFrame, column: str = "Regime"):
-    if column not in frame.columns:
-        return frame.style
-    return frame.style.applymap(
-        lambda value: (
-            f"color: {regime_color(value)}; font-weight: 700;"
-        ),
-        subset=[column],
-    )
-
-
 def style_table(frame: pd.DataFrame):
     styled = frame.style
     if "Strength" in frame.columns:
-        styled = style_strength_column(frame, "Strength")
+        styled = styled.map(
+            lambda value: f"color: {strength_color(value)}; font-weight: 700;",
+            subset=["Strength"],
+        )
     if "Regime" in frame.columns:
-        styled = styled.applymap(
-            lambda value: (
-                f"color: {regime_color(value)}; font-weight: 700;"
-            ),
+        styled = styled.map(
+            lambda value: f"color: {regime_color(value)}; font-weight: 700;",
             subset=["Regime"],
         )
     return styled
+
+
+def style_strength_only(frame: pd.DataFrame):
+    if "Strength" not in frame.columns:
+        return frame.style
+    return frame.style.map(
+        lambda value: f"color: {strength_color(value)}; font-weight: 700;",
+        subset=["Strength"],
+    )
 
 
 @st.cache_data(show_spinner=False)
@@ -186,43 +171,91 @@ def ensure_stock_columns(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def trading_dates(frame: pd.DataFrame) -> list[pd.Timestamp]:
-    return sorted(pd.to_datetime(frame["date"].dropna().unique()).tolist())
+    dates = pd.to_datetime(frame["date"].dropna().unique())
+    return sorted(pd.Timestamp(date) for date in dates)
 
 
-def compact_date_selector(dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
+def top_right_time_travel(dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
     latest = pd.Timestamp(dates[-1])
-    state_key = f"{key}_date"
+    state_key = f"{key}_selected_date"
     if state_key not in st.session_state:
         st.session_state[state_key] = latest
-    if pd.Timestamp(st.session_state[state_key]) not in dates:
+    selected = pd.Timestamp(st.session_state[state_key])
+    if selected not in dates:
+        selected = latest
         st.session_state[state_key] = latest
-    selected = pd.Timestamp(st.session_state[state_key])
     index = dates.index(selected)
-    left, middle, right = st.columns([0.65, 1.55, 0.65])
+
+    _, control_area = st.columns([5.6, 2.4])
+    with control_area:
+        previous, calendar, next_button = st.columns([0.45, 1.5, 0.45])
+        with previous:
+            if st.button("‹", key=f"{key}_previous", disabled=index == 0, use_container_width=True):
+                st.session_state[state_key] = dates[index - 1]
+                st.rerun()
+        with calendar:
+            selected_calendar = st.date_input(
+                "Historical date",
+                value=selected.date(),
+                min_value=pd.Timestamp(dates[0]).date(),
+                max_value=latest.date(),
+                key=f"{key}_calendar",
+                label_visibility="collapsed",
+            )
+        with next_button:
+            if st.button("›", key=f"{key}_next", disabled=index == len(dates) - 1, use_container_width=True):
+                st.session_state[state_key] = dates[index + 1]
+                st.rerun()
+
+    requested = pd.Timestamp(selected_calendar)
+    valid_dates = [date for date in dates if date <= requested]
+    resolved = valid_dates[-1] if valid_dates else dates[0]
+    if resolved != selected:
+        st.session_state[state_key] = resolved
+        st.rerun()
+    return resolved
+
+
+def show_section_header(title: str, dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
+    left, right = st.columns([5.6, 2.4])
     with left:
-        if st.button("‹", key=f"{key}_prev", disabled=index == 0, use_container_width=True):
-            st.session_state[state_key] = dates[index - 1]
-            st.rerun()
-    with middle:
-        chosen = st.date_input(
-            "Date",
-            value=selected.date(),
-            min_value=pd.Timestamp(dates[0]).date(),
-            max_value=latest.date(),
-            key=f"{key}_calendar",
-        )
-    chosen_timestamp = pd.Timestamp(chosen)
-    valid_dates = [date for date in dates if date <= chosen_timestamp]
-    if valid_dates:
-        st.session_state[state_key] = valid_dates[-1]
-    selected = pd.Timestamp(st.session_state[state_key])
-    index = dates.index(selected)
+        st.subheader(title)
     with right:
-        if st.button("›", key=f"{key}_next", disabled=index == len(dates) - 1, use_container_width=True):
-            st.session_state[state_key] = dates[index + 1]
-            st.rerun()
-    st.caption(f"Trading date: {selected.strftime('%d %b %Y')}")
-    return selected
+        latest = pd.Timestamp(dates[-1])
+        state_key = f"{key}_selected_date"
+        if state_key not in st.session_state:
+            st.session_state[state_key] = latest
+        selected = pd.Timestamp(st.session_state[state_key])
+        if selected not in dates:
+            selected = latest
+            st.session_state[state_key] = latest
+        index = dates.index(selected)
+        previous, calendar, next_button = st.columns([0.45, 1.5, 0.45])
+        with previous:
+            if st.button("‹", key=f"{key}_previous", disabled=index == 0, use_container_width=True):
+                st.session_state[state_key] = dates[index - 1]
+                st.rerun()
+        with calendar:
+            selected_calendar = st.date_input(
+                "Historical date",
+                value=selected.date(),
+                min_value=pd.Timestamp(dates[0]).date(),
+                max_value=latest.date(),
+                key=f"{key}_calendar",
+                label_visibility="collapsed",
+            )
+        with next_button:
+            if st.button("›", key=f"{key}_next", disabled=index == len(dates) - 1, use_container_width=True):
+                st.session_state[state_key] = dates[index + 1]
+                st.rerun()
+    requested = pd.Timestamp(selected_calendar)
+    valid_dates = [date for date in dates if date <= requested]
+    resolved = valid_dates[-1] if valid_dates else dates[0]
+    if resolved != selected:
+        st.session_state[state_key] = resolved
+        st.rerun()
+    st.caption(f"As of {resolved.strftime('%d %b %Y')}")
+    return resolved
 
 
 def group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
@@ -235,12 +268,20 @@ def group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
     data = frame[[column for column in wanted if column in frame.columns]].copy()
     data = data.rename(columns={
         group_column: "Basic Industry" if group_column == "basic_industry" else "Industry",
-        "regime": "Regime", "members": "Members", "strength_score": "Strength",
-        "eq_ret_1d": "1D Return", "eq_ret_5d": "5D Return", "eq_ret_20d": "20D Return",
-        "eq_ret_60d": "60D Return", "pct_above_20": "Stocks Above 20 DMA",
-        "pct_above_50": "Stocks Above 50 DMA", "pct_above_200": "Stocks Above 200 DMA",
-        "acc_minus_dist": "Accumulation minus Distribution", "breakout_count": "Breakouts",
-        "vcp_ready_count": "VCP Ready", "median_dist_52w_high": "Distance from 52W High",
+        "regime": "Regime",
+        "members": "Constituent Stocks",
+        "strength_score": "Strength",
+        "eq_ret_1d": "1D Return",
+        "eq_ret_5d": "5D Return",
+        "eq_ret_20d": "20D Return",
+        "eq_ret_60d": "60D Return",
+        "pct_above_20": "Stocks Above 20 DMA",
+        "pct_above_50": "Stocks Above 50 DMA",
+        "pct_above_200": "Stocks Above 200 DMA",
+        "acc_minus_dist": "Accumulation − Distribution",
+        "breakout_count": "Breakouts",
+        "vcp_ready_count": "VCP Ready",
+        "median_dist_52w_high": "Distance from 52W High",
     })
     if "Strength" in data.columns:
         data = data.sort_values("Strength", ascending=False)
@@ -257,19 +298,28 @@ def stock_table(frame: pd.DataFrame) -> pd.DataFrame:
     ]
     data = frame[[column for column in wanted if column in frame.columns]].copy()
     data = data.rename(columns={
-        "stock_rank_in_basic_industry": "Rank", "symbol": "Symbol",
+        "stock_rank_in_basic_industry": "Rank",
+        "symbol": "Symbol",
         "stock_strength_score": "Strength",
         "stock_strength_percentile_in_basic_industry": "Strength Percentile",
-        "close": "Close", "ret_1d": "1D Return", "ret_5d": "5D Return",
-        "ret_20d": "20D Return", "ret_60d": "60D Return",
-        "above_20": "Stocks Above 20 DMA", "above_50": "Stocks Above 50 DMA",
-        "above_200": "Stocks Above 200 DMA", "dist_52w_high": "Distance from 52W High",
-        "trend_template_pass": "Trend Template", "acc_day": "Accumulation Day",
-        "dist_day": "Distribution Day", "breakout_55": "Breakout",
+        "close": "Close",
+        "ret_1d": "1D Return",
+        "ret_5d": "5D Return",
+        "ret_20d": "20D Return",
+        "ret_60d": "60D Return",
+        "above_20": "Above 20 DMA",
+        "above_50": "Above 50 DMA",
+        "above_200": "Above 200 DMA",
+        "dist_52w_high": "Distance from 52W High",
+        "trend_template_pass": "Trend Template",
+        "acc_day": "Accumulation Day",
+        "dist_day": "Distribution Day",
+        "breakout_55": "55-Day Breakout",
         "vcp_ready": "VCP Ready",
     })
     if "Rank" in data.columns:
-        data = data.sort_values(["Rank", "Symbol"])
+        sort_columns = [column for column in ["Rank", "Symbol"] if column in data.columns]
+        data = data.sort_values(sort_columns)
     return data.reset_index(drop=True)
 
 
@@ -283,10 +333,8 @@ def display_group(frame: pd.DataFrame) -> pd.DataFrame:
     for column in percentage_columns:
         if column in data.columns:
             fraction = is_fraction_series(data[column])
-            data[column] = data[column].apply(
-                lambda value: fmt_pct_value(value, fraction)
-            )
-    for column in ["Rank", "Members", "Accumulation minus Distribution", "Breakouts", "VCP Ready"]:
+            data[column] = data[column].apply(lambda value: fmt_pct_value(value, fraction))
+    for column in ["Rank", "Constituent Stocks", "Accumulation − Distribution", "Breakouts", "VCP Ready"]:
         if column in data.columns:
             data[column] = data[column].apply(fmt_int)
     if "Strength" in data.columns:
@@ -296,16 +344,14 @@ def display_group(frame: pd.DataFrame) -> pd.DataFrame:
 
 def display_stocks(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
-    for column in [
+    percentage_columns = [
         "1D Return", "5D Return", "20D Return", "60D Return",
-        "Stocks Above 20 DMA", "Stocks Above 50 DMA", "Stocks Above 200 DMA",
-        "Distance from 52W High",
-    ]:
+        "Above 20 DMA", "Above 50 DMA", "Above 200 DMA", "Distance from 52W High",
+    ]
+    for column in percentage_columns:
         if column in data.columns:
             fraction = is_fraction_series(data[column])
-            data[column] = data[column].apply(
-                lambda value: fmt_pct_value(value, fraction)
-            )
+            data[column] = data[column].apply(lambda value: fmt_pct_value(value, fraction))
     if "Strength Percentile" in data.columns:
         fraction = is_fraction_series(data["Strength Percentile"])
         data["Strength Percentile"] = data["Strength Percentile"].apply(
@@ -321,55 +367,58 @@ def display_stocks(frame: pd.DataFrame) -> pd.DataFrame:
         data["Trend Template"] = data["Trend Template"].map(
             lambda value: "Pass" if bool(value) else "Fail"
         )
-    for column in ["Breakout", "VCP Ready"]:
+    for column in ["55-Day Breakout", "VCP Ready"]:
         if column in data.columns:
-            data[column] = data[column].map(
-                lambda value: "Yes" if bool(value) else "No"
-            )
+            data[column] = data[column].map(lambda value: "Yes" if bool(value) else "No")
     return data
 
 
 def group_history_chart(history: pd.DataFrame, group_column: str, group: str) -> None:
-    st.markdown("#### Industry leadership — last 12 months")
+    st.markdown("#### Industry trend — last 12 months")
     data = history[history[group_column] == group].copy()
+    if data.empty:
+        st.info("No history is available for this industry.")
+        return
     cutoff = data["date"].max() - pd.Timedelta(days=365)
     data = data[data["date"] >= cutoff].sort_values("date")
-    if data.empty:
-        st.info("No recent history is available for this industry.")
-        return
-    metric_options = {
+    metrics = {
         "Equal-weighted strength score": "strength_score",
         "Equal-weighted 20D return": "eq_ret_20d",
         "Breadth above 50 DMA": "pct_above_50",
         "Breadth above 200 DMA": "pct_above_200",
     }
-    available = {label: column for label, column in metric_options.items() if column in data.columns}
-    metric = st.selectbox("Industry chart", list(available), key=f"chart_{group_column}")
+    available = {label: column for label, column in metrics.items() if column in data.columns}
+    if not available:
+        st.info("No chart metric is available.")
+        return
+    metric = st.selectbox("Industry chart metric", list(available), key="industry_chart_metric")
     values = data[["date", available[metric]]].set_index("date")
-    st.line_chart(values, height=300, use_container_width=True)
+    if available[metric] in {"pct_above_50", "pct_above_200"} and is_fraction_series(values.iloc[:, 0]):
+        values = values * 100.0
+    st.line_chart(values, height=280, use_container_width=True)
 
 
 def stock_comparison_chart(history: pd.DataFrame, group: str, selected: pd.DataFrame) -> None:
-    st.markdown("#### Selected stocks — last 6 months")
+    st.markdown("#### Stock comparison — last 6 months")
     symbols = selected["symbol"].drop_duplicates().tolist()
     chosen = st.multiselect(
-        "Compare stocks",
+        "Stocks to compare",
         options=symbols,
         default=symbols[: min(3, len(symbols))],
-        max_selections=5,
+        max_selections=3,
         key="stock_compare_symbols",
     )
     if not chosen:
-        st.info("Select stocks to compare.")
+        st.info("Select one to three stocks to compare.")
         return
-    metric_options = {
+    metrics = {
         "Strength score": "stock_strength_score",
         "20D return": "ret_20d",
         "60D return": "ret_60d",
         "Close price": "close",
     }
-    available = {label: column for label, column in metric_options.items() if column in history.columns}
-    metric = st.selectbox("Stock chart", list(available), key="stock_chart_metric_clean")
+    available = {label: column for label, column in metrics.items() if column in history.columns}
+    metric = st.selectbox("Stock chart metric", list(available), key="stock_chart_metric")
     data = history[
         (history["basic_industry"] == group)
         & history["symbol"].isin(chosen)
@@ -379,18 +428,21 @@ def stock_comparison_chart(history: pd.DataFrame, group: str, selected: pd.DataF
         return
     chart = data.pivot(index="date", columns="symbol", values=available[metric]).sort_index()
     cutoff = chart.index.max() - pd.Timedelta(days=183)
-    st.line_chart(chart[chart.index >= cutoff], height=300, use_container_width=True)
+    chart = chart[chart.index >= cutoff]
+    if available[metric] in {"ret_20d", "ret_60d"} and is_fraction_series(chart.stack()):
+        chart = chart * 100.0
+    st.line_chart(chart, height=280, use_container_width=True)
 
 
 def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame) -> None:
-    st.subheader("Basic Industry Leadership")
     dates = trading_dates(basic_history)
-    selected_date = compact_date_selector(dates, "basic")
+    selected_date = show_section_header("Basic Industry Leadership", dates, "basic")
     selected = basic_history[basic_history["date"] == selected_date].copy()
+
     filters = st.columns([1.5, 0.8, 0.8])
     with filters[0]:
         regimes = st.multiselect(
-            "Regime",
+            "Regime filter",
             ["Strong", "Emerging", "Bottoming", "Weakening", "Exhausted"],
             default=["Strong", "Emerging", "Bottoming", "Weakening", "Exhausted"],
             key="basic_regimes",
@@ -398,18 +450,21 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     with filters[1]:
         minimum = st.number_input("Minimum stocks", min_value=1, value=1, step=1, key="basic_minimum")
     with filters[2]:
-        ranking = st.selectbox("Sort by", ["Strength", "Weakest first"], key="basic_sort")
+        ranking = st.selectbox("Ranking", ["Highest strength", "Lowest strength"], key="basic_sort")
+
     if regimes:
         selected = selected[selected["regime"].isin(regimes)]
-    if "members" in selected:
+    if "members" in selected.columns:
         selected = selected[selected["members"] >= minimum]
+
     table = group_table(selected, "basic_industry")
-    if ranking == "Weakest first":
+    if ranking == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=True).reset_index(drop=True)
         table["Rank"] = range(1, len(table) + 1)
     if table.empty:
-        st.warning("No industries match the selected filters.")
+        st.warning("No Basic Industries match the selected filters.")
         return
+
     st.dataframe(
         style_table(display_group(table)),
         use_container_width=True,
@@ -417,44 +472,48 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         height=405,
     )
     st.download_button(
-        "Download industry table",
+        "Download Basic Industry table",
         table.to_csv(index=False).encode("utf-8"),
         f"basic_industry_{selected_date.strftime('%Y%m%d')}.csv",
         "text/csv",
         key="download_basic_table",
     )
-    st.markdown("### Stock drill-down")
-    group_names = table["Basic Industry"].tolist()
+
+    st.markdown("### Constituent stock strength")
     selected_group = st.selectbox(
-        "Select Basic Industry",
-        group_names,
+        "Basic Industry",
+        table["Basic Industry"].tolist(),
         key="basic_group_selector",
     )
-    stock_dates = set(stock_history["date"].unique())
+
+    stock_dates = set(pd.to_datetime(stock_history["date"]).dt.normalize().unique())
     if selected_date not in stock_dates:
         st.info("Stock-level data is not available for this historical date.")
         return
+
     stocks = stock_history[
         (stock_history["date"] == selected_date)
         & (stock_history["basic_industry"] == selected_group)
     ].copy()
     if stocks.empty:
-        st.info("No stocks are available for this industry on the selected date.")
+        st.info("No constituent stocks are available for this industry on the selected date.")
         return
+
     stocks_raw = stock_table(stocks)
     st.dataframe(
-        style_strength_column(display_stocks(stocks_raw), "Strength"),
+        style_strength_only(display_stocks(stocks_raw)),
         use_container_width=True,
         hide_index=True,
         height=410,
     )
     st.download_button(
-        "Download stock table",
+        "Download constituent stock table",
         stocks_raw.to_csv(index=False).encode("utf-8"),
         f"{selected_group.replace('/', '_')}_stocks_{selected_date.strftime('%Y%m%d')}.csv",
         "text/csv",
         key="download_stock_table",
     )
+
     left, right = st.columns(2)
     with left:
         group_history_chart(basic_history, "basic_industry", selected_group)
@@ -463,13 +522,12 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
 
 
 def industry_view(industry_history: pd.DataFrame) -> None:
-    st.subheader("Industry Leadership")
     dates = trading_dates(industry_history)
-    selected_date = compact_date_selector(dates, "industry")
+    selected_date = show_section_header("Industry Leadership", dates, "industry")
     selected = industry_history[industry_history["date"] == selected_date].copy()
     table = group_table(selected, "industry")
     if table.empty:
-        st.warning("No industry data is available for this date.")
+        st.warning("No Industry data is available for this date.")
         return
     st.dataframe(
         style_table(display_group(table)),
@@ -478,7 +536,7 @@ def industry_view(industry_history: pd.DataFrame) -> None:
         height=470,
     )
     st.download_button(
-        "Download industry table",
+        "Download Industry table",
         table.to_csv(index=False).encode("utf-8"),
         f"industry_{selected_date.strftime('%Y%m%d')}.csv",
         "text/csv",
@@ -507,14 +565,14 @@ def methodology_view() -> None:
     st.subheader("Methodology")
     st.markdown(
         """
-        **Industry strength** uses equal-weighted constituent participation and return measures.
-        The dashboard displays precomputed EOD values and does not recalculate indicators in the browser.
+        **Industry strength** is based on precomputed, equal-weighted constituent participation and return measures.
+        The dashboard reads prepared EOD data and does not recalculate indicators in the browser.
 
-        **Strength percentile** is the stock's percentile rank within its Basic Industry. A value of 100.00%
-        means the strongest stock in that group; 50.00% is approximately the group median.
+        **Strength percentile** is each stock's percentile rank within its selected Basic Industry.
+        A reading of 100.00% is the highest-ranked stock in that industry.
 
-        **Breadth fields** show the percentage of constituent stocks above the corresponding moving average.
-        Returns and percentages are displayed with a maximum of two decimal places.
+        **Stocks Above 20 / 50 / 200 DMA** represent the percentage of constituent stocks above the relevant moving average.
+        Returns, breadth, and distance-from-high values display with a maximum of two decimal places.
         """
     )
 
@@ -526,12 +584,15 @@ def main() -> None:
         st.error("Required dashboard files are missing. Run the data workflow first.")
         st.code("\n".join(missing))
         st.stop()
+
     basic_history = ensure_group_columns(load_parquet(str(BASIC_HISTORY_FILE)), "basic_industry")
     industry_history = ensure_group_columns(load_parquet(str(INDUSTRY_HISTORY_FILE)), "industry")
     stock_history = ensure_stock_columns(load_parquet(str(STOCK_HISTORY_FILE)))
+
     st.title("NSE Sectoral Breadth")
     sync_text = SYNC_FILE.read_text(encoding="utf-8").strip() if SYNC_FILE.exists() else "Not available"
     st.caption(f"Data as of {sync_text.replace('T', ' ').replace('Z', ' IST')}")
+
     tabs = st.tabs(["Basic Industry", "Industry", "Overview", "Methodology"])
     with tabs[0]:
         basic_industry_view(basic_history, stock_history)
