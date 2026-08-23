@@ -1699,3 +1699,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1698,PHOENXINTL,Phoenix International Limited,EQ,INE245B01011,526481,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
 1699,PICCADIL,Piccadily Agro Industries Limited,EQ,INE546C01010,530305,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
 1700,PIDILITIND,Pidilite Industries Limited,EQ,INE318A01026,500331,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1701,PIGL,Power & Instrumentation (Gujarat) Limited,EQ,INE557Z01018,543912,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1702,PIIND,PI Industries Limited,EQ,INE603J01030,523642,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1703,PILANIINVS,Pilani Investment and Industries Corporation Limited,EQ,INE417C01014,539883,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1704,PILITA,PIL ITALICA LIFESTYLE LIMITED,EQ,INE600A01035,500327,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+1705,PINELABS,Pine Labs Limited,EQ,INE15B701018,544606,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+1706,PIONEEREMB,Pioneer Embroideries Limited,EQ,INE156C01018,514300,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1707,PIONRINV,Pioneer Investcorp Limited,BE,INE746D01014,507864,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1708,PIRAMALFIN,Piramal Finance Limited,EQ,INE202B01038,544597,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1709,PITTIENG,Pitti Engineering Limited,EQ,INE450D01021,513519,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1710,PIXTRANS,Pix Transmissions Limited,EQ,INE751B01018,500333,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+1711,PKTEA,The Peria Karamalai Tea & Produce Company Limited,EQ,INE431F01018,,,,,,,NOT_FOUND
+1712,PLASTIBLEN,Plastiblends India Limited,EQ,INE083C01022,523648,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1713,PLATIND,Platinum Industries Limited,EQ,INE0PT501018,544134,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1714,PLAZACABLE,Plaza Wires Limited,EQ,INE0INJ01017,544003,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1715,PML,Paul Merchants Limited,EQ,INE291E01019,539113,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1716,PNB,Punjab National Bank,EQ,INE160A01022,532461,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+1717,PNBGILTS,PNB Gilts Limited,EQ,INE859A01011,532366,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1718,PNBHOUSING,PNB Housing Finance Limited,EQ,INE572E01012,540173,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+1719,PNC,Pritish Nandy Communications Limited,EQ,INE392B01011,532387,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+1720,PNCINFRA,PNC Infratech Limited,EQ,INE195J01029,539150,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1721,PNGJL,P N Gadgil Jewellers Limited,EQ,INE953R01016,544256,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1722,PNGSREVA,PNGS Reva Diamond Jewellery Limited,EQ,INE1RDG01013,544718,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1723,POCL,Pondy Oxides & Chemicals Limited,EQ,INE063E01061,532626,Commodities,Diversified Metals,Metals & Mining,Diversified Metals,Diversified Metals,CLASSIFIED
+1724,PODDARMENT,Poddar Pigments Limited,EQ,INE371C01013,524570,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+1725,POEL,POCL Enterprises Limited,EQ,INE035S01028,539195,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1726,POKARNA,Pokarna Limited,EQ,INE637C01025,532486,Consumer Discretionary,Granites & Marbles,Consumer Durables,Consumer Durables,Granites & Marbles,CLASSIFIED
+1727,POLICYBZR,PB Fintech Limited,EQ,INE417T01026,543390,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+1728,POLYCAB,Polycab India Limited,EQ,INE455K01017,542652,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1729,POLYMED,Poly Medicure Limited,EQ,INE205C01021,531768,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+1730,POLYPLEX,Polyplex Corporation Limited,EQ,INE633B01018,524051,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1731,POLYSPIN,Polyspin Exports Limited,EQ,INE914G01029,539354,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1732,PONNIERODE,Ponni Sugars (Erode) Limited,EQ,INE838E01017,532460,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1733,POONAWALLA,Poonawalla Fincorp Limited,EQ,INE511C01022,524000,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1734,POWERGRID,Power Grid Corporation of India Limited,EQ,INE752E01010,532898,Utilities,Power - Transmission,Power,Power,Power - Transmission,CLASSIFIED
+1735,POWERICA,Powerica Limited,EQ,INE921L01032,544744,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1736,POWERINDIA,Hitachi Energy India Limited,EQ,INE07Y701011,543187,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1737,POWERMECH,Power Mech Projects Limited,EQ,INE211R01019,539302,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1738,PPAP,PPAP Automotive Limited,BE,INE095I01015,532934,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1739,PPL,Prakash Pipes Limited,BE,INE050001010,542684,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1740,PPLPHARMA,Piramal Pharma Limited,EQ,INE0DK501011,543635,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1741,PRABHA,Prabha Energy Limited,EQ,INE0I0M01023,544379,Energy,Oil Exploration & Production,"Oil, Gas & Consumable Fuels",Oil,Oil Exploration & Production,CLASSIFIED
+1742,PRADPME,Pradeep Metals Limited,BE,INE770A01010,513532,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1743,PRAENG,Prajay Engineers Syndicate Limited,EQ,INE505C01016,531746,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1744,PRAJIND,Praj Industries Limited,EQ,INE074A01025,522205,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1745,PRAKASH,Prakash Industries Limited,EQ,INE603A01013,506022,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1746,PRAKASHSTL,Prakash Steelage Limited,EQ,INE696K01024,533239,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1747,PRAVEG,Praveg Limited,EQ,INE722B01019,531637,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1748,PRAXIS,Praxis Home Retail Limited,EQ,INE546Y01022,540901,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+1749,PRECAM,Precision Camshafts Limited,EQ,INE484I01029,539636,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1750,PRECOT,Precot Limited,EQ,INE283A01014,,,,,,,NOT_FOUND
+1751,PRECWIRE,Precision Wires India Limited,EQ,INE372C01037,523539,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+1752,PREMCO,Premco Global Limited,EQ,INE001E01012,530331,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1753,PREMEXPLN,Premier Explosives Limited,EQ,INE863B01029,526247,Commodities,Explosives,Chemicals,Chemicals & Petrochemicals,Explosives,CLASSIFIED
+1754,PREMIER,Premier Limited,BE,INE342A01018,500540,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1755,PREMIERENE,Premier Energies Limited,EQ,INE0BS701011,544238,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1756,PREMIERPOL,Premier Polyfilm Limited,EQ,INE309M01020,514354,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1757,PRESTIGE,Prestige Estates Projects Limited,EQ,INE811K01011,533274,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1758,PRICOLLTD,Pricol Limited,EQ,INE726V01018,540293,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1759,PRIMESECU,Prime Securities Limited,EQ,INE032B01021,500337,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1760,PRIMO,Primo Chemicals Limited,EQ,INE607A01022,506852,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1761,PRINCEPIPE,Prince Pipes And Fittings Limited,EQ,INE689W01016,542907,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1762,PRISMX,Prismx Global Ventures Limited,EQ,INE286N01028,501314,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1763,PRITI,Priti International Limited,BE,INE974Z01015,,,,,,,NOT_FOUND
+1764,PRITIKAUTO,Pritika Auto Industries Limited,BE,INE583R01029,539359,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1765,PRIVISCL,Privi Speciality Chemicals Limited,EQ,INE959A01019,530117,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1766,PROSTARM,Prostarm Info Systems Limited,EQ,INE0BX301013,544410,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1767,PROTEAN,Protean eGov Technologies Limited,EQ,INE004A01022,544021,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1768,PROZONER,Prozone Realty Limited,EQ,INE195N01013,534675,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1769,PRSMJOHNSN,Prism Johnson Limited,EQ,INE010A01011,500338,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1770,PRUDENT,Prudent Corporate Advisory Services Limited,EQ,INE00F201020,543527,Financial Services,Financial Products Distributor,Financial Services,Capital Markets,Financial Products Distributor,CLASSIFIED
+1771,PRUDMOULI,Prudential Sugar Corporation Limited,BE,INE024D01016,500342,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1772,PSB,Punjab & Sind Bank,EQ,INE608A01012,533295,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+1773,PSPPROJECT,PSP Projects Limited,EQ,INE488V01015,540544,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1774,PTC,PTC India Limited,EQ,INE877F01012,532524,Utilities,Power Trading,Power,Power,Power Trading,CLASSIFIED
+1775,PTCIL,PTC Industries Limited,EQ,INE596F01018,539006,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+1776,PTL,PTL Enterprises Limited,EQ,INE034D01049,509220,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1777,PUNJABCHEM,Punjab Chemicals & Crop Protection Limited,EQ,INE277B01014,506618,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1778,PURVA,Puravankara Limited,EQ,INE323I01011,532891,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1779,PVP,PVP Ventures Limited,EQ,INE362A01016,517556,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1780,PVRINOX,PVR INOX Limited,EQ,INE191H01014,532689,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+1781,PVSL,Popular Vehicles and Services Limited,EQ,INE772T01024,544144,Consumer Discretionary,Auto -Dealer,Automobile and Auto Components,Automobiles,Auto -Dealer,CLASSIFIED
+1782,PWL,Physicswallah Limited,EQ,INE0LP301011,544609,Consumer Discretionary,E-Learning,Consumer Services,Other Consumer Services,E-Learning,CLASSIFIED
+1783,PYRAMID,Pyramid Technoplast Limited,EQ,INE0MIS01010,543969,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1784,QMSMEDI,QMS Medical Allied Services Limited,BE,INE0FMW01018,,,,,,,NOT_FOUND
+1785,QPOWER,Quality Power Electrical Equipments Limited,EQ,INE0SII01026,544367,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1786,QUADFUTURE,Quadrant Future Tek Limited,EQ,INE0LRY01011,544336,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1787,QUESS,Quess Corp Limited,EQ,INE615P01015,539978,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1788,QUICKHEAL,Quick Heal Technologies Limited,BE,INE306L01010,539678,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+1789,QUINT,Quint Digital Limited,EQ,INE641R01017,539515,Consumer Discretionary,Electronic Media,"Media, Entertainment & Publication",Media,Electronic Media,CLASSIFIED
+1790,RACE,Race Eco Chain Limited,EQ,INE084Q01012,537785,Utilities,Waste Management,Utilities,Other Utilities,Waste Management,CLASSIFIED
+1791,RACLGEAR,RACL Geartech Limited,EQ,INE704B01017,520073,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1792,RADAAN,Radaan Mediaworks India Limited,EQ,INE874F01027,590070,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1793,RADHIKAJWE,Radhika Jeweltech Limited,EQ,INE583V01021,540125,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1794,RADIANTCMS,Radiant Cash Management Services Limited,EQ,INE855R01021,543732,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1795,RADICO,Radico Khaitan Limited,EQ,INE944F01028,532497,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+1796,RADIOCITY,Music Broadcast Limited,EQ,INE919I01024,540366,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1797,RAILTEL,Railtel Corporation Of India Limited,EQ,INE0DD101019,543265,Telecommunication,Other Telecom Services,Telecommunication,Telecom - Services,Other Telecom Services,CLASSIFIED
+1798,RAIN,Rain Industries Limited,EQ,INE855B01025,500339,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+1799,RAINBOW,Rainbow Childrens Medicare Limited,EQ,INE961O01016,543524,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1800,RAJESHEXPO,Rajesh Exports Limited,BZ,INE343B01030,531500,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
