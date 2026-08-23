@@ -1399,3 +1399,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1398,MAXIND,Max India Limited,EQ,INE0CG601016,543223,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
 1399,MAYURUNIQ,Mayur Uniquoters Ltd,EQ,INE040D01038,522249,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
 1400,MAZDA,Mazda Limited,BE,INE885E01042,523792,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1401,MAZDOCK,Mazagon Dock Shipbuilders Limited,EQ,INE249Z01020,543237,Industrials,Ship Building & Allied Services,Capital Goods,Industrial Manufacturing,Ship Building & Allied Services,CLASSIFIED
+1402,MBAPL,Madhya Bharat Agro Products Limited,EQ,INE900L01028,,,,,,,NOT_FOUND
+1403,MBEL,M & B Engineering Limited,EQ,INE08N601015,544470,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1404,MBLINFRA,MBL Infrastructure Limited,EQ,INE912H01013,533152,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1405,MCCHRLS-B,Mac Charles India Limited,EQ,INE435D01014,507836,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1406,MCL,M TEK COPPER LIMITED,EQ,INE813V01022,,,,,,,NOT_FOUND
+1407,MCLEODRUSS,Mcleod Russel India Limited,EQ,INE942G01012,532654,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1408,MCLOUD,Magellanic Cloud Limited,EQ,INE613C01026,538891,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1409,MCX,Multi Commodity Exchange of India Limited,EQ,INE745G01043,534091,Financial Services,Exchange and Data Platform,Financial Services,Capital Markets,Exchange and Data Platform,CLASSIFIED
+1410,MEDANTA,Global Health Limited,EQ,INE474Q01031,543654,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1411,MEDIASSIST,Medi Assist Healthcare Services Limited,EQ,INE456Z01021,544088,Financial Services,Insurance Distributors,Financial Services,Insurance,Insurance Distributors,CLASSIFIED
+1412,MEDICAMEQ,Medicamen Biotech Limited,EQ,INE646B01010,531146,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1413,MEDICAPQ,Medi Caps Limited,EQ,INE442D01010,523144,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1414,MEDICO,Medico Remedies Limited,EQ,INE630Y01024,540937,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1415,MEDPLUS,Medplus Health Services Limited,EQ,INE804L01022,543427,Consumer Discretionary,Pharmacy Retail,Consumer Services,Retailing,Pharmacy Retail,CLASSIFIED
+1416,MEESHO,Meesho Limited,EQ,INE0VDM01015,544632,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+1417,MEGASTAR,Megastar Foods Limited,EQ,INE00EM01016,541352,Fast Moving Consumer Goods,Other Food Products,Fast Moving Consumer Goods,Food Products,Other Food Products,CLASSIFIED
+1418,MEIL,Mangal Electrical Industries Limited,EQ,INE0PKD01011,544492,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1419,MENNPIS,Menon Pistons Limited,EQ,INE650G01029,531727,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1420,MENONBE,Menon Bearings Limited,BE,INE071D01033,523828,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1421,MEP,MEP Infrastructure Developers Limited,BZ,INE776I01010,539126,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+1422,MERCANTILE,Mercantile Ventures Limited,EQ,INE689O01013,538942,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1423,MERCURYEV,Mercury Ev-Tech Limited,EQ,INE763M01028,531357,Consumer Discretionary,Passenger Cars & Utility Vehicles,Automobile and Auto Components,Automobiles,Passenger Cars & Utility Vehicles,CLASSIFIED
+1424,METROBRAND,Metro Brands Limited,EQ,INE317I01021,543426,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+1425,METROGLOBL,Metroglobal Limited,EQ,INE085D01033,500159,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1426,METROPOLIS,Metropolis Healthcare Limited,EQ,INE112L01020,542650,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+1427,MFML,Mahalaxmi Fabric Mills Limited,EQ,INE0US801024,544233,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1428,MFSL,Max Financial Services Limited,EQ,INE180A01020,500271,Financial Services,Life Insurance,Financial Services,Insurance,Life Insurance,CLASSIFIED
+1429,MGEL,Mangalam Global Enterprise Limited,BE,INE0APB01032,544273,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1430,MGL,Mahanagar Gas Limited,EQ,INE002S01010,539957,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
+1431,MHLXMIRU,Mahalaxmi Rubtech Limited,BE,INE112D01035,514450,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1432,MHRIL,Mahindra Holidays & Resorts India Limited,EQ,INE998I01010,533088,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1433,MICEL,MIC Electronics Limited,BE,INE287C01037,532850,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+1434,MIDHANI,Mishra Dhatu Nigam Limited,EQ,INE099Z01011,541195,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1435,MIDWESTLTD,Midwest Limited,EQ,INE0XAD01024,544587,Consumer Discretionary,Granites & Marbles,Consumer Durables,Consumer Durables,Granites & Marbles,CLASSIFIED
+1436,MIIL,Meghna Infracon Infrastructure Limited,EQ,INE898Q01015,538668,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1437,MILKYMIST,Milky Mist Dairy Food Limited,EQ,INE00IT01020,544868,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+1438,MINALIND,Minal Industries Limited,EQ,INE097E01028,522235,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1439,MINDACORP,Minda Corporation Limited,EQ,INE842C01021,538962,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1440,MINDTECK,Mindteck (India) Limited,EQ,INE110B01017,517344,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1441,MIRZAINT,Mirza International Limited,EQ,INE771A01026,526642,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+1442,MITCON,MITCON Consultancy & Engineering Services Limited,BE,INE828O01033,,,,,,,NOT_FOUND
+1443,MITTAL,Mittal Life Style Limited,EQ,INE997Y01027,,,,,,,NOT_FOUND
+1444,MKEXIM,M.K. Exim (India) Limited,EQ,INE227F01010,538890,Consumer Discretionary,Distributors,Consumer Services,Retailing,Distributors,CLASSIFIED
+1445,MKPL,M K Proteins Limited,EQ,INE964W01021,543919,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+1446,MLKFOOD,Milkfood Limited,EQ,INE588G01021,507621,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+1447,MMFL,MM Forgings Limited,EQ,INE227C01017,522241,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1448,MMP,MMP Industries Limited,EQ,INE511Y01018,,,,,,,NOT_FOUND
+1449,MMTC,MMTC Limited,EQ,INE123F01029,513377,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1450,MMWL,Media Matrix Worldwide Limited,EQ,INE200D01020,512267,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+1451,MOBIKWIK,One Mobikwik Systems Limited,EQ,INE0HLU01028,544305,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+1452,MODINATUR,Modi Naturals Limited,BE,INE537F01012,519003,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1453,MODIRUBBER,Modi Rubber Limited,EQ,INE832A01018,500890,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+1454,MODIS,Modis Navnirman Limited,EQ,INE0L0L01012,543539,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1455,MODISONLTD,MODISON LIMITED,BE,INE737D01021,506261,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1456,MODTHREAD,Modern Threads (India) Limited,EQ,INE794W01014,500282,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1457,MOHITE,Mohite Industries Limited,EQ,INE154B01023,532140,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1458,MOHITIND,Mohit Industries Limited,EQ,INE954E01012,531453,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1459,MOIL,MOIL Limited,EQ,INE490G01020,533286,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+1460,MOKSH,Moksh Ornaments Limited,EQ,INE514Y01020,,,,,,,NOT_FOUND
+1461,MOL,Meghmani Organics Limited,EQ,INE0CT101020,543331,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1462,MOLBIO,Molbio Diagnostics Limited,EQ,INE869T01028,544866,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+1463,MOLDTECH,Mold-Tek Technologies Limited,BE,INE835B01035,526263,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1464,MOLDTKPAC,Mold-Tek Packaging Limited,EQ,INE893J01029,533080,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1465,MONARCH,Monarch Networth Capital Limited,EQ,INE903D01011,511551,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1466,MONEYBOXX,Moneyboxx Finance Limited,EQ,INE296Q01012,538446,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1467,MONTECARLO,Monte Carlo Fashions Limited,EQ,INE950M01013,538836,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1468,MOREPENLAB,Morepen Laboratories Limited,EQ,INE083A01026,500288,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1469,MOSCHIP,Moschip Technologies Limited,EQ,INE935B01025,532407,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+1470,MOTHERSON,Samvardhana Motherson International Limited,EQ,INE775A01035,517334,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1471,MOTILALOFS,Motilal Oswal Financial Services Limited,EQ,INE338I01027,532892,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1472,MOTISONS,Motisons Jewellers Limited,EQ,INE0FRK01020,544053,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1473,MOTOGENFIN,The Motor & General Finance Limited,BE,INE861B01023,501343,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1474,MPDL,MPDL Limited,EQ,INE493H01014,532723,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1475,MPHASIS,MphasiS Limited,EQ,INE356A01018,526299,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1476,MPSLTD,MPS Limited,EQ,INE943D01017,532440,Consumer Discretionary,Printing & Publication,"Media, Entertainment & Publication",Printing & Publication,Printing & Publication,CLASSIFIED
+1477,MRF,MRF Limited,EQ,INE883A01011,500290,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+1478,MRPL,Mangalore Refinery and Petrochemicals Limited,EQ,INE103A01014,500109,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+1479,MSL,Mangalam Seeds Limited,EQ,INE829S01016,539275,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1480,MSPL,MSP Steel & Power Limited,EQ,INE752G01015,532650,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1481,MSTCLTD,Mstc Limited,EQ,INE255X01014,542597,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1482,MSUMI,Motherson Sumi Wiring India Limited,EQ,INE0FS801015,543498,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1483,MTARTECH,Mtar Technologies Limited,BE,INE864I01014,543270,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1484,MTEDUCARE,MT Educare Limited,BE,INE472M01018,534312,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1485,MTNL,Mahanagar Telephone Nigam Limited,EQ,INE153A01019,500108,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+1486,MUFIN,Mufin Green Finance Limited,EQ,INE08KJ01020,542774,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1487,MUFTI,Credo Brands Marketing Limited,EQ,INE220Q01020,544058,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+1488,MUKANDLTD,Mukand Limited,EQ,INE304A01026,500460,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1489,MUKESHB,Mukesh Babu Financial Services Limited,EQ,INE596B01017,530341,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1490,MUKKA,Mukka Proteins Limited,EQ,INE0CG401037,544135,Fast Moving Consumer Goods,Animal Feed,Fast Moving Consumer Goods,Food Products,Animal Feed,CLASSIFIED
+1491,MUKTAARTS,Mukta Arts Limited,BE,INE374B01019,532357,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+1492,MUNJALAU,Munjal Auto Industries Limited,EQ,INE672B01032,520059,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1493,MUNJALSHOW,Munjal Showa Limited,EQ,INE577A01027,520043,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1494,MURUDCERA,Murudeshwar Ceramics Limited,EQ,INE692B01014,515037,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+1495,MUTHOOTCAP,Muthoot Capital Services Limited,EQ,INE296G01013,511766,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1496,MUTHOOTFIN,Muthoot Finance Limited,EQ,INE414G01012,533398,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1497,MUTHOOTMF,Muthoot Microfin Limited,EQ,INE046W01019,544055,Financial Services,Microfinance Institutions,Financial Services,Finance,Microfinance Institutions,CLASSIFIED
+1498,MVELECTRO,MV Electrosystems Limited,EQ,INE0OWZ01020,544851,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1499,MVGJL,Manoj Vaibhav Gems N Jewellers Limited,EQ,INE0KNT01012,543995,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1500,MWL,Mangalam Worldwide Limited,EQ,INE0JYY01029,544764,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
