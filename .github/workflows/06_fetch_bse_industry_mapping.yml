@@ -2,15 +2,29 @@ name: 06 Fetch BSE Industry Mapping
 
 on:
   workflow_dispatch:
+    inputs:
+      start_index:
+        description: "Zero-based row index to start from"
+        required: true
+        default: "0"
+      batch_size:
+        description: "Number of stocks to process"
+        required: true
+        default: "100"
+
+permissions:
+  contents: write
 
 jobs:
   fetch-bse-industry-mapping:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,14 +36,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch BSE industry mapping
+      - name: Fetch one BSE classification batch
+        env:
+          START_INDEX: ${{ inputs.start_index }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
         run: |
           python scripts/06_fetch_bse_industry_mapping.py
 
-      - name: Upload classified NSE master
+      - name: Commit completed batch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            data/processed/nse_mainboard_master_bse_classified.parquet \
+            data/processed/nse_bse_industry_mapping.csv
+
+          if git diff --cached --quiet; then
+            echo "No output changes to commit."
+          else
+            git commit -m "Update BSE classifications rows ${{ inputs.start_index }}"
+            git push
+          fi
+
+      - name: Upload batch outputs
         uses: actions/upload-artifact@v4
         with:
-          name: nse-mainboard-bse-classified
+          name: nse-bse-classification-batch-${{ inputs.start_index }}
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_bse_industry_mapping.csv
