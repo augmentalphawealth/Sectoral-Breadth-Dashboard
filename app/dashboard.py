@@ -78,7 +78,12 @@ def fmt_pct_value(value: object, source_is_fraction: bool) -> str:
 def strength_label(value: object) -> str:
     if value is None or pd.isna(value):
         return "Neutral"
-    score = float(value)
+
+    try:
+        score = float(str(value).replace(",", "").replace("%", "").strip())
+    except (TypeError, ValueError):
+        return "Neutral"
+
     if score >= 70:
         return "Leader"
     if score >= 55:
@@ -91,14 +96,14 @@ def strength_label(value: object) -> str:
 
 
 def strength_color(value: object) -> str:
-    return {
+    colors = {
         "Leader": "#047857",
         "Strong": "#2563eb",
         "Neutral": "#64748b",
         "Weak": "#ea580c",
         "Lagging": "#b91c1c",
-    }.get(strength_label(value), "#64748b")
-
+    }
+    return colors.get(strength_label(value), "#64748b")
 
 def regime_color(value: object) -> str:
     return {
