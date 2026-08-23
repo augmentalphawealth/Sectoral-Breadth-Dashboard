@@ -1,8 +1,10 @@
 from pathlib import Path
+import random
 import time
 
 import pandas as pd
 import yfinance as yf
+from yfinance.exceptions import YFRateLimitError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,14 +14,41 @@ STILL_UNMAPPED_FILE = ROOT / "data" / "processed" / "nse_bse_still_unmapped.csv"
 YAHOO_MAPPING_FILE = ROOT / "data" / "processed" / "nse_yahoo_industry_mapping.csv"
 YAHOO_UNMAPPED_FILE = ROOT / "data" / "processed" / "nse_yahoo_still_unmapped.csv"
 
-BATCH_SIZE = 25
-REQUEST_DELAY_SECONDS = 1.0
+BATCH_SIZE = 15
+REQUEST_DELAY_SECONDS = 2.0
+MAX_RETRIES = 5
+BACKOFF_SECONDS = 30
 
 
 def clean(value):
     if value is None or pd.isna(value):
         return ""
     return str(value).strip()
+
+
+def fetch_yahoo_info(yahoo_ticker):
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            info = yf.Ticker(yahoo_ticker).get_info() or {}
+            return info, ""
+
+        except YFRateLimitError:
+            wait_seconds = (
+                BACKOFF_SECONDS * (2 ** (attempt - 1))
+                + random.uniform(0, 5)
+            )
+
+            print(
+                f"  Yahoo rate limited. Retry {attempt}/{MAX_RETRIES} "
+                f"after {wait_seconds:.1f} seconds."
+            )
+
+            time.sleep(wait_seconds)
+
+        except Exception as exc:
+            return {}, f"{type(exc).__name__}: {exc}"
+
+    return {}, "Yahoo rate limit persisted after maximum retries"
 
 
 def load_yahoo_mapping():
@@ -39,13 +68,16 @@ def load_yahoo_mapping():
     if not YAHOO_MAPPING_FILE.exists():
         return pd.DataFrame(columns=columns)
 
-    df = pd.read_csv(YAHOO_MAPPING_FILE, dtype=str).fillna("")
+    mapping_df = pd.read_csv(
+        YAHOO_MAPPING_FILE,
+        dtype=str,
+    ).fillna("")
 
     for column in columns:
-        if column not in df.columns:
-            df[column] = ""
+        if column not in mapping_df.columns:
+            mapping_df[column] = ""
 
-    return df[columns]
+    return mapping_df[columns]
 
 
 def main():
@@ -58,21 +90,31 @@ def main():
         )
 
     master_df = pd.read_parquet(MASTER_FILE)
+
     bse_unmapped_df = pd.read_csv(
         STILL_UNMAPPED_FILE,
         dtype=str,
     ).fillna("")
 
-    for column in [
+    yahoo_columns = [
         "yahoo_ticker",
         "yahoo_sector",
         "yahoo_industry",
         "yahoo_quote_type",
         "yahoo_attempted",
         "yahoo_failure_reason",
-    ]:
+    ]
+
+    for column in yahoo_columns:
         if column not in master_df.columns:
             master_df[column] = ""
+
+    bse_unmapped_isins = set(
+        bse_unmapped_df["isin"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+    )
 
     candidates = master_df[
         master_df["classification_status"]
@@ -85,20 +127,14 @@ def main():
         .astype(str)
         .str.strip()
         .eq("YES")
-    ].copy()
-
-    candidates = candidates[
-        candidates["isin"]
+        & master_df["isin"]
         .fillna("")
         .astype(str)
         .str.strip()
-        .isin(
-            bse_unmapped_df["isin"]
-            .fillna("")
-            .astype(str)
-            .str.strip()
-        )
-    ].head(BATCH_SIZE)
+        .isin(bse_unmapped_isins)
+    ].copy()
+
+    candidates = candidates.head(BATCH_SIZE)
 
     print(f"Total BSE-unresolved securities: {len(bse_unmapped_df)}")
     print(f"Yahoo candidates in this batch: {len(candidates)}")
@@ -134,13 +170,7 @@ def main():
             f"{symbol} | {yahoo_ticker} | {isin}"
         )
 
-        info = {}
-        failure_reason = ""
-
-        try:
-            info = yf.Ticker(yahoo_ticker).get_info() or {}
-        except Exception as exc:
-            failure_reason = f"{type(exc).__name__}: {exc}"
+        info, failure_reason = fetch_yahoo_info(yahoo_ticker)
 
         yahoo_sector = clean(info.get("sector"))
         yahoo_industry = clean(info.get("industry"))
@@ -153,8 +183,10 @@ def main():
         master_df.at[master_index, "yahoo_industry"] = yahoo_industry
         master_df.at[master_index, "yahoo_quote_type"] = yahoo_quote_type
         master_df.at[master_index, "yahoo_attempted"] = "YES"
+
         master_df.at[master_index, "yahoo_failure_reason"] = (
-            "" if matched else failure_reason or "No Yahoo sector or industry found"
+            "" if matched
+            else failure_reason or "No Yahoo sector or industry found"
         )
 
         if matched:
@@ -195,7 +227,10 @@ def main():
                 ),
                 "yahoo_failure_reason": (
                     "" if matched
-                    else master_df.at[master_index, "yahoo_failure_reason"]
+                    else master_df.at[
+                        master_index,
+                        "yahoo_failure_reason",
+                    ]
                 ),
             }
         )
@@ -207,10 +242,12 @@ def main():
         ignore_index=True,
     )
 
-    yahoo_mapping_df = yahoo_mapping_df.drop_duplicates(
-        subset=["isin"],
-        keep="last",
-    ).sort_values("symbol")
+    yahoo_mapping_df = (
+        yahoo_mapping_df
+        .drop_duplicates(subset=["isin"], keep="last")
+        .sort_values("symbol")
+        .reset_index(drop=True)
+    )
 
     master_df.to_parquet(MASTER_FILE, index=False)
     yahoo_mapping_df.to_csv(YAHOO_MAPPING_FILE, index=False)
@@ -225,7 +262,7 @@ def main():
 
     final_unmapped.to_csv(YAHOO_UNMAPPED_FILE, index=False)
 
-    yahoo_resolved = (
+    yahoo_resolved = int(
         master_df["classification_status"]
         .fillna("")
         .astype(str)
@@ -234,18 +271,25 @@ def main():
         .sum()
     )
 
-    remaining_yahoo = master_df[
-        master_df["classification_status"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
-        .eq("NOT_FOUND")
-        & ~master_df["yahoo_attempted"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
-        .eq("YES")
-    ].shape[0]
+    remaining_yahoo = int(
+        (
+            master_df["classification_status"]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .eq("NOT_FOUND")
+            & ~master_df["yahoo_attempted"]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .eq("YES")
+            & master_df["isin"]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .isin(bse_unmapped_isins)
+        ).sum()
+    )
 
     print("\n========== YAHOO FALLBACK BATCH COMPLETE ==========")
     print(f"Yahoo candidates processed this run: {len(candidates)}")
