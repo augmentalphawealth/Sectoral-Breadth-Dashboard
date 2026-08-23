@@ -6,6 +6,7 @@ on:
 jobs:
   fetch-bse-industry-mapping:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -25,8 +26,10 @@ jobs:
         run: |
           python scripts/06_fetch_bse_industry_mapping.py
 
-      - name: Upload industry mapping CSV
+      - name: Upload classified NSE master
         uses: actions/upload-artifact@v4
         with:
-          name: nse-industry-mapping
-          path: data/nse_industry_mapping.csv
+          name: nse-mainboard-bse-classified
+          path: |
+            data/processed/nse_mainboard_master_bse_classified.parquet
+            data/processed/nse_bse_industry_mapping.csv
