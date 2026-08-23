@@ -7,23 +7,20 @@ ROOT = Path(__file__).resolve().parents[1]
 DOWNLOAD_FOLDER = ROOT / "data" / "bse_test_downloads"
 DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
+BSE_CODE = "500180"  # HDFCBANK
+
 
 def main():
     bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
 
     try:
-        print("Available BSE methods (starting with 'get' or 'fetch' or 'search' or 'lookup'):")
-        methods = [m for m in dir(bse) if not m.startswith("_")]
+        print("Testing equityMetaInfo for BSE code:", BSE_CODE)
+        meta = bse.equityMetaInfo(BSE_CODE)
 
-        keywords = ["get", "fetch", "search", "lookup", "info", "company", "industry", "sector"]
-        filtered = [m for m in methods if any(k in m.lower() for k in keywords)]
-
-        for m in sorted(filtered):
-            print(m)
-
-        print("\n========== ALL METHODS ==========")
-        for m in sorted(methods):
-            print(m)
+        print("\n========== EQUITY META INFO ==========")
+        print(meta)
+        print("\n========== TYPE ==========")
+        print(type(meta))
 
     finally:
         try:
