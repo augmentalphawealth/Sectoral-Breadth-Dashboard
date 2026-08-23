@@ -699,3 +699,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 698,ESSARSHPNG,Essar Shipping Limited,EQ,INE122M01019,533704,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
 699,ESSENTIA,Integra Essentia Limited,EQ,INE418N01035,535958,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
 700,ESTER,Ester Industries Limited,EQ,INE778B01029,500136,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+701,ETERNAL,ETERNAL LIMITED,EQ,INE758T01015,543320,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+702,ETHOSLTD,Ethos Limited,EQ,INE04TZ01018,543532,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+703,EUREKAFORB,Eureka Forbes Limited,EQ,INE0KCE01017,543482,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+704,EUROBOND,Euro Panel Products Limited,EQ,INE505V01016,544461,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+705,EUROPRATIK,Euro Pratik Sales Limited,EQ,INE198501012,544519,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+706,EUROTEXIND,Eurotex Industries and Exports Limited,BE,INE022C01012,521014,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+707,EVEREADY,Eveready Industries India Limited,EQ,INE128A01029,531508,Fast Moving Consumer Goods,Household Products,Fast Moving Consumer Goods,Household Products,Household Products,CLASSIFIED
+708,EVERESTIND,Everest Industries Limited,BE,INE295A01018,508906,Commodities,Other Construction Materials,Construction Materials,Other Construction Materials,Other Construction Materials,CLASSIFIED
+709,EXCELINDUS,Excel Industries Limited,EQ,INE369A01029,500650,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+710,EXCELSOFT,Excelsoft Technologies Limited,EQ,INE606N01019,544617,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+711,EXICOM,Exicom Tele-Systems Limited,EQ,INE777F01014,544133,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+712,EXIDEIND,Exide Industries Limited,EQ,INE302A01020,500086,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+713,EXPLEOSOL,Expleo Solutions Limited,EQ,INE201K01015,533121,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+714,EXXARO,Exxaro Tiles Limited,EQ,INE0GFE01026,543327,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+715,FABTECH,Fabtech Technologies Limited,EQ,INE0HF201011,544558,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+716,FACT,Fertilizers and Chemicals Travancore Limited,EQ,INE188A01015,590024,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+717,FAIRCHEMOR,Fairchem Organics Limited,BE,INE0DNW01011,543252,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+718,FAZE3Q,Faze Three Limited,EQ,INE963C01033,530079,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+719,FCL,Fineotex Chemical Limited,EQ,INE045J01034,533333,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+720,FCSSOFT,FCS Software Solutions Limited,EQ,INE512B01022,532666,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+721,FDC,FDC Limited,EQ,INE258B01022,531599,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+722,FEDDERSHOL,Fedders Holding Limited,EQ,INE417D01020,511628,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+723,FEDERALBNK,The Federal Bank  Limited,EQ,INE171A01029,500469,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+724,FEDFINA,Fedbank Financial Services Limited,EQ,INE007N01010,544027,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+725,FEL,Future Enterprises Limited,BZ,INE623B01027,523574,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+726,FELDVR,Future Enterprises Limited,BZ,IN9623B01058,570002,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+727,FERMENTA,Fermenta Biotech Limited,EQ,INE225B01021,506414,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+728,FIBERWEB,Fiberweb (India) Limited,EQ,INE296C01020,507910,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+729,FIEMIND,Fiem Industries Limited,EQ,INE737H01014,532768,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+730,FILATEX,Filatex India Limited,EQ,INE816B01035,526227,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+731,FILATFASH,Filatex Fashions Limited,EQ,INE185E01021,532022,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+732,FINCABLES,Finolex Cables Limited,EQ,INE235A01022,500144,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+733,FINEORG,Fine Organic Industries Limited,EQ,INE686Y01026,541557,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+734,FINKURVE,Finkurve Financial Services Limited,EQ,INE734I01027,508954,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+735,FINOPB,Fino Payments Bank Limited,EQ,INE02NC01014,543386,Financial Services,Other Bank,Financial Services,Banks,Other Bank,CLASSIFIED
+736,FINPIPE,Finolex Industries Limited,EQ,INE183A01024,500940,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+737,FIRSTCRY,Brainbees Solutions Limited,EQ,INE02RE01045,544226,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+738,FISCHER,Fischer Medical Ventures Limited,EQ,INE771F01041,524743,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+739,FIVESTAR,Five-Star Business Finance Limited,EQ,INE128S01021,543663,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+740,FLAIR,Flair Writing Industries Limited,EQ,INE00Y201027,544030,Fast Moving Consumer Goods,Stationary,Fast Moving Consumer Goods,Household Products,Stationary,CLASSIFIED
+741,FLEXITUFF,Flexituff Ventures International Limited,BE,INE060J01017,533638,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+742,FLFL,Future Lifestyle Fashions Limited,BZ,INE452O01016,536507,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+743,FLUOROCHEM,Gujarat Fluorochemicals Limited,EQ,INE09N301011,542812,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+744,FMGOETZE,Federal-Mogul Goetze (India) Limited.,EQ,INE529A01010,505744,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+745,FMNL,Future Market Networks Limited,BE,INE360L01017,533296,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+746,FOCUS,Focus Lighting and Fixtures Limited,BE,INE593W01028,,,,,,,NOT_FOUND
+747,FOODSIN,Foods & Inns Limited,EQ,INE976E01023,507552,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+748,FORCEMOT,FORCE MOTORS LTD,EQ,INE451A01017,500033,Consumer Discretionary,Passenger Cars & Utility Vehicles,Automobile and Auto Components,Automobiles,Passenger Cars & Utility Vehicles,CLASSIFIED
+749,FORTIS,Fortis Healthcare Limited,EQ,INE061F01013,532843,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+750,FOSECOIND,Foseco India Limited,EQ,INE519A01011,500150,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+751,FRACTAL,Fractal Analytics Limited,EQ,INE212S01015,544700,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+752,FREDUN,Fredun Pharmaceuticals Limited,EQ,INE194R01017,539730,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+753,FRONTSP,Frontier Springs Limited,EQ,INE572D01014,522195,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+754,FSL,Firstsource Solutions Limited,EQ,INE684F01012,532809,Services,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),Services,Commercial Services & Supplies,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),CLASSIFIED
+755,FUSION,Fusion Finance Limited,EQ,INE139R01012,543652,Financial Services,Microfinance Institutions,Financial Services,Finance,Microfinance Institutions,CLASSIFIED
+756,GABRIEL,Gabriel India Limited,EQ,INE524A01029,505714,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+757,GAEL,Gujarat Ambuja Exports Limited,EQ,INE036B01030,524226,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+758,GAIL,GAIL (India) Limited,EQ,INE129A01019,532155,Energy,Gas Transmission/Marketing,"Oil, Gas & Consumable Fuels",Gas,Gas Transmission/Marketing,CLASSIFIED
+759,GALAPREC,Gala Precision Engineering Limited,EQ,INE0RE001014,544244,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+760,GALAXYSURF,Galaxy Surfactants Limited,EQ,INE600K01018,540935,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+761,GALLANTT,Gallantt Ispat Limited,EQ,INE297H01019,532726,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+762,GANDHAR,Gandhar Oil Refinery (India) Limited,EQ,INE717W01049,544029,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+763,GANDHITUBE,Gandhi Special Tubes Limited,EQ,INE524B01027,513108,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+764,GANECOS,Ganesha Ecosphere Limited,EQ,INE845D01014,514167,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+765,GANESHBE,Ganesh Benzoplast Limited,BE,INE388A01029,500153,Energy,Oil Storage & Transportation,"Oil, Gas & Consumable Fuels",Oil,Oil Storage & Transportation,CLASSIFIED
+766,GANESHCP,Ganesh Consumer Products Limited,EQ,INE652V01016,544528,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+767,GANESHHOU,GANESH HOUSING LIMITED,EQ,INE460C01014,526367,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+768,GANGAFORGE,Ganga Forging Limited,EQ,INE691Z01023,,,,,,,NOT_FOUND
+769,GANGESSECU,Ganges Securities Limited,EQ,INE335W01016,540647,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+770,GARFIBRES,Garware Technical Fibres Limited,EQ,INE276A01018,509557,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+771,GARUDA,Garuda Construction and Engineering Limited,EQ,INE0JVO01026,544271,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+772,GATECH,GACM Technologies Limited,BE,INE224E01028,531723,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+773,GATECHDVR,GACM Technologies Limited,BE,INE224E01036,570005,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+774,GATEWAY,Gateway Distriparks Limited,EQ,INE079J01017,543489,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+775,GAUDIUMIVF,Gaudium IVF and Women Health Limited,BE,INE0P8B01020,544709,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+776,GAYAHWS,Gayatri Highways Limited,EQ,INE287Z01012,541546,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+777,GAYAPROJ,Gayatri Projects Limited,BE,INE336H01023,532767,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+778,GCSL,Gretex Corporate Services Limited,EQ,INE199P01028,543324,Financial Services,Other Capital Market related Services,Financial Services,Capital Markets,Other Capital Market related Services,CLASSIFIED
+779,GEECEE,GeeCee Ventures Limited,BE,INE916G01016,532764,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+780,GEEKAYWIRE,Geekay Wires Limited,EQ,INE669X01032,,,,,,,NOT_FOUND
+781,GEMAROMA,Gem Aromatics Limited,EQ,INE06XZ01023,544491,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+782,GENCON,Generic Engineering Construction and Projects Limited,EQ,INE854S01022,539407,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+783,GENESYS,Genesys International Corporation Limited,EQ,INE727B01026,506109,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+784,GENSOL,Gensol Engineering Limited,BZ,INE06H201014,542851,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+785,GENUSPAPER,Genus Paper & Boards Limited,EQ,INE949P01018,538961,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+786,GENUSPOWER,Genus Power Infrastructures Limited,EQ,INE955D01029,530343,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+787,GEOJITFSL,Geojit Financial Services Limited,EQ,INE007B01023,532285,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+788,GESHIP,The Great Eastern Shipping Company Limited,EQ,INE017A01032,500620,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
+789,GFLLIMITED,GFL Limited,EQ,INE538A01037,500173,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+790,GHCL,GHCL Limited,EQ,INE539A01019,500171,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+791,GHCLTEXTIL,GHCL Textiles Limited,EQ,INE0PA801013,543918,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+792,GICHSGFIN,GIC Housing Finance Limited,EQ,INE289B01019,511676,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+793,GICL,Globe International Carriers Limited,EQ,INE947T01022,,,,,,,NOT_FOUND
+794,GICRE,General Insurance Corporation of India,EQ,INE481Y01014,540755,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+795,GILLANDERS,Gillanders Arbuthnot & Company Limited,EQ,INE047B01011,532716,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+796,GILLETTE,Gillette India Limited,EQ,INE322A01010,507815,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+797,GINNIFILA,Ginni Filaments Limited,BE,INE424C01010,590025,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+798,GIPCL,Gujarat Industries Power Company Limited,EQ,INE162A01010,517300,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+799,GKB,GKB Ophthalmics Limited,EQ,INE265D01015,533212,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+800,GKENERGY,GK Energy Limited,EQ,INE1AG301022,544525,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
