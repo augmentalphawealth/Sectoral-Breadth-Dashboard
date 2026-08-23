@@ -1,0 +1,17 @@
+{
+  "industry": {
+    "rows": 122730,
+    "groups": 59,
+    "start_date": "2018-04-02",
+    "latest_date": "2026-08-21",
+    "file": "dashboard_industry_history.parquet"
+  },
+  "basic_industry": {
+    "rows": 358829,
+    "groups": 186,
+    "start_date": "2018-04-02",
+    "latest_date": "2026-08-21",
+    "file": "dashboard_basic_industry_history.parquet"
+  },
+  "generated_at_utc": "2026-08-23T18:01:55.504224+00:00"
+}
