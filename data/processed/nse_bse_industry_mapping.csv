@@ -1599,3 +1599,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1598,OBEROIRLTY,Oberoi Realty Limited,EQ,INE093I01010,533273,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
 1599,OCCLLTD,OCCL Limited,BE,INE0PK601023,544278,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
 1600,ODIGMA,Odigma Consultancy Solutions Limited,EQ,INE054301028,544301,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1601,ODYCORP,Odyssey Corporation Limited,EQ,INE839E01023,531996,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1602,OFSS,Oracle Financial Services Software Limited,EQ,INE881D01027,532466,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+1603,OIL,Oil India Limited,EQ,INE274J01014,533106,Energy,Oil Exploration & Production,"Oil, Gas & Consumable Fuels",Oil,Oil Exploration & Production,CLASSIFIED
+1604,OILCOUNTUB,Oil Country Tubular Limited,BE,INE591A01010,500313,Energy,Oil Equipment & Services,"Oil, Gas & Consumable Fuels",Oil,Oil Equipment & Services,CLASSIFIED
+1605,OLAELEC,Ola Electric Mobility Limited,EQ,INE0LXG01040,544225,Consumer Discretionary,2/3 Wheelers,Automobile and Auto Components,Automobiles,2/3 Wheelers,CLASSIFIED
+1606,OLECTRA,Olectra Greentech Limited,EQ,INE260D01016,532439,Consumer Discretionary,Passenger Cars & Utility Vehicles,Automobile and Auto Components,Automobiles,Passenger Cars & Utility Vehicles,CLASSIFIED
+1607,OMAXAUTO,Omax Autos Limited,EQ,INE090B01011,520021,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1608,OMAXE,Omaxe Limited,EQ,INE800H01010,532880,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1609,OMFREIGHT,Om Freight Forwarders Limited,BE,INE1BZC01019,544564,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1610,OMINFRAL,OM INFRA LIMITED,EQ,INE239D01028,531092,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1611,OMNI,Omnitech Engineering Limited,EQ,INE0UH301010,544720,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1612,OMPOWER,Om Power Transmission Limited,EQ,INE25E901019,544750,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1613,ONEGLOBAL,One Global Service Provider Limited,EQ,INE670O01013,514330,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+1614,ONELIFECAP,Onelife Capital Advisors Limited,BE,INE912L01015,533632,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1615,ONEPOINT,One Point One Solutions Limited,EQ,INE840Y01029,544748,Services,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),Services,Commercial Services & Supplies,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),CLASSIFIED
+1616,ONESOURCE,Onesource Specialty Pharma Limited,EQ,INE013P01021,544292,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1617,ONGC,Oil & Natural Gas Corporation Limited,EQ,INE213A01029,500312,,,,,,NOT_FOUND
+1618,ONIDA,Onida Electronics Limited,EQ,INE831A01028,500279,,,,,,NOT_FOUND
+1619,ONIXSOLAR,Onix Solar Energy Limited,EQ,INE173M01012,,,,,,,NOT_FOUND
+1620,ONMOBILE,OnMobile Global Limited,BE,INE809I01019,532944,Consumer Discretionary,Web based media and service,"Media, Entertainment & Publication",Media,Web based media and service,CLASSIFIED
+1621,ONWARDTEC,Onward Technologies Limited,EQ,INE229A01017,517536,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1622,OPTIEMUS,Optiemus Infracom Limited,EQ,INE350C01017,530135,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+1623,OPTIFIN,Optimus Finance Limited,EQ,INE031G01022,531254,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1624,ORBTEXP,Orbit Exports Limited,BE,INE231G01010,512626,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1625,ORCHASP,Orchasp Limited,EQ,INE215B01022,532271,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1626,ORCHPHARMA,Orchid Pharma Limited,EQ,INE191A01027,524372,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1627,ORICONENT,Oricon Enterprises Limited,EQ,INE730A01022,513121,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1628,ORIENTALTL,Oriental Trimex Limited,EQ,INE998H01012,532817,Consumer Discretionary,Granites & Marbles,Consumer Durables,Consumer Durables,Granites & Marbles,CLASSIFIED
+1629,ORIENTBELL,Orient Bell Limited,EQ,INE607D01018,530365,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+1630,ORIENTCEM,Orient Cement Limited,EQ,INE876N01018,535754,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1631,ORIENTCER,ORIENT CERATECH LIMITED,EQ,INE569C01020,504879,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+1632,ORIENTELEC,Orient Electric Limited,EQ,INE142Z01019,541301,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+1633,ORIENTHOT,Oriental Hotels Limited,EQ,INE750A01020,500314,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1634,ORIENTLTD,Orient Press Limited,BE,INE609C01024,526325,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1635,ORIENTPPR,Orient Paper & Industries Limited,EQ,INE592A01026,502420,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1636,ORIENTTECH,Orient Technologies Limited,EQ,INE0PPK01015,544235,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1637,ORIRAIL,Oriental Rail Infrastructure Limited,EQ,INE457G01029,531859,Industrials,Railway Wagons,Capital Goods,Industrial Manufacturing,Railway Wagons,CLASSIFIED
+1638,ORISSAMINE,The Orissa Minerals Development Company Limited,EQ,INE725E01024,590086,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+1639,ORKLAINDIA,Orkla India Limited,EQ,INE16NZ01023,544595,Fast Moving Consumer Goods,Other Food Products,Fast Moving Consumer Goods,Food Products,Other Food Products,CLASSIFIED
+1640,ORTINGLOBE,ORTIN GLOBAL LIMITED,EQ,INE749B01020,539287,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1641,OSIAHYPER,Osia Hyper Retail Limited,BE,INE06IR01021,,,,,,,NOT_FOUND
+1642,OSWALAGRO,Oswal Agro Mills Limited,EQ,INE142A01012,500317,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1643,OSWALGREEN,Oswal Greentech Limited,EQ,INE143A01010,539290,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1644,OSWALPUMPS,Oswal Pumps Limited,EQ,INE0BYP01024,544418,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1645,OSWALSEEDS,ShreeOswal Seeds And Chemicals Limited,EQ,INE00IK01029,,,,,,,NOT_FOUND
+1646,PACEDIGITK,Pace Digitek Limited,EQ,INE0S3G01027,544550,Telecommunication,Telecom - Infrastructure,Telecommunication,Telecom - Services,Telecom - Infrastructure,CLASSIFIED
+1647,PACIFICI,Pacific Industries Limited,EQ,INE883C01025,523483,Consumer Discretionary,Granites & Marbles,Consumer Durables,Consumer Durables,Granites & Marbles,CLASSIFIED
+1648,PAGEIND,Page Industries Limited,EQ,INE761H01022,532827,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1649,PAISALO,Paisalo Digital Limited,EQ,INE420C01059,532900,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1650,PAKKA,PAKKA LIMITED,EQ,INE551D01018,516030,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1651,PALASHSECU,Palash Securities Limited,EQ,INE471W01019,540648,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+1652,PALREDTEC,Palred Technologies Limited,BE,INE218G01033,532521,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1653,PANACEABIO,Panacea Biotec Limited,EQ,INE922B01023,531349,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1654,PANACHE,Panache Digilife Limited,BE,INE895W01019,,,,,,,NOT_FOUND
+1655,PANAMAPET,Panama Petrochem Limited,EQ,INE305C01029,524820,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+1656,PANCHMAHQ,Panchmahal Steel Limited,EQ,INE798F01010,513511,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1657,PANORAMA,Panorama Studios International Limited,EQ,INE258R01028,539469,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+1658,PANSARI,Pansari Developers Limited,EQ,INE697V01011,,,,,,,NOT_FOUND
+1659,PAR,Par Drugs And Chemicals Limited,EQ,INE04LG01015,,,,,,,NOT_FOUND
+1660,PARACABLES,Paramount Communications Limited,EQ,INE074B01023,530555,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1661,PARADEEP,Paradeep Phosphates Limited,EQ,INE088F01024,543530,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+1662,PARAGMILK,Parag Milk Foods Limited,EQ,INE883N01014,539889,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+1663,PARAS,Paras Defence and Space Technologies Limited,EQ,INE045601023,543367,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1664,PARASPETRO,Paras Petrofils Limited,EQ,INE162C01024,521246,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1665,PARKHOSPS,Park Medi World Limited,EQ,INE119201023,544645,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1666,PARKHOTELS,Apeejay Surrendra Park Hotels Limited,EQ,INE988S01028,544111,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1667,PARNAXLAB,Parnax Lab Limited,EQ,INE383L01019,506128,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1668,PARSVNATH,Parsvnath Developers Limited,BE,INE561H01026,532780,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1669,PASHUPATI,Pashupati Cotspin Limited,EQ,INE124Y01028,544448,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1670,PASUPTAC,Pasupati Acrylon Limited,BE,INE818B01023,500456,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+1671,PATANJALI,Patanjali Foods Limited,EQ,INE619A01035,500368,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+1672,PATELENG,Patel Engineering Limited,EQ,INE244B01030,531120,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1673,PATELRMART,Patel Retail Limited,EQ,INE0R8B01010,544487,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+1674,PATINTLOG,Patel Integrated Logistics Limited,BE,INE529D01014,526381,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1675,PAUSHAKLTD,Paushak Limited,EQ,INE111F01024,532742,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1676,PAVNAIND,Pavna Industries Limited,EQ,INE07S101038,543915,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1677,PAYTM,One 97 Communications Limited,EQ,INE982J01020,543396,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+1678,PBMPOLY,PBM Polytex Limited,EQ,INE501F01018,514087,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1679,PCBL,PCBL Chemical Limited,EQ,INE602A01031,506590,Commodities,Carbon Black,Chemicals,Chemicals & Petrochemicals,Carbon Black,CLASSIFIED
+1680,PCJEWELLER,PC Jeweller Limited,EQ,INE785M01021,534809,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1681,PDMJEPAPER,Pudumjee Paper Products Limited,EQ,INE865T01018,539785,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1682,PDSL,PDS Limited,EQ,INE111Q01021,538730,Consumer Discretionary,Trading - Textile Products,Textiles,Textiles & Apparels,Trading - Textile Products,CLASSIFIED
+1683,PEARLPOLY,Pearl Polymers Limited,EQ,INE844A01013,523260,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+1684,PENIND,Pennar Industries Limited,EQ,INE932A01024,513228,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1685,PENINLAND,Peninsula Land Limited,BE,INE138A01028,503031,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1686,PERMAGN,Permanent Magnets Limited,EQ,INE418E01018,504132,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1687,PERSISTENT,Persistent Systems Limited,EQ,INE262H01021,533179,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1688,PETRONET,Petronet LNG Limited,EQ,INE347G01014,532522,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
+1689,PFC,Power Finance Corporation Limited,EQ,INE134E01011,532810,Financial Services,Financial Institution,Financial Services,Finance,Financial Institution,CLASSIFIED
+1690,PFIZER,Pfizer Limited,EQ,INE182A01018,500680,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1691,PFOCUS,Prime Focus Limited,EQ,INE367G01038,532748,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1692,PFS,PTC India Financial Services Limited,EQ,INE560K01014,533344,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1693,PGEL,PG Electroplast Limited,EQ,INE457L01029,533581,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+1694,PGHH,Procter & Gamble Hygiene and Health Care Limited,EQ,INE179A01014,500459,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+1695,PGHL,Procter & Gamble Health Limited,EQ,INE199A01012,500126,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1696,PGIL,Pearl Global Industries Limited,EQ,INE940H01022,532808,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1697,PHOENIXLTD,The Phoenix Mills Limited,EQ,INE211B01039,503100,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1698,PHOENXINTL,Phoenix International Limited,EQ,INE245B01011,526481,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1699,PICCADIL,Piccadily Agro Industries Limited,EQ,INE546C01010,530305,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+1700,PIDILITIND,Pidilite Industries Limited,EQ,INE318A01026,500331,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
