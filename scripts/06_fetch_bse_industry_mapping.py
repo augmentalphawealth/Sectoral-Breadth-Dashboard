@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import time
 
 import pandas as pd
@@ -9,12 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 INPUT_FILE = ROOT / "data" / "processed" / "nse_mainboard_master.parquet"
 OUTPUT_FILE = ROOT / "data" / "processed" / "nse_mainboard_master_bse_classified.parquet"
-CSV_OUTPUT_FILE = ROOT / "data" / "processed" / "nse_bse_industry_mapping.csv"
+MAPPING_FILE = ROOT / "data" / "processed" / "nse_bse_industry_mapping.csv"
 
 DOWNLOAD_FOLDER = ROOT / "data" / "bse_downloads"
 DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-REQUEST_DELAY_SECONDS = 0.25
+START_INDEX = int(os.getenv("START_INDEX", "0"))
+BATCH_SIZE = int(os.getenv("BATCH_SIZE", "100"))
+REQUEST_DELAY_SECONDS = 0.30
 
 
 def clean(value):
@@ -23,8 +26,29 @@ def clean(value):
     return str(value).strip()
 
 
-def main():
+def load_output():
+    if OUTPUT_FILE.exists():
+        df = pd.read_parquet(OUTPUT_FILE)
+        print(f"Resuming from existing output: {OUTPUT_FILE}")
+        return df
+
     df = pd.read_parquet(INPUT_FILE)
+
+    for column in [
+        "industry",
+        "basic_industry",
+        "sector",
+        "classification_status",
+        "classification_source",
+    ]:
+        if column not in df.columns:
+            df[column] = ""
+
+    return df
+
+
+def main():
+    df = load_output()
 
     required_columns = [
         "symbol",
@@ -41,28 +65,38 @@ def main():
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
 
+    total = len(df)
+    end_index = min(START_INDEX + BATCH_SIZE, total)
+
+    if START_INDEX >= total:
+        print(f"Nothing to process. START_INDEX={START_INDEX}, total rows={total}.")
+        return
+
+    print(f"Processing rows {START_INDEX + 1} through {end_index} of {total}.")
+
     bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
-    rows = []
+    batch_rows = []
 
     try:
-        total = len(df)
+        for position in range(START_INDEX, end_index):
+            row = df.iloc[position]
 
-        for position, (index, row) in enumerate(df.iterrows(), start=1):
             symbol = clean(row["symbol"])
             company_name = clean(row["company_name"])
             isin = clean(row["isin"])
 
-            print(f"[{position}/{total}] {symbol} | {isin}")
+            print(f"[{position + 1}/{total}] {symbol} | {isin}")
 
             bse_code = ""
             meta = {}
 
             try:
-                lookup = bse.lookup(isin)
+                lookup = bse.lookup(isin) or {}
                 bse_code = clean(lookup.get("bse_code"))
 
                 if bse_code:
-                    meta = bse.equityMetaInfo(bse_code)
+                    meta = bse.equityMetaInfo(bse_code) or {}
+
                     print(
                         f"  BSE {bse_code} | "
                         f"Sector: {clean(meta.get('Sector'))} | "
@@ -78,24 +112,25 @@ def main():
             industry = clean(meta.get("IGroup"))
             basic_industry = clean(meta.get("ISubGroup"))
 
-            # Fall back to BSE's older Industry field when group fields are absent.
             if not industry:
                 industry = clean(meta.get("IndustryNew")) or clean(meta.get("Industry"))
+
             if not basic_industry:
                 basic_industry = clean(meta.get("Industry"))
 
-            df.at[index, "sector"] = sector
-            df.at[index, "industry"] = industry
-            df.at[index, "basic_industry"] = basic_industry
-            df.at[index, "classification_status"] = (
+            df.at[df.index[position], "sector"] = sector
+            df.at[df.index[position], "industry"] = industry
+            df.at[df.index[position], "basic_industry"] = basic_industry
+            df.at[df.index[position], "classification_status"] = (
                 "CLASSIFIED" if sector else "NOT_FOUND"
             )
-            df.at[index, "classification_source"] = (
+            df.at[df.index[position], "classification_source"] = (
                 "BSE equityMetaInfo" if sector else ""
             )
 
-            rows.append(
+            batch_rows.append(
                 {
+                    "row_number": position + 1,
                     "symbol": symbol,
                     "company_name": company_name,
                     "series": clean(row.get("series")),
@@ -106,7 +141,9 @@ def main():
                     "bse_industry_new": clean(meta.get("IndustryNew")),
                     "bse_i_group": clean(meta.get("IGroup")),
                     "bse_i_sub_group": clean(meta.get("ISubGroup")),
-                    "classification_status": df.at[index, "classification_status"],
+                    "classification_status": (
+                        "CLASSIFIED" if sector else "NOT_FOUND"
+                    ),
                 }
             )
 
@@ -118,20 +155,30 @@ def main():
         except Exception:
             pass
 
-    mapping_df = pd.DataFrame(rows)
-
     df.to_parquet(OUTPUT_FILE, index=False)
-    mapping_df.to_csv(CSV_OUTPUT_FILE, index=False)
+
+    batch_df = pd.DataFrame(batch_rows)
+    if MAPPING_FILE.exists():
+        existing_mapping = pd.read_csv(MAPPING_FILE, dtype=str).fillna("")
+        mapping_df = pd.concat([existing_mapping, batch_df], ignore_index=True)
+        mapping_df = mapping_df.drop_duplicates(
+            subset=["row_number"], keep="last"
+        ).sort_values("row_number")
+    else:
+        mapping_df = batch_df
+
+    mapping_df.to_csv(MAPPING_FILE, index=False)
 
     classified = (df["classification_status"] == "CLASSIFIED").sum()
     not_found = (df["classification_status"] == "NOT_FOUND").sum()
 
-    print("\n========== COMPLETE ==========")
-    print(f"Input rows: {len(df)}")
-    print(f"Classified: {classified}")
-    print(f"Not found: {not_found}")
+    print("\n========== BATCH COMPLETE ==========")
+    print(f"Processed rows: {START_INDEX + 1} to {end_index}")
+    print(f"Next START_INDEX: {end_index}")
+    print(f"Total classified so far: {classified}")
+    print(f"Total not found so far: {not_found}")
     print(f"Updated master: {OUTPUT_FILE}")
-    print(f"BSE mapping CSV: {CSV_OUTPUT_FILE}")
+    print(f"Updated mapping CSV: {MAPPING_FILE}")
 
 
 if __name__ == "__main__":
