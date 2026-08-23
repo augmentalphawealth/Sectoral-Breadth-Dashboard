@@ -3,10 +3,14 @@ name: 11 Update NSE Universe
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "50 12 * * 1-5"
 
 permissions:
   contents: write
+
+concurrency:
+  group: nse-universe-update
+  cancel-in-progress: false
 
 jobs:
   update-universe:
@@ -28,11 +32,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Update NSE universe
+      - name: Update classified NSE universe
         run: |
           python scripts/11_update_nse_universe.py
 
-      - name: Commit updated master
+      - name: Commit classified master changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -40,14 +44,14 @@ jobs:
           git add data/processed/nse_mainboard_master_bse_classified.parquet
 
           if git diff --cached --quiet; then
-            echo "No universe changes to commit."
+            echo "No classified universe changes to commit."
           else
-            git commit -m "Update NSE mainboard universe"
+            git commit -m "Update classified NSE mainboard universe"
             git push
           fi
 
       - name: Upload updated master
         uses: actions/upload-artifact@v4
         with:
-          name: nse-universe-update
+          name: classified-nse-universe
           path: data/processed/nse_mainboard_master_bse_classified.parquet
