@@ -1,0 +1,32 @@
+name: 06 Fetch BSE Industry Mapping
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch-bse-industry-mapping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Fetch BSE industry mapping
+        run: |
+          python scripts/06_fetch_bse_industry_mapping.py
+
+      - name: Upload industry mapping CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: nse-industry-mapping
+          path: data/nse_industry_mapping.csv
