@@ -1,32 +1,27 @@
 from pathlib import Path
 
-from bse import BSE
+import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DOWNLOAD_FOLDER = ROOT / "data" / "bse_test_downloads"
-DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
-
-BSE_CODE = "500180"  # HDFCBANK
+INPUT_FILE = ROOT / "data" / "processed" / "nse_mainboard_master.parquet"
 
 
 def main():
-    bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
+    df = pd.read_parquet(INPUT_FILE)
 
-    try:
-        print("Testing equityMetaInfo for BSE code:", BSE_CODE)
-        meta = bse.equityMetaInfo(BSE_CODE)
+    print("========== SHAPE ==========")
+    print(df.shape)
 
-        print("\n========== EQUITY META INFO ==========")
-        print(meta)
-        print("\n========== TYPE ==========")
-        print(type(meta))
+    print("\n========== COLUMNS ==========")
+    for column in df.columns:
+        print(column)
 
-    finally:
-        try:
-            bse.exit()
-        except Exception:
-            pass
+    print("\n========== FIRST 5 ROWS ==========")
+    print(df.head().to_string(index=False))
+
+    print("\n========== DTYPES ==========")
+    print(df.dtypes.to_string())
 
 
 if __name__ == "__main__":
