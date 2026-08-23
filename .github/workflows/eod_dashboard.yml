@@ -135,6 +135,7 @@ jobs:
             data/processed/dashboard_stock_watchlist_latest.parquet \
             data/processed/dashboard_industry_history.parquet \
             data/processed/dashboard_basic_industry_history.parquet \
+            data/processed/dashboard_stock_history.parquet \
             data/processed/dashboard_metadata.json \
             data/processed/last_sync.txt
 
@@ -159,6 +160,7 @@ jobs:
             data/processed/dashboard_stock_watchlist_latest.parquet
             data/processed/dashboard_industry_history.parquet
             data/processed/dashboard_basic_industry_history.parquet
+            data/processed/dashboard_stock_history.parquet
             data/processed/dashboard_metadata.json
             data/processed/last_sync.txt
           if-no-files-found: warn
