@@ -1,12 +1,18 @@
+from pathlib import Path
+
 from bse import BSE
 
+
+ROOT = Path(__file__).resolve().parents[1]
+DOWNLOAD_FOLDER = ROOT / "data" / "bse_test_downloads"
+DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 TEST_ISIN = "INE040A01034"   # HDFCBANK
 TEST_SYMBOL = "HDFCBANK"
 
 
 def main():
-    bse = BSE()
+    bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
 
     try:
         print("Testing BSE lookup by ISIN...")
