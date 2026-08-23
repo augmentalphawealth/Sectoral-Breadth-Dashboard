@@ -1099,3 +1099,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1098,JAICORPLTD,Jai Corp Limited,EQ,INE070D01027,512237,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
 1099,JAINREC,Jain Resource Recycling Limited,EQ,INE0YD401026,544537,Commodities,Diversified Metals,Metals & Mining,Diversified Metals,Diversified Metals,CLASSIFIED
 1100,JAIPURKURT,Nandani Creation Limited,EQ,INE696V01013,,,,,,,NOT_FOUND
+1101,JAMNAAUTO,Jamna Auto Industries Limited,EQ,INE039C01032,520051,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1102,JARO,Jaro Institute of Technology Management and Research Limited,EQ,INE00YJ01010,544534,Consumer Discretionary,E-Learning,Consumer Services,Other Consumer Services,E-Learning,CLASSIFIED
+1103,JASH,Jash Engineering Limited,EQ,INE039O01029,544402,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1104,JAYAGROGN,Jayant Agro Organics Limited,EQ,INE785A01026,524330,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1105,JAYBARMARU,Jay Bharat Maruti Limited,EQ,INE571B01036,520066,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1106,JAYKAY,Jaykay Enterprises Limited,EQ,INE903A01025,500306,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1107,JAYNECOIND,Jayaswal Neco Industries Limited,EQ,INE854B01010,522285,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1108,JAYSREETEA,Jayshree Tea & Industries Limited,EQ,INE364A01020,509715,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1109,JBMA,JBM Auto Limited,EQ,INE927D01051,532605,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1110,JENBURPH,Jenburkt Pharmaceuticals Limited,EQ,INE354A01013,524731,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1111,JETFREIGHT,Jet Freight Logistics Limited,EQ,INE982V01025,543420,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1112,JGCHEM,J.G.Chemicals Limited,EQ,INE0MB501011,544138,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1113,JHS,JHS Svendgaard Laboratories Limited,EQ,INE544H01014,532771,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+1114,JINDALPHOT,Jindal Photo Limited,EQ,INE796G01012,532624,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1115,JINDALPOLY,Jindal Poly Films Limited,EQ,INE197D01010,500227,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1116,JINDALSAW,Jindal Saw Limited,EQ,INE324A01032,500378,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1117,JINDALSTEL,JINDAL STEEL LIMITED,EQ,INE749A01030,532286,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1118,JINDRILL,Jindal Drilling And Industries Limited,EQ,INE742C01031,511034,Energy,Offshore Support Solution Drilling,"Oil, Gas & Consumable Fuels",Oil,Offshore Support Solution Drilling,CLASSIFIED
+1119,JINDWORLD,Jindal Worldwide Limited,EQ,INE247D01039,531543,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1120,JIOFIN,Jio Financial Services Limited,EQ,INE758E01017,543940,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1121,JISLDVREQS,Jain Irrigation Systems Limited,EQ,IN9175A01010,570004,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1122,JISLJALEQS,Jain Irrigation Systems Limited,EQ,INE175A01038,500219,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1123,JITFINFRA,JITF Infralogistics Limited,EQ,INE863T01013,540311,Utilities,Water Supply & Management,Utilities,Other Utilities,Water Supply & Management,CLASSIFIED
+1124,JKCEMENT,JK Cement Limited,EQ,INE823G01014,532644,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1125,JKIL,J.Kumar Infraprojects Limited,EQ,INE576I01022,532940,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1126,JKIPL,Jinkushal Industries Limited,EQ,INE1FF001016,544547,Industrials,"Dealers-Commercial Vehicles, Tractors, Construction Vehicles",Capital Goods,"Agricultural, Commercial & Construction Vehicles","Dealers-Commercial Vehicles, Tractors, Construction Vehicles",CLASSIFIED
+1127,JKLAKSHMI,JK Lakshmi Cement Limited,EQ,INE786A01032,500380,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1128,JKPAPER,JK Paper Limited,EQ,INE789E01012,532162,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1129,JKTYRE,JK Tyre & Industries Limited,EQ,INE573A01042,530007,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+1130,JLHL,Jupiter Life Line Hospitals Limited,EQ,INE682M01020,543980,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1131,JMA,Jullundur Motor Agency (Delhi) Limited,EQ,INE412C01023,,,,,,,NOT_FOUND
+1132,JMFINANCIL,JM Financial Limited,EQ,INE780C01023,523405,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+1133,JNKINDIA,JNK India Limited,EQ,INE0OAF01028,544167,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1134,JNPR,Juniper Green Energy Limited,EQ,INE05C901015,544853,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1135,JOCIL,Jocil Limited,BE,INE839G01010,,,,,,,NOT_FOUND
+1136,JPOLYINVST,Jindal Poly Investment and Finance Company Limited,EQ,INE147P01019,536773,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1137,JPPOWER,Jaiprakash Power Ventures Limited,EQ,INE351F01018,532627,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1138,JSFB,Jana Small Finance Bank Limited,EQ,INE953L01027,544118,Financial Services,Other Bank,Financial Services,Banks,Other Bank,CLASSIFIED
+1139,JSL,Jindal Stainless Limited,EQ,INE220G01021,532508,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1140,JSLL,Jeena Sikho Lifecare Limited,EQ,INE0J5801029,544476,Consumer Discretionary,Wellness,Consumer Services,Leisure Services,Wellness,CLASSIFIED
+1141,JSWCEMENT,JSW Cement Limited,EQ,INE718I01012,544480,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1142,JSWDULUX,JSW Dulux Limited,EQ,INE133A01011,500710,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+1143,JSWENERGY,JSW Energy Limited,EQ,INE121E01018,533148,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1144,JSWHL,JSW Holdings Limited,EQ,INE824G01012,532642,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1145,JSWINFRA,JSW Infrastructure Limited,EQ,INE880J01026,543994,Services,Port & Port services,Services,Transport Infrastructure,Port & Port services,CLASSIFIED
+1146,JSWSTEEL,JSW Steel Limited,EQ,INE019A01038,500228,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1147,JTEKTINDIA,Jtekt India Limited,EQ,INE643A01035,520057,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1148,JTLIND,JTL INDUSTRIES LIMITED,EQ,INE391J01032,534600,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1149,JUBLCPL,Jubilant Agri and Consumer Products Limited,EQ,INE03CC01015,544355,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1150,JUBLFOOD,Jubilant Foodworks Limited,EQ,INE797F01020,533155,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+1151,JUBLINGREA,Jubilant Ingrevia Limited,EQ,INE0BY001018,543271,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1152,JUBLPHARMA,Jubilant Pharmova Limited,EQ,INE700A01033,530019,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1153,JUNIPER,Juniper Hotels Limited,EQ,INE696F01016,544129,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1154,JUSTDIAL,Just Dial Limited,EQ,INE599M01018,535648,Consumer Discretionary,Internet & Catalogue Retail,Consumer Services,Retailing,Internet & Catalogue Retail,CLASSIFIED
+1155,JWL,Jupiter Wagons Limited,EQ,INE209L01016,533272,Industrials,Railway Wagons,Capital Goods,Industrial Manufacturing,Railway Wagons,CLASSIFIED
+1156,JYOTHYLAB,Jyothy Labs Limited,EQ,INE668F01031,532926,Fast Moving Consumer Goods,Household Products,Fast Moving Consumer Goods,Household Products,Household Products,CLASSIFIED
+1157,JYOTICNC,Jyoti CNC Automation Limited,EQ,INE980O01024,544081,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1158,JYOTIRES,Jyoti Resins & Adhesives Limited,EQ,INE577D01013,514448,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1159,JYOTISTRUC,Jyoti Structures Limited,EQ,INE197A01024,513250,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1160,KABRAEXTRU,Kabra Extrusion Technik Limited,EQ,INE900B01029,524109,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1161,KAJARIACER,Kajaria Ceramics Limited,EQ,INE217B01036,500233,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+1162,KAKATCEM,Kakatiya Cement Sugar & Industries Limited,EQ,INE437B01014,500234,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1163,KALAMANDIR,Sai Silks (Kalamandir) Limited,EQ,INE438K01021,543989,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+1164,KALPATARU,Kalpataru Limited,EQ,INE227J01012,544423,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1165,KALYANI,Kalyani Commercials Limited,BE,INE610E01010,,,,,,,NOT_FOUND
+1166,KALYANIFRG,Kalyani Forge Limited,EQ,INE314G01014,513509,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+1167,KALYANKJIL,Kalyan Jewellers India Limited,EQ,INE303R01014,543278,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1168,KAMAHOLD,Kama Holdings Limited,EQ,INE411F01010,532468,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+1169,KAMANWALA,Kamanwala Housing Construction Limited,EQ,INE344D01018,511131,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1170,KAMATHOTEL,Kamat Hotels (I) Limited,EQ,INE967C01018,526668,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1171,KAMDHENU,Kamdhenu Limited,BE,INE390H01020,532741,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1172,KAMOPAINTS,Kamdhenu Ventures Limited,EQ,INE0BTI01037,543747,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+1173,KANANIIND,Kanani Industries Limited,EQ,INE879E01037,506184,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1174,KANCHI,Kanchi Karpooram Limited,EQ,INE081G01019,538896,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1175,KANCOTEA,Kanco Tea & Industries Limited,EQ,INE398L01017,541005,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1176,KANORICHEM,Kanoria Chemicals & Industries Limited,BE,INE138C01024,506525,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1177,KANPRPLA,Kanpur Plastipack Limited,EQ,INE694E01014,507779,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1178,KANSAINER,Kansai Nerolac Paints Limited,EQ,INE531A01024,500165,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+1179,KAPSTON,Kapston Services Limited,EQ,INE542Z01028,,,,,,,NOT_FOUND
+1180,KARMAENG,Karma Energy Limited,EQ,INE725L01011,533451,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1181,KARURVYSYA,Karur Vysya Bank Limited,EQ,INE036D01028,590003,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1182,KAUSHALYA,Kaushalya Infrastructure Development Corporation Limited,BE,INE234I01028,532925,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1183,KAVDEFENCE,Kavveri Defence & Wireless Technologies Limited,EQ,INE641C01019,590041,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1184,KAYA,Kaya Limited,EQ,INE587G01015,539276,Consumer Discretionary,Wellness,Consumer Services,Leisure Services,Wellness,CLASSIFIED
+1185,KAYNES,Kaynes Technology India Limited,EQ,INE918Z01012,543664,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1186,KCP,KCP Limited,EQ,INE805C01028,590066,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1187,KCPSUGIND,KCP Sugar and Industries Corporation Limited,BE,INE790B01024,533192,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1188,KDDL,KDDL Limited,EQ,INE291D01011,532054,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1189,KEC,KEC International Limited,EQ,INE389H01022,532714,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1190,KECL,Kirloskar Electric Company Limited,EQ,INE134B01017,533193,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1191,KEEPLEARN,DSJ Keep Learning Limited,EQ,INE055C01020,526677,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1192,KEI,KEI Industries Limited,EQ,INE878B01027,517569,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1193,KELLTONTEC,Kellton Tech Solutions Limited,EQ,INE164B01030,519602,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1194,KENNAMET,Kennametal India Limited,EQ,INE717A01029,505890,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1195,KERNEX,Kernex Microsystems (India) Limited,EQ,INE202H01019,532686,Services,Transport Related Services,Services,Transport Services,Transport Related Services,CLASSIFIED
+1196,KESORAMIND,Kesoram Industries Limited,BE,INE087A01019,502937,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1197,KEYFINSERV,Keynote Financial Services Limited,EQ,INE681C01015,512597,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1198,KFINTECH,Kfin Technologies Limited,EQ,INE138Y01010,543720,Financial Services,"Depositories, Clearing Houses and Other Intermediaries",Financial Services,Capital Markets,"Depositories, Clearing Houses and Other Intermediaries",CLASSIFIED
+1199,KHADIM,Khadim India Limited,BE,INE834I01025,540775,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+1200,KHAICHEM,Khaitan Chemicals & Fertilizers Limited,EQ,INE745B01028,507794,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
