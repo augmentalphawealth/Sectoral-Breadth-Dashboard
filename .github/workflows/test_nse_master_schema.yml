@@ -1,10 +1,10 @@
-name: Test BSE ISIN Lookup
+name: Test NSE Mainboard Master Schema
 
 on:
   workflow_dispatch:
 
 jobs:
-  test-bse-lookup:
+  inspect-nse-master:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +21,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Test BSE lookup
+      - name: Inspect master schema
         run: |
-          python scripts/test_bse_lookup.py
+          python scripts/test_nse_master_schema.py
