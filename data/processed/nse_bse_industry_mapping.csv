@@ -1999,3 +1999,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1998,SFL,Sheela Foam Limited,EQ,INE916U01025,540203,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
 1999,SGFIN,SG Finserve Limited,EQ,INE618R01015,539199,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
 2000,SGIL,Synergy Green Industries Limited,EQ,INE00QT01015,541929,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+2001,SGL,STL Global Limited,EQ,INE353H01010,532730,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2002,SGLRES,SGL Resources Limited,EQ,INE967B01028,526544,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2003,SGMART,SG Mart Limited,EQ,INE385F01024,512329,Commodities,Trading - Metals,Metals & Mining,Metals & Minerals Trading,Trading - Metals,CLASSIFIED
+2004,SGRL,Shree Ganesh Remedies Limited,EQ,INE414Y01015,540737,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2005,SHADOWFAX,Shadowfax Technologies Limited,EQ,INE12UN01015,544685,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2006,SHAH,Shah Metacorp Limited,EQ,INE482J01021,533275,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2007,SHAHALLOYS,Shah Alloys Limited,EQ,INE640C01011,513436,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2008,SHAILY,Shaily Engineering Plastics Limited,EQ,INE151G01028,501423,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+2009,SHAKTIPUMP,Shakti Pumps (India) Limited,EQ,INE908D01010,531431,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+2010,SHALBY,Shalby Limited,EQ,INE597J01018,540797,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+2011,SHALPAINTS,Shalimar Paints Limited,BE,INE849C01026,509874,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+2012,SHANKARA,Shankara Building Products Limited,EQ,INE274V01019,540425,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+2013,SHANTI,Shanti Overseas (India) Limited,EQ,INE933X01016,,,,,,,NOT_FOUND
+2014,SHANTIGEAR,Shanthi Gears Limited,EQ,INE631A01022,522034,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2015,SHANTIGOLD,Shanti Gold International Limited,EQ,INE06ZD01017,544459,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2016,SHARDACROP,Sharda Cropchem Limited,EQ,INE221J01015,538666,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+2017,SHARDAMOTR,Sharda Motor Industries Limited,EQ,INE597I01028,535602,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2018,SHARDUL,Shardul Securities Limited,BE,INE037B01020,512393,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+2019,SHAREINDIA,Share India Securities Limited,EQ,INE932X01026,540725,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+2020,SHBAJRG,Shri Bajrang Alliance Limited,EQ,INE402H01015,526981,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2021,SHEKHAWATI,Shekhawati Industries Limited,BE,INE268L01046,533301,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2022,SHEMAROO,Shemaroo Entertainment Limited,BE,INE363M01019,538685,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+2023,SHERVANI,Shervani Industrial Syndicate Limited,EQ,INE011D01013,526117,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2024,SHILCTECH,Shilchar Technologies Limited,EQ,INE024F01011,531201,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2025,SHILGRAVQ,Shilp Gravures Limited,EQ,INE960A01017,513709,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+2026,SHILPAMED,Shilpa Medicare Limited,EQ,INE790G01031,530549,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2027,SHINDL,Sharat Industries Limited,EQ,INE220Z01013,519397,Fast Moving Consumer Goods,Seafood,Fast Moving Consumer Goods,Food Products,Seafood,CLASSIFIED
+2028,SHIPROCKET,Shiprocket Limited,EQ,INE0FOO01011,544871,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2029,SHIVAAGRO,Shiva Global Agro Industries Limited,EQ,INE960E01019,530433,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+2030,SHIVACEM,Shiva Cement Limited,EQ,INE555C01029,532323,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2031,SHIVALIK,Shivalik Rasayan Limited,BE,INE788J01021,539148,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+2032,SHIVAMAUTO,Shivam Autotech Limited,BE,INE637H01024,532776,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2033,SHIVAMILLS,Shiva Mills Limited,EQ,INE644Y01017,540961,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2034,SHIVATEX,Shiva Texyarn Limited,EQ,INE705C01020,511108,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2035,SHIVAUM,Shiv Aum Steels Limited,EQ,INE719F01016,,,,,,,NOT_FOUND
+2036,SHK,S H Kelkar and Company Limited,EQ,INE500L01026,539450,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2037,SHOPERSTOP,Shoppers Stop Limited,EQ,INE498B01024,532638,Consumer Discretionary,Diversified Retail,Consumer Services,Retailing,Diversified Retail,CLASSIFIED
+2038,SHRADDHA,Shraddha Prime Projects Limited,EQ,INE311M01018,531771,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2039,SHRADHA,Shradha Realty Limited,EQ,INE715Y01031,,,,,,,NOT_FOUND
+2040,SHREDIGCEM,Shree Digvijay Cement Co.Ltd,EQ,INE232A01011,502180,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2041,SHREECEM,SHREE CEMENT LIMITED,EQ,INE070A01015,500387,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2042,SHREEJISPG,Shreeji Shipping Global Limited,EQ,INE1B6101010,544490,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
+2043,SHREEPUSHK,Shree Pushkar Chemicals & Fertilisers Limited,EQ,INE712K01011,539334,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+2044,SHREERAMA,Shree Rama Multi-Tech Limited,EQ,INE879A01019,532310,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2045,SHRENIK,Shrenik Limited,BZ,INE632X01030,,,,,,,NOT_FOUND
+2046,SHREYANIND,Shreyans Industries Limited,EQ,INE231C01019,516016,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+2047,SHRIKRISH,Shri Krishna Devcon Limited,EQ,INE997I01012,531080,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2048,SHRINGARMS,Shringar House of Mangalsutra Limited,EQ,INE1B3L01017,544512,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2049,SHRIPISTON,SPR Auto Technologies Limited,EQ,INE526E01018,544344,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2050,SHRIRAMFIN,Shriram Finance Limited,EQ,INE721A01047,511218,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2051,SHRIRAMPPS,Shriram Properties Limited,EQ,INE217L01019,543419,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2052,SHRJAGP,Shri Jagdamba Polymers Limited,EQ,INE564J01026,512453,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2053,SHUKRAPHAR,Shukra Pharmaceuticals Limited,EQ,INE551C01044,524632,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2054,SHYAMCENT,Shyam Century Ferrous Limited,BE,INE979R01011,539252,Commodities,Ferro & Silica Manganese,Metals & Mining,Ferrous Metals,Ferro & Silica Manganese,CLASSIFIED
+2055,SHYAMMETL,Shyam Metalics and Energy Limited,EQ,INE810G01011,543299,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2056,SHYAMTEL,Shyam Telecom Limited,EQ,INE635A01023,517411,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2057,SICAGEN,Sicagen India Limited,EQ,INE176J01011,533014,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2058,SICALLOG,Sical Logistics Limited,BE,INE075B01020,520086,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2059,SIEL,Superior Industrial Enterprises Limited,EQ,INE843L01012,519234,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+2060,SIEMENS,Siemens Limited,EQ,INE003A01024,500550,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2061,SIGACHI,Sigachi Industries Limited,EQ,INE0D0K01022,543389,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2062,SIGIND,Signet Industries Limited,EQ,INE529F01035,512131,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2063,SIGMA,Sigma Solve Limited,EQ,INE0A0S01028,543917,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2064,SIGMAADV,SIGMA ADVANCED SYSTEMS LIMITED,EQ,INE933B01012,532408,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+2065,SIGNATURE,Signatureglobal (India) Limited,EQ,INE903U01023,543990,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2066,SIGNPOST,Signpost India Limited,EQ,INE0KGZ01021,544117,Consumer Discretionary,Advertising & Media Agencies,"Media, Entertainment & Publication",Media,Advertising & Media Agencies,CLASSIFIED
+2067,SIKA,Sika Interplant Systems Limited,EQ,INE438E01032,523606,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+2068,SIKKO,Sikko Industries Limited,BE,INE112X01025,,,,,,,NOT_FOUND
+2069,SIL,Standard Industries Limited,EQ,INE173A01025,530017,Consumer Discretionary,Real Estate related services,Realty,Realty,Real Estate related services,CLASSIFIED
+2070,SILGO,Silgo Retail Limited,EQ,INE01II01013,,,,,,,NOT_FOUND
+2071,SILINV,SIL Investments Limited,EQ,INE923A01015,521194,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2072,SILLYMONKS,Silly Monks Entertainment Limited,EQ,INE203Y01012,,,,,,,NOT_FOUND
+2073,SILVERTUC,Silver Touch Technologies Limited,EQ,INE625X01026,543525,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2074,SIMBHALS,Simbhaoli Sugars Limited,BZ,INE748T01016,539742,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2075,SIMPLEXINF,Simplex Infrastructures Limited,EQ,INE059B01024,523838,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2076,SIMPLXREA,Simplex Realty Limited,EQ,INE167H01014,503229,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2077,SINCLAIR,Sinclairs Hotels Limited,EQ,INE985A01022,523023,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+2078,SINDHUTRAD,Sindhu Trade Links Limited,EQ,INE325D01025,532029,Energy,Coal,"Oil, Gas & Consumable Fuels",Consumable Fuels,Coal,CLASSIFIED
+2079,SINGERIND,Singer India Limited,EQ,INE638A01035,505729,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2080,SINTERCOM,Sintercom India Limited,EQ,INE129Z01016,,,,,,,NOT_FOUND
+2081,SIRCA,Sirca Paints India Limited,EQ,INE792Z01011,543686,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+2082,SIS,SIS LIMITED,EQ,INE285J01028,540673,Consumer Discretionary,Other Consumer Services,Consumer Services,Other Consumer Services,Other Consumer Services,CLASSIFIED
+2083,SITINET,Siti Networks Limited,BZ,INE965H01011,532795,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2084,SIYSIL,Siyaram Silk Mills Limited,EQ,INE076B01028,503811,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2085,SJS,S.J.S. Enterprises Limited,EQ,INE284S01014,543387,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2086,SJVN,SJVN Limited,EQ,INE002L01015,533206,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+2087,SKFINDIA,SKF India Limited,EQ,INE640A01023,500472,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2088,SKFINDUS,SKF India (Industrial) Limited,EQ,INE2J8701016,544572,Industrials,Abrasives & Bearings,Capital Goods,Industrial Products,Abrasives & Bearings,CLASSIFIED
+2089,SKIPPER,Skipper Limited,EQ,INE439E01022,538562,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2090,SKMEGGPROD,SKM Egg Products Export (India) Limited,EQ,INE411D01023,532143,Fast Moving Consumer Goods,Meat Products including Poultry,Fast Moving Consumer Goods,Food Products,Meat Products including Poultry,CLASSIFIED
+2091,SKYGOLD,SKY GOLD AND DIAMONDS LIMITED,EQ,INE01IU01018,541967,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2092,SMARTLINK,Smartlink Holdings Limited,BE,INE178C01020,532419,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+2093,SMARTWORKS,Smartworks Coworking Spaces Limited,EQ,INE0NAZ01010,544447,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+2094,SMCGLOBAL,SMC Global Securities Limited,EQ,INE103C01036,543263,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+2095,SMLMAH,SML Mahindra Limited,EQ,INE294B01019,505192,Industrials,Commercial Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Commercial Vehicles,CLASSIFIED
+2096,SMLT,Sarthak Metals Limited,EQ,INE017W01010,540393,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2097,SMSPHARMA,SMS Pharmaceuticals Limited,EQ,INE812G01025,532815,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2098,SNOWMAN,Snowman Logistics Limited,EQ,INE734N01019,538635,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2099,SOBHA,Sobha Limited,EQ,INE671H01015,532784,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2100,SOFTTECH,Softtech Engineers Limited,EQ,INE728Z01015,543470,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
