@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import datetime, timedelta
+from io import StringIO
 
 import pandas as pd
 import requests
@@ -9,18 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 MASTER_FILE = ROOT / "data" / "processed" / "nse_mainboard_master_bse_classified.parquet"
 
 
-# Working NSE mainboard endpoint (as of 2026)
-NSE_MAINBOARD_URL = (
-    "https://www.nseindia.com/api/equity-stockIndices?symbol=NIFTY 50"
-)
-
-# Fallback: use the public CSV listing if the JSON endpoint changes again
-NSE_CSV_URL = (
-    "https://www.nseindia.com/content/eq/eq_debt.csv"
-)
+# NSE bhavcopy CSV base URL
+NSE_BHAVCOPY_BASE = "https://www.nseindia.com/content/eq/eq"
 
 NSE_HEADERS = {
-    "Accept": "application/json",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9",
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -45,88 +40,69 @@ def download_nse_mainboard_list():
     session = requests.Session()
     session.headers.update(NSE_HEADERS)
 
-    # Try JSON endpoint first
-    try:
-        response = session.get(
-            "https://www.nseindia.com/api/equity-stockIndices?symbol=NIFTY%2050",
-            timeout=20,
-        )
-        response.raise_for_status()
-        data = response.json()
+    # Try today and up to 5 previous days
+    now = datetime.utcnow()
+    tried_dates = []
 
-        records = data.get("data", [])
-        if isinstance(records, list) and len(records) > 0:
-            rows = []
-            for r in records:
-                if not isinstance(r, dict):
-                    continue
-                symbol = clean(r.get("symbol", ""))
-                if not symbol:
-                    continue
-                company_name = clean(r.get("companyName", ""))
-                isin = clean(r.get("isin", ""))
-                listing_date = ""
+    for offset in range(6):
+        date = now - timedelta(days=offset)
+        # Skip weekends (Saturday=5, Sunday=6)
+        if date.weekday() >= 5:
+            continue
 
-                rows.append({
-                    "symbol": symbol,
-                    "company_name": company_name,
-                    "series": "EQ",
-                    "isin": isin,
-                    "listing_date": listing_date,
-                })
+        date_str = date.strftime("%d%m%Y")
+        url = f"{NSE_BHAVCOPY_BASE}{date_str}.csv"
+        tried_dates.append(date_str)
 
-            if rows:
-                df = pd.DataFrame(rows)
-                for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
-                    df[column] = df[column].fillna("").astype(str).str.strip()
-                df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
-                return df
-    except Exception:
-        pass
+        try:
+            response = session.get(url, timeout=20)
+            if response.status_code == 404:
+                continue
+            response.raise_for_status()
+            csv_text = response.text
+        except Exception:
+            continue
 
-    # Fallback: use the public CSV listing for mainboard
-    try:
-        response = session.get(
-            NSE_CSV_URL,
-            timeout=20,
-        )
-        response.raise_for_status()
-        csv_text = response.text
-    except Exception as error:
-        raise RuntimeError(f"Failed to download NSE CSV: {error}")
+        try:
+            df = pd.read_csv(StringIO(csv_text))
+        except Exception:
+            continue
 
-    from io import StringIO
+        # Expected bhavcopy columns:
+        # SYMBOL, SERIES, ISIN, COMPANY NAME, ...
+        rename_map = {
+            "SYMBOL": "symbol",
+            "SERIES": "series",
+            "ISIN": "isin",
+            "COMPANY NAME": "company_name",
+        }
 
-    df = pd.read_csv(StringIO(csv_text))
+        df = df.rename(columns=rename_map)
 
-    # Expected columns (adjust if NSE changes header names)
-    # SYMBOL, COMPANY NAME, ISIN, SERIES, LISTING DATE
-    rename_map = {
-        "SYMBOL": "symbol",
-        "COMPANY NAME": "company_name",
-        "ISIN": "isin",
-        "SERIES": "series",
-        "LISTING DATE": "listing_date",
-    }
+        required_columns = ["symbol", "series", "isin", "company_name"]
+        if not all(col in df.columns for col in required_columns):
+            continue
 
-    df = df.rename(columns=rename_map)
+        # Filter to mainboard EQ only
+        df = df[df["series"] == "EQ"].copy()
 
-    required_columns = ["symbol", "company_name", "isin", "series"]
-    for col in required_columns:
-        if col not in df.columns:
-            raise RuntimeError(f"Required column '{col}' missing in NSE CSV")
+        if len(df) == 0:
+            continue
 
-    df = df[df["series"] == "EQ"].copy()
+        df["listing_date"] = ""  # Not available in bhavcopy
 
-    for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
-        df[column] = df[column].fillna("").astype(str).str.strip()
+        for column in ["symbol", "company_name", "series", "isin", "listing_date"]:
+            df[column] = df[column].fillna("").astype(str).str.strip()
 
-    df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
+        df = df.drop_duplicates(subset=["symbol", "series"]).reset_index(drop=True)
 
-    if len(df) == 0:
-        raise RuntimeError("No EQ records found in NSE CSV")
+        if len(df) > 0:
+            return df
 
-    return df
+    raise RuntimeError(
+        "Failed to download NSE bhavcopy for recent dates. "
+        f"Tried: {', '.join(tried_dates)}"
+    )
 
 
 def clean(value):
