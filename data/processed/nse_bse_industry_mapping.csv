@@ -1499,3 +1499,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1498,MVELECTRO,MV Electrosystems Limited,EQ,INE0OWZ01020,544851,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
 1499,MVGJL,Manoj Vaibhav Gems N Jewellers Limited,EQ,INE0KNT01012,543995,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
 1500,MWL,Mangalam Worldwide Limited,EQ,INE0JYY01029,544764,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1501,MYSORPETRO,Mysore Petro Chemicals Limited,EQ,INE741A01011,506734,Commodities,Trading - Chemicals,Chemicals,Chemicals & Petrochemicals,Trading - Chemicals,CLASSIFIED
+1502,NACLIND,NACL Industries Limited,EQ,INE295D01020,524709,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+1503,NAGREEKCAP,Nagreeka Capital & Infrastructure Limited,EQ,INE245I01016,532895,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1504,NAGREEKEXP,Nagreeka Exports Limited,EQ,INE123B01028,521109,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1505,NAHARCAP,Nahar Capital and Financial Services Limited,EQ,INE049I01012,532952,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1506,NAHARINDUS,Nahar Industrial Enterprises Limited,EQ,INE289A01011,519136,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1507,NAHARPOLY,Nahar Poly Films Limited,EQ,INE308A01027,523391,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1508,NAHARSPING,Nahar Spinning Mills Limited,EQ,INE290A01027,500296,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1509,NAM-INDIA,Nippon Life India Asset Management Limited,EQ,INE298J01013,540767,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+1510,NARMADA,Narmada Agrobase Limited,EQ,INE117Z01029,543643,Fast Moving Consumer Goods,Animal Feed,Fast Moving Consumer Goods,Food Products,Animal Feed,CLASSIFIED
+1511,NATCAPSUQ,Natural Capsules Limited,EQ,INE936B01015,524654,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1512,NATCOPHARM,Natco Pharma Limited,EQ,INE987B01026,524816,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1513,NATHBIOGEN,Nath Bio-Genes (India) Limited,EQ,INE448G01010,537291,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1514,NATIONALUM,National Aluminium Company Limited,EQ,INE139A01034,532234,Commodities,Aluminium,Metals & Mining,Non - Ferrous Metals,Aluminium,CLASSIFIED
+1515,NATIONSTD,National Standard (India) Limited,EQ,INE166R01015,504882,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1516,NAUKRI,Info Edge (India) Limited,EQ,INE663F01032,532777,Consumer Discretionary,Internet & Catalogue Retail,Consumer Services,Retailing,Internet & Catalogue Retail,CLASSIFIED
+1517,NAVA,NAVA LIMITED,EQ,INE725A01030,513023,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1518,NAVINFLUOR,Navin Fluorine International Limited,EQ,INE048G01026,532504,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1519,NAVKARCORP,Navkar Corporation Limited,EQ,INE278M01019,539332,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1520,NAVKARURB,Navkar Urbanstructure Limited,BE,INE268H01044,531494,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1521,NAVNETEDUL,Navneet Education Limited,EQ,INE060A01024,508989,Fast Moving Consumer Goods,Stationary,Fast Moving Consumer Goods,Household Products,Stationary,CLASSIFIED
+1522,NAZARA,Nazara Technologies Limited,EQ,INE418L01047,543280,Consumer Discretionary,Digital Entertainment,"Media, Entertainment & Publication",Entertainment,Digital Entertainment,CLASSIFIED
+1523,NBCC,NBCC (India) Limited,EQ,INE095N01031,534309,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1524,NBIFIN,N. B. I. Industrial Finance Company Limited,EQ,INE365I01020,,,,,,,NOT_FOUND
+1525,NCC,NCC Limited,EQ,INE868B01028,500294,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1526,NCLIND,NCL Industries Limited,EQ,INE732C01016,502168,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1527,NDGL,Naga Dhunseri Group Limited,EQ,INE756C01015,,,,,,,NOT_FOUND
+1528,NDL,Nandan Denim Limited,EQ,INE875G01048,532641,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1529,NDLVENTURE,NDL Ventures Limited,EQ,INE353A01023,500189,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1530,NDRAUTO,Ndr Auto Components Limited,EQ,INE07OG01012,543214,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1531,NDTV,New Delhi Television Limited,EQ,INE155G01029,532529,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+1532,NEAGI,Neelamalai Agro Industries Limited,EQ,INE605D01012,508670,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1533,NECCLTD,North Eastern Carrying Corporation Limited,BE,INE553C01016,534615,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1534,NECLIFE,Nectar Lifesciences Limited,EQ,INE023H01027,532649,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1535,NELCAST,Nelcast Limited,EQ,INE189I01024,532864,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+1536,NELCO,NELCO Limited,EQ,INE045B01015,504112,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+1537,NEOGEN,Neogen Chemicals Limited,EQ,INE136S01016,542665,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1538,NEPHROPLUS,Nephrocare Health Services Limited,EQ,INE428V01029,544647,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+1539,NESCO,Nesco Limited,EQ,INE317F01035,505355,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1540,NESTLEIND,Nestle India Limited,EQ,INE239A01024,500790,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+1541,NETWEB,Netweb Technologies India Limited,EQ,INE0NT901020,543945,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1542,NETWORK18,Network18 Media & Investments Limited,EQ,INE870H01013,532798,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1543,NEUEON,Neueon Corporation Limited,BE,INE333I01044,532887,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1544,NEULANDLAB,Neuland Laboratories Limited,EQ,INE794A01010,524558,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1545,NEWGEN,Newgen Software Technologies Limited,EQ,INE619B01017,540900,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1546,NEXTMEDIA,Next Mediaworks Limited,EQ,INE747B01016,532416,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1547,NFL,National Fertilizers Limited,EQ,INE870D01012,523630,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+1548,NGIL,Nakoda Group of Industries Limited,BE,INE236Y01012,541418,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+1549,NGLFINE,NGL Fine-Chem Limited,EQ,INE887E01022,524774,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1550,NH,Narayana Hrudayalaya Ltd.,EQ,INE410P01011,539551,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1551,NHPC,NHPC Limited,EQ,INE848E01016,533098,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1552,NIACL,The New India Assurance Company Limited,EQ,INE470Y01017,540769,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+1553,NIBE,NIBE Limited,EQ,INE149O01018,535136,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+1554,NIBL,NRB Industrial Bearings Limited,EQ,INE047O01014,535458,Industrials,Abrasives & Bearings,Capital Goods,Industrial Products,Abrasives & Bearings,CLASSIFIED
+1555,NICCOPAR,Nicco Parks & Resorts Limited,EQ,INE653C01022,526721,Consumer Discretionary,Amusement Parks/ Other Recreation,Consumer Services,Leisure Services,Amusement Parks/ Other Recreation,CLASSIFIED
+1556,NIITLTD,NIIT Limited,EQ,INE161A01038,500304,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1557,NIITMTS,NIIT Learning Systems Limited,EQ,INE342G01023,543952,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1558,NILAINFRA,Nila Infrastructures Limited,EQ,INE937C01029,530377,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1559,NILASPACES,Nila Spaces Limited,EQ,INE00S901012,542231,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1560,NILE,Nile Limited,EQ,INE445D01013,530129,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+1561,NILKAMAL,Nilkamal Limited,EQ,INE310A01015,523385,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+1562,NIMBSPROJ,Nimbus Projects Limited,EQ,INE875B01015,511714,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1563,NINSYS,NINtec Systems Limited,EQ,INE395U01014,539843,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1564,NIPPOBATRY,Indo-National Limited,EQ,INE567A01028,504058,Fast Moving Consumer Goods,Household Products,Fast Moving Consumer Goods,Household Products,Household Products,CLASSIFIED
+1565,NIRAJ,Niraj Cement Structurals Limited,EQ,INE368I01016,532986,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1566,NIRAJISPAT,Niraj Ispat Industries Limited,EQ,INE326T01011,,,,,,,NOT_FOUND
+1567,NIRLON,Nirlon Limited,EQ,INE910A01012,500307,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1568,NITCO,Nitco Limited,EQ,INE858F01012,532722,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
+1569,NITINSPIN,Nitin Spinners Limited,EQ,INE229H01012,532698,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1570,NITIRAJ,Nitiraj Engineers Limited,EQ,INE439T01012,,,,,,,NOT_FOUND
+1571,NITTAGELA,Nitta Gelatin India Limited,EQ,INE265B01019,506532,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1572,NIVABUPA,Niva Bupa Health Insurance Company Limited,EQ,INE995S01015,544286,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+1573,NKIND,NK Industries Limited,EQ,INE542C01019,519494,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+1574,NLCINDIA,NLC India Limited,EQ,INE589A01014,513683,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1575,NMDC,NMDC Limited,EQ,INE584A01023,526371,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+1576,NOCIL,NOCIL Limited,EQ,INE163A01018,500730,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1577,NOIDATOLL,Noida Toll Bridge Company Limited,BE,INE781B01015,532481,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+1578,NORBTEAEXP,Norben Tea & Exports Limited,EQ,INE369C01017,519528,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+1579,NORTHARC,Northern Arc Capital Limited,EQ,INE850M01015,544260,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1580,NOVAAGRI,Nova Agritech Limited,BE,INE02H701025,544100,,,,,,NOT_FOUND
+1581,NOVARTIND,Novartis India Limited,EQ,INE234A01025,500672,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1582,NPST,Network People Services Technologies Limited,EQ,INE0FFK01017,544396,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+1583,NRAIL,N R Agarwal Industries Limited,EQ,INE740D01017,516082,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1584,NRBBEARING,NRB Bearing Limited,EQ,INE349A01021,530367,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1585,NRL,Nupur Recyclers Limited,BE,INE0JM501013,,,,,,,NOT_FOUND
+1586,NSIL,Nalwa Sons Investments Limited,EQ,INE023A01030,532256,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1587,NSLNISP,NMDC Steel Limited,EQ,INE0NNS01018,543768,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1588,NTCIND,NTC Industries Limited,EQ,INE920C01017,526723,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Cigarettes & Tobacco Products,CLASSIFIED
+1589,NTPC,NTPC Limited,EQ,INE733E01010,532555,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1590,NTPCGREEN,NTPC Green Energy Limited,EQ,INE0ONG01011,544289,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1591,NUCLEUS,Nucleus Software Exports Limited,EQ,INE096B01018,531209,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+1592,NURECA,Nureca Limited,BE,INE0DSF01015,543264,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+1593,NUVAMA,Nuvama Wealth Management Limited,EQ,INE531F01023,543988,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1594,NUVOCO,Nuvoco Vistas Corporation Limited,EQ,INE118D01016,543334,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1595,NYKAA,FSN E-Commerce Ventures Limited,EQ,INE388Y01029,543384,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+1596,OAL,Oriental Aromatics Limited,EQ,INE959C01023,500078,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1597,OBCL,OBCL Limited,EQ,INE426Z01016,541206,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1598,OBEROIRLTY,Oberoi Realty Limited,EQ,INE093I01010,533273,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1599,OCCLLTD,OCCL Limited,BE,INE0PK601023,544278,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1600,ODIGMA,Odigma Consultancy Solutions Limited,EQ,INE054301028,544301,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
