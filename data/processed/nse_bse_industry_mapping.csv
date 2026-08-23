@@ -2499,3 +2499,56 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2498,WEBELSOLAR,Websol Energy System Limited,EQ,INE855C01023,517498,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
 2499,WEIZMANIND,Weizmann Limited,EQ,INE080A01014,523011,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
 2500,WEL,Wonder Electricals Limited,EQ,INE02WG01024,543449,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2501,WELCORP,Welspun Corp Limited,EQ,INE191B01025,532144,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2502,WELENT,Welspun Enterprises Limited,EQ,INE625G01013,532553,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2503,WELINV,Welspun Investments and Commercials Limited,BE,INE389K01018,533252,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2504,WELSPLSOL,Welspun Specialty Solutions Limited,EQ,INE731F01037,500365,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2505,WELSPUNLIV,Welspun Living Limited,EQ,INE192B01031,514162,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2506,WENDT,Wendt (India) Limited,EQ,INE274C01019,505412,Industrials,Abrasives & Bearings,Capital Goods,Industrial Products,Abrasives & Bearings,CLASSIFIED
+2507,WESTLIFE,WESTLIFE FOODWORLD LIMITED,EQ,INE274F01020,505533,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+2508,WEWIN,WE WIN LIMITED,EQ,INE082W01014,543535,Services,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),Services,Commercial Services & Supplies,Business Process Outsourcing (BPO)/ Knowledge Process Outsourcing (KPO),CLASSIFIED
+2509,WEWORK,WeWork India Management Limited,EQ,INE085001019,544570,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+2510,WHBRADY,WH Brady & Company Limited,EQ,INE855A01019,501391,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+2511,WHEELS,Wheels India Limited,EQ,INE715A01015,590073,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2512,WHIRLPOOL,Whirlpool of India Limited,EQ,INE716A01013,500238,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2513,WILLAMAGOR,Williamson Magor & Company Limited,EQ,INE210A01017,519224,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2514,WINDLAS,Windlas Biotech Limited,EQ,INE0H5O01029,543329,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2515,WINDMACHIN,Windsor Machines Limited,EQ,INE052A01021,522029,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2516,WIPL,The Western India Plywoods Limited,EQ,INE215F01023,,,,,,,NOT_FOUND
+2517,WIPRO,Wipro Limited,EQ,INE075A01022,507685,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2518,WOCKPHARMA,Wockhardt Limited,EQ,INE049B01025,532300,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2519,WONDERLA,Wonderla Holidays Limited,EQ,INE066O01014,538268,Consumer Discretionary,Amusement Parks/ Other Recreation,Consumer Services,Leisure Services,Amusement Parks/ Other Recreation,CLASSIFIED
+2520,WORTHPERI,Worth Peripherals Limited,EQ,INE196Y01018,544577,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2521,WPIL,WPIL Limited,EQ,INE765D01022,505872,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2522,WSI,W S Industries (I) Limited,EQ,INE100D01014,504220,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2523,WSTCSTPAPR,West Coast Paper Mills Limited,EQ,INE976A01021,500444,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+2524,XCHANGING,Xchanging Solutions Limited,EQ,INE692G01013,532616,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2525,XELPMOC,Xelpmoc Design And Tech Limited,EQ,INE01P501012,542367,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+2526,XPROINDIA,Xpro India Limited,EQ,INE445C01015,590013,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2527,XTGLOBAL,Xtglobal Infotech Limited,EQ,INE547B01028,531225,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2528,XTRANET,Xtranet Technologies Limited,EQ,INE0NG701011,544838,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2529,YASHO,Yasho Industries Limited,EQ,INE616Z01012,541167,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+2530,YATHARTH,Yatharth Hospital & Trauma Care Services Limited,EQ,INE0JO301016,543950,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+2531,YATRA,Yatra Online Limited,EQ,INE0JR601024,543992,Consumer Discretionary,"Tour, Travel Related Services",Consumer Services,Leisure Services,"Tour, Travel Related Services",CLASSIFIED
+2532,YESBANK,Yes Bank Limited,EQ,INE528G01035,532648,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+2533,YOGI,Yogi Limited,EQ,INE290E01011,511702,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2534,YUKEN,Yuken India Limited,EQ,INE384C01016,522108,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+2535,ZAGGLE,Zaggle Prepaid Ocean Services Limited,EQ,INE07K301024,543985,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+2536,ZEEL,Zee Entertainment Enterprises Limited,EQ,INE256A01028,505537,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2537,ZEELEARN,Zee Learn Limited,BE,INE565L01011,533287,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+2538,ZEEMEDIA,Zee Media Corporation Limited,EQ,INE966H01019,532794,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2539,ZENITHEXPO,Zenith Exports Limited,EQ,INE058B01018,512553,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+2540,ZENITHSTL,Zenith Steel Pipes & Industries Limited,EQ,INE318D01020,531845,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2541,ZENSARTECH,Zensar Technologies Limited,EQ,INE520A01027,504067,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2542,ZENTEC,Zen Technologies Limited,EQ,INE251B01027,533339,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+2543,ZFCVINDIA,ZF Commercial Vehicle Control Systems India Limited,EQ,INE342J01019,533023,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2544,ZFSTEERING,ZF Steering Gear (India) Limited,EQ,INE116C01012,505163,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2545,ZIMLAB,Zim Laboratories Limited,EQ,INE518E01015,541400,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2546,ZODIAC,Zodiac Energy Limited,EQ,INE761Y01019,543416,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2547,ZODIACLOTH,Zodiac Clothing Company Limited,EQ,INE206B01013,521163,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+2548,ZOTA,Zota Health Care LImited,EQ,INE358U01012,,,,,,,NOT_FOUND
+2549,ZSARACOM,Saraswati Commercial India Limited,EQ,INE967G01019,512020,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2550,ZUARI,Zuari Agro Chemicals Limited,EQ,INE840M01016,534742,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+2551,ZUARIIND,ZUARI INDUSTRIES LIMITED,EQ,INE217A01012,500780,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2552,ZYDUSLIFE,Zydus Lifesciences Limited,EQ,INE010B01027,532321,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2553,ZYDUSWELL,Zydus Wellness Limited,EQ,INE768C01028,531335,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
