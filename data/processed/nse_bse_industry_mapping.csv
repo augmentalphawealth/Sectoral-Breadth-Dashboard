@@ -1899,3 +1899,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1898,RUBICON,Rubicon Research Limited,EQ,INE506V01022,544578,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
 1899,RUBYMILLS,The Ruby Mills Limited,BE,INE301D01026,503169,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
 1900,RUCHINFRA,Ruchi Infrastructure Limited,EQ,INE413B01023,509020,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1901,RUCHIRA,Ruchira Papers Limited,EQ,INE803H01014,532785,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1902,RUDRA,Rudra Global Infra Products Limited,EQ,INE027T01023,539226,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1903,RUPA,Rupa & Company Limited,EQ,INE895B01021,533552,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1904,RUSHIL,Rushil Decor Limited,EQ,INE573K01025,533470,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+1905,RUSTOMJEE,Keystone Realtors Limited,EQ,INE263M01029,543669,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1906,RVHL,Ravinder Heights Limited,EQ,INE09E501017,543251,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1907,RVNL,Rail Vikas Nigam Limited,EQ,INE415G01027,542649,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1908,RVTH,Revathi Equipment India Limited,EQ,INE0DAB01012,544246,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1909,S&SPOWER,S&S Power Switchgears Limited,EQ,INE902B01017,517273,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1910,SAATVIKGL,Saatvik Green Energy Limited,EQ,INE13B501022,544526,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1911,SAB,SAB Industries Limited,EQ,INE137M01017,539112,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1912,SADBHAV,Sadbhav Engineering Limited,EQ,INE226H01026,532710,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1913,SADBHIN,Sadbhav Infrastructure Project Limited,BE,INE764L01010,539346,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1914,SADHNANIQ,Sadhana Nitrochem Limited,BE,INE888C01040,506642,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+1915,SAFARI,Safari Industries (India) Limited,EQ,INE429E01023,523025,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+1916,SAGARDEEP,Sagardeep Alloys Limited,EQ,INE976T01013,,,,,,,NOT_FOUND
+1917,SAGCEM,Sagar Cements Limited,EQ,INE229C01021,502090,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1918,SAGILITY,SAGILITY LIMITED,EQ,INE0W2G01015,544282,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1919,SAHLIBHFI,Shalibhadra Finance Limited,EQ,INE861D01011,511754,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1920,SAHYADRI,Sahyadri Industries Limited,EQ,INE280H01015,532841,Commodities,Other Construction Materials,Construction Materials,Other Construction Materials,Other Construction Materials,CLASSIFIED
+1921,SAICAPI,Sai Capital Limited,EQ,INE531X01018,531931,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1922,SAIL,Steel Authority of India Limited,EQ,INE114A01011,500113,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1923,SAILIFE,Sai Life Sciences Limited,EQ,INE570L01029,544306,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1924,SAIPARENT,Sai Parenterals Limited,EQ,INE0H9F01037,544742,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1925,SAKAR,Sakar Healthcare Limited,EQ,INE732S01012,,,,,,,NOT_FOUND
+1926,SAKHTISUG,Sakthi Sugars Limited,EQ,INE623A01011,507315,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+1927,SAKSOFT,Saksoft Limited,EQ,INE667G01023,590051,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1928,SAKUMA,Sakuma Exports Limited,EQ,INE190H01024,532713,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1929,SALASAR,Salasar Techno Engineering Limited,EQ,INE170V01027,540642,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1930,SALONA,Salona Cotspin Limited,EQ,INE498E01010,590056,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1931,SALSTEEL,S.A.L. Steel Limited,EQ,INE658G01014,532604,Commodities,Sponge Iron,Metals & Mining,Ferrous Metals,Sponge Iron,CLASSIFIED
+1932,SALZERELEC,Salzer Electronics Limited,EQ,INE457F01013,517059,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+1933,SAMBANDAM,Sambandam Spinning Mills Limited,EQ,INE304D01012,521240,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1934,SAMBHAAV,Sambhaav Media Limited,EQ,INE699B01027,511630,Consumer Discretionary,Electronic Media,"Media, Entertainment & Publication",Media,Electronic Media,CLASSIFIED
+1935,SAMBHV,Sambhv Steel Tubes Limited,EQ,INE12NJ01018,544430,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1936,SAMHI,Samhi Hotels Limited,EQ,INE08U801020,543984,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1937,SAMMAANCAP,Sammaan Capital Limited,EQ,INE148I01020,535789,Financial Services,Housing Finance Company,Financial Services,Finance,Housing Finance Company,CLASSIFIED
+1938,SAMPANN,Sampann Utpadan India Limited,EQ,INE735M01018,534598,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+1939,SANATHAN,Sanathan Textiles Limited,EQ,INE0JPD01013,544314,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1940,SANDESH,The Sandesh Limited,EQ,INE583B01015,526725,Consumer Discretionary,Print Media,"Media, Entertainment & Publication",Media,Print Media,CLASSIFIED
+1941,SANDHAR,Sandhar Technologies Limited,EQ,INE278H01035,541163,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1942,SANDUMA,Sandur Manganese & Iron Ores Limited,EQ,INE149K01016,504918,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1943,SANGAMIND,Sangam (India) Limited,EQ,INE495C01010,514234,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1944,SANGHVIMOV,Sanghvi Movers Limited,EQ,INE989A01032,530073,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1945,SANGINITA,Sanginita Chemicals Limited,BE,INE753W01010,,,,,,,NOT_FOUND
+1946,SANOFI,Sanofi India Limited,EQ,INE058A01010,500674,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1947,SANOFICONR,Sanofi Consumer Healthcare India Limited,EQ,INE0UOS01011,544250,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1948,SANSERA,Sansera Engineering Limited,EQ,INE953O01021,543358,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1949,SANSTAR,Sanstar Limited,EQ,INE08NE01025,544217,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1950,SANWARIA,Sanwaria Consumer Limited,BZ,INE890C01046,519260,Fast Moving Consumer Goods,Other Food Products,Fast Moving Consumer Goods,Food Products,Other Food Products,CLASSIFIED
+1951,SAPPHIRE,Sapphire Foods India Limited,EQ,INE806T01020,543397,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+1952,SAPPL,Shree Ajit Pulp & Paper Limited,EQ,INE185C01017,538795,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1953,SARDAEN,Sarda Energy & Minerals Limited,EQ,INE385C01021,504614,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1954,SAREGAMA,Saregama India Limited,EQ,INE979A01025,532163,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+1955,SARLAPOLY,Sarla Performance Fibers Limited,EQ,INE453D01025,526885,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1956,SARVESHWAR,Sarveshwar Foods Limited,EQ,INE324X01026,543688,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1957,SASKEN,Sasken Technologies Limited,EQ,INE231F01020,532663,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1958,SATIA,Satia Industries Limited,EQ,INE170E01023,539201,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1959,SATIN,Satin Creditcare Network Limited,EQ,INE836B01017,539404,Financial Services,Microfinance Institutions,Financial Services,Finance,Microfinance Institutions,CLASSIFIED
+1960,SAURASHCEM,Saurashtra Cement Limited,EQ,INE626A01014,502175,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+1961,SAYAJIHOTL,Sayaji Hotels Limited,EQ,INE318C01014,523710,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1962,SAYAJIIND,Sayaji Industries Limited,EQ,INE327G01032,540728,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1963,SBC,SBC Exports Limited,EQ,INE04AK01028,542725,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1964,SBCL,Shivalik Bimetal Controls Limited,EQ,INE386D01027,513097,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1965,SBFC,SBFC Finance Limited,EQ,INE423Y01016,543959,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1966,SBGLP,Suratwwala Business Group Limited,EQ,INE05ST01028,543218,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1967,SBICARD,SBI Cards and Payment Services Limited,EQ,INE018E01016,543066,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1968,SBIFUNDS,SBI Funds Management Limited,EQ,INE640G01020,544829,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+1969,SBILIFE,SBI Life Insurance Company Limited,EQ,INE123W01016,540719,Financial Services,Life Insurance,Financial Services,Insurance,Life Insurance,CLASSIFIED
+1970,SBIN,State Bank of India,EQ,INE062A01020,500112,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+1971,SCANSTL,Scan Steels Limited,BE,INE099G01011,511672,Commodities,Iron & Steel,Metals & Mining,Ferrous Metals,Iron & Steel,CLASSIFIED
+1972,SCHAEFFLER,Schaeffler India Limited,EQ,INE513A01022,505790,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1973,SCHAND,S Chand And Company Limited,EQ,INE807K01035,540497,Consumer Discretionary,Printing & Publication,"Media, Entertainment & Publication",Printing & Publication,Printing & Publication,CLASSIFIED
+1974,SCHNEIDER,Schneider Electric Infrastructure Limited,EQ,INE839M01018,534139,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+1975,SCI,Shipping Corporation Of India Limited,EQ,INE109A01011,523598,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
+1976,SCILAL,Shipping Corporation of India Land and Assets Limited,EQ,INE0PB301013,544142,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1977,SCODATUBES,Scoda Tubes Limited,EQ,INE090501011,544411,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1978,SCPL,Sheetal Cool Products Limited,EQ,INE501Y01019,540757,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+1979,SDBL,Som Distilleries & Breweries Limited,EQ,INE480C01038,507514,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+1980,SEAMECLTD,Seamec Limited,EQ,INE497B01018,526807,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
+1981,SECMARK,SecMark Consultancy Limited,EQ,INE0BTM01013,543234,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1982,SECURKLOUD,SECUREKLOUD TECHNOLOGIES LIMITED,EQ,INE650K01021,512161,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1983,SEDEMAC,SEDEMAC Mechatronics Limited,EQ,INE00XB01019,544723,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1984,SEIL,Shanti Educational Initiatives Limited,EQ,INE440T01028,539921,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1985,SEJALLTD,Sejal Glass Limited,EQ,INE955I01044,532993,Industrials,Glass - Industrial,Capital Goods,Industrial Products,Glass - Industrial,CLASSIFIED
+1986,SEKURITIND,Saint Gobain Sekurit India Limited,EQ,INE068B01017,515043,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1987,SELMC,SEL Manufacturing Company Limited,EQ,INE105I01020,532886,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1988,SEMAC,Semac Construction Limited,EQ,INE617A01013,505368,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1989,SENCO,Senco Gold Limited,EQ,INE602W01027,543936,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+1990,SENORES,Senores Pharmaceuticals Limited,EQ,INE0RB801010,544319,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1991,SEPC,SEPC Limited,EQ,INE964H01014,532945,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1992,SERVOTECH,Servotech Renewable Power System Limited,EQ,INE782X01033,,,,,,,NOT_FOUND
+1993,SESHAPAPER,Seshasayee Paper and Boards Limited,EQ,INE630A01024,502450,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1994,SETCO,Setco Automotive Limited,BE,INE878E01021,505075,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1995,SETL,Standard Engineering Technology Limited,EQ,INE0M4D01010,544333,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1996,SETUINFRA,Setubandhan Infrastructure Limited,BZ,INE023M01027,533605,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1997,SEYAIND,Seya Industries Limited,BE,INE573R01012,524324,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1998,SFL,Sheela Foam Limited,EQ,INE916U01025,540203,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+1999,SGFIN,SG Finserve Limited,EQ,INE618R01015,539199,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2000,SGIL,Synergy Green Industries Limited,EQ,INE00QT01015,541929,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
