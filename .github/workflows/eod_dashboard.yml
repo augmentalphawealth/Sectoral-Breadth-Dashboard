@@ -2,17 +2,25 @@ name: basic-industry-dashboard-eod
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "20 13 * * 1-5"
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: eod-dashboard
+  cancel-in-progress: false
 
 jobs:
-  check-shared-price-data:
+  build-eod-dashboard:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Sectoral dashboard
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,31 +30,131 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas pyarrow requests
+          pip install -r requirements.txt
 
-      - name: Download shared price archive temporarily
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download shared Situational Awareness prices
         run: |
           curl -L \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.raw+json" \
             "https://api.github.com/repos/augmentalphawealth/Situational-Awareness/contents/nse_6yr_historical.parquet?ref=main" \
             -o /tmp/nse_6yr_historical.parquet
 
           ls -lh /tmp/nse_6yr_historical.parquet
 
-      - name: Show shared parquet schema
+      - name: Prepare temporary Sectoral prices file
         run: |
           python - <<'PY'
+          from pathlib import Path
           import pandas as pd
 
-          file_path = "/tmp/nse_6yr_historical.parquet"
-          df = pd.read_parquet(file_path)
+          source_file = Path("/tmp/nse_6yr_historical.parquet")
+          output_file = Path("data/processed/prices.parquet")
 
-          print("Rows:", len(df))
-          print("Columns:", df.columns.tolist())
-          print()
-          print("First 3 rows:")
-          print(df.head(3).to_string(index=False))
+          required_source_columns = [
+              "Date",
+              "Open",
+              "High",
+              "Low",
+              "Close",
+              "Volume",
+              "Symbol",
+              "Turnover",
+          ]
+
+          prices = pd.read_parquet(
+              source_file,
+              columns=required_source_columns,
+          )
+
+          prices = prices.rename(
+              columns={
+                  "Date": "date",
+                  "Open": "open",
+                  "High": "high",
+                  "Low": "low",
+                  "Close": "close",
+                  "Volume": "volume",
+                  "Symbol": "symbol",
+                  "Turnover": "turnover",
+              }
+          )
+
+          prices["date"] = pd.to_datetime(prices["date"])
+          prices["symbol"] = prices["symbol"].astype(str).str.strip()
+
+          prices = prices.dropna(
+              subset=[
+                  "date",
+                  "symbol",
+                  "open",
+                  "high",
+                  "low",
+                  "close",
+                  "volume",
+              ]
+          )
+
+          prices = prices.drop_duplicates(
+              subset=["symbol", "date"],
+              keep="last",
+          )
+
+          prices = prices.sort_values(
+              ["symbol", "date"],
+          ).reset_index(drop=True)
+
+          output_file.parent.mkdir(parents=True, exist_ok=True)
+          prices.to_parquet(output_file, index=False)
+
+          print("========== TEMPORARY PRICES READY ==========")
+          print(f"Rows: {len(prices)}")
+          print(f"Symbols: {prices['symbol'].nunique()}")
+          print(f"Start date: {prices['date'].min().date()}")
+          print(f"Latest date: {prices['date'].max().date()}")
+          print(f"Temporary file: {output_file}")
           PY
+
+      - name: Run EOD pipeline
+        run: |
+          python scripts/03_run_eod_pipeline.py
+
+      - name: Remove temporary large prices file
+        if: always()
+        run: |
+          rm -f data/processed/prices.parquet
+          rm -f /tmp/nse_6yr_historical.parquet
+
+      - name: Commit small dashboard outputs
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            data/processed/stock_daily_features.parquet \
+            data/processed/industry_daily_features.parquet \
+            data/processed/basic_industry_daily_features.parquet \
+            data/processed/dashboard_*.parquet \
+            data/processed/dashboard_*.csv \
+            data/processed/last_sync.txt
+
+          if git diff --cached --quiet; then
+            echo "No dashboard output changes to commit."
+          else
+            git commit -m "Update EOD sectoral breadth dashboard"
+            git push
+          fi
+
+      - name: Upload dashboard outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: basic-industry-dashboard-eod
+          path: |
+            data/processed/stock_daily_features.parquet
+            data/processed/industry_daily_features.parquet
+            data/processed/basic_industry_daily_features.parquet
+            data/processed/dashboard_*.parquet
+            data/processed/dashboard_*.csv
+            data/processed/last_sync.txt
+          if-no-files-found: warn
