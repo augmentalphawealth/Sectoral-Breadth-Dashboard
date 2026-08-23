@@ -30,45 +30,44 @@ def clean_text(value: object) -> str:
     return text if text else "Unclassified"
 
 
-def fmt_number(value: object, digits: int = 1) -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    return f"{float(value):,.{digits}f}"
-
-
-def fmt_percent(value: object, digits: int = 1) -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    return f"{float(value):,.{digits}f}%"
-
-
 def fmt_int(value: object) -> str:
     if value is None or pd.isna(value):
         return "—"
     return f"{int(value):,}"
 
 
-def regime_color(regime: object) -> str:
-    palette = {
-        "Strong": "#0f9d58",
-        "Emerging": "#2563eb",
-        "Bottoming": "#a16207",
-        "Weakening": "#ea580c",
-        "Exhausted": "#dc2626",
-    }
-    return palette.get(clean_text(regime), "#64748b")
+def fmt_2dp(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "—"
+    return f"{float(value):,.2f}"
 
 
-def strength_badge(strength_score: float) -> str:
-    if pd.isna(strength_score):
+def fmt_2dp_pct(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "—"
+    return f"{float(value) * 100:,.2f}%"
+
+
+def fmt_1dp_pct(value: object) -> str:
+    if value is None or pd.isna(value):
+        return "—"
+    return f"{float(value) * 100:,.1f}%"
+
+
+def regime_label(regime: object) -> str:
+    return clean_text(regime)
+
+
+def strength_label(score: float) -> str:
+    if pd.isna(score):
         return "Neutral"
-    if strength_score >= 70:
+    if score >= 70:
         return "Leader"
-    if strength_score >= 55:
+    if score >= 55:
         return "Strong"
-    if strength_score >= 40:
+    if score >= 40:
         return "Neutral"
-    if strength_score >= 25:
+    if score >= 25:
         return "Weak"
     return "Lagging"
 
@@ -130,10 +129,10 @@ def date_navigation(
         st.session_state[state_key] = selected_date
     current_index = available_dates.index(selected_date)
     col_previous, col_date, col_next, col_latest = st.columns(
-        [0.7, 2.2, 0.7, 1.0]
+        [0.6, 2.0, 0.6, 0.9]
     )
     if col_previous.button(
-        "← Previous",
+        "←",
         disabled=current_index == 0,
         key=f"{widget_key}_previous",
         use_container_width=True,
@@ -144,9 +143,7 @@ def date_navigation(
         "As-of date",
         options=available_dates,
         index=current_index,
-        format_func=lambda value: (
-            pd.Timestamp(value).strftime("%d %b %Y")
-        ),
+        format_func=lambda value: pd.Timestamp(value).strftime("%d %b %Y"),
         key=f"{widget_key}_date_picker",
     )
     if pd.Timestamp(date_choice) != selected_date:
@@ -154,7 +151,7 @@ def date_navigation(
         selected_date = pd.Timestamp(date_choice)
     current_index = available_dates.index(selected_date)
     if col_next.button(
-        "Next →",
+        "→",
         disabled=current_index == len(available_dates) - 1,
         key=f"{widget_key}_next",
         use_container_width=True,
@@ -198,13 +195,13 @@ def show_group_kpis(
         if "members" in data.columns
         else 0
     )
-    columns = st.columns(6)
-    columns[0].metric("As of", selected_date.strftime("%d %b %Y"))
-    columns[1].metric("Groups", fmt_int(data[group_column].nunique()))
-    columns[2].metric("Members", fmt_int(total_members))
-    columns[3].metric("Median strength", fmt_number(median_strength))
-    columns[4].metric("Median above 50 DMA", fmt_percent(median_breadth_50))
-    columns[5].metric(
+    cols = st.columns(6)
+    cols[0].metric("As of", selected_date.strftime("%d %b %Y"))
+    cols[1].metric("Groups", fmt_int(data[group_column].nunique()))
+    cols[2].metric("Members", fmt_int(total_members))
+    cols[3].metric("Median strength", fmt_2dp(median_strength))
+    cols[4].metric("Median above 50 DMA", fmt_1dp_pct(median_breadth_50))
+    cols[5].metric(
         "Strong / Emerging",
         f"{counts['Strong']} / {counts['Emerging']}",
     )
@@ -231,33 +228,28 @@ def prepare_group_table(
         "vcp_ready_count",
         "median_dist_52w_high",
     ]
-    selected = [column for column in columns if column in data.columns]
+    selected = [c for c in columns if c in data.columns]
     table = data[selected].copy()
-    table = table.rename(
-        columns={
-            group_column: (
-                "Basic Industry"
-                if group_column == "basic_industry"
-                else "Industry"
-            ),
-            "regime": "Regime",
-            "members": "Members",
-            "strength_score": "Strength",
-            "eq_ret_1d": "1D %",
-            "eq_ret_5d": "5D %",
-            "eq_ret_20d": "20D %",
-            "eq_ret_60d": "60D %",
-            "pct_above_20": "Above 20 DMA %",
-            "pct_above_50": "Above 50 DMA %",
-            "pct_above_200": "Above 200 DMA %",
-            "acc_minus_dist": "A/D Balance",
-            "breakout_count": "Breakouts",
-            "vcp_ready_count": "VCP Ready",
-            "median_dist_52w_high": "From 52W High %",
-        }
-    )
-    if "From 52W High %" in table.columns:
-        table["From 52W High %"] = table["From 52W High %"] * 100
+    rename_map = {
+        group_column: (
+            "Basic Industry" if group_column == "basic_industry" else "Industry"
+        ),
+        "regime": "Regime",
+        "members": "Members",
+        "strength_score": "Strength",
+        "eq_ret_1d": "ret_1d",
+        "eq_ret_5d": "ret_5d",
+        "eq_ret_20d": "ret_20d",
+        "eq_ret_60d": "ret_60d",
+        "pct_above_20": "above_20",
+        "pct_above_50": "above_50",
+        "pct_above_200": "above_200",
+        "acc_minus_dist": "ad_balance",
+        "breakout_count": "breakouts",
+        "vcp_ready_count": "vcp_ready",
+        "median_dist_52w_high": "dist_52w_high",
+    }
+    table = table.rename(columns={k: v for k, v in rename_map.items() if k in table.columns})
     if "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=False)
     table.insert(0, "Rank", range(1, len(table) + 1))
@@ -287,35 +279,87 @@ def prepare_stock_table(
         "breakout_55",
         "vcp_ready",
     ]
-    selected = [column for column in columns if column in data.columns]
+    selected = [c for c in columns if c in data.columns]
     table = data[selected].copy()
-    table = table.rename(
-        columns={
-            "stock_rank_in_basic_industry": "Rank",
-            "symbol": "Symbol",
-            "stock_strength_score": "Stock Strength",
-            "stock_strength_percentile_in_basic_industry": "Strength %",
-            "close": "Close",
-            "ret_1d": "1D %",
-            "ret_5d": "5D %",
-            "ret_20d": "20D %",
-            "ret_60d": "60D %",
-            "above_20": "Above 20 DMA",
-            "above_50": "Above 50 DMA",
-            "above_200": "Above 200 DMA",
-            "dist_52w_high": "From 52W High %",
-            "trend_template_pass": "Trend Template",
-            "acc_day": "Accumulation",
-            "dist_day": "Distribution",
-            "breakout_55": "Breakouts",
-            "vcp_ready": "VCP Ready",
-        }
-    )
-    if "From 52W High %" in table.columns:
-        table["From 52W High %"] = table["From 52W High %"] * 100
+    rename_map = {
+        "stock_rank_in_basic_industry": "Rank",
+        "symbol": "Symbol",
+        "stock_strength_score": "Strength",
+        "stock_strength_percentile_in_basic_industry": "StrengthPct",
+        "close": "Close",
+        "ret_1d": "ret_1d",
+        "ret_5d": "ret_5d",
+        "ret_20d": "ret_20d",
+        "ret_60d": "ret_60d",
+        "above_20": "above_20",
+        "above_50": "above_50",
+        "above_200": "above_200",
+        "dist_52w_high": "dist_52w_high",
+        "trend_template_pass": "TrendTemplate",
+        "acc_day": "Accumulation",
+        "dist_day": "Distribution",
+        "breakout_55": "Breakouts",
+        "vcp_ready": "VCPReady",
+    }
+    table = table.rename(columns={k: v for k, v in rename_map.items() if k in table.columns})
     if "Rank" in table.columns:
         table = table.sort_values(["Rank", "Symbol"])
     return table.reset_index(drop=True)
+
+
+def format_group_display_table(table: pd.DataFrame) -> pd.DataFrame:
+    out = table.copy()
+    out["Regime"] = out["Regime"].apply(regime_label)
+    out["StrengthBand"] = out["Strength"].apply(strength_label)
+    numeric_map = {
+        "Strength": fmt_2dp,
+        "Members": fmt_int,
+        "ret_1d": fmt_2dp_pct,
+        "ret_5d": fmt_2dp_pct,
+        "ret_20d": fmt_2dp_pct,
+        "ret_60d": fmt_2dp_pct,
+        "above_20": fmt_1dp_pct,
+        "above_50": fmt_1dp_pct,
+        "above_200": fmt_1dp_pct,
+        "ad_balance": fmt_int,
+        "breakouts": fmt_int,
+        "vcp_ready": fmt_int,
+        "dist_52w_high": fmt_2dp_pct,
+    }
+    for col, fmt in numeric_map.items():
+        if col in out.columns:
+            out[col] = out[col].apply(fmt)
+    return out
+
+
+def format_stock_display_table(table: pd.DataFrame) -> pd.DataFrame:
+    out = table.copy()
+    out["StrengthBand"] = out["Strength"].apply(strength_label)
+    numeric_map = {
+        "Rank": fmt_int,
+        "Strength": fmt_2dp,
+        "StrengthPct": fmt_2dp_pct,
+        "Close": fmt_2dp,
+        "ret_1d": fmt_2dp_pct,
+        "ret_5d": fmt_2dp_pct,
+        "ret_20d": fmt_2dp_pct,
+        "ret_60d": fmt_2dp_pct,
+        "above_20": fmt_1dp_pct,
+        "above_50": fmt_1dp_pct,
+        "above_200": fmt_1dp_pct,
+        "dist_52w_high": fmt_2dp_pct,
+        "Accumulation": fmt_int,
+        "Distribution": fmt_int,
+        "Breakouts": fmt_int,
+        "VCPReady": fmt_int,
+    }
+    for col, fmt in numeric_map.items():
+        if col in out.columns:
+            out[col] = out[col].apply(fmt)
+    out["TrendTemplate"] = out["TrendTemplate"].apply(
+        lambda x: "Pass" if x else "Fail" if pd.notna(x) else "—"
+    )
+    return out
 
 
 def show_group_history_chart(
@@ -335,9 +379,7 @@ def show_group_history_chart(
         "Breakout count": "breakout_count",
     }
     available_metrics = {
-        label: column
-        for label, column in metrics.items()
-        if column in history.columns
+        label: col for label, col in metrics.items() if col in history.columns
     }
     chosen_metric = st.selectbox(
         "Group chart metric",
@@ -349,7 +391,7 @@ def show_group_history_chart(
         ["date", metric_column]
     ].copy()
     chart_data = chart_data.sort_values("date").set_index("date")
-    st.line_chart(chart_data, use_container_width=True, height=300)
+    st.line_chart(chart_data, use_container_width=True, height=280)
 
 
 def show_stock_history_chart(
@@ -359,12 +401,12 @@ def show_stock_history_chart(
 ) -> None:
     st.markdown("#### Stock comparison history")
     symbols = sorted(selected_stocks["symbol"].unique().tolist())
-    default_symbols = symbols[: min(3, len(symbols))]
+    default_symbols = symbols[: min(4, len(symbols))]
     selected_symbols = st.multiselect(
         "Stocks to compare",
         options=symbols,
         default=default_symbols,
-        max_selections=8,
+        max_selections=6,
         key="stock_chart_symbols",
     )
     if not selected_symbols:
@@ -378,9 +420,7 @@ def show_stock_history_chart(
         "Close": "close",
     }
     available_metrics = {
-        label: column
-        for label, column in metrics.items()
-        if column in stock_history.columns
+        label: col for label, col in metrics.items() if col in stock_history.columns
     }
     selected_metric = st.selectbox(
         "Stock chart metric",
@@ -399,7 +439,7 @@ def show_stock_history_chart(
         columns="symbol",
         values=metric_column,
     ).sort_index()
-    st.line_chart(chart_data, use_container_width=True, height=300)
+    st.line_chart(chart_data, use_container_width=True, height=280)
 
 
 def basic_industry_view(
@@ -409,14 +449,14 @@ def basic_industry_view(
     st.subheader("Basic Industry Leadership")
     st.caption(
         "Ranked view of granular NSE market leadership, breadth and participation. "
-        "Click a Basic Industry row to view its constituent stocks."
+        "Select a Basic Industry to view its constituent stocks."
     )
     basic_history = ensure_group_columns(basic_history, "basic_industry")
     stock_history = ensure_stock_columns(stock_history)
     available_dates = get_trading_dates(basic_history)
     selected_date = date_navigation(available_dates, "basic_industry_leadership")
     selected = basic_history[basic_history["date"] == selected_date].copy()
-    filter_1, filter_2, filter_3 = st.columns([1.5, 1.0, 1.0])
+    filter_1, filter_2, filter_3 = st.columns([1.4, 0.9, 0.9])
     all_regimes = ["Strong", "Emerging", "Bottoming", "Weakening", "Exhausted"]
     chosen_regimes = filter_1.multiselect(
         "Regime filter",
@@ -445,125 +485,119 @@ def basic_industry_view(
     if sort_mode == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=True).reset_index(drop=True)
         table["Rank"] = range(1, len(table) + 1)
-    table["Regime"] = table["Regime"].apply(clean_text)
-    table["Strength Band"] = table["Strength"].apply(strength_badge)
-    event = st.dataframe(
-        table[
+    display_table = format_group_display_table(table)
+    group_options = display_table["Basic Industry"].tolist()
+    selected_group = st.selectbox(
+        "Selected Basic Industry",
+        options=group_options,
+        index=0,
+        key="basic_industry_selector",
+    )
+    st.dataframe(
+        display_table[
             [
                 "Rank",
                 "Basic Industry",
                 "Regime",
-                "Strength Band",
+                "StrengthBand",
                 "Strength",
                 "Members",
-                "1D %",
-                "5D %",
-                "20D %",
-                "60D %",
-                "Above 50 DMA %",
-                "Above 200 DMA %",
-                "A/D Balance",
-                "Breakouts",
-                "VCP Ready",
-                "From 52W High %",
+                "ret_1d",
+                "ret_5d",
+                "ret_20d",
+                "ret_60d",
+                "above_50",
+                "above_200",
+                "ad_balance",
+                "breakouts",
+                "vcp_ready",
+                "dist_52w_high",
             ]
         ],
-        on_select="rerun",
-        selection_mode="single-row",
-        key="basic_industry_table",
         use_container_width=True,
         hide_index=True,
-        height=420,
+        height=360,
     )
     st.download_button(
-        "Download selected table",
+        "Download group table",
         data=table.to_csv(index=False).encode("utf-8"),
         file_name=f"basic_industry_{selected_date.strftime('%Y%m%d')}.csv",
         mime="text/csv",
         key="basic_industry_download",
     )
-    selected_rows = event.selection.rows
-    if selected_rows:
-        row_index = selected_rows[0]
-        selected_group = table.iloc[row_index]["Basic Industry"]
-        st.markdown("---")
-        st.subheader(f"Constituent stocks: {selected_group}")
-        stock_dates = set(
-            pd.to_datetime(stock_history["date"]).unique().tolist()
+    st.markdown("---")
+    st.subheader(f"Constituent stocks: {selected_group}")
+    stock_dates = set(pd.to_datetime(stock_history["date"]).unique().tolist())
+    if selected_date not in stock_dates:
+        earliest_stock_date = pd.Timestamp(stock_history["date"].min())
+        st.info(
+            "Stock-level drill-down is available from "
+            f"{earliest_stock_date.strftime('%d %b %Y')} onward. "
+            "Group-level history remains available for earlier dates."
         )
-        if selected_date not in stock_dates:
-            earliest_stock_date = pd.Timestamp(stock_history["date"].min())
-            st.info(
-                "Stock-level drill-down is available from "
-                f"{earliest_stock_date.strftime('%d %b %Y')} onward. "
-                "Group-level history remains available for earlier dates."
-            )
-            show_group_history_chart(
-                basic_history,
-                "basic_industry",
-                selected_group,
-                "Basic Industry strength history",
-            )
-            return
-        stocks = stock_history[
-            (stock_history["date"] == selected_date)
-            & (stock_history["basic_industry"] == selected_group)
-        ].copy()
-        if stocks.empty:
-            st.warning("No stock-level data is available for this group/date.")
-            return
-        stock_table = prepare_stock_table(stocks)
-        stock_table["Stock Strength Band"] = stock_table["Stock Strength"].apply(
-            strength_badge
+        show_group_history_chart(
+            basic_history,
+            "basic_industry",
+            selected_group,
+            "Basic Industry strength history",
         )
-        st.dataframe(
-            stock_table[
-                [
-                    "Rank",
-                    "Symbol",
-                    "Stock Strength",
-                    "Strength %",
-                    "Stock Strength Band",
-                    "Close",
-                    "1D %",
-                    "5D %",
-                    "20D %",
-                    "60D %",
-                    "Above 20 DMA",
-                    "Above 50 DMA",
-                    "Above 200 DMA",
-                    "From 52W High %",
-                    "Trend Template",
-                    "Accumulation",
-                    "Distribution",
-                    "Breakouts",
-                    "VCP Ready",
-                ]
-            ],
-            use_container_width=True,
-            hide_index=True,
-            height=440,
+        return
+    stocks = stock_history[
+        (stock_history["date"] == selected_date)
+        & (stock_history["basic_industry"] == selected_group)
+    ].copy()
+    if stocks.empty:
+        st.warning("No stock-level data is available for this group/date.")
+        return
+    stock_table = prepare_stock_table(stocks)
+    stock_display = format_stock_display_table(stock_table)
+    st.dataframe(
+        stock_display[
+            [
+                "Rank",
+                "Symbol",
+                "Strength",
+                "StrengthPct",
+                "StrengthBand",
+                "Close",
+                "ret_1d",
+                "ret_5d",
+                "ret_20d",
+                "ret_60d",
+                "above_50",
+                "above_200",
+                "dist_52w_high",
+                "TrendTemplate",
+                "Accumulation",
+                "Distribution",
+                "Breakouts",
+                "VCPReady",
+            ]
+        ],
+        use_container_width=True,
+        hide_index=True,
+        height=380,
+    )
+    st.download_button(
+        "Download stock ranking",
+        data=stock_table.to_csv(index=False).encode("utf-8"),
+        file_name=(
+            f"{selected_group.replace('/', '_')}_"
+            f"stocks_{selected_date.strftime('%Y%m%d')}.csv"
+        ),
+        mime="text/csv",
+        key="drilldown_stock_download",
+    )
+    chart_left, chart_right = st.columns(2)
+    with chart_left:
+        show_group_history_chart(
+            basic_history,
+            "basic_industry",
+            selected_group,
+            "Basic Industry strength history",
         )
-        st.download_button(
-            "Download stock ranking",
-            data=stock_table.to_csv(index=False).encode("utf-8"),
-            file_name=(
-                f"{selected_group.replace('/', '_')}_"
-                f"stocks_{selected_date.strftime('%Y%m%d')}.csv"
-            ),
-            mime="text/csv",
-            key="drilldown_stock_download",
-        )
-        chart_left, chart_right = st.columns(2)
-        with chart_left:
-            show_group_history_chart(
-                basic_history,
-                "basic_industry",
-                selected_group,
-                "Basic Industry strength history",
-            )
-        with chart_right:
-            show_stock_history_chart(stock_history, selected_group, stocks)
+    with chart_right:
+        show_stock_history_chart(stock_history, selected_group, stocks)
 
 
 def industry_view(industry_history: pd.DataFrame) -> None:
@@ -575,7 +609,7 @@ def industry_view(industry_history: pd.DataFrame) -> None:
     available_dates = get_trading_dates(industry_history)
     selected_date = date_navigation(available_dates, "industry_leadership")
     selected = industry_history[industry_history["date"] == selected_date].copy()
-    filter_1, filter_2, filter_3 = st.columns([1.5, 1.0, 1.0])
+    filter_1, filter_2, filter_3 = st.columns([1.4, 0.9, 0.9])
     all_regimes = ["Strong", "Emerging", "Bottoming", "Weakening", "Exhausted"]
     chosen_regimes = filter_1.multiselect(
         "Regime filter",
@@ -604,38 +638,34 @@ def industry_view(industry_history: pd.DataFrame) -> None:
     if sort_mode == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values("Strength", ascending=True).reset_index(drop=True)
         table["Rank"] = range(1, len(table) + 1)
-    table["Regime"] = table["Regime"].apply(clean_text)
-    table["Strength Band"] = table["Strength"].apply(strength_badge)
+    display_table = format_group_display_table(table)
     st.dataframe(
-        table[
+        display_table[
             [
                 "Rank",
                 "Industry",
                 "Regime",
-                "Strength Band",
+                "StrengthBand",
                 "Strength",
                 "Members",
-                "1D %",
-                "5D %",
-                "20D %",
-                "60D %",
-                "Above 50 DMA %",
-                "Above 200 DMA %",
-                "A/D Balance",
-                "Breakouts",
-                "VCP Ready",
-                "From 52W High %",
+                "ret_1d",
+                "ret_5d",
+                "ret_20d",
+                "ret_60d",
+                "above_50",
+                "above_200",
+                "ad_balance",
+                "breakouts",
+                "vcp_ready",
+                "dist_52w_high",
             ]
         ],
-        on_select="rerun",
-        selection_mode="single-row",
-        key="industry_table",
         use_container_width=True,
         hide_index=True,
-        height=420,
+        height=360,
     )
     st.download_button(
-        "Download selected table",
+        "Download industry table",
         data=table.to_csv(index=False).encode("utf-8"),
         file_name=f"industry_{selected_date.strftime('%Y%m%d')}.csv",
         mime="text/csv",
@@ -681,34 +711,34 @@ def overview_view(
     with left:
         st.markdown("#### Regime distribution")
         regime_table = pd.DataFrame({"Groups": counts})
-        st.bar_chart(regime_table, height=320)
+        st.bar_chart(regime_table, height=280)
     with right:
         st.markdown("#### Breadth snapshot")
         breadth_columns = [
-            column
-            for column in ["pct_above_20", "pct_above_50", "pct_above_200"]
-            if column in basic_latest.columns
+            c for c in ["pct_above_20", "pct_above_50", "pct_above_200"]
+            if c in basic_latest.columns
         ]
         if breadth_columns:
             breadth = pd.DataFrame(
                 {
                     "Median breadth %": [
-                        basic_latest[column].median() for column in breadth_columns
+                        basic_latest[c].median() for c in breadth_columns
                     ]
                 },
                 index=[
-                    column.replace("pct_above_", "Above ").replace("_", " ") + " DMA"
-                    for column in breadth_columns
+                    c.replace("pct_above_", "Above ").replace("_", " ") + " DMA"
+                    for c in breadth_columns
                 ],
             )
-            st.bar_chart(breadth, height=320)
+            st.bar_chart(breadth, height=280)
     st.markdown("#### Current leadership")
     leaders = prepare_group_table(basic_latest, "basic_industry").head(12)
+    leaders_disp = format_group_display_table(leaders)
     st.dataframe(
-        leaders,
+        leaders_disp,
         use_container_width=True,
         hide_index=True,
-        height=420,
+        height=320,
     )
     if metadata:
         coverage = metadata.get("basic_industry", {})
