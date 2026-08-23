@@ -2299,3 +2299,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2298,TIMEX,Timex Group India Limited,EQ,INE064A01026,500414,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
 2299,TIMKEN,Timken India Limited,EQ,INE325A01013,522113,Industrials,Abrasives & Bearings,Capital Goods,Industrial Products,Abrasives & Bearings,CLASSIFIED
 2300,TINNARUBR,Tinna Rubber and Infrastructure Limited,EQ,INE015C01016,530475,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+2301,TIPSFILMS,Tips Films Limited,EQ,INE0LQS01015,543614,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+2302,TIPSMUSIC,Tips Music Limited,EQ,INE716B01029,532375,Consumer Discretionary,Media & Entertainment,"Media, Entertainment & Publication",Entertainment,Media & Entertainment,CLASSIFIED
+2303,TIRUMALCHM,Thirumalai Chemicals Limited,EQ,INE338A01024,500412,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+2304,TIRUPATIFL,Tirupati Forge Limited,BE,INE319Y01024,,,,,,,NOT_FOUND
+2305,TITAGARH,TITAGARH RAIL SYSTEMS LIMITED,EQ,INE615H01020,532966,Industrials,Railway Wagons,Capital Goods,Industrial Manufacturing,Railway Wagons,CLASSIFIED
+2306,TITAN,Titan Company Limited,EQ,INE280A01028,500114,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2307,TMB,Tamilnad Mercantile Bank Limited,EQ,INE668A01016,543596,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+2308,TMCV,Tata Motors Limited,EQ,INE1TAE01010,544569,Industrials,Commercial Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Commercial Vehicles,CLASSIFIED
+2309,TMPV,Tata Motors Passenger Vehicles Limited,EQ,INE155A01022,500570,Consumer Discretionary,Passenger Cars & Utility Vehicles,Automobile and Auto Components,Automobiles,Passenger Cars & Utility Vehicles,CLASSIFIED
+2310,TNPETRO,Tamilnadu PetroProducts Limited,EQ,INE148A01019,500777,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+2311,TNPL,Tamil Nadu Newsprint & Papers Limited,EQ,INE107A01015,531426,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+2312,TNTELE,Tamilnadu Telecommunication Limited,EQ,INE141D01018,523419,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+2313,TOKYOPLAST,Tokyo Plast International Limited,EQ,INE932C01012,500418,Consumer Discretionary,Plastic Products - Consumer,Consumer Durables,Consumer Durables,Plastic Products - Consumer,CLASSIFIED
+2314,TOLINS,Tolins Tyres Limited,EQ,INE0RWQ01014,544254,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+2315,TORNTPHARM,Torrent Pharmaceuticals Limited,EQ,INE685A01028,500420,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2316,TORNTPOWER,Torrent Power Limited,EQ,INE813H01021,532779,Utilities,Integrated Power Utilities,Power,Power,Integrated Power Utilities,CLASSIFIED
+2317,TOTAL,Total Transport Systems Limited,EQ,INE336X01012,,,,,,,NOT_FOUND
+2318,TOUCHWOOD,Touchwood Entertainment Limited,EQ,INE486Y01013,,,,,,,NOT_FOUND
+2319,TOYAMSL,Toyam Sports Limited,EQ,INE457P01020,538607,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+2320,TPHQ,Teamo Productions HQ Limited,EQ,INE065J01024,533048,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2321,TPLPLASTEH,TPL Plastech Limited,EQ,INE413G01022,526582,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2322,TRACXN,Tracxn Technologies Limited,EQ,INE0HMF01019,543638,Services,Data Processing Services,Services,Commercial Services & Supplies,Data Processing Services,CLASSIFIED
+2323,TRANSCOR,Transcorp International Limited,EQ,INE330E01023,532410,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+2324,TRANSPEK,Transpek Industry Limited,BE,INE687A01016,506687,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+2325,TRANSRAILL,Transrail Lighting Limited,EQ,INE454P01035,544317,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2326,TRANSWORLD,TRANSWORLD SHIPPING LINES LIMITED,BE,INE757B01015,520151,Services,Shipping,Services,Transport Services,Shipping,CLASSIFIED
+2327,TRAVELFOOD,Travel Food Services Limited,EQ,INE103V01028,544443,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+2328,TREEHOUSE,Tree House Education & Accessories Limited,EQ,INE040M01013,533540,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+2329,TREJHARA,TREJHARA SOLUTIONS LIMITED,EQ,INE00CA01015,542233,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2330,TREL,Transindia Real Estate Limited,EQ,INE0O3901029,543955,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2331,TRENT,Trent Limited,EQ,INE849A01020,500251,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+2332,TRF,TRF Limited,EQ,INE391D01019,505854,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2333,TRIDENT,Trident Limited,EQ,INE064C01022,521064,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2334,TRIGYN,Trigyn Technologies Limited,EQ,INE948A01012,517562,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+2335,TRITONV,Triton Valves Limited,EQ,INE440G01017,505978,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2336,TRITURBINE,Triveni Turbine Limited,EQ,INE152M01016,533655,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+2337,TRIVENI,Triveni Engineering & Industries Limited,EQ,INE256C01024,532356,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2338,TRU,TruCap Finance Limited,EQ,INE615R01029,540268,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2339,TRUALT,TruAlt Bioenergy Limited,EQ,INE0MWH01014,544545,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+2340,TSFINV,TSF INVESTMENTS LIMITED,EQ,INE202Z01029,,,,,,,NOT_FOUND
+2341,TTKHLTCARE,TTK Healthcare Limited,EQ,INE910C01018,507747,Diversified,Diversified,Diversified,Diversified,Diversified,CLASSIFIED
+2342,TTKPRESTIG,TTK Prestige Limited,EQ,INE690A01028,517506,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+2343,TTL,T T Limited,EQ,INE592B01024,514142,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2344,TTML,Tata Teleservices (Maharashtra) Limited,EQ,INE517B01013,532371,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+2345,TURTLEMINT,Turtlemint Fintech Solutions Limited,EQ,INE0OC301013,544799,Financial Services,Financial Technology (Fintech),Financial Services,Financial Technology (Fintech),Financial Technology (Fintech),CLASSIFIED
+2346,TUTIALKA,Tuticorin Alkali Chemicals & Fertilizers Limited,EQ,INE400A01014,506808,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+2347,TVSELECT,TVS Electronics Limited,EQ,INE236G01019,532513,Information Technology,Computers Hardware & Equipments,Information Technology,IT - Hardware,Computers Hardware & Equipments,CLASSIFIED
+2348,TVSHLTD,TVS Holdings Limited,EQ,INE105A01035,520056,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+2349,TVSMOTOR,TVS Motor Company Limited,EQ,INE494B01023,532343,Consumer Discretionary,2/3 Wheelers,Automobile and Auto Components,Automobiles,2/3 Wheelers,CLASSIFIED
+2350,TVSSCS,TVS Supply Chain Solutions Limited,EQ,INE395N01027,543965,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+2351,TVSSRICHAK,TVS Srichakra Limited,EQ,INE421C01016,509243,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+2352,TVTODAY,TV Today Network Limited,EQ,INE038F01029,532515,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2353,TVVISION,TV Vision Limited,BE,INE871L01013,540083,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+2354,UBL,United Breweries Limited,EQ,INE686F01025,532478,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+2355,UCAL,UCAL LIMITED,BE,INE139B01016,500464,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2356,UCOBANK,UCO Bank,EQ,INE691A01018,532505,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+2357,UDAYJEW,Uday Jewellery Industries Limited,EQ,INE551B01012,539518,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+2358,UDS,Updater Services Limited,EQ,INE851I01011,543996,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+2359,UEL,Ujaas Energy Limited,EQ,INE899L01030,533644,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+2360,UFBL,United Foodbrands Limited,BE,INE382M01027,543283,Consumer Discretionary,Restaurants,Consumer Services,Leisure Services,Restaurants,CLASSIFIED
+2361,UFLEX,UFLEX Limited,EQ,INE516A01017,500148,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+2362,UFO,UFO Moviez India Limited,EQ,INE527H01019,539141,Consumer Discretionary,"Film Production, Distribution & Exhibition","Media, Entertainment & Publication",Entertainment,"Film Production, Distribution & Exhibition",CLASSIFIED
+2363,UGARSUGAR,The Ugar Sugar Works Limited,EQ,INE071E01023,530363,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2364,UGROCAP,Ugro Capital Limited,EQ,INE583D01011,511742,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2365,UJJIVANSFB,Ujjivan Small Finance Bank Limited,EQ,INE551W01018,542904,Financial Services,Other Bank,Financial Services,Banks,Other Bank,CLASSIFIED
+2366,ULTRACEMCO,UltraTech Cement Limited,EQ,INE481G01011,532538,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+2367,ULTRAMAR,Ultramarine & Pigments Limited,EQ,INE405A01021,506685,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+2368,UMAEXPORTS,Uma Exports Limited,BE,INE0GIU01018,543513,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+2369,UMESLTD,Usha Martin Education & Solutions Limited,EQ,INE240C01028,532398,Consumer Discretionary,E-Learning,Consumer Services,Other Consumer Services,E-Learning,CLASSIFIED
+2370,UMIYA-MRO,UMIYA BUILDCON LIMITED,EQ,INE398B01018,532376,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+2371,UNICHEMLAB,Unichem Laboratories Limited,EQ,INE351A01035,506690,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+2372,UNIDT,United Drilling Tools Limited,BE,INE961D01019,522014,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+2373,UNIECOM,Unicommerce Esolutions Limited,EQ,INE00U401027,544227,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+2374,UNIENTER,Uniphos Enterprises Limited,EQ,INE037A01022,500429,Commodities,Trading - Chemicals,Chemicals,Chemicals & Petrochemicals,Trading - Chemicals,CLASSIFIED
+2375,UNIINFO,Uniinfo Telecom Services Limited,EQ,INE481Z01011,,,,,,,NOT_FOUND
+2376,UNIMECH,Unimech Aerospace and Manufacturing Limited,EQ,INE0U3I01011,544322,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+2377,UNIONBANK,Union Bank of India,EQ,INE692A01016,532477,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
+2378,UNIPARTS,Uniparts India Limited,EQ,INE244O01017,543689,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2379,UNITDSPR,United Spirits Limited,EQ,INE854D01024,532432,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+2380,UNITECH,Unitech Limited,EQ,INE694A01020,507878,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+2381,UNITEDPOLY,United Polyfab Gujarat Limited,BE,INE368U01029,544756,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+2382,UNITEDTEA,The United Nilgiri Tea Estates Company Limited,EQ,INE458F01011,,,,,,,NOT_FOUND
+2383,UNIVASTU,Univastu India Limited,BE,INE562X01013,,,,,,,NOT_FOUND
+2384,UNIVCABLES,Universal Cables Limited,EQ,INE279A01012,504212,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+2385,UNIVPHOTO,Universus Photo Imagings Limited,BE,INE03V001013,542933,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+2386,UNOMINDA,UNO Minda Limited,EQ,INE405E01023,532539,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2387,UPHOT,U P Hotels Limited,EQ,INE726E01014,509960,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+2388,UPL,UPL Limited,EQ,INE628A01036,512070,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+2389,URAVIDEF,Uravi Defence and Technology Limited,BE,INE568Z01015,543930,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+2390,URBANCO,Urban Company Limited,EQ,INE0CAZ01013,544515,Consumer Discretionary,E-Retail/ E-Commerce,Consumer Services,Retailing,E-Retail/ E-Commerce,CLASSIFIED
+2391,URJA,Urja Global Limited,EQ,INE550C01020,526987,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2392,USHAMART,Usha Martin Limited,EQ,INE228A01035,517146,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+2393,USK,Udayshivakumar Infra Limited,EQ,INE0N0Y01013,543861,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+2394,UTIAMC,UTI Asset Management Company Limited,EQ,INE094J01016,543238,Financial Services,Asset Management Company,Financial Services,Capital Markets,Asset Management Company,CLASSIFIED
+2395,UTKARSHBNK,Utkarsh Small Finance Bank Limited,EQ,INE735W01017,543942,Financial Services,Other Bank,Financial Services,Banks,Other Bank,CLASSIFIED
+2396,UTLSOLAR,Fujiyama Power Systems Limited,EQ,INE12UR01024,544613,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
+2397,UTTAMSUGAR,Uttam Sugar Mills Limited,EQ,INE786F01031,532729,Fast Moving Consumer Goods,Sugar,Fast Moving Consumer Goods,Agricultural Food & other Products,Sugar,CLASSIFIED
+2398,UYFINCORP,U. Y. Fincorp Limited,BE,INE152C01025,530579,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+2399,V2RETAIL,V2 Retail Limited,EQ,INE945H01021,532867,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+2400,VADILALIND,Vadilal Industries Limited,EQ,INE694D01016,519156,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
