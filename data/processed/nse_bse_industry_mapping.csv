@@ -799,3 +799,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 798,GIPCL,Gujarat Industries Power Company Limited,EQ,INE162A01010,517300,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
 799,GKB,GKB Ophthalmics Limited,EQ,INE265D01015,533212,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
 800,GKENERGY,GK Energy Limited,EQ,INE1AG301022,544525,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+801,GKSL,Gujarat Kidney And Super Speciality Limited,EQ,INE0V0W01025,544666,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+802,GKWLIMITED,GKW Limited,EQ,INE528A01020,,,,,,,NOT_FOUND
+803,GLAND,Gland Pharma Limited,EQ,INE068V01023,543245,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+804,GLAXO,GlaxoSmithKline Pharmaceuticals Limited,EQ,INE159A01016,500660,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+805,GLENMARK,Glenmark Pharmaceuticals Limited,EQ,INE935A01035,532296,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+806,GLFL,Gujarat Lease Financing Limited,EQ,INE540A01017,500174,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+807,GLOBAL,Global Education Limited,EQ,INE291W01037,,,,,,,NOT_FOUND
+808,GLOBALE,Globale Tessile Limited,EQ,INE0URU01010,544234,Consumer Discretionary,Trading - Textile Products,Textiles,Textiles & Apparels,Trading - Textile Products,CLASSIFIED
+809,GLOBALVECT,Global Vectra Helicorp Limited,EQ,INE792H01019,532773,Services,Airline,Services,Transport Services,Airline,CLASSIFIED
+810,GLOBE,GLOBE ENTERPRISES (INDIA) LIMITED,EQ,INE581X01021,,,,,,,NOT_FOUND
+811,GLOBECIVIL,Globe Civil Projects Limited,EQ,INE0V3U01015,544424,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+812,GLOBUSSPR,Globus Spirits Limited,EQ,INE615I01010,533104,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+813,GLOSTERLTD,Gloster Limited,EQ,INE350Z01018,542351,Commodities,Jute & Jute Products,Forest Materials,"Paper, Forest & Jute Products",Jute & Jute Products,CLASSIFIED
+814,GLOTTIS,Glottis Limited,BE,INE0TQE01026,544557,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+815,GMBREW,GM Breweries Limited,EQ,INE075D01018,507488,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+816,GMDCLTD,Gujarat Mineral Development Corporation Limited,EQ,INE131A01031,532181,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+817,GMMPFAUDLR,GMM Pfaudler Limited,EQ,INE541A01023,505255,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+818,GMRAIRPORT,GMR AIRPORTS LIMITED,EQ,INE776C01039,532754,Services,Airport & Airport services,Services,Transport Infrastructure,Airport & Airport services,CLASSIFIED
+819,GMRP&UI,GMR Power and Urban Infra Limited,EQ,INE0CU601026,543490,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+820,GNA,GNA Axles Limited,EQ,INE934S01014,540124,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+821,GNFC,Gujarat Narmada Valley Fertilizers and Chemicals Limited,EQ,INE113A01013,500670,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+822,GNRL,Gujarat Natural Resources Limited,EQ,INE207H01018,513536,Energy,Oil Exploration & Production,"Oil, Gas & Consumable Fuels",Oil,Oil Exploration & Production,CLASSIFIED
+823,GOACARBON,Goa Carbon Limited,EQ,INE426D01013,509567,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+824,GOCLCORP,GOCL Corporation Limited,EQ,INE077F01035,506480,Commodities,Explosives,Chemicals,Chemicals & Petrochemicals,Explosives,CLASSIFIED
+825,GOCOLORS,Go Fashion (India) Limited,EQ,INE0BJS01011,543401,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+826,GODAVARIB,Godavari Biorefineries Limited,EQ,INE497S01012,544279,Fast Moving Consumer Goods,Diversified FMCG,Fast Moving Consumer Goods,Diversified FMCG,Diversified FMCG,CLASSIFIED
+827,GODFRYPHLP,Godfrey Phillips India Limited,EQ,INE260B01028,500163,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Fast Moving Consumer Goods,Cigarettes & Tobacco Products,Cigarettes & Tobacco Products,CLASSIFIED
+828,GODIGIT,Go Digit General Insurance Limited,EQ,INE03JT01014,544179,Financial Services,General Insurance,Financial Services,Insurance,General Insurance,CLASSIFIED
+829,GODREJAGRO,Godrej Agrovet Limited,EQ,INE850D01014,540743,Fast Moving Consumer Goods,Animal Feed,Fast Moving Consumer Goods,Food Products,Animal Feed,CLASSIFIED
+830,GODREJCP,Godrej Consumer Products Limited,EQ,INE102D01028,532424,Fast Moving Consumer Goods,Personal Care,Fast Moving Consumer Goods,Personal Products,Personal Care,CLASSIFIED
+831,GODREJIND,Godrej Industries Limited,EQ,INE233A01035,500164,Diversified,Diversified,Diversified,Diversified,Diversified,CLASSIFIED
+832,GODREJPROP,Godrej Properties Limited,EQ,INE484J01027,533150,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+833,GOKEX,Gokaldas Exports Limited,EQ,INE887G01027,532630,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+834,GOKUL,Gokul Refoils and Solvent Limited,EQ,INE020J01029,532980,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+835,GOKULAGRO,Gokul Agro Resources Limited,EQ,INE314T01033,539725,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+836,GOLDENTOBC,Golden Tobacco Limited,BZ,INE973A01010,500151,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+837,GOLDIAM,Goldiam International Limited,EQ,INE025B01025,526729,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+838,GOLDTECH,AION-TECH SOLUTIONS LIMITED,BE,INE805A01014,531439,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+839,GOODLUCK,Goodluck India Limited,EQ,INE127I01024,530655,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+840,GOODYEAR,Goodyear India Limited,EQ,INE533A01012,500168,Consumer Discretionary,Tyres & Rubber Products,Automobile and Auto Components,Auto Components,Tyres & Rubber Products,CLASSIFIED
+841,GOPAL,Gopal Snacks Limited,EQ,INE0L9R01028,544140,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+842,GOYALALUM,Goyal Aluminiums Limited,EQ,INE705X01026,541152,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+843,GPIL,Godawari Power And Ispat limited,EQ,INE177H01039,532734,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+844,GPPL,Gujarat Pipavav Port Limited,EQ,INE517F01014,533248,Services,Port & Port services,Services,Transport Infrastructure,Port & Port services,CLASSIFIED
+845,GPTHEALTH,GPT Healthcare Limited,EQ,INE486R01017,544131,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+846,GPTINFRA,GPT Infraprojects Limited,EQ,INE390G01014,533761,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+847,GRADIENTE,Gradiente Infotainment Limited,EQ,INE361K01017,,,,,,,NOT_FOUND
+848,GRANDOAK,Grand Oak Canyons Distillery Limited,EQ,INE926B01016,523862,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+849,GRANULES,Granules India Limited,EQ,INE101D01020,532482,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+850,GRAPHITE,Graphite India Limited,EQ,INE371A01025,509488,Industrials,Electrodes & Refractories,Capital Goods,Industrial Products,Electrodes & Refractories,CLASSIFIED
+851,GRASIM,Grasim Industries Limited,EQ,INE047A01021,500300,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+852,GRAUWEIL,Grauer & Weil India Limited,EQ,INE266D01021,505710,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+853,GRAVISSHO,Graviss Hospitality Limited,EQ,INE214F01026,509546,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+854,GRAVITA,Gravita India Limited,EQ,INE024L01027,533282,Commodities,Industrial Minerals,Metals & Mining,Minerals & Mining,Industrial Minerals,CLASSIFIED
+855,GREAVESCOT,Greaves Cotton Limited,EQ,INE224A01026,501455,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+856,GREENLAM,Greenlam Industries Limited,EQ,INE544R01021,538979,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+857,GREENPANEL,Greenpanel Industries Limited,EQ,INE08ZM01014,542857,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+858,GREENPLY,Greenply Industries Limited,EQ,INE461C01038,526797,Consumer Discretionary,Plywood Boards/ Laminates,Consumer Durables,Consumer Durables,Plywood Boards/ Laminates,CLASSIFIED
+859,GREENPOWER,Orient Green Power Company Limited,EQ,INE999K01014,533263,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+860,GRINDWELL,Grindwell Norton Limited,EQ,INE536A01023,506076,Industrials,Abrasives & Bearings,Capital Goods,Industrial Products,Abrasives & Bearings,CLASSIFIED
+861,GRINFRA,G R Infraprojects Limited,EQ,INE201P01022,543317,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+862,GRMOVER,GRM Overseas Limited,EQ,INE192H01020,531449,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+863,GROBTEA,The Grob Tea Company Limited,EQ,INE646C01018,,,,,,,NOT_FOUND
+864,GROWW,Billionbrains Garage Ventures Limited,EQ,INE0HOQ01053,544603,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+865,GRPLTD,GRP Limited,EQ,INE137I01015,509152,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+866,GRSE,Garden Reach Shipbuilders & Engineers Limited,EQ,INE382Z01011,542011,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+867,GRWRHITECH,Garware Hi-Tech Films Limited,EQ,INE291A01017,500655,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+868,GSFC,Gujarat State Fertilizers & Chemicals Limited,EQ,INE026A01025,500690,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+869,GSLSU,Global Surfaces Limited,EQ,INE0JSX01015,543829,Consumer Discretionary,Granites & Marbles,Consumer Durables,Consumer Durables,Granites & Marbles,CLASSIFIED
+870,GSPCROP,GSP Crop Science Limited,EQ,INE713R01022,544733,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+871,GSS,GSS Infotech Limited,EQ,INE871H01011,532951,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+872,GTECJAINX,G-TEC JAINX EDUCATION LIMITED,BE,INE586X01012,,,,,,,NOT_FOUND
+873,GTL,GTL Limited,EQ,INE043A01012,500160,Telecommunication,Other Telecom Services,Telecommunication,Telecom - Services,Other Telecom Services,CLASSIFIED
+874,GTLINFRA,GTL Infrastructure Limited,EQ,INE221H01019,532775,Telecommunication,Telecom - Infrastructure,Telecommunication,Telecom - Services,Telecom - Infrastructure,CLASSIFIED
+875,GTPL,GTPL Hathway Limited,EQ,INE869I01013,540602,Consumer Discretionary,TV Broadcasting & Software Production,"Media, Entertainment & Publication",Entertainment,TV Broadcasting & Software Production,CLASSIFIED
+876,GUFICBIO,Gufic Biosciences Limited,EQ,INE742B01025,509079,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+877,GUJALKALI,Gujarat Alkalies and Chemicals Limited,EQ,INE186A01019,530001,Commodities,Commodity Chemicals,Chemicals,Chemicals & Petrochemicals,Commodity Chemicals,CLASSIFIED
+878,GUJAPOLLO,Gujarat Apollo Industries Limited,EQ,INE826C01016,522217,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+879,GUJENERGY,GUJARAT ENERGY LIMITED,EQ,INE844O01030,539336,Energy,LPG/CNG/PNG/LNG Supplier,"Oil, Gas & Consumable Fuels",Gas,LPG/CNG/PNG/LNG Supplier,CLASSIFIED
+880,GUJRAFFIA,Gujarat Raffia Industries Limited,EQ,INE610B01024,523836,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+881,GUJTHEM,Gujarat Themis Biosyn Limited,EQ,INE942C01045,506879,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+882,GULFOILLUB,Gulf Oil Lubricants India Limited,EQ,INE635Q01029,538567,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+883,GULFPETRO,GP Petroleums Limited,BE,INE586G01017,532543,Energy,Lubricants,"Oil, Gas & Consumable Fuels",Petroleum Products,Lubricants,CLASSIFIED
+884,GULPOLY,Gulshan Polyols Limited,EQ,INE255D01024,532457,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+885,GVKPIL,GVK Power & Infrastructure Limited,BE,INE251H01024,532708,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+886,GVPIL,GE Power India Limited,EQ,INE878A01011,532309,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+887,GVPTECH,GVP Infotech Limited,EQ,INE382T01030,,,,,,,NOT_FOUND
+888,GVT&D,GE Vernova T&D India Limited,EQ,INE200A01026,522275,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+889,GYFTR,Gyftr Limited,EQ,INE724A01017,507912,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+890,HAL,Hindustan Aeronautics Limited,EQ,INE066F01020,541154,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+891,HALDER,Halder Venture Limited,EQ,INE115S01010,539854,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+892,HALDYNGL,Haldyn Glass Limited,BE,INE506D01020,515147,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+893,HALEOSLABS,HALEOS LABS LIMITED,EQ,INE320X01016,540679,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+894,HAMPTON,Hampton Sky Realty Limited,EQ,INE299D01022,526407,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+895,HAPPSTMNDS,Happiest Minds Technologies Limited,EQ,INE419U01012,543227,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+896,HAPPYFORGE,Happy Forgings Limited,EQ,INE330T01021,544057,Industrials,Castings & Forgings,Capital Goods,Industrial Products,Castings & Forgings,CLASSIFIED
+897,HARDWYN,Hardwyn India Limited,EQ,INE626Z01029,541276,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
+898,HARIOMPIPE,Hariom Pipe Industries Limited,EQ,INE00EV01017,543517,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+899,HARRMALAYA,Harrisons  Malayalam Limited,EQ,INE544A01019,500467,Industrials,Rubber,Capital Goods,Industrial Products,Rubber,CLASSIFIED
+900,HARSHA,Harsha Engineers International Limited,EQ,INE0JUS01029,543600,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
