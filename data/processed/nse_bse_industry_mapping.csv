@@ -1199,3 +1199,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 1198,KFINTECH,Kfin Technologies Limited,EQ,INE138Y01010,543720,Financial Services,"Depositories, Clearing Houses and Other Intermediaries",Financial Services,Capital Markets,"Depositories, Clearing Houses and Other Intermediaries",CLASSIFIED
 1199,KHADIM,Khadim India Limited,BE,INE834I01025,540775,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
 1200,KHAICHEM,Khaitan Chemicals & Fertilizers Limited,EQ,INE745B01028,507794,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
+1201,KHAITANLTD,Khaitan (India) Limited,EQ,INE731C01018,590068,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+1202,KHANDSE,Khandwala Securities Limited,EQ,INE060B01014,531892,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+1203,KICL,Kalyani Investment Company Limited,EQ,INE029L01018,533302,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+1204,KILITCH,Kilitch Drugs (India) Limited,BE,INE729D01010,524500,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1205,KIMS,Krishna Institute of Medical Sciences Limited,EQ,INE967H01025,543308,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1206,KINGFA,Kingfa Science & Technology (India) Limited,EQ,INE473D01015,524019,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1207,KIOCL,KIOCL Limited,EQ,INE880L01014,,,,,,,NOT_FOUND
+1208,KIRANVYPAR,Kiran Vyapar Limited,EQ,INE555P01013,537750,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1209,KIRIINDUS,Kiri Industries Limited,EQ,INE415I01015,532967,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+1210,KIRLFER,Kirloskar Ferrous Industries Limited,EQ,INE884B01025,500245,Commodities,Pig Iron,Metals & Mining,Ferrous Metals,Pig Iron,CLASSIFIED
+1211,KIRLOSBROS,Kirloskar Brothers Limited,EQ,INE732A01036,500241,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1212,KIRLOSENG,Kirloskar Oil Engines Limited,EQ,INE146L01010,533293,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1213,KIRLOSIND,Kirloskar Industries Limited,EQ,INE250A01039,500243,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1214,KIRLPNU,Kirloskar Pneumatic Company Limited,EQ,INE811A01038,505283,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1215,KISSHT,OnEMI Technology Solutions Limited,EQ,INE12F801023,544754,Financial Services,Other Financial Services,Financial Services,Finance,Other Financial Services,CLASSIFIED
+1216,KITEX,Kitex Garments Limited,EQ,INE602G01020,,,,,,,NOT_FOUND
+1217,KJMCFIN,KJMC Financial Services Limited,EQ,INE533C01018,530235,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1218,KKCL,Kewal Kiran Clothing Limited,EQ,INE401H01017,532732,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1219,KLBRENG-B,Kilburn Engineering Limited,EQ,INE338F01015,522101,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1220,KMCSHIL,K M C Speciality Hospitals (India) Limited,EQ,INE879K01018,524520,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1221,KMEW,Knowledge Marine & Engineering Works Limited,EQ,INE0CJD01029,543273,Services,Dredging,Services,Engineering Services,Dredging,CLASSIFIED
+1222,KMSUGAR,K.M.Sugar Mills Limited,EQ,INE157H01023,532673,,,,,,NOT_FOUND
+1223,KNACK,Knack Packaging Limited,EQ,INE17QZ01016,544814,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+1224,KNAGRI,KN Agri Resources Limited,EQ,INE0KNW01016,,,,,,,NOT_FOUND
+1225,KNRCON,KNR Constructions Limited,EQ,INE634I01029,532942,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1226,KOHINOOR,Kohinoor Foods Limited,EQ,INE080B01012,512559,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1227,KOKUYOCMLN,Kokuyo Camlin Limited,EQ,INE760A01029,523207,Fast Moving Consumer Goods,Stationary,Fast Moving Consumer Goods,Household Products,Stationary,CLASSIFIED
+1228,KOLTEPATIL,Kolte - Patil Developers Limited,EQ,INE094I01018,,,,,,,NOT_FOUND
+1229,KOPRAN,Kopran Limited,BE,INE082A01010,524280,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1230,KOTAKBANK,Kotak Mahindra Bank Limited,EQ,INE237A01036,500247,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1231,KOTARISUG,Kothari Sugars And Chemicals Limited,EQ,INE419A01022,,,,,,,NOT_FOUND
+1232,KOTHARIPET,Kothari Petrochemicals Limited,EQ,INE720A01015,,,,,,,NOT_FOUND
+1233,KOTHARIPRO,Kothari Products Limited,EQ,INE823A01017,530299,,,,,,NOT_FOUND
+1234,KOTIC,Kothari Industrial Corporation Limited,EQ,INE972A01020,509732,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+1235,KOTYARK,Kotyark Industries Limited,BE,INE0J0B01017,544726,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+1236,KOVAI,Kovai Medical Center & Hospital Limited,EQ,INE177F01017,523323,Healthcare,Hospital,Healthcare,Healthcare Services,Hospital,CLASSIFIED
+1237,KPEL,K.P. Energy Limited,EQ,INE127T01021,539686,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1238,KPIGREEN,KPI Green Energy Limited,EQ,INE542W01025,542323,Utilities,Power Generation,Power,Power,Power Generation,CLASSIFIED
+1239,KPIL,Kalpataru Projects International Limited,EQ,INE220B01022,522287,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1240,KPITTECH,KPIT Technologies Limited,EQ,INE04I401011,542651,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1241,KPL,Kwality Pharmaceuticals Limited,EQ,INE552U01010,539997,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1242,KPRMILL,K.P.R. Mill Limited,EQ,INE930H01031,532889,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1243,KRBL,KRBL Limited,EQ,INE001B01026,530813,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1244,KREBSBIO,Krebs Biochemicals and Industries Limited,EQ,INE268B01013,524518,,,,,,NOT_FOUND
+1245,KRIDHANINF,Kridhan Infra Limited,BE,INE524L01026,533482,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+1246,KRISHANA,Krishana Phoschem Limited,EQ,INE506W01020,,,,,,,NOT_FOUND
+1247,KRISHIVAL,Krishival Foods Limited,EQ,INE0GGO01015,544416,Fast Moving Consumer Goods,Other Food Products,Fast Moving Consumer Goods,Food Products,Other Food Products,CLASSIFIED
+1248,KRISHNADEF,Krishna Defence And Allied Industries Limited,EQ,INE0J5601015,,,,,,,NOT_FOUND
+1249,KRITI,Kriti Industries (India) Limited,EQ,INE479D01038,526423,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+1250,KRITIKA,Kritika Wires Limited,EQ,INE00Z501029,,,,,,,NOT_FOUND
+1251,KRITINUT,Kriti Nutrients Limited,EQ,INE798K01010,533210,Fast Moving Consumer Goods,Edible Oil,Fast Moving Consumer Goods,Agricultural Food & other Products,Edible Oil,CLASSIFIED
+1252,KRN,KRN Heat Exchanger and Refrigeration Limited,EQ,INE0Q3J01015,544263,Industrials,Other Industrial Products,Capital Goods,Industrial Products,Other Industrial Products,CLASSIFIED
+1253,KRONOX,Kronox Lab Sciences Limited,EQ,INE0ATZ01017,544187,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+1254,KROSS,Kross Limited,EQ,INE0O6601022,544253,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1255,KRSNAA,Krsnaa Diagnostics Limited,EQ,INE08LI01020,543328,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+1256,KRYSTAL,Krystal Integrated Services Limited,EQ,INE0QN801017,544149,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1257,KSB,Ksb Limited,EQ,INE999A01023,500249,Industrials,"Compressors, Pumps & Diesel Engines",Capital Goods,Industrial Products,"Compressors, Pumps & Diesel Engines",CLASSIFIED
+1258,KSCL,Kaveri Seed Company Limited,EQ,INE455I01029,532899,Fast Moving Consumer Goods,Other Agricultural Products,Fast Moving Consumer Goods,Agricultural Food & other Products,Other Agricultural Products,CLASSIFIED
+1259,KSE,KSE Limited,EQ,INE953E01022,519421,Fast Moving Consumer Goods,Animal Feed,Fast Moving Consumer Goods,Food Products,Animal Feed,CLASSIFIED
+1260,KSHINTL,KSH International Limited,EQ,INE987S01020,544664,Industrials,"Aluminium, Copper & Zinc Products",Capital Goods,Industrial Products,"Aluminium, Copper & Zinc Products",CLASSIFIED
+1261,KSHITIJPOL,Kshitij Polyline Limited,EQ,INE013801027,,,,,,,NOT_FOUND
+1262,KSL,Kalyani Steels Limited,EQ,INE907A01026,500235,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+1263,KSOLVES,Ksolves India Limited,EQ,INE0D6I01023,543599,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1264,KSR,KSR Footwear Limited,EQ,INE1SPP01016,544615,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+1265,KTKBANK,The Karnataka Bank Limited,EQ,INE614B01018,532652,Financial Services,Private Sector Bank,Financial Services,Banks,Private Sector Bank,CLASSIFIED
+1266,KUANTUM,Kuantum Papers Limited,EQ,INE529I01021,532937,Commodities,Paper & Paper Products,Forest Materials,"Paper, Forest & Jute Products",Paper & Paper Products,CLASSIFIED
+1267,KUSUMGAR,Kusumgar Limited,EQ,INE0ISX01025,544821,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1268,KWIL,Kwality Wall's (India) Limited,EQ,INE2KCE01013,544622,Fast Moving Consumer Goods,Dairy Products,Fast Moving Consumer Goods,Food Products,Dairy Products,CLASSIFIED
+1269,LADDERUP,Ladderup Finance Limited,EQ,INE519D01015,530577,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1270,LAGNAM,Lagnam Spintex Limited,EQ,INE548Z01017,,,,,,,NOT_FOUND
+1271,LAHOTIOV,Lahoti Overseas Limited,EQ,INE515C01023,531842,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1272,LAKPRE,Lakshmi Precision Screws Limited,BZ,INE651C01018,506079,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1273,LAKSHMIMIL,Lakshmi Mills Company Limited,EQ,INE938C01019,502958,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1274,LAL,Lorenzini Apparels Limited,EQ,INE740X01023,540952,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+1275,LALPATHLAB,Dr. Lal Path Labs Ltd.,EQ,INE600L01024,539524,Healthcare,Healthcare Service Provider,Healthcare,Healthcare Services,Healthcare Service Provider,CLASSIFIED
+1276,LAMBODHARA,Lambodhara Textiles Limited,EQ,INE112F01022,590075,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+1277,LANCER,Lancer Container Lines Limited,EQ,INE359U01028,539841,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+1278,LANCORHOL,Lancor Holdings Limited,EQ,INE572G01025,509048,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+1279,LANDMARK,Landmark Cars Limited,EQ,INE559R01029,543714,Consumer Discretionary,Auto -Dealer,Automobile and Auto Components,Automobiles,Auto -Dealer,CLASSIFIED
+1280,LANDSMILL,Landsmill Green Limited,EQ,INE688J01023,533090,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+1281,LAOPALA,La Opala RG Limited,EQ,INE059D01020,526947,Consumer Discretionary,Glass - Consumer,Consumer Durables,Consumer Durables,Glass - Consumer,CLASSIFIED
+1282,LASA,Lasa Supergenerics Limited,EQ,INE670X01014,540702,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1283,LASERPOWER,Laser Power & Infra Limited,EQ,INE17IR01028,544822,Industrials,Cables - Electricals,Capital Goods,Industrial Products,Cables - Electricals,CLASSIFIED
+1284,LATENTVIEW,Latent View Analytics Limited,EQ,INE0I7C01011,543398,Information Technology,Computers - Software & Consulting,Information Technology,IT - Software,Computers - Software & Consulting,CLASSIFIED
+1285,LATTEYS,Latteys Industries Limited,EQ,INE262Z01023,,,,,,,NOT_FOUND
+1286,LAURUSLABS,Laurus Labs Limited,EQ,INE947Q01028,540222,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+1287,LAXMICOT,Laxmi Cotspin Limited,EQ,INE801V01019,,,,,,,NOT_FOUND
+1288,LAXMIDENTL,Laxmi Dental Limited,EQ,INE0WO601020,544339,Healthcare,Medical Equipment & Supplies,Healthcare,Healthcare Equipment & Supplies,Medical Equipment & Supplies,CLASSIFIED
+1289,LAXMIINDIA,Laxmi India Finance Limited,EQ,INE06WU01026,544465,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+1290,LCCINFOTEC,LCC Infotech Limited,EQ,INE938A01021,532019,Consumer Discretionary,Education,Consumer Services,Other Consumer Services,Education,CLASSIFIED
+1291,LCL,Lohia Corp Limited,EQ,INE0QJW01029,544839,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+1292,LEAPIND,LEAP India Limited,EQ,INE00GO01025,544865,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+1293,LEENEE,Lee & Nee Softwares Exports Limited,EQ,INE791B01014,517415,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+1294,LEMERITE,Le Merite Exports Limited,EQ,INE0G1L01025,,,,,,,NOT_FOUND
+1295,LEMONTREE,Lemon Tree Hotels Limited,EQ,INE970X01018,541233,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+1296,LENSKART,Lenskart Solutions Limited,EQ,INE956O01016,544600,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+1297,LEXUS,Lexus Granito (India) Limited,EQ,INE500X01013,,,,,,,NOT_FOUND
+1298,LFIC,Lakshmi Finance & Industrial Corporation Limited,EQ,INE850E01012,,,,,,,NOT_FOUND
+1299,LGBBROSLTD,LG Balakrishnan & Bros Limited,EQ,INE337A01034,500250,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+1300,LGEINDIA,LG Electronics India Limited,EQ,INE324D01010,544576,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
