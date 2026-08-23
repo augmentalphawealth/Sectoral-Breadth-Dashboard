@@ -1,4 +1,5 @@
 from pathlib import Path
+import time
 
 import pandas as pd
 from bse import BSE
@@ -19,9 +20,7 @@ def ensure_input_file():
     print(f"Input file not found: {INPUT_FILE}")
     print("Creating a minimal starter file with HDFCBANK...")
 
-    INPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-
-    starter = pd.DataFrame(
+    pd.DataFrame(
         [
             {
                 "symbol": "HDFCBANK",
@@ -29,55 +28,66 @@ def ensure_input_file():
                 "isin": "INE040A01034",
             }
         ]
-    )
-    starter.to_csv(INPUT_FILE, index=False)
-    print(f"Created: {INPUT_FILE}")
+    ).to_csv(INPUT_FILE, index=False)
+
+
+def clean(value):
+    return "" if value is None else str(value).strip()
 
 
 def main():
     ensure_input_file()
+    nse_df = pd.read_csv(INPUT_FILE, dtype=str).fillna("")
 
     bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
 
     try:
-        nse_df = pd.read_csv(INPUT_FILE)
-
         rows = []
-        for idx, row in nse_df.iterrows():
-            symbol = row["symbol"]
-            company_name = row["company_name"]
-            isin = row["isin"]
 
-            print(f"[{idx + 1}/{len(nse_df)}] Fetching BSE metadata for {symbol} ({isin})...")
+        for idx, row in nse_df.iterrows():
+            symbol = clean(row.get("symbol"))
+            company_name = clean(row.get("company_name"))
+            isin = clean(row.get("isin"))
+
+            print(f"[{idx + 1}/{len(nse_df)}] Looking up {symbol} ({isin})...")
+
+            bse_code = ""
+            meta = {}
 
             try:
-                meta = bse.equityMetaInfo(isin)
-            except Exception as e:
-                print(f"  equityMetaInfo({isin}) failed: {e}")
-                meta = {}
+                lookup = bse.lookup(isin)
+                bse_code = clean(lookup.get("bse_code"))
 
-            sector = meta.get("Sector", "")
-            industry = meta.get("Industry", "")
-            industry_new = meta.get("IndustryNew", "")
-            i_group = meta.get("IGroup", "")
-            i_sub_group = meta.get("ISubGroup", "")
+                if not bse_code:
+                    print("  No BSE code returned.")
+                else:
+                    print(f"  BSE code: {bse_code}")
+                    meta = bse.equityMetaInfo(bse_code)
+                    time.sleep(0.2)
+
+            except Exception as exc:
+                print(f"  Failed: {exc}")
 
             rows.append(
                 {
                     "symbol": symbol,
                     "company_name": company_name,
                     "isin": isin,
-                    "bse_sector": sector,
-                    "bse_industry": industry,
-                    "bse_industry_new": industry_new,
-                    "bse_i_group": i_group,
-                    "bse_i_sub_group": i_sub_group,
+                    "bse_code": bse_code,
+                    "bse_sector": clean(meta.get("Sector")),
+                    "bse_industry": clean(meta.get("Industry")),
+                    "bse_industry_new": clean(meta.get("IndustryNew")),
+                    "bse_i_group": clean(meta.get("IGroup")),
+                    "bse_i_sub_group": clean(meta.get("ISubGroup")),
                 }
             )
 
-        out_df = pd.DataFrame(rows)
-        out_df.to_csv(OUTPUT_FILE, index=False)
+        output_df = pd.DataFrame(rows)
+        output_df.to_csv(OUTPUT_FILE, index=False)
+
+        matched = output_df["bse_sector"].ne("").sum()
         print(f"\nSaved industry mapping to: {OUTPUT_FILE}")
+        print(f"Rows: {len(output_df)} | BSE sector matched: {matched}")
 
     finally:
         try:
