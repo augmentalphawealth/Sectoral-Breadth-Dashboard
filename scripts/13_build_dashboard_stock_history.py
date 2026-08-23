@@ -1,1 +1,134 @@
+from __future__ import annotations
 
+from pathlib import Path
+
+import pandas as pd
+
+
+ROOT = Path(__file__).resolve().parents[1]
+PROCESSED = ROOT / "data" / "processed"
+
+INPUT_FILE = PROCESSED / "stock_daily_features.parquet"
+OUTPUT_FILE = PROCESSED / "dashboard_stock_history.parquet"
+
+RECENT_TRADING_DAYS = 400
+
+
+def main() -> None:
+    if not INPUT_FILE.exists():
+        raise FileNotFoundError(
+            f"Missing required temporary file: {INPUT_FILE}"
+        )
+
+    print("========== STOCK HISTORY BUILD START ==========")
+
+    df = pd.read_parquet(INPUT_FILE)
+
+    required_columns = [
+        "date",
+        "symbol",
+        "industry",
+        "basic_industry",
+        "sector",
+        "close",
+        "ret_1d",
+        "ret_5d",
+        "ret_20d",
+        "ret_60d",
+        "above_20",
+        "above_50",
+        "above_200",
+        "dist_52w_high",
+        "trend_template_pass",
+        "acc_day",
+        "dist_day",
+        "breakout_55",
+        "vcp_ready",
+    ]
+
+    missing_columns = [
+        column
+        for column in required_columns
+        if column not in df.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            "Stock features file is missing columns: "
+            f"{missing_columns}"
+        )
+
+    df = df[required_columns].copy()
+
+    df["date"] = pd.to_datetime(df["date"])
+    df["symbol"] = df["symbol"].fillna("").astype(str).str.strip()
+    df["industry"] = (
+        df["industry"].fillna("Unclassified").astype(str).str.strip()
+    )
+    df["basic_industry"] = (
+        df["basic_industry"]
+        .fillna("Unclassified")
+        .astype(str)
+        .str.strip()
+    )
+    df["sector"] = (
+        df["sector"].fillna("Unclassified").astype(str).str.strip()
+    )
+
+    unique_dates = sorted(df["date"].dropna().unique())
+
+    if not unique_dates:
+        raise ValueError("No valid dates found in stock features file")
+
+    kept_dates = unique_dates[-RECENT_TRADING_DAYS:]
+    df = df[df["date"].isin(kept_dates)].copy()
+
+    df = df.drop_duplicates(
+        subset=["date", "symbol"],
+        keep="last",
+    )
+
+    # Precomputed score used only for ranking stocks within their
+    # basic industry on the same date.
+    df["stock_strength_score"] = (
+        df["ret_20d"].rank(pct=True) * 35
+        + df["ret_60d"].rank(pct=True) * 35
+        + df["above_50"] * 15
+        + df["above_200"] * 10
+        + df["breakout_55"] * 3
+        + df["vcp_ready"] * 2
+    )
+
+    group_keys = ["date", "basic_industry"]
+
+    df["stock_rank_in_basic_industry"] = (
+        df.groupby(group_keys)["stock_strength_score"]
+        .rank(method="dense", ascending=False)
+        .astype("Int64")
+    )
+
+    df["stock_strength_percentile_in_basic_industry"] = (
+        df.groupby(group_keys)["stock_strength_score"]
+        .rank(pct=True, ascending=True)
+        * 100
+    )
+
+    df = df.sort_values(
+        ["date", "basic_industry", "stock_rank_in_basic_industry", "symbol"],
+    ).reset_index(drop=True)
+
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(OUTPUT_FILE, index=False)
+
+    print("========== STOCK HISTORY BUILD COMPLETE ==========")
+    print(f"Rows: {len(df)}")
+    print(f"Stocks: {df['symbol'].nunique()}")
+    print(f"Basic industries: {df['basic_industry'].nunique()}")
+    print(f"Start date: {df['date'].min().date()}")
+    print(f"Latest date: {df['date'].max().date()}")
+    print(f"Trading days retained: {len(kept_dates)}")
+    print(f"Output: {OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    main()
