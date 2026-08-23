@@ -1,1 +1,35 @@
+project:
+  name: basic-industry-situational-awareness
+  timezone: Asia/Kolkata
 
+paths:
+  processed_dir: data/processed
+
+universe:
+  min_adv_rupees: 100000000
+  min_mcap_rupees: 10000000000
+  use_series:
+    - EQ
+    - BE
+    - BZ
+
+analysis:
+  market_benchmark_symbol: NIFTY500
+  rs_windows: [20, 60]
+  return_windows: [5, 10, 20, 60]
+  breakout_lookback: 55
+  high_lookback: 252
+  accumulation_volume_multiplier: 1.2
+  distribution_volume_multiplier: 1.2
+  exhaustion_extension_threshold: 0.15
+  pivot_proximity_threshold: 0.05
+  vcp_range_contraction_threshold: 0.08
+  vcp_volume_dryup_threshold: 0.65
+
+scoring:
+  trend: 25
+  breadth: 20
+  rs: 20
+  volume: 15
+  breakout: 10
+  penalty: 10
