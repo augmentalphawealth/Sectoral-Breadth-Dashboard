@@ -42,15 +42,23 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import os
+
           import pandas as pd
 
-          path = Path("data/processed/nse_mainboard_master_bse_classified.parquet")
+          path = Path(
+              "data/processed/nse_mainboard_master_bse_classified.parquet"
+          )
           df = pd.read_parquet(path)
 
           status = df["classification_status"].fillna("").astype(str).str.strip()
-          remaining = int((~status.isin(["CLASSIFIED", "NOT_FOUND"])).sum())
+          remaining = int(
+              (~status.isin(["CLASSIFIED", "NOT_FOUND"])).sum()
+          )
 
-          print(f"remaining={remaining}" >> "$GITHUB_OUTPUT")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"remaining={remaining}\n")
+
           print(f"Remaining securities: {remaining}")
           PY
 
