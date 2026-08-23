@@ -12,7 +12,31 @@ INPUT_FILE = ROOT / "data" / "nse_mainboard_companies.csv"
 OUTPUT_FILE = ROOT / "data" / "nse_industry_mapping.csv"
 
 
+def ensure_input_file():
+    if INPUT_FILE.exists():
+        return
+
+    print(f"Input file not found: {INPUT_FILE}")
+    print("Creating a minimal starter file with HDFCBANK...")
+
+    INPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    starter = pd.DataFrame(
+        [
+            {
+                "symbol": "HDFCBANK",
+                "company_name": "HDFC BANK LTD",
+                "isin": "INE040A01034",
+            }
+        ]
+    )
+    starter.to_csv(INPUT_FILE, index=False)
+    print(f"Created: {INPUT_FILE}")
+
+
 def main():
+    ensure_input_file()
+
     bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
 
     try:
