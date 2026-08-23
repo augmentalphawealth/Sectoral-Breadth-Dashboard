@@ -335,10 +335,24 @@ def format_group_display_table(table: pd.DataFrame) -> pd.DataFrame:
 def format_stock_display_table(table: pd.DataFrame) -> pd.DataFrame:
     out = table.copy()
     out["StrengthBand"] = out["Strength"].apply(strength_label)
+
+    def fmt_strength_pct(x):
+        if x is None or pd.isna(x):
+            return "—"
+        v = float(x)
+        # If stored as 0–1, scale to percent
+        if 0 <= v <= 1.01:
+            return f"{v * 100:,.2f}%"
+        # If stored as 0–100, keep as is
+        if v <= 1000:
+            return f"{v:,.2f}%"
+        # If stored as 0–10000 style, scale down
+        return f"{v / 100:,.2f}%"
+
     numeric_map = {
         "Rank": fmt_int,
         "Strength": fmt_2dp,
-        "StrengthPct": fmt_2dp_pct,
+        "StrengthPct": fmt_strength_pct,
         "Close": fmt_2dp,
         "ret_1d": fmt_2dp_pct,
         "ret_5d": fmt_2dp_pct,
