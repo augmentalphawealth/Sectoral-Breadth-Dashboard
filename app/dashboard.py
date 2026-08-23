@@ -10,34 +10,32 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 
-BASIC_LATEST_FILE = (
-    PROCESSED / "dashboard_basic_industry_latest.parquet"
-)
-INDUSTRY_LATEST_FILE = (
-    PROCESSED / "dashboard_industry_latest.parquet"
-)
 BASIC_HISTORY_FILE = (
     PROCESSED / "dashboard_basic_industry_history.parquet"
 )
 INDUSTRY_HISTORY_FILE = (
     PROCESSED / "dashboard_industry_history.parquet"
 )
+STOCK_HISTORY_FILE = (
+    PROCESSED / "dashboard_stock_history.parquet"
+)
 METADATA_FILE = PROCESSED / "dashboard_metadata.json"
 SYNC_FILE = PROCESSED / "last_sync.txt"
 
 
 st.set_page_config(
-    page_title="Sectoral Breadth",
+    page_title="NSE Sectoral Breadth",
     page_icon="◈",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 
-def clean_name(value: object) -> str:
+def clean_text(value: object) -> str:
     if value is None or pd.isna(value):
         return "Unclassified"
-    return str(value).strip() or "Unclassified"
+    text = str(value).strip()
+    return text if text else "Unclassified"
 
 
 def fmt_number(value: object, digits: int = 1) -> str:
@@ -52,43 +50,43 @@ def fmt_percent(value: object, digits: int = 1) -> str:
     return f"{float(value):,.{digits}f}%"
 
 
-def fmt_integer(value: object) -> str:
+def fmt_int(value: object) -> str:
     if value is None or pd.isna(value):
         return "—"
     return f"{int(value):,}"
 
 
-def regime_color(regime: str) -> str:
-    colors = {
-        "Strong": "#16a34a",
+def regime_color(regime: object) -> str:
+    palette = {
+        "Strong": "#0f9d58",
         "Emerging": "#2563eb",
-        "Bottoming": "#ca8a04",
+        "Bottoming": "#a16207",
         "Weakening": "#ea580c",
         "Exhausted": "#dc2626",
     }
-    return colors.get(str(regime), "#64748b")
+    return palette.get(clean_text(regime), "#64748b")
 
 
 def regime_badge(regime: object) -> str:
-    label = clean_name(regime)
+    label = clean_text(regime)
     color = regime_color(label)
 
     return (
-        f"<span style='display:inline-block;"
-        f"padding:3px 8px;"
-        f"border-radius:999px;"
+        "<span style='display:inline-block;"
+        "padding:3px 9px;"
+        "border-radius:999px;"
         f"background:{color};"
-        f"color:white;"
-        f"font-size:0.78rem;"
-        f"font-weight:700;'>"
+        "color:#ffffff;"
+        "font-size:0.76rem;"
+        "font-weight:700;'>"
         f"{label}"
-        f"</span>"
+        "</span>"
     )
 
 
 @st.cache_data(show_spinner=False)
-def load_parquet(file_path: str) -> pd.DataFrame:
-    df = pd.read_parquet(file_path)
+def load_parquet(path: str) -> pd.DataFrame:
+    df = pd.read_parquet(path)
 
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"])
@@ -97,59 +95,16 @@ def load_parquet(file_path: str) -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=False)
-def load_metadata(file_path: str) -> dict:
-    path = Path(file_path)
+def load_metadata(path: str) -> dict:
+    file_path = Path(path)
 
-    if not path.exists():
+    if not file_path.exists():
         return {}
 
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(file_path.read_text(encoding="utf-8"))
 
 
-def load_data() -> tuple[
-    pd.DataFrame,
-    pd.DataFrame,
-    pd.DataFrame,
-    pd.DataFrame,
-    dict,
-]:
-    required_files = [
-        BASIC_LATEST_FILE,
-        INDUSTRY_LATEST_FILE,
-        BASIC_HISTORY_FILE,
-        INDUSTRY_HISTORY_FILE,
-    ]
-
-    missing = [
-        str(file_path.relative_to(ROOT))
-        for file_path in required_files
-        if not file_path.exists()
-    ]
-
-    if missing:
-        st.error(
-            "Dashboard data is not available yet. "
-            "Run the EOD workflow first."
-        )
-        st.code("\n".join(missing))
-        st.stop()
-
-    basic_latest = load_parquet(str(BASIC_LATEST_FILE))
-    industry_latest = load_parquet(str(INDUSTRY_LATEST_FILE))
-    basic_history = load_parquet(str(BASIC_HISTORY_FILE))
-    industry_history = load_parquet(str(INDUSTRY_HISTORY_FILE))
-    metadata = load_metadata(str(METADATA_FILE))
-
-    return (
-        basic_latest,
-        industry_latest,
-        basic_history,
-        industry_history,
-        metadata,
-    )
-
-
-def standardize_groups(
+def ensure_group_columns(
     df: pd.DataFrame,
     group_column: str,
 ) -> pd.DataFrame:
@@ -158,50 +113,190 @@ def standardize_groups(
     if group_column not in data.columns:
         data[group_column] = "Unclassified"
 
-    data[group_column] = data[group_column].map(clean_name)
-
     if "regime" not in data.columns:
         data["regime"] = "Unclassified"
 
-    data["regime"] = data["regime"].map(clean_name)
+    data[group_column] = data[group_column].map(clean_text)
+    data["regime"] = data["regime"].map(clean_text)
 
     return data
 
 
-def selected_date_frame(
-    history: pd.DataFrame,
-    group_column: str,
-    selected_date: pd.Timestamp,
-) -> pd.DataFrame:
-    data = history.copy()
-    data = data[data["date"] == selected_date].copy()
-    data = standardize_groups(data, group_column)
+def ensure_stock_columns(df: pd.DataFrame) -> pd.DataFrame:
+    data = df.copy()
+
+    for column in [
+        "symbol",
+        "industry",
+        "basic_industry",
+        "sector",
+    ]:
+        if column not in data.columns:
+            data[column] = "Unclassified"
+
+        data[column] = data[column].map(clean_text)
 
     return data
 
 
-def display_kpis(
-    data: pd.DataFrame,
-    selected_date: pd.Timestamp,
-    group_label: str,
-) -> None:
-    total_groups = data[group_label].nunique()
+def apply_table_style(table: pd.DataFrame):
+    formatters: dict[str, str] = {}
 
-    total_members = (
-        int(data["members"].sum())
-        if "members" in data.columns
-        else 0
+    percentage_columns = [
+        "1D %",
+        "5D %",
+        "20D %",
+        "60D %",
+        "Above 20 DMA %",
+        "Above 50 DMA %",
+        "Above 200 DMA %",
+        "From 52W High %",
+        "Strength %",
+    ]
+
+    for column in percentage_columns:
+        if column in table.columns:
+            formatters[column] = "{:.1f}%"
+
+    for column in [
+        "Strength",
+        "Stock Strength",
+    ]:
+        if column in table.columns:
+            formatters[column] = "{:.1f}"
+
+    for column in [
+        "Rank",
+        "Members",
+        "A/D Balance",
+        "Breakouts",
+        "VCP Ready",
+        "Trend Template",
+        "Accumulation",
+        "Distribution",
+    ]:
+        if column in table.columns:
+            formatters[column] = "{:,.0f}"
+
+    return table.style.format(formatters, na_rep="—")
+
+
+def get_trading_dates(history: pd.DataFrame) -> list[pd.Timestamp]:
+    dates = pd.to_datetime(history["date"].dropna().unique())
+    return sorted([pd.Timestamp(date) for date in dates])
+
+
+def date_navigation(
+    available_dates: list[pd.Timestamp],
+    widget_key: str,
+) -> pd.Timestamp:
+    if not available_dates:
+        raise ValueError("No dates are available")
+
+    latest_date = available_dates[-1]
+
+    state_key = f"{widget_key}_selected_date"
+
+    if state_key not in st.session_state:
+        st.session_state[state_key] = latest_date
+
+    selected_date = pd.Timestamp(st.session_state[state_key])
+
+    if selected_date not in available_dates:
+        selected_date = latest_date
+        st.session_state[state_key] = selected_date
+
+    current_index = available_dates.index(selected_date)
+
+    col_previous, col_date, col_next, col_latest = st.columns(
+        [0.7, 2.2, 0.7, 1.0]
     )
 
-    strong = int((data["regime"] == "Strong").sum())
-    emerging = int((data["regime"] == "Emerging").sum())
-    weak = int((data["regime"] == "Weakening").sum())
-    exhausted = int((data["regime"] == "Exhausted").sum())
+    if col_previous.button(
+        "← Previous",
+        disabled=current_index == 0,
+        key=f"{widget_key}_previous",
+        use_container_width=True,
+    ):
+        st.session_state[state_key] = available_dates[current_index - 1]
+        st.rerun()
 
-    median_score = (
+    date_choice = col_date.selectbox(
+        "As-of date",
+        options=available_dates,
+        index=current_index,
+        format_func=lambda value: (
+            pd.Timestamp(value).strftime("%d %b %Y")
+        ),
+        key=f"{widget_key}_date_picker",
+    )
+
+    if pd.Timestamp(date_choice) != selected_date:
+        st.session_state[state_key] = pd.Timestamp(date_choice)
+        selected_date = pd.Timestamp(date_choice)
+
+    current_index = available_dates.index(selected_date)
+
+    if col_next.button(
+        "Next →",
+        disabled=current_index == len(available_dates) - 1,
+        key=f"{widget_key}_next",
+        use_container_width=True,
+    ):
+        st.session_state[state_key] = available_dates[current_index + 1]
+        st.rerun()
+
+    if col_latest.button(
+        "Latest",
+        key=f"{widget_key}_latest",
+        use_container_width=True,
+    ):
+        st.session_state[state_key] = latest_date
+        st.rerun()
+
+    return pd.Timestamp(st.session_state[state_key])
+
+
+def regime_counts(data: pd.DataFrame) -> dict[str, int]:
+    regimes = [
+        "Strong",
+        "Emerging",
+        "Bottoming",
+        "Weakening",
+        "Exhausted",
+    ]
+
+    counts = data["regime"].value_counts().to_dict()
+
+    return {
+        regime: int(counts.get(regime, 0))
+        for regime in regimes
+    }
+
+
+def show_group_kpis(
+    data: pd.DataFrame,
+    group_column: str,
+    selected_date: pd.Timestamp,
+) -> None:
+    counts = regime_counts(data)
+
+    median_strength = (
         data["strength_score"].median()
         if "strength_score" in data.columns
         else float("nan")
+    )
+
+    median_breadth_50 = (
+        data["pct_above_50"].median()
+        if "pct_above_50" in data.columns
+        else float("nan")
+    )
+
+    total_members = (
+        data["members"].sum()
+        if "members" in data.columns
+        else 0
     )
 
     columns = st.columns(6)
@@ -211,28 +306,28 @@ def display_kpis(
         selected_date.strftime("%d %b %Y"),
     )
     columns[1].metric(
-        f"{group_label.replace('_', ' ').title()} groups",
-        f"{total_groups:,}",
+        "Groups",
+        fmt_int(data[group_column].nunique()),
     )
     columns[2].metric(
-        "Constituent memberships",
-        f"{total_members:,}",
+        "Members",
+        fmt_int(total_members),
     )
     columns[3].metric(
         "Median strength",
-        fmt_number(median_score),
+        fmt_number(median_strength),
     )
     columns[4].metric(
-        "Strong / Emerging",
-        f"{strong} / {emerging}",
+        "Median above 50 DMA",
+        fmt_percent(median_breadth_50),
     )
     columns[5].metric(
-        "Weakening / Exhausted",
-        f"{weak} / {exhausted}",
+        "Strong / Emerging",
+        f"{counts['Strong']} / {counts['Emerging']}",
     )
 
 
-def prepare_leadership_table(
+def prepare_group_table(
     data: pd.DataFrame,
     group_column: str,
 ) -> pd.DataFrame:
@@ -254,37 +349,39 @@ def prepare_leadership_table(
         "median_dist_52w_high",
     ]
 
-    available = [
+    selected = [
         column
         for column in columns
         if column in data.columns
     ]
 
-    table = data[available].copy()
+    table = data[selected].copy()
 
-    rename_map = {
-        group_column: "Group",
-        "regime": "Regime",
-        "members": "Members",
-        "strength_score": "Strength",
-        "eq_ret_1d": "1D %",
-        "eq_ret_5d": "5D %",
-        "eq_ret_20d": "20D %",
-        "eq_ret_60d": "60D %",
-        "pct_above_20": "Above 20 DMA %",
-        "pct_above_50": "Above 50 DMA %",
-        "pct_above_200": "Above 200 DMA %",
-        "acc_minus_dist": "A/D Balance",
-        "breakout_count": "Breakouts",
-        "vcp_ready_count": "VCP Ready",
-        "median_dist_52w_high": "Median from 52W High %",
-    }
+    table = table.rename(
+        columns={
+            group_column: "Basic Industry"
+            if group_column == "basic_industry"
+            else "Industry",
+            "regime": "Regime",
+            "members": "Members",
+            "strength_score": "Strength",
+            "eq_ret_1d": "1D %",
+            "eq_ret_5d": "5D %",
+            "eq_ret_20d": "20D %",
+            "eq_ret_60d": "60D %",
+            "pct_above_20": "Above 20 DMA %",
+            "pct_above_50": "Above 50 DMA %",
+            "pct_above_200": "Above 200 DMA %",
+            "acc_minus_dist": "A/D Balance",
+            "breakout_count": "Breakouts",
+            "vcp_ready_count": "VCP Ready",
+            "median_dist_52w_high": "From 52W High %",
+        }
+    )
 
-    table = table.rename(columns=rename_map)
-
-    if "Median from 52W High %" in table.columns:
-        table["Median from 52W High %"] = (
-            table["Median from 52W High %"] * 100
+    if "From 52W High %" in table.columns:
+        table["From 52W High %"] = (
+            table["From 52W High %"] * 100
         )
 
     if "Strength" in table.columns:
@@ -293,283 +390,440 @@ def prepare_leadership_table(
             ascending=False,
         )
 
+    table.insert(0, "Rank", range(1, len(table) + 1))
+
     return table.reset_index(drop=True)
 
 
-def style_leadership_table(table: pd.DataFrame):
-    formatters = {}
-
-    percent_columns = [
-        "1D %",
-        "5D %",
-        "20D %",
-        "60D %",
-        "Above 20 DMA %",
-        "Above 50 DMA %",
-        "Above 200 DMA %",
-        "Median from 52W High %",
+def prepare_stock_table(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    columns = [
+        "stock_rank_in_basic_industry",
+        "symbol",
+        "stock_strength_score",
+        "stock_strength_percentile_in_basic_industry",
+        "close",
+        "ret_1d",
+        "ret_5d",
+        "ret_20d",
+        "ret_60d",
+        "above_20",
+        "above_50",
+        "above_200",
+        "dist_52w_high",
+        "trend_template_pass",
+        "acc_day",
+        "dist_day",
+        "breakout_55",
+        "vcp_ready",
     ]
 
-    for column in percent_columns:
-        if column in table.columns:
-            formatters[column] = "{:.1f}%"
+    selected = [
+        column
+        for column in columns
+        if column in data.columns
+    ]
 
-    if "Strength" in table.columns:
-        formatters["Strength"] = "{:.1f}"
+    table = data[selected].copy()
 
-    for column in [
-        "Members",
-        "A/D Balance",
-        "Breakouts",
-        "VCP Ready",
-    ]:
-        if column in table.columns:
-            formatters[column] = "{:,.0f}"
+    table = table.rename(
+        columns={
+            "stock_rank_in_basic_industry": "Rank",
+            "symbol": "Symbol",
+            "stock_strength_score": "Stock Strength",
+            "stock_strength_percentile_in_basic_industry": "Strength %",
+            "close": "Close",
+            "ret_1d": "1D %",
+            "ret_5d": "5D %",
+            "ret_20d": "20D %",
+            "ret_60d": "60D %",
+            "above_20": "Above 20 DMA",
+            "above_50": "Above 50 DMA",
+            "above_200": "Above 200 DMA",
+            "dist_52w_high": "From 52W High %",
+            "trend_template_pass": "Trend Template",
+            "acc_day": "Accumulation",
+            "dist_day": "Distribution",
+            "breakout_55": "Breakouts",
+            "vcp_ready": "VCP Ready",
+        }
+    )
 
-    styled = table.style.format(formatters, na_rep="—")
-
-    if "Regime" in table.columns:
-        styled = styled.map(
-            lambda value: (
-                f"color: {regime_color(str(value))}; "
-                "font-weight: 700;"
-            ),
-            subset=["Regime"],
+    if "From 52W High %" in table.columns:
+        table["From 52W High %"] = (
+            table["From 52W High %"] * 100
         )
 
-    if "Strength" in table.columns:
-        styled = styled.background_gradient(
-            subset=["Strength"],
-            cmap="RdYlGn",
+    if "Rank" in table.columns:
+        table = table.sort_values(
+            ["Rank", "Symbol"],
         )
 
-    return styled
+    return table.reset_index(drop=True)
 
 
-def leadership_view(
+def group_leadership_view(
     history: pd.DataFrame,
     group_column: str,
     title: str,
-    subtitle: str,
-) -> None:
-    history = standardize_groups(history, group_column)
-
-    all_dates = sorted(
-        history["date"].dropna().unique(),
-        reverse=True,
-    )
-
-    if not all_dates:
-        st.warning("No historical dates are available.")
-        return
-
-    latest_date = pd.Timestamp(all_dates[0])
+    description: str,
+    key_prefix: str,
+) -> tuple[pd.Timestamp, pd.DataFrame]:
+    data = ensure_group_columns(history, group_column)
+    available_dates = get_trading_dates(data)
 
     st.subheader(title)
-    st.caption(subtitle)
+    st.caption(description)
 
-    left, middle, right, far_right = st.columns(
-        [1.35, 1.15, 1.15, 1.15]
+    selected_date = date_navigation(
+        available_dates,
+        key_prefix,
     )
 
-    selected_date = left.selectbox(
-        "Historical date",
-        options=all_dates,
-        index=0,
-        format_func=lambda value: (
-            pd.Timestamp(value).strftime("%d %b %Y")
-        ),
-        key=f"{group_column}_date",
+    selected = data[
+        data["date"] == selected_date
+    ].copy()
+
+    filter_1, filter_2, filter_3 = st.columns(
+        [1.5, 1.0, 1.0]
     )
 
-    regime_options = sorted(
-        history["regime"].dropna().unique().tolist()
+    all_regimes = [
+        "Strong",
+        "Emerging",
+        "Bottoming",
+        "Weakening",
+        "Exhausted",
+    ]
+
+    chosen_regimes = filter_1.multiselect(
+        "Regime filter",
+        options=all_regimes,
+        default=all_regimes,
+        key=f"{key_prefix}_regime_filter",
     )
 
-    selected_regimes = middle.multiselect(
-        "Regime",
-        options=regime_options,
-        default=regime_options,
-        key=f"{group_column}_regimes",
-    )
-
-    min_members = right.number_input(
+    min_members = filter_2.number_input(
         "Minimum members",
         min_value=1,
-        max_value=1000,
         value=1,
         step=1,
-        key=f"{group_column}_min_members",
+        key=f"{key_prefix}_min_members",
     )
 
-    rank_order = far_right.selectbox(
-        "Display",
-        options=["Top strength", "Bottom strength"],
-        key=f"{group_column}_order",
+    sort_mode = filter_3.selectbox(
+        "Ranking",
+        options=["Highest strength", "Lowest strength"],
+        key=f"{key_prefix}_sort",
     )
 
-    selected_date = pd.Timestamp(selected_date)
+    if chosen_regimes:
+        selected = selected[
+            selected["regime"].isin(chosen_regimes)
+        ]
 
-    data = selected_date_frame(
-        history,
+    if "members" in selected.columns:
+        selected = selected[
+            selected["members"] >= min_members
+        ]
+
+    show_group_kpis(
+        selected,
         group_column,
         selected_date,
     )
 
-    if selected_regimes:
-        data = data[data["regime"].isin(selected_regimes)]
+    table = prepare_group_table(selected, group_column)
 
-    if "members" in data.columns:
-        data = data[data["members"] >= min_members]
-
-    display_kpis(data, selected_date, group_column)
-
-    table = prepare_leadership_table(data, group_column)
-
-    if rank_order == "Bottom strength" and "Strength" in table.columns:
+    if sort_mode == "Lowest strength" and "Strength" in table.columns:
         table = table.sort_values(
             "Strength",
             ascending=True,
         ).reset_index(drop=True)
 
+        table["Rank"] = range(1, len(table) + 1)
+
     st.dataframe(
-        style_leadership_table(table),
+        apply_table_style(table),
         use_container_width=True,
         hide_index=True,
-        height=580,
+        height=540,
     )
-
-    csv_data = table.to_csv(index=False).encode("utf-8")
 
     st.download_button(
-        "Download selected leadership table",
-        data=csv_data,
+        "Download selected table",
+        data=table.to_csv(index=False).encode("utf-8"),
         file_name=(
-            f"{group_column}_leadership_"
-            f"{selected_date.strftime('%Y%m%d')}.csv"
+            f"{group_column}_{selected_date.strftime('%Y%m%d')}.csv"
         ),
         mime="text/csv",
-        key=f"{group_column}_download",
+        key=f"{key_prefix}_download",
     )
 
+    return selected_date, selected
 
-def historical_rotation_view(
+
+def basic_industry_drilldown(
     basic_history: pd.DataFrame,
-    industry_history: pd.DataFrame,
+    stock_history: pd.DataFrame,
 ) -> None:
-    st.subheader("Historical Rotation")
+    st.subheader("Basic Industry Drill-Down")
     st.caption(
-        "Charts use precomputed daily group metrics only. "
-        "No indicator or ranking calculations run in Streamlit."
+        "Select a Basic Industry to view its constituent stocks "
+        "ranked by precomputed composite stock strength."
     )
 
-    view_type = st.radio(
-        "Group level",
-        options=["Basic Industry", "Industry"],
-        horizontal=True,
+    basic_history = ensure_group_columns(
+        basic_history,
+        "basic_industry",
+    )
+    stock_history = ensure_stock_columns(stock_history)
+
+    available_dates = get_trading_dates(basic_history)
+
+    selected_date = date_navigation(
+        available_dates,
+        "drilldown",
     )
 
-    if view_type == "Basic Industry":
-        data = standardize_groups(
+    group_data = basic_history[
+        basic_history["date"] == selected_date
+    ].copy()
+
+    group_options = sorted(
+        group_data["basic_industry"].unique().tolist()
+    )
+
+    selected_group = st.selectbox(
+        "Basic Industry",
+        options=group_options,
+        key="drilldown_basic_industry",
+    )
+
+    selected_group_row = group_data[
+        group_data["basic_industry"] == selected_group
+    ].head(1)
+
+    if not selected_group_row.empty:
+        row = selected_group_row.iloc[0]
+
+        metrics = st.columns(6)
+
+        metrics[0].metric(
+            "Regime",
+            clean_text(row.get("regime")),
+        )
+        metrics[1].metric(
+            "Strength",
+            fmt_number(row.get("strength_score")),
+        )
+        metrics[2].metric(
+            "Members",
+            fmt_int(row.get("members")),
+        )
+        metrics[3].metric(
+            "20D return",
+            fmt_percent(row.get("eq_ret_20d")),
+        )
+        metrics[4].metric(
+            "60D return",
+            fmt_percent(row.get("eq_ret_60d")),
+        )
+        metrics[5].metric(
+            "Above 50 DMA",
+            fmt_percent(row.get("pct_above_50")),
+        )
+
+    stock_dates = set(
+        pd.to_datetime(stock_history["date"]).unique().tolist()
+    )
+
+    if selected_date not in stock_dates:
+        earliest_stock_date = pd.Timestamp(
+            stock_history["date"].min()
+        )
+
+        st.info(
+            "Stock-level drill-down is available from "
+            f"{earliest_stock_date.strftime('%d %b %Y')} onward. "
+            "Group-level history remains available for earlier dates."
+        )
+
+        show_group_history_chart(
             basic_history,
             "basic_industry",
+            selected_group,
+            "Group strength history",
         )
-        group_column = "basic_industry"
-    else:
-        data = standardize_groups(
-            industry_history,
-            "industry",
+        return
+
+    stocks = stock_history[
+        (stock_history["date"] == selected_date)
+        & (
+            stock_history["basic_industry"]
+            == selected_group
         )
-        group_column = "industry"
+    ].copy()
+
+    if stocks.empty:
+        st.warning(
+            "No stock-level data is available for this group/date."
+        )
+        return
+
+    stock_table = prepare_stock_table(stocks)
+
+    st.markdown("#### Constituent stock ranking")
+
+    st.dataframe(
+        apply_table_style(stock_table),
+        use_container_width=True,
+        hide_index=True,
+        height=440,
+    )
+
+    st.download_button(
+        "Download stock ranking",
+        data=stock_table.to_csv(index=False).encode("utf-8"),
+        file_name=(
+            f"{selected_group.replace('/', '_')}_"
+            f"stocks_{selected_date.strftime('%Y%m%d')}.csv"
+        ),
+        mime="text/csv",
+        key="drilldown_stock_download",
+    )
+
+    chart_left, chart_right = st.columns(2)
+
+    with chart_left:
+        show_group_history_chart(
+            basic_history,
+            "basic_industry",
+            selected_group,
+            "Basic Industry strength history",
+        )
+
+    with chart_right:
+        show_stock_history_chart(
+            stock_history,
+            selected_group,
+            stocks,
+        )
+
+
+def show_group_history_chart(
+    history: pd.DataFrame,
+    group_column: str,
+    selected_group: str,
+    title: str,
+) -> None:
+    st.markdown(f"#### {title}")
 
     metrics = {
         "Strength score": "strength_score",
-        "20-day return (%)": "eq_ret_20d",
-        "60-day return (%)": "eq_ret_60d",
-        "Breadth above 50 DMA (%)": "pct_above_50",
-        "Breadth above 200 DMA (%)": "pct_above_200",
-        "Accumulation / distribution balance": "acc_minus_dist",
+        "20D return (%)": "eq_ret_20d",
+        "60D return (%)": "eq_ret_60d",
+        "Above 50 DMA (%)": "pct_above_50",
+        "Above 200 DMA (%)": "pct_above_200",
+        "A/D balance": "acc_minus_dist",
         "Breakout count": "breakout_count",
-        "VCP-ready count": "vcp_ready_count",
     }
 
     available_metrics = {
         label: column
         for label, column in metrics.items()
-        if column in data.columns
+        if column in history.columns
     }
 
-    group_names = sorted(data[group_column].unique().tolist())
-
-    controls_left, controls_right = st.columns([1, 2])
-
-    metric_label = controls_left.selectbox(
-        "Metric",
+    chosen_metric = st.selectbox(
+        "Group chart metric",
         options=list(available_metrics.keys()),
+        key=f"group_chart_metric_{group_column}",
     )
 
-    selected_groups = controls_right.multiselect(
-        "Groups to compare",
-        options=group_names,
-        default=group_names[: min(3, len(group_names))],
-        max_selections=8,
-    )
+    metric_column = available_metrics[chosen_metric]
 
-    if not selected_groups:
-        st.info("Choose at least one group to display history.")
-        return
+    chart_data = history[
+        history[group_column] == selected_group
+    ][["date", metric_column]].copy()
 
-    min_date = data["date"].min().date()
-    max_date = data["date"].max().date()
-
-    date_range = st.date_input(
-        "Date range",
-        value=(min_date, max_date),
-        min_value=min_date,
-        max_value=max_date,
-    )
-
-    if isinstance(date_range, tuple) and len(date_range) == 2:
-        start_date, end_date = date_range
-    else:
-        start_date = min_date
-        end_date = max_date
-
-    metric_column = available_metrics[metric_label]
-
-    chart_data = data[
-        (data[group_column].isin(selected_groups))
-        & (data["date"].dt.date >= start_date)
-        & (data["date"].dt.date <= end_date)
-    ][["date", group_column, metric_column]].copy()
-
-    chart_data = chart_data.pivot(
-        index="date",
-        columns=group_column,
-        values=metric_column,
-    )
+    chart_data = chart_data.sort_values("date").set_index("date")
 
     st.line_chart(
         chart_data,
         use_container_width=True,
-        height=450,
+        height=300,
     )
 
-    latest = data[
-        data[group_column].isin(selected_groups)
-    ].sort_values("date").groupby(group_column).tail(1)
 
-    latest_table = prepare_leadership_table(
-        latest,
-        group_column,
+def show_stock_history_chart(
+    stock_history: pd.DataFrame,
+    selected_group: str,
+    selected_stocks: pd.DataFrame,
+) -> None:
+    st.markdown("#### Stock comparison history")
+
+    symbols = sorted(
+        selected_stocks["symbol"].unique().tolist()
     )
 
-    st.markdown("#### Latest selected-group snapshot")
+    default_symbols = symbols[: min(3, len(symbols))]
 
-    st.dataframe(
-        style_leadership_table(latest_table),
+    selected_symbols = st.multiselect(
+        "Stocks to compare",
+        options=symbols,
+        default=default_symbols,
+        max_selections=8,
+        key="stock_chart_symbols",
+    )
+
+    if not selected_symbols:
+        st.info("Choose at least one stock for comparison.")
+        return
+
+    metrics = {
+        "Composite stock strength": "stock_strength_score",
+        "20D return (%)": "ret_20d",
+        "60D return (%)": "ret_60d",
+        "Distance from 52W high": "dist_52w_high",
+        "Close": "close",
+    }
+
+    available_metrics = {
+        label: column
+        for label, column in metrics.items()
+        if column in stock_history.columns
+    }
+
+    selected_metric = st.selectbox(
+        "Stock chart metric",
+        options=list(available_metrics.keys()),
+        key="stock_chart_metric",
+    )
+
+    metric_column = available_metrics[selected_metric]
+
+    chart_data = stock_history[
+        (stock_history["basic_industry"] == selected_group)
+        & (stock_history["symbol"].isin(selected_symbols))
+    ][["date", "symbol", metric_column]].copy()
+
+    if metric_column == "dist_52w_high":
+        chart_data[metric_column] = (
+            chart_data[metric_column] * 100
+        )
+
+    chart_data = chart_data.pivot(
+        index="date",
+        columns="symbol",
+        values=metric_column,
+    ).sort_index()
+
+    st.line_chart(
+        chart_data,
         use_container_width=True,
-        hide_index=True,
+        height=300,
     )
 
 
@@ -578,11 +832,17 @@ def overview_view(
     industry_history: pd.DataFrame,
     metadata: dict,
 ) -> None:
-    basic_history = standardize_groups(
+    st.subheader("Market Breadth Overview")
+    st.caption(
+        "High-level participation, leadership and risk across "
+        "the classified NSE universe."
+    )
+
+    basic_history = ensure_group_columns(
         basic_history,
         "basic_industry",
     )
-    industry_history = standardize_groups(
+    industry_history = ensure_group_columns(
         industry_history,
         "industry",
     )
@@ -600,167 +860,208 @@ def overview_view(
         industry_history["date"] == latest_date
     ].copy()
 
-    st.subheader("Market Breadth Overview")
-    st.caption(
-        "A compact view of leadership, participation, and "
-        "risk across the classified NSE universe."
-    )
+    counts = regime_counts(basic_latest)
 
-    col1, col2, col3, col4 = st.columns(4)
+    metrics = st.columns(5)
 
-    col1.metric(
+    metrics[0].metric(
         "Latest data",
         latest_date.strftime("%d %b %Y"),
     )
-
-    col2.metric(
+    metrics[1].metric(
         "Basic industries",
-        f"{basic_latest['basic_industry'].nunique():,}",
+        fmt_int(basic_latest["basic_industry"].nunique()),
     )
-
-    col3.metric(
+    metrics[2].metric(
         "Industries",
-        f"{industry_latest['industry'].nunique():,}",
+        fmt_int(industry_latest["industry"].nunique()),
     )
-
-    col4.metric(
-        "Coverage",
-        "2,553 classified stocks",
+    metrics[3].metric(
+        "Strong / Emerging",
+        f"{counts['Strong']} / {counts['Emerging']}",
     )
-
-    st.markdown("#### Basic-industry regime distribution")
-
-    regime_counts = (
-        basic_latest["regime"]
-        .value_counts()
-        .reindex(
-            [
-                "Strong",
-                "Emerging",
-                "Bottoming",
-                "Weakening",
-                "Exhausted",
-            ],
-            fill_value=0,
-        )
-        .rename_axis("Regime")
-        .reset_index(name="Groups")
+    metrics[4].metric(
+        "Weakening / Exhausted",
+        f"{counts['Weakening']} / {counts['Exhausted']}",
     )
-
-    regime_counts = regime_counts.set_index("Regime")
-
-    st.bar_chart(regime_counts, height=300)
 
     left, right = st.columns(2)
 
     with left:
-        st.markdown("#### Leading basic industries")
+        st.markdown("#### Regime distribution")
 
-        leaders = prepare_leadership_table(
-            basic_latest,
-            "basic_industry",
-        ).head(10)
+        regime_table = pd.DataFrame(
+            {
+                "Groups": counts,
+            }
+        )
 
-        st.dataframe(
-            style_leadership_table(leaders),
-            use_container_width=True,
-            hide_index=True,
-            height=390,
+        st.bar_chart(
+            regime_table,
+            height=320,
         )
 
     with right:
-        st.markdown("#### Weakest basic industries")
+        st.markdown("#### Breadth snapshot")
 
-        weakest = prepare_leadership_table(
-            basic_latest,
-            "basic_industry",
-        )
+        breadth_columns = [
+            column
+            for column in [
+                "pct_above_20",
+                "pct_above_50",
+                "pct_above_200",
+            ]
+            if column in basic_latest.columns
+        ]
 
-        if "Strength" in weakest.columns:
-            weakest = weakest.sort_values(
-                "Strength",
-                ascending=True,
-            ).head(10)
+        if breadth_columns:
+            breadth = pd.DataFrame(
+                {
+                    "Median breadth %": [
+                        basic_latest[column].median()
+                        for column in breadth_columns
+                    ]
+                },
+                index=[
+                    column.replace("pct_above_", "Above ")
+                    .replace("_", " ")
+                    + " DMA"
+                    for column in breadth_columns
+                ],
+            )
 
-        st.dataframe(
-            style_leadership_table(weakest),
-            use_container_width=True,
-            hide_index=True,
-            height=390,
-        )
+            st.bar_chart(
+                breadth,
+                height=320,
+            )
+
+    st.markdown("#### Current leadership")
+
+    leaders = prepare_group_table(
+        basic_latest,
+        "basic_industry",
+    ).head(12)
+
+    st.dataframe(
+        apply_table_style(leaders),
+        use_container_width=True,
+        hide_index=True,
+        height=420,
+    )
 
     if metadata:
+        coverage = metadata.get("basic_industry", {})
+
         st.caption(
-            "History coverage: "
-            f"{metadata.get('basic_industry', {}).get('start_date', '—')} "
-            "to "
-            f"{metadata.get('basic_industry', {}).get('latest_date', '—')}. "
-            "All market measures are precomputed by the EOD workflow."
+            "Group-level history: "
+            f"{coverage.get('start_date', '—')} to "
+            f"{coverage.get('latest_date', '—')}. "
+            "Stock-level drill-down uses the most recent "
+            "400 trading days."
         )
+
+
+def industry_view(
+    industry_history: pd.DataFrame,
+) -> None:
+    group_leadership_view(
+        history=industry_history,
+        group_column="industry",
+        title="Industry Leadership",
+        description=(
+            "Higher-level industry leadership, breadth and "
+            "rotation confirmation."
+        ),
+        key_prefix="industry_leadership",
+    )
 
 
 def methodology_view() -> None:
     st.subheader("Methodology")
     st.caption(
-        "All measures are calculated by the scheduled EOD workflow. "
-        "The Streamlit app only displays prepared tables."
+        "All calculations are completed by the scheduled EOD "
+        "workflow. The dashboard reads precomputed files only."
     )
 
     st.markdown(
         """
-### Strength framework
+### Group strength framework
 
-The group-level strength score combines:
+The daily group-strength framework combines:
 
-- **Trend:** 20-day and 60-day return leadership plus breadth above the 50 DMA.
-- **Breadth:** percentage of member stocks above the 20, 50, and 200 DMA.
-- **Relative strength:** peer ranking of 20-day and 60-day equal-weighted returns.
+- **Trend:** 20D and 60D return leadership plus participation above the 50 DMA.
+- **Breadth:** percentage of stocks above the 20, 50 and 200 DMA.
+- **Relative strength:** cross-group ranking of equal-weighted returns.
 - **Volume behaviour:** accumulation days minus distribution days.
-- **Breakout participation:** member breakouts and VCP-ready setups.
-- **Penalty:** damage relative to 52-week highs and overextended short-term breadth.
+- **Breakout participation:** number of volume-confirmed breakouts and VCP-ready setups.
+- **Risk / extension penalty:** distance from 52-week highs and short-term overextension.
 
-### Regimes
+### Stock rank within Basic Industry
 
-| Regime | Interpretation |
+Stocks are ranked within their selected Basic Industry using a precomputed composite:
+
+- 20D return contribution.
+- 60D return contribution.
+- Above-50-DMA condition.
+- Above-200-DMA condition.
+- Breakout status.
+- VCP-ready status.
+
+### Regime interpretation
+
+| Regime | Meaning |
 |---|---|
-| Strong | High composite strength with broad 50-DMA participation |
+| Strong | High composite strength and broad 50-DMA participation |
 | Emerging | Improving momentum and breadth |
-| Bottoming | Neither a confirmed leadership nor weakness condition |
-| Weakening | Weak short-term breadth with negative 20-day return |
-| Exhausted | Very broad short-term extension close to 52-week highs |
+| Bottoming | Not yet a confirmed leadership or weakness state |
+| Weakening | Weak short-term breadth with negative 20D return |
+| Exhausted | Broad short-term extension close to 52-week highs |
 
-### Data policy
-
-- Historical prices remain in the Situational-Awareness repository.
-- This app uses only compact, precomputed Industry and Basic Industry history.
-- It does not download raw price data or calculate technical indicators.
-- Regimes and scores are research tools, not investment recommendations.
+This dashboard is a market-structure research tool and not investment advice.
         """
     )
 
 
 def main() -> None:
-    (
-        basic_latest,
-        industry_latest,
-        basic_history,
-        industry_history,
-        metadata,
-    ) = load_data()
+    required_files = [
+        BASIC_HISTORY_FILE,
+        INDUSTRY_HISTORY_FILE,
+        STOCK_HISTORY_FILE,
+    ]
 
-    basic_history = standardize_groups(
+    missing_files = [
+        str(file_path.relative_to(ROOT))
+        for file_path in required_files
+        if not file_path.exists()
+    ]
+
+    if missing_files:
+        st.error(
+            "Required dashboard files are missing. "
+            "Run the EOD workflow first."
+        )
+        st.code("\n".join(missing_files))
+        st.stop()
+
+    basic_history = load_parquet(str(BASIC_HISTORY_FILE))
+    industry_history = load_parquet(str(INDUSTRY_HISTORY_FILE))
+    stock_history = load_parquet(str(STOCK_HISTORY_FILE))
+    metadata = load_metadata(str(METADATA_FILE))
+
+    basic_history = ensure_group_columns(
         basic_history,
         "basic_industry",
     )
-    industry_history = standardize_groups(
+    industry_history = ensure_group_columns(
         industry_history,
         "industry",
     )
+    stock_history = ensure_stock_columns(stock_history)
 
     st.title("NSE Sectoral Breadth")
     st.caption(
-        "Precomputed breadth, trend health, and leadership across "
-        "classified NSE Basic Industries and Industries."
+        "Basic Industry leadership, constituent strength and "
+        "historical rotation — precomputed daily."
     )
 
     sync_text = "Not available"
@@ -770,65 +1071,64 @@ def main() -> None:
             encoding="utf-8"
         ).strip()
 
-    with st.sidebar:
-        st.markdown("### Data Status")
-        st.caption(f"Last EOD build: {sync_text}")
-
-        st.markdown("---")
-        st.markdown(
-            """
-**Data architecture**
-
-- Raw historical prices: shared source
-- Calculations: EOD GitHub workflow
-- Streamlit: prepared tables only
-            """
-        )
+    st.markdown(
+        f"""
+<div style="
+    padding:8px 12px;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    background:#f8fafc;
+    color:#475569;
+    font-size:0.86rem;
+    margin-bottom:14px;
+">
+    Data refresh: {sync_text}
+    &nbsp;&nbsp;•&nbsp;&nbsp;
+    Group history: Apr 2018 onward
+    &nbsp;&nbsp;•&nbsp;&nbsp;
+    Stock drill-down: recent 400 trading days
+</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     tabs = st.tabs(
         [
             "Basic Industry",
+            "Group Drill-Down",
             "Overview",
             "Industry",
-            "Historical Rotation",
             "Methodology",
         ]
     )
 
     with tabs[0]:
-        leadership_view(
+        group_leadership_view(
             history=basic_history,
             group_column="basic_industry",
             title="Basic Industry Leadership",
-            subtitle=(
-                "Default view: granular leadership and breadth "
-                "across NSE basic industries."
+            description=(
+                "Ranked view of granular NSE market leadership, "
+                "breadth and participation."
             ),
+            key_prefix="basic_industry_leadership",
         )
 
     with tabs[1]:
+        basic_industry_drilldown(
+            basic_history=basic_history,
+            stock_history=stock_history,
+        )
+
+    with tabs[2]:
         overview_view(
             basic_history=basic_history,
             industry_history=industry_history,
             metadata=metadata,
         )
 
-    with tabs[2]:
-        leadership_view(
-            history=industry_history,
-            group_column="industry",
-            title="Industry Leadership",
-            subtitle=(
-                "Higher-level industry grouping for broader "
-                "rotation and trend confirmation."
-            ),
-        )
-
     with tabs[3]:
-        historical_rotation_view(
-            basic_history=basic_history,
-            industry_history=industry_history,
-        )
+        industry_view(industry_history)
 
     with tabs[4]:
         methodology_view()
