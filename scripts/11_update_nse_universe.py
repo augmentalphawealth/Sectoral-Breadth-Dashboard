@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 from io import StringIO
 
 import pandas as pd
-import requests
+import urllib.request
+import urllib.error
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,17 +12,17 @@ ROOT = Path(__file__).resolve().parents[1]
 MASTER_FILE = ROOT / "data" / "processed" / "nse_mainboard_master_bse_classified.parquet"
 
 
-# NSE bhavcopy CSV base URL
-NSE_BHAVCOPY_BASE = "https://www.nseindia.com/content/eq/eq"
+# NSE bhavcopy archive URL pattern
+NSE_BHAVCOPY_BASE = "https://nsearchives.nseindia.com/products/content/sec_bhavdata_full_"
 
 NSE_HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/120.0.0.0 Safari/537.36"
     ),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "*/*",
 }
 
 
@@ -36,30 +37,56 @@ YAHOO_SEARCH_URL = "https://query1.finance.yahoo.com/v1/finance/search"
 YAHOO_QUOTE_URL = "https://query1.finance.yahoo.com/v10/finance/quoteSummary"
 
 
-def download_nse_mainboard_list():
-    session = requests.Session()
-    session.headers.update(NSE_HEADERS)
+def download_nse_bhavcopy_csv(date_str):
+    """
+    Download NSE bhavcopy CSV for a given date string (DDMMYYYY).
+    Returns raw CSV text or raises an exception.
+    """
+    file_name = f"sec_bhavdata_full_{date_str}.csv"
+    url = NSE_BHAVCOPY_BASE + file_name
 
-    # Try today and up to 5 previous days
+    # First, check existence with HEAD
+    try:
+        head_req = urllib.request.Request(url, headers=NSE_HEADERS, method="HEAD")
+        with urllib.request.urlopen(head_req, timeout=15) as resp:
+            if resp.status != 200:
+                raise RuntimeError(f"HEAD status {resp.status}")
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"NSE bhavcopy not available for {date_str}: {e.code}")
+    except Exception as e:
+        raise RuntimeError(f"HEAD request failed for {date_str}: {e}")
+
+    # Now download with GET
+    try:
+        get_req = urllib.request.Request(url, headers=NSE_HEADERS)
+        with urllib.request.urlopen(get_req, timeout=30) as resp:
+            csv_bytes = resp.read()
+        csv_text = csv_bytes.decode("utf-8", errors="ignore")
+        return csv_text
+    except Exception as e:
+        raise RuntimeError(f"GET request failed for {date_str}: {e}")
+
+
+def download_nse_mainboard_list():
+    """
+    Try to download NSE bhavcopy for the last trading day (skip weekends),
+    then up to 5 previous days if needed.
+    Returns a DataFrame with columns: symbol, series, isin, company_name, listing_date.
+    """
     now = datetime.utcnow()
     tried_dates = []
 
-    for offset in range(6):
+    for offset in range(1, 8):  # try up to 7 days back
         date = now - timedelta(days=offset)
-        # Skip weekends (Saturday=5, Sunday=6)
+        # Skip weekends
         if date.weekday() >= 5:
             continue
 
         date_str = date.strftime("%d%m%Y")
-        url = f"{NSE_BHAVCOPY_BASE}{date_str}.csv"
         tried_dates.append(date_str)
 
         try:
-            response = session.get(url, timeout=20)
-            if response.status_code == 404:
-                continue
-            response.raise_for_status()
-            csv_text = response.text
+            csv_text = download_nse_bhavcopy_csv(date_str)
         except Exception:
             continue
 
@@ -68,8 +95,7 @@ def download_nse_mainboard_list():
         except Exception:
             continue
 
-        # Expected bhavcopy columns:
-        # SYMBOL, SERIES, ISIN, COMPANY NAME, ...
+        # Expected columns: SYMBOL, SERIES, ISIN, COMPANY NAME, ...
         rename_map = {
             "SYMBOL": "symbol",
             "SERIES": "series",
@@ -83,7 +109,7 @@ def download_nse_mainboard_list():
         if not all(col in df.columns for col in required_columns):
             continue
 
-        # Filter to mainboard EQ only
+        # Filter to EQ only
         df = df[df["series"] == "EQ"].copy()
 
         if len(df) == 0:
@@ -112,6 +138,8 @@ def clean(value):
 
 
 def classify_via_bse_api(symbol, company_name, series, isin):
+    import requests
+
     session = requests.Session()
 
     search_headers = {
@@ -299,6 +327,8 @@ def classify_via_bse_api(symbol, company_name, series, isin):
 
 
 def classify_via_yahoo_finance(symbol, company_name, series, isin):
+    import requests
+
     session = requests.Session()
 
     yahoo_headers = {
