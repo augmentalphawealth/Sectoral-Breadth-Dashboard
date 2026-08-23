@@ -14,7 +14,7 @@ MAPPING_FILE = ROOT / "data" / "processed" / "nse_bse_industry_mapping.csv"
 DOWNLOAD_FOLDER = ROOT / "data" / "bse_downloads"
 DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-CHECKPOINT_SIZE = 100
+BATCH_SIZE = 100
 REQUEST_DELAY_SECONDS = 0.30
 
 
@@ -26,25 +26,23 @@ def clean(value):
 
 def load_master():
     if OUTPUT_FILE.exists():
-        print(f"Resuming from saved output: {OUTPUT_FILE}")
-        master_df = pd.read_parquet(OUTPUT_FILE)
+        print(f"Resuming from: {OUTPUT_FILE}")
+        df = pd.read_parquet(OUTPUT_FILE)
     else:
-        print(f"Starting from master source: {INPUT_FILE}")
-        master_df = pd.read_parquet(INPUT_FILE)
+        print(f"Starting from: {INPUT_FILE}")
+        df = pd.read_parquet(INPUT_FILE)
 
-    required_classification_columns = [
+    for column in [
         "industry",
         "basic_industry",
         "sector",
         "classification_status",
         "classification_source",
-    ]
+    ]:
+        if column not in df.columns:
+            df[column] = ""
 
-    for column in required_classification_columns:
-        if column not in master_df.columns:
-            master_df[column] = ""
-
-    return master_df
+    return df
 
 
 def load_mapping():
@@ -66,21 +64,28 @@ def load_mapping():
     if not MAPPING_FILE.exists():
         return pd.DataFrame(columns=columns)
 
-    mapping_df = pd.read_csv(MAPPING_FILE, dtype=str).fillna("")
+    df = pd.read_csv(MAPPING_FILE, dtype=str).fillna("")
 
     for column in columns:
-        if column not in mapping_df.columns:
-            mapping_df[column] = ""
+        if column not in df.columns:
+            df[column] = ""
 
-    mapping_df["row_number"] = pd.to_numeric(
-        mapping_df["row_number"],
+    df["row_number"] = pd.to_numeric(
+        df["row_number"],
         errors="coerce",
     ).astype("Int64")
 
-    return mapping_df[columns]
+    return df[columns]
 
 
-def save_checkpoint(master_df, mapping_df):
+def is_processed(row):
+    return clean(row.get("classification_status")) in {
+        "CLASSIFIED",
+        "NOT_FOUND",
+    }
+
+
+def save_outputs(master_df, mapping_df):
     mapping_df["row_number"] = pd.to_numeric(
         mapping_df["row_number"],
         errors="coerce",
@@ -95,37 +100,10 @@ def save_checkpoint(master_df, mapping_df):
     master_df.to_parquet(OUTPUT_FILE, index=False)
     mapping_df.to_csv(MAPPING_FILE, index=False)
 
-    return mapping_df
-
-
-def is_processed(row):
-    return clean(row.get("classification_status")) in {
-        "CLASSIFIED",
-        "NOT_FOUND",
-    }
-
 
 def main():
     master_df = load_master()
     mapping_df = load_mapping()
-
-    required_columns = [
-        "symbol",
-        "company_name",
-        "isin",
-        "industry",
-        "basic_industry",
-        "sector",
-        "classification_status",
-        "classification_source",
-    ]
-
-    missing = [
-        column for column in required_columns if column not in master_df.columns
-    ]
-
-    if missing:
-        raise ValueError(f"Missing required columns: {missing}")
 
     pending_positions = [
         position
@@ -134,21 +112,28 @@ def main():
     ]
 
     total = len(master_df)
-    pending_total = len(pending_positions)
+    already_processed = total - len(pending_positions)
+    batch_positions = pending_positions[:BATCH_SIZE]
 
     print(f"Total securities: {total}")
-    print(f"Already processed: {total - pending_total}")
-    print(f"Pending: {pending_total}")
+    print(f"Already processed: {already_processed}")
+    print(f"Pending before this batch: {len(pending_positions)}")
 
-    if not pending_positions:
-        print("All securities have already been processed.")
+    if not batch_positions:
+        print("========== ALL COMPLETE ==========")
+        print("No pending securities remain.")
         return
 
+    print(
+        f"Processing this batch: {len(batch_positions)} securities "
+        f"(rows {batch_positions[0] + 1} to {batch_positions[-1] + 1})."
+    )
+
     bse = BSE(download_folder=str(DOWNLOAD_FOLDER))
-    checkpoint_rows = []
+    new_mapping_rows = []
 
     try:
-        for processed_count, position in enumerate(pending_positions, start=1):
+        for batch_number, position in enumerate(batch_positions, start=1):
             row = master_df.iloc[position]
 
             symbol = clean(row["symbol"])
@@ -156,7 +141,7 @@ def main():
             isin = clean(row["isin"])
 
             print(
-                f"[{processed_count}/{pending_total}] "
+                f"[{batch_number}/{len(batch_positions)}] "
                 f"row {position + 1}/{total} | {symbol} | {isin}"
             )
 
@@ -204,7 +189,7 @@ def main():
                 "BSE equityMetaInfo" if sector else ""
             )
 
-            checkpoint_rows.append(
+            new_mapping_rows.append(
                 {
                     "row_number": position + 1,
                     "symbol": symbol,
@@ -221,32 +206,6 @@ def main():
                 }
             )
 
-            if processed_count % CHECKPOINT_SIZE == 0:
-                checkpoint_df = pd.DataFrame(checkpoint_rows)
-
-                mapping_df = pd.concat(
-                    [mapping_df, checkpoint_df],
-                    ignore_index=True,
-                )
-
-                mapping_df = save_checkpoint(master_df, mapping_df)
-                checkpoint_rows = []
-
-                classified = (
-                    master_df["classification_status"] == "CLASSIFIED"
-                ).sum()
-
-                not_found = (
-                    master_df["classification_status"] == "NOT_FOUND"
-                ).sum()
-
-                print("\n========== CHECKPOINT SAVED ==========")
-                print(f"Completed in this run: {processed_count}/{pending_total}")
-                print(f"Total classified: {classified}")
-                print(f"Total not found: {not_found}")
-                print(f"Saved master: {OUTPUT_FILE}")
-                print(f"Saved mapping: {MAPPING_FILE}\n")
-
             time.sleep(REQUEST_DELAY_SECONDS)
 
     finally:
@@ -255,28 +214,24 @@ def main():
         except Exception:
             pass
 
-    if checkpoint_rows:
-        checkpoint_df = pd.DataFrame(checkpoint_rows)
+    mapping_df = pd.concat(
+        [mapping_df, pd.DataFrame(new_mapping_rows)],
+        ignore_index=True,
+    )
 
-        mapping_df = pd.concat(
-            [mapping_df, checkpoint_df],
-            ignore_index=True,
-        )
-
-        mapping_df = save_checkpoint(master_df, mapping_df)
-
-        print("\n========== FINAL PARTIAL CHECKPOINT SAVED ==========")
-        print(f"Saved remaining records: {len(checkpoint_rows)}")
+    save_outputs(master_df, mapping_df)
 
     classified = (master_df["classification_status"] == "CLASSIFIED").sum()
     not_found = (master_df["classification_status"] == "NOT_FOUND").sum()
+    remaining = total - classified - not_found
 
-    print("\n========== COMPLETE ==========")
-    print(f"Total securities: {len(master_df)}")
+    print("\n========== BATCH COMPLETE ==========")
+    print(f"Processed this batch: {len(batch_positions)}")
     print(f"Total classified: {classified}")
     print(f"Total not found: {not_found}")
+    print(f"Remaining: {remaining}")
     print(f"Saved master: {OUTPUT_FILE}")
-    print(f"Saved mapping: {MAPPING_FILE}")
+    print(f"Saved mapping CSV: {MAPPING_FILE}")
 
 
 if __name__ == "__main__":
