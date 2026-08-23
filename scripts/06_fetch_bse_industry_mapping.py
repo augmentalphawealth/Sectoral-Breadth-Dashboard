@@ -28,9 +28,8 @@ def clean(value):
 
 def load_output():
     if OUTPUT_FILE.exists():
-        df = pd.read_parquet(OUTPUT_FILE)
         print(f"Resuming from existing output: {OUTPUT_FILE}")
-        return df
+        return pd.read_parquet(OUTPUT_FILE)
 
     df = pd.read_parquet(INPUT_FILE)
 
@@ -96,7 +95,6 @@ def main():
 
                 if bse_code:
                     meta = bse.equityMetaInfo(bse_code) or {}
-
                     print(
                         f"  BSE {bse_code} | "
                         f"Sector: {clean(meta.get('Sector'))} | "
@@ -141,9 +139,7 @@ def main():
                     "bse_industry_new": clean(meta.get("IndustryNew")),
                     "bse_i_group": clean(meta.get("IGroup")),
                     "bse_i_sub_group": clean(meta.get("ISubGroup")),
-                    "classification_status": (
-                        "CLASSIFIED" if sector else "NOT_FOUND"
-                    ),
+                    "classification_status": "CLASSIFIED" if sector else "NOT_FOUND",
                 }
             )
 
@@ -158,15 +154,30 @@ def main():
     df.to_parquet(OUTPUT_FILE, index=False)
 
     batch_df = pd.DataFrame(batch_rows)
+    batch_df["row_number"] = pd.to_numeric(
+        batch_df["row_number"],
+        errors="coerce",
+    ).astype("Int64")
+
     if MAPPING_FILE.exists():
         existing_mapping = pd.read_csv(MAPPING_FILE, dtype=str).fillna("")
+        existing_mapping["row_number"] = pd.to_numeric(
+            existing_mapping["row_number"],
+            errors="coerce",
+        ).astype("Int64")
+
         mapping_df = pd.concat([existing_mapping, batch_df], ignore_index=True)
         mapping_df = mapping_df.drop_duplicates(
-            subset=["row_number"], keep="last"
+            subset=["row_number"],
+            keep="last",
         ).sort_values("row_number")
     else:
         mapping_df = batch_df
 
+    mapping_df["row_number"] = pd.to_numeric(
+        mapping_df["row_number"],
+        errors="coerce",
+    ).astype("Int64")
     mapping_df.to_csv(MAPPING_FILE, index=False)
 
     classified = (df["classification_status"] == "CLASSIFIED").sum()
