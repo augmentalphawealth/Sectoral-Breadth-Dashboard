@@ -299,3 +299,103 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 298,BANKBARODA,Bank of Baroda,EQ,INE028A01039,532134,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
 299,BANKINDIA,Bank of India,EQ,INE084A01016,532149,Financial Services,Public Sector Bank,Financial Services,Banks,Public Sector Bank,CLASSIFIED
 300,BANSALWIRE,Bansal Wire Industries Limited,EQ,INE0B9K01025,544209,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+301,BANSWRAS,Banswara Syntex Limited,EQ,INE629D01020,503722,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+302,BASF,BASF India Limited,EQ,INE373A01013,500042,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+303,BASML,Bannari Amman Spinning Mills Limited,BE,INE186H01022,532674,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+304,BATAINDIA,Bata India Limited,EQ,INE176A01028,500043,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
+305,BATLIBOI,Batliboi Limited,EQ,INE177C01022,522004,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+306,BAYERCROP,Bayer Cropscience Limited,EQ,INE462A01022,506285,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+307,BBL,Bharat Bijlee Limited,EQ,INE464A01036,503960,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+308,BBOX,Black Box Limited,EQ,INE676A01027,500463,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+309,BBTC,The Bombay Burmah Trading Corporation Limited,EQ,INE050A01025,501425,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+310,BBTCL,B&B Triplewall Containers Limited,EQ,INE01EE01011,543668,Industrials,Packaging,Capital Goods,Industrial Products,Packaging,CLASSIFIED
+311,BCG,Brightcom Group Limited,EQ,INE425B01027,532368,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+312,BCLIND,Bcl Industries Limited,EQ,INE412G01024,524332,Fast Moving Consumer Goods,Breweries & Distilleries,Fast Moving Consumer Goods,Beverages,Breweries & Distilleries,CLASSIFIED
+313,BCONCEPTS,Brand Concepts Limited,EQ,INE977Y01011,543442,Consumer Discretionary,Speciality Retail,Consumer Services,Retailing,Speciality Retail,CLASSIFIED
+314,BCPL,BCPL Railway Infrastructure Limited,EQ,INE00SW01015,542057,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+315,BDL,Bharat Dynamics Limited,EQ,INE171Z01026,541143,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+316,BEARDSELL,Beardsell Limited,EQ,INE520H01022,,,,,,,NOT_FOUND
+317,BECTORFOOD,Mrs. Bectors Food Specialities Limited,EQ,INE495P01020,543253,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+318,BEDMUTHA,Bedmutha Industries Limited,EQ,INE844K01012,533270,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+319,BEEKAY,Beekay Steel Industries Limited,EQ,INE213D01015,539018,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+320,BEL,Bharat Electronics Limited,EQ,INE263A01024,500049,Industrials,Aerospace & Defense,Capital Goods,Aerospace & Defense,Aerospace & Defense,CLASSIFIED
+321,BELLACASA,Bella Casa Fashion & Retail Limited,EQ,INE344T01014,539399,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
+322,BELRISE,Belrise Industries Limited,EQ,INE894V01022,544405,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+323,BEML,BEML Limited,EQ,INE258A01024,500048,Industrials,Construction Vehicles,Capital Goods,"Agricultural, Commercial & Construction Vehicles",Construction Vehicles,CLASSIFIED
+324,BENARAS,Benares Hotels Limited,EQ,INE664D01019,509438,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+325,BENGALASM,Bengal & Assam Company Limited,EQ,INE083K01017,533095,Financial Services,Non Banking Financial Company (NBFC),Financial Services,Finance,Non Banking Financial Company (NBFC),CLASSIFIED
+326,BEPL,Bhansali Engineering Polymers Limited,EQ,INE922A01025,500052,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
+327,BERGEPAINT,Berger Paints (I) Limited,EQ,INE463A01038,509480,Consumer Discretionary,Paints,Consumer Durables,Consumer Durables,Paints,CLASSIFIED
+328,BESTAGRO,Best Agrolife Limited,EQ,INE052T01021,539660,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+329,BETA,Beta Drugs Limited,EQ,INE351Y01019,,,,,,,NOT_FOUND
+330,BFINVEST,BF Investment Limited,EQ,INE878K01010,533303,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+331,BFUTILITIE,BF Utilities Limited,EQ,INE243D01012,532430,Services,"Road Assets–Toll, Annuity, Hybrid-Annuity",Services,Transport Infrastructure,"Road Assets–Toll, Annuity, Hybrid-Annuity",CLASSIFIED
+332,BGRENERGY,BGR Energy Systems Limited,BE,INE661I01014,532930,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+333,BHAGCHEM,Bhagiradha Chemicals & Industries Limited,EQ,INE414D01027,531719,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+334,BHAGERIA,Bhageria Industries Limited,BE,INE354C01027,530803,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+335,BHAGYANGR,Bhagyanagar India Limited,EQ,INE458B01036,512296,Commodities,Copper,Metals & Mining,Non - Ferrous Metals,Copper,CLASSIFIED
+336,BHANDARI,Bhandari Hosiery Exports Limited,EQ,INE474E01029,512608,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+337,BHARATCOAL,Bharat Coking Coal Limited,EQ,INE05XR01022,544678,Energy,Coal,"Oil, Gas & Consumable Fuels",Consumable Fuels,Coal,CLASSIFIED
+338,BHARATFORG,Bharat Forge Limited,EQ,INE465A01025,500493,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+339,BHARATGEAR,Bharat Gears Limited,BE,INE561C01019,505688,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+340,BHARATRAS,Bharat Rasayan Limited,EQ,INE838B01021,590021,Commodities,Pesticides & Agrochemicals,Chemicals,Fertilizers & Agrochemicals,Pesticides & Agrochemicals,CLASSIFIED
+341,BHARATSE,Bharat Seats Limited,EQ,INE415D01024,523229,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+342,BHARATWIRE,Bharat Wire Ropes Limited,EQ,INE316L01019,539799,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+343,BHARTIARTL,Bharti Airtel Limited,EQ,INE397D01024,532454,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+344,BHARTIHEXA,Bharti Hexacom Limited,EQ,INE343G01021,544162,Telecommunication,Telecom - Cellular & Fixed line services,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,CLASSIFIED
+345,BHEL,Bharat Heavy Electricals Limited,EQ,INE257A01026,500103,Industrials,Heavy Electrical Equipment,Capital Goods,Electrical Equipment,Heavy Electrical Equipment,CLASSIFIED
+346,BI,Bilcare Limited,BE,INE986A01012,526853,Healthcare,"Healthcare Research, Analytics & Technology",Healthcare,Healthcare Services,"Healthcare Research, Analytics & Technology",CLASSIFIED
+347,BIGBLOC,Bigbloc Construction Limited,EQ,INE412U01025,540061,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+348,BIKAJI,Bikaji Foods International Limited,EQ,INE00E101023,543653,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+349,BIL,Bhartiya International Limited,EQ,INE828A01016,526666,Consumer Discretionary,Leather And Leather Products,Consumer Durables,Consumer Durables,Leather And Leather Products,CLASSIFIED
+350,BILVYAPAR,BIL VYAPAR LIMITED,BE,INE071A01013,500059,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+351,BIMETAL,Bimetal Bearings Limited,EQ,INE469A01019,505681,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+352,BIOCON,Biocon Limited,EQ,INE376G01013,532523,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+353,BIOFILCHEM,Biofil Chemicals & Pharmaceuticals Limited,EQ,INE829A01014,524396,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+354,BIRLACABLE,Birla Cable Limited,BE,INE800A01015,500060,Telecommunication,Telecom -  Equipment & Accessories,Telecommunication,Telecom -  Equipment & Accessories,Telecom -  Equipment & Accessories,CLASSIFIED
+355,BIRLACORPN,Birla Corporation Limited,EQ,INE340A01012,500335,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
+356,BIRLAMONEY,Aditya Birla Money Limited,EQ,INE865C01022,532974,Financial Services,Stockbroking & Allied,Financial Services,Capital Markets,Stockbroking & Allied,CLASSIFIED
+357,BIRLANU,BirlaNu Limited,EQ,INE557A01011,509675,Commodities,Other Construction Materials,Construction Materials,Other Construction Materials,Other Construction Materials,CLASSIFIED
+358,BIRLAPREC,Birla Precision Technologies Limited,EQ,INE372E01025,522105,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
+359,BLACKBUCK,BLACKBUCK LIMITED,EQ,INE0UIZ01018,544288,Services,Transport Related Services,Services,Transport Services,Transport Related Services,CLASSIFIED
+360,BLACKROSE,Black Rose Inds. Limited,BE,INE761G01016,514183,Commodities,Specialty Chemicals,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,CLASSIFIED
+361,BLAL,BEML Land Assets Limited,EQ,INE0N7W01012,543898,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+362,BLBLIMITED,BLB Limited,EQ,INE791A01024,532290,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+363,BLEL,Behari Lal Engineering Limited,EQ,INE1EEM01017,544870,Industrials,Iron & Steel Products,Capital Goods,Industrial Products,Iron & Steel Products,CLASSIFIED
+364,BLIL,Balmer Lawrie Investments Limited,EQ,INE525F01025,532485,Financial Services,Holding Company,Financial Services,Finance,Holding Company,CLASSIFIED
+365,BLISSGVS,Bliss GVS Pharma Limited,BE,INE416D01022,506197,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+366,BLKASHYAP,B. L. Kashyap and Sons Limited,EQ,INE350H01032,532719,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+367,BLS,BLS International Services Limited,EQ,INE153T01027,540073,Consumer Discretionary,"Tour, Travel Related Services",Consumer Services,Leisure Services,"Tour, Travel Related Services",CLASSIFIED
+368,BLSE,BLS E-Services Limited,EQ,INE0NLT01010,544107,Information Technology,IT Enabled Services,Information Technology,IT - Services,IT Enabled Services,CLASSIFIED
+369,BLUECHIP,Blue Chip India Limited,EQ,INE657B01025,531936,Financial Services,Investment Company,Financial Services,Finance,Investment Company,CLASSIFIED
+370,BLUECLOUDS,Blue Cloud Softech Solutions Limited,EQ,INE373T01047,539607,Information Technology,Software Products,Information Technology,IT - Software,Software Products,CLASSIFIED
+371,BLUECOAST,Blue Coast Hotels Limited,BE,INE472B01011,531495,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+372,BLUEDART,Blue Dart Express Limited,EQ,INE233B01017,526612,Services,Logistics Solution Provider,Services,Transport Services,Logistics Solution Provider,CLASSIFIED
+373,BLUEJET,Blue Jet Healthcare Limited,EQ,INE0KBH01020,544009,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+374,BLUESTARCO,Blue Star Limited,EQ,INE472A01039,500067,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+375,BLUESTONE,BlueStone Jewellery and Lifestyle Limited,EQ,INE304W01038,544484,Consumer Discretionary,"Gems, Jewellery And Watches",Consumer Durables,Consumer Durables,"Gems, Jewellery And Watches",CLASSIFIED
+376,BLUSPRING,Bluspring Enterprises Limited,EQ,INE0U4101014,544414,Services,Diversified Commercial Services,Services,Commercial Services & Supplies,Diversified Commercial Services,CLASSIFIED
+377,BMWVENTLTD,BMW Ventures Limited,EQ,INE965W01036,544543,Commodities,Trading - Metals,Metals & Mining,Metals & Minerals Trading,Trading - Metals,CLASSIFIED
+378,BNAGROCHEM,BN Agrochem Limited,EQ,INE00HZ01011,526125,Services,Trading & Distributors,Services,Commercial Services & Supplies,Trading & Distributors,CLASSIFIED
+379,BNALTD,B & A Limited,BE,INE489D01011,508136,Fast Moving Consumer Goods,Tea & Coffee,Fast Moving Consumer Goods,Agricultural Food & other Products,Tea & Coffee,CLASSIFIED
+380,BODALCHEM,Bodal Chemicals Limited,BE,INE338D01028,524370,Commodities,Dyes And Pigments,Chemicals,Chemicals & Petrochemicals,Dyes And Pigments,CLASSIFIED
+381,BOHRAIND,Bohra Industries Limited,EQ,INE802W01023,,,,,,,NOT_FOUND
+382,BOMDYEING,Bombay Dyeing & Mfg Company Limited,EQ,INE032A01023,500020,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+383,BONLON,Bonlon Industries Limited,EQ,INE0B9A01018,543211,Commodities,Trading - Metals,Metals & Mining,Metals & Minerals Trading,Trading - Metals,CLASSIFIED
+384,BORANA,Borana Weaves Limited,EQ,INE16SF01016,544404,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
+385,BOROLTD,Borosil Limited,EQ,INE02PY01013,543212,Consumer Discretionary,Houseware,Consumer Durables,Consumer Durables,Houseware,CLASSIFIED
+386,BORORENEW,BOROSIL RENEWABLES LIMITED,EQ,INE666D01022,502219,Industrials,Glass - Industrial,Capital Goods,Industrial Products,Glass - Industrial,CLASSIFIED
+387,BOROSCI,Borosil Scientific Limited,EQ,INE02L001032,544184,Industrials,Glass - Industrial,Capital Goods,Industrial Products,Glass - Industrial,CLASSIFIED
+388,BOSCH-HCIL,BOSCH HOME COMFORT INDIA LIMITED,EQ,INE782A01015,523398,Consumer Discretionary,Household Appliances,Consumer Durables,Consumer Durables,Household Appliances,CLASSIFIED
+389,BOSCHLTD,Bosch Limited,EQ,INE323A01026,500530,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
+390,BPCL,Bharat Petroleum Corporation Limited,EQ,INE029A01011,500547,Energy,Refineries & Marketing,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,CLASSIFIED
+391,BPL,BPL Limited,EQ,INE110A01019,500074,Consumer Discretionary,Consumer Electronics,Consumer Durables,Consumer Durables,Consumer Electronics,CLASSIFIED
+392,BPLPHARMA,Bharat Parenterals Limited,EQ,INE365Y01019,541096,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+393,BRAHMINFRA,Brahmaputra Infrastructure Limited,EQ,INE320I01017,535693,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+394,BRIGADE,Brigade Enterprises Limited,EQ,INE791I01019,532929,Consumer Discretionary,"Residential, Commercial Projects",Realty,Realty,"Residential, Commercial Projects",CLASSIFIED
+395,BRIGHOTEL,Brigade Hotel Ventures Limited,EQ,INE03NU01014,544457,Consumer Discretionary,Hotels & Resorts,Consumer Services,Leisure Services,Hotels & Resorts,CLASSIFIED
+396,BRIGHTBR,Bright Brothers Limited,EQ,INE630D01010,526731,Industrials,Plastic Products - Industrial,Capital Goods,Industrial Products,Plastic Products - Industrial,CLASSIFIED
+397,BRITANNIA,Britannia Industries Limited,EQ,INE216A01030,500825,Fast Moving Consumer Goods,Packaged Foods,Fast Moving Consumer Goods,Food Products,Packaged Foods,CLASSIFIED
+398,BRNL,Bharat Road Network Limited,EQ,INE727S01012,540700,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
+399,BROOKS,Brooks Laboratories Limited,BE,INE650L01011,533543,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
+400,BSE,BSE Limited,EQ,INE118H01025,,,,,,,NOT_FOUND
