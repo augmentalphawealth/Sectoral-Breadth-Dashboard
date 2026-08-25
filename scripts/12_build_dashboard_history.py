@@ -45,6 +45,8 @@ COMMON_COLUMNS = [
     "breakout_pct",
     "vcp_ready_count",
     "vcp_ready_pct",
+    "high_strength_count",
+    "pct_high_strength",
     "buy_volume_shock_count",
     "sell_volume_shock_count",
     "buy_volume_shock_pct",
@@ -63,7 +65,6 @@ def build_history_table(
     df = pd.read_parquet(input_file)
 
     required_columns = ["date", group_column]
-
     missing_required = [
         column
         for column in required_columns
@@ -84,23 +85,17 @@ def build_history_table(
             if column in df.columns
         ],
     ]
-
     selected_columns = list(dict.fromkeys(selected_columns))
 
     history = df[selected_columns].copy()
-
     history["date"] = pd.to_datetime(history["date"])
     history[group_column] = history[group_column].fillna("Unclassified")
 
-    history = history.dropna(
-        subset=["date", group_column],
-    )
-
+    history = history.dropna(subset=["date", group_column])
     history = history.drop_duplicates(
         subset=["date", group_column],
         keep="last",
     )
-
     history = history.sort_values(
         [group_column, "date"],
     ).reset_index(drop=True)
@@ -139,12 +134,9 @@ def main() -> None:
             f"{result['start_date']} to {result['latest_date']}"
         )
 
-    metadata["generated_at_utc"] = (
-        pd.Timestamp.utcnow().isoformat()
-    )
+    metadata["generated_at_utc"] = pd.Timestamp.utcnow().isoformat()
 
     metadata_file = PROCESSED / "dashboard_metadata.json"
-
     metadata_file.write_text(
         json.dumps(metadata, indent=2),
         encoding="utf-8",
