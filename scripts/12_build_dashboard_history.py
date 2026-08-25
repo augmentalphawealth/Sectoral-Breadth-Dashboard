@@ -42,7 +42,15 @@ COMMON_COLUMNS = [
     "new_high_252_pct",
     "acc_minus_dist",
     "breakout_count",
+    "breakout_pct",
     "vcp_ready_count",
+    "vcp_ready_pct",
+    "buy_volume_shock_count",
+    "sell_volume_shock_count",
+    "buy_volume_shock_pct",
+    "sell_volume_shock_pct",
+    "median_volume_shock",
+    "small_industry",
     "median_dist_52w_high",
 ]
 
@@ -106,10 +114,11 @@ def build_history_table(
         "start_date": str(history["date"].min().date()),
         "latest_date": str(history["date"].max().date()),
         "file": output_file.name,
+        "columns": history.columns.tolist(),
     }
 
 
-def main():
+def main() -> None:
     print("========== DASHBOARD HISTORY BUILD START ==========")
 
     metadata = {}
