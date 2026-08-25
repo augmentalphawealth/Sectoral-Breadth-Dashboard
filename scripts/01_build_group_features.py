@@ -5,6 +5,9 @@ import pandas as pd
 
 from utils import load_settings, p, read_parquet_safe, write_parquet
 
+VOLUME_SHOCK_THRESHOLD = 1.5
+SMALL_GROUP_LIMIT = 5
+
 
 def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df = df.sort_values(["symbol", "date"]).copy()
@@ -83,6 +86,22 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         )
     ).astype(int)
 
+    df["volume_shock_ratio"] = np.where(
+        df["avg_vol_20"] > 0,
+        df["volume"] / df["avg_vol_20"],
+        np.nan,
+    )
+
+    df["buy_volume_shock"] = (
+        (df["volume_shock_ratio"] >= VOLUME_SHOCK_THRESHOLD)
+        & (df["ret_1d"] > 0)
+    ).astype(int)
+
+    df["sell_volume_shock"] = (
+        (df["volume_shock_ratio"] >= VOLUME_SHOCK_THRESHOLD)
+        & (df["ret_1d"] < 0)
+    ).astype(int)
+
     df["trend_template_pass"] = (
         (df["close"] > df["sma_150"])
         & (df["close"] > df["sma_200"])
@@ -133,10 +152,35 @@ def aggregate_group(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
         dist_days=("dist_day", "sum"),
         breakout_count=("breakout_55", "sum"),
         vcp_ready_count=("vcp_ready", "sum"),
+        buy_volume_shock_count=("buy_volume_shock", "sum"),
+        sell_volume_shock_count=("sell_volume_shock", "sum"),
+        median_volume_shock=("volume_shock_ratio", "median"),
         median_dist_52w_high=("dist_52w_high", "median"),
     ).reset_index()
 
     agg["acc_minus_dist"] = agg["acc_days"] - agg["dist_days"]
+    agg["breakout_pct"] = np.where(
+        agg["members"] > 0,
+        agg["breakout_count"] / agg["members"] * 100,
+        np.nan,
+    )
+    agg["vcp_ready_pct"] = np.where(
+        agg["members"] > 0,
+        agg["vcp_ready_count"] / agg["members"] * 100,
+        np.nan,
+    )
+    agg["buy_volume_shock_pct"] = np.where(
+        agg["members"] > 0,
+        agg["buy_volume_shock_count"] / agg["members"] * 100,
+        np.nan,
+    )
+    agg["sell_volume_shock_pct"] = np.where(
+        agg["members"] > 0,
+        agg["sell_volume_shock_count"] / agg["members"] * 100,
+        np.nan,
+    )
+    agg["small_industry"] = (agg["members"] < SMALL_GROUP_LIMIT).astype(int)
+
     agg["pct_above_20"] *= 100
     agg["pct_above_50"] *= 100
     agg["pct_above_200"] *= 100
@@ -212,7 +256,7 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     return df
 
 
-def main():
+def main() -> None:
     settings = load_settings()
     processed = p("data", "processed")
 
