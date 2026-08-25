@@ -12,6 +12,7 @@ INPUT_FILE = PROCESSED / "stock_daily_features.parquet"
 OUTPUT_FILE = PROCESSED / "dashboard_stock_history.parquet"
 
 RECENT_TRADING_DAYS = 400
+HIGH_STRENGTH_THRESHOLD = 70.0
 
 
 def main() -> None:
@@ -88,8 +89,7 @@ def main() -> None:
         keep="last",
     )
 
-    # Precomputed score used only for ranking stocks within their
-    # basic industry on the same date.
+    # Composite score used only for ranking stocks within their Basic Industry.
     df["stock_strength_score"] = (
         df["ret_20d"].rank(pct=True) * 35
         + df["ret_60d"].rank(pct=True) * 35
@@ -113,6 +113,24 @@ def main() -> None:
         * 100
     )
 
+    df["high_strength_flag"] = (
+        df["stock_strength_score"] >= HIGH_STRENGTH_THRESHOLD
+    ).astype(int)
+
+    df["basic_industry_members"] = (
+        df.groupby(group_keys)["symbol"].transform("nunique")
+    )
+
+    df["high_strength_count"] = (
+        df.groupby(group_keys)["high_strength_flag"].transform("sum")
+    )
+
+    df["pct_high_strength"] = (
+        df["high_strength_count"]
+        / df["basic_industry_members"].clip(lower=1)
+        * 100
+    )
+
     df = df.sort_values(
         ["date", "basic_industry", "stock_rank_in_basic_industry", "symbol"],
     ).reset_index(drop=True)
@@ -127,6 +145,7 @@ def main() -> None:
     print(f"Start date: {df['date'].min().date()}")
     print(f"Latest date: {df['date'].max().date()}")
     print(f"Trading days retained: {len(kept_dates)}")
+    print(f"High-strength threshold: {HIGH_STRENGTH_THRESHOLD:.0f}")
     print(f"Output: {OUTPUT_FILE}")
 
 
