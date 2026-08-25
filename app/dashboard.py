@@ -389,10 +389,12 @@ def group_setup_chart(history: pd.DataFrame, group: str) -> None:
     days = {"3 months": 92, "6 months": 183, "9 months": 274}[period]
 
     chart_data = data[data["date"] >= data["date"].max() - pd.Timedelta(days=days)].copy()
-    chart_data = chart_data.set_index("date")["strength_score"].to_frame()
-    chart_data["10D Strength Average"] = data.set_index("date")["strength_ma_10"]
-    chart_data["20D Strength Average"] = data.set_index("date")["strength_ma_20"]
-    chart_data = chart_data.rename(columns={"strength_score": "Strength Score"})
+    chart_data = chart_data.set_index("date")[["strength_score", "strength_ma_10", "strength_ma_20"]]
+    chart_data = chart_data.rename(columns={
+        "strength_score": "Strength Score",
+        "strength_ma_10": "10D Strength Average",
+        "strength_ma_20": "20D Strength Average",
+    })
 
     state, explanation = setup_state(data)
     latest = data.iloc[-1]
@@ -402,8 +404,10 @@ def group_setup_chart(history: pd.DataFrame, group: str) -> None:
     metrics[2].metric("10D average", fmt_num(latest.get("strength_ma_10")))
     metrics[3].metric("20D average", fmt_num(latest.get("strength_ma_20")))
     if "eq_ret_20d" in data.columns:
-        fraction = is_fraction_series(data["eq_ret_20d"])
-        metrics[4].metric("Equal-weighted 20D return", fmt_pct(latest.get("eq_ret_20d"), fraction))
+        metrics[4].metric(
+            "Equal-weighted 20D return",
+            fmt_pct(latest.get("eq_ret_20d"), is_fraction_series(data["eq_ret_20d"])),
+        )
     else:
         metrics[4].metric("Equal-weighted 20D return", "—")
 
@@ -537,8 +541,24 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         "text/csv",
         key="download_stock_table",
     )
-
     stock_chart(stock_history, selected_group, stocks)
+
+
+def industry_view(industry_history: pd.DataFrame) -> None:
+    selected_date = section_header("Industry Leadership", trading_dates(industry_history), "industry")
+    selected = industry_history[industry_history["date"] == selected_date].copy()
+    raw_table = make_group_table(selected, "industry")
+    if raw_table.empty:
+        st.warning("No Industry data is available for this date.")
+        return
+    st.dataframe(style_with_heatmap(raw_table, format_group_table(raw_table)), use_container_width=True, hide_index=True, height=470)
+    st.download_button(
+        "Download Industry table",
+        raw_table.to_csv(index=False).encode("utf-8"),
+        f"industry_{selected_date.strftime('%Y%m%d')}.csv",
+        "text/csv",
+        key="download_industry_table",
+    )
 
 
 def compact_panel_table(raw: pd.DataFrame, columns: list[str], percent_columns: list[str] | None = None) -> pd.DataFrame:
