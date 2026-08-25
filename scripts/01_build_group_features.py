@@ -5,12 +5,19 @@ import pandas as pd
 
 from utils import load_settings, p, read_parquet_safe, write_parquet
 
-VOLUME_SHOCK_THRESHOLD = 1.5
-SMALL_GROUP_LIMIT = 5
+
+DEFAULT_VOLUME_SHOCK_THRESHOLD = 1.5
+DEFAULT_HIGH_STRENGTH_THRESHOLD = 70.0
+DEFAULT_SMALL_GROUP_LIMIT = 5
 
 
 def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df = df.sort_values(["symbol", "date"]).copy()
+    analysis = settings["analysis"]
+    volume_shock_threshold = analysis.get(
+        "volume_shock_threshold",
+        DEFAULT_VOLUME_SHOCK_THRESHOLD,
+    )
     g = df.groupby("symbol", group_keys=False)
 
     for win in [20, 50, 150, 200]:
@@ -26,7 +33,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     )
     df["ret_1d"] = g["close"].pct_change(1)
 
-    for win in settings["analysis"]["return_windows"]:
+    for win in analysis["return_windows"]:
         df[f"ret_{win}d"] = g["close"].pct_change(win)
 
     df["above_20"] = (df["close"] > df["sma_20"]).astype(int)
@@ -56,15 +63,14 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             df["close"]
             > g["high"].transform(
                 lambda s: s.shift(1).rolling(
-                    settings["analysis"]["breakout_lookback"],
+                    analysis["breakout_lookback"],
                     min_periods=20,
                 ).max()
             )
         )
         & (
             df["volume"]
-            > settings["analysis"]["accumulation_volume_multiplier"]
-            * df["avg_vol_20"]
+            > analysis["accumulation_volume_multiplier"] * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -72,8 +78,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         (df["close"] > g["close"].shift(1))
         & (
             df["volume"]
-            > settings["analysis"]["accumulation_volume_multiplier"]
-            * df["avg_vol_20"]
+            > analysis["accumulation_volume_multiplier"] * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -81,8 +86,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         (df["close"] < g["close"].shift(1))
         & (
             df["volume"]
-            > settings["analysis"]["distribution_volume_multiplier"]
-            * df["avg_vol_20"]
+            > analysis["distribution_volume_multiplier"] * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -93,12 +97,12 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     )
 
     df["buy_volume_shock"] = (
-        (df["volume_shock_ratio"] >= VOLUME_SHOCK_THRESHOLD)
+        (df["volume_shock_ratio"] >= volume_shock_threshold)
         & (df["ret_1d"] > 0)
     ).astype(int)
 
     df["sell_volume_shock"] = (
-        (df["volume_shock_ratio"] >= VOLUME_SHOCK_THRESHOLD)
+        (df["volume_shock_ratio"] >= volume_shock_threshold)
         & (df["ret_1d"] < 0)
     ).astype(int)
 
@@ -119,22 +123,49 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     ).reset_index(level=0, drop=True)
 
     df["vcp_ready"] = (
-        (df["range_20"] <= settings["analysis"]["vcp_range_contraction_threshold"])
+        (df["range_20"] <= analysis["vcp_range_contraction_threshold"])
         & (
             df["volume"]
-            <= settings["analysis"]["vcp_volume_dryup_threshold"]
-            * df["avg_vol_20"]
+            <= analysis["vcp_volume_dryup_threshold"] * df["avg_vol_20"]
         )
         & (
             df["dist_52w_high"]
-            > -settings["analysis"]["pivot_proximity_threshold"]
+            > -analysis["pivot_proximity_threshold"]
         )
     ).astype(int)
 
     return df
 
 
-def aggregate_group(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
+def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
+    data = df.copy()
+    threshold = settings["analysis"].get(
+        "high_strength_threshold",
+        DEFAULT_HIGH_STRENGTH_THRESHOLD,
+    )
+
+    data["stock_strength_score"] = (
+        data["ret_20d"].rank(pct=True) * 35
+        + data["ret_60d"].rank(pct=True) * 35
+        + data["above_50"] * 15
+        + data["above_200"] * 10
+        + data["breakout_55"] * 3
+        + data["vcp_ready"] * 2
+    )
+
+    data["high_strength_flag"] = (
+        data["stock_strength_score"] >= threshold
+    ).astype(int)
+
+    return data
+
+
+def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.DataFrame:
+    small_group_limit = settings["analysis"].get(
+        "small_industry_limit",
+        DEFAULT_SMALL_GROUP_LIMIT,
+    )
+
     agg = df.groupby(["date", group_col], dropna=False).agg(
         members=("symbol", "nunique"),
         eq_ret_1d=("ret_1d", "mean"),
@@ -152,6 +183,7 @@ def aggregate_group(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
         dist_days=("dist_day", "sum"),
         breakout_count=("breakout_55", "sum"),
         vcp_ready_count=("vcp_ready", "sum"),
+        high_strength_count=("high_strength_flag", "sum"),
         buy_volume_shock_count=("buy_volume_shock", "sum"),
         sell_volume_shock_count=("sell_volume_shock", "sum"),
         median_volume_shock=("volume_shock_ratio", "median"),
@@ -159,27 +191,23 @@ def aggregate_group(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
     ).reset_index()
 
     agg["acc_minus_dist"] = agg["acc_days"] - agg["dist_days"]
-    agg["breakout_pct"] = np.where(
-        agg["members"] > 0,
-        agg["breakout_count"] / agg["members"] * 100,
-        np.nan,
-    )
-    agg["vcp_ready_pct"] = np.where(
-        agg["members"] > 0,
-        agg["vcp_ready_count"] / agg["members"] * 100,
-        np.nan,
-    )
-    agg["buy_volume_shock_pct"] = np.where(
-        agg["members"] > 0,
-        agg["buy_volume_shock_count"] / agg["members"] * 100,
-        np.nan,
-    )
-    agg["sell_volume_shock_pct"] = np.where(
-        agg["members"] > 0,
-        agg["sell_volume_shock_count"] / agg["members"] * 100,
-        np.nan,
-    )
-    agg["small_industry"] = (agg["members"] < SMALL_GROUP_LIMIT).astype(int)
+
+    for count_column, pct_column in [
+        ("breakout_count", "breakout_pct"),
+        ("vcp_ready_count", "vcp_ready_pct"),
+        ("high_strength_count", "pct_high_strength"),
+        ("buy_volume_shock_count", "buy_volume_shock_pct"),
+        ("sell_volume_shock_count", "sell_volume_shock_pct"),
+    ]:
+        agg[pct_column] = np.where(
+            agg["members"] > 0,
+            agg[count_column] / agg["members"] * 100,
+            np.nan,
+        )
+
+    agg["small_industry"] = (
+        agg["members"] < small_group_limit
+    ).astype(int)
 
     agg["pct_above_20"] *= 100
     agg["pct_above_50"] *= 100
@@ -193,67 +221,93 @@ def aggregate_group(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
 
 def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     w = settings["scoring"]
-    df = df.copy()
+    data = df.copy()
 
-    df["trend_score"] = (
-        (df["eq_ret_20d"].rank(pct=True) * 40)
-        + (df["eq_ret_60d"].rank(pct=True) * 40)
-        + ((df["pct_above_50"] / 100) * 20)
+    required_weights = [
+        "trend",
+        "breadth",
+        "rs",
+        "high_strength",
+        "volume",
+        "breakout",
+        "penalty",
+    ]
+    missing_weights = [key for key in required_weights if key not in w]
+    if missing_weights:
+        raise ValueError(
+            "Missing scoring settings: "
+            f"{missing_weights}"
+        )
+
+    data["trend_score"] = (
+        (data["eq_ret_20d"].rank(pct=True) * 40)
+        + (data["eq_ret_60d"].rank(pct=True) * 40)
+        + ((data["pct_above_50"] / 100) * 20)
     ) / 100 * w["trend"]
 
-    df["breadth_score"] = (
-        (df["pct_above_20"] + df["pct_above_50"] + df["pct_above_200"])
+    data["breadth_score"] = (
+        (data["pct_above_20"] + data["pct_above_50"] + data["pct_above_200"])
         / 300
     ) * w["breadth"]
 
-    df["rs_score"] = (
-        (df["eq_ret_20d"].rank(pct=True) + df["eq_ret_60d"].rank(pct=True))
+    data["rs_score"] = (
+        (data["eq_ret_20d"].rank(pct=True) + data["eq_ret_60d"].rank(pct=True))
         / 2
     ) * w["rs"]
 
-    df["volume_score"] = (
-        df["acc_minus_dist"].rank(pct=True) * w["volume"]
-    )
+    data["high_strength_score"] = (
+        data["pct_high_strength"] / 100
+    ) * w["high_strength"]
 
-    df["breakout_score"] = (
-        (
-            df["breakout_count"].rank(pct=True)
-            + df["vcp_ready_count"].rank(pct=True)
-        )
-        / 2
+    data["volume_score"] = (
+        0.70 * data["acc_minus_dist"].rank(pct=True)
+        + 0.30 * (
+            data["buy_volume_shock_pct"]
+            - data["sell_volume_shock_pct"]
+        ).rank(pct=True)
+    ) * w["volume"]
+
+    data["breakout_score"] = (
+        0.60 * (data["breakout_pct"] / 100)
+        + 0.40 * (data["vcp_ready_pct"] / 100)
     ) * w["breakout"]
 
-    df["penalty_score"] = (
-        ((df["median_dist_52w_high"] < -0.20).astype(int) * 0.4)
-        + ((df["pct_above_20"] > 85).astype(int) * 0.6)
+    data["penalty_score"] = (
+        ((data["median_dist_52w_high"] < -0.20).astype(int) * 0.4)
+        + ((data["pct_above_20"] > 85).astype(int) * 0.6)
     ) * w["penalty"]
 
-    df["strength_score"] = (
-        df["trend_score"]
-        + df["breadth_score"]
-        + df["rs_score"]
-        + df["volume_score"]
-        + df["breakout_score"]
-        - df["penalty_score"]
-    )
+    data["strength_score"] = (
+        data["trend_score"]
+        + data["breadth_score"]
+        + data["rs_score"]
+        + data["high_strength_score"]
+        + data["volume_score"]
+        + data["breakout_score"]
+        - data["penalty_score"]
+    ).clip(lower=0, upper=100)
 
     conditions = [
-        (df["strength_score"] >= 70) & (df["pct_above_50"] >= 60),
-        (df["strength_score"] >= 55) & (df["pct_above_20"] >= 55),
-        (df["pct_above_20"] < 40) & (df["eq_ret_20d"] < 0),
-        (df["pct_above_20"] > 80)
-        & (df["median_dist_52w_high"] > -0.05),
+        (data["strength_score"] >= 70)
+        & (data["pct_above_50"] >= 60)
+        & (data["pct_high_strength"] >= 35),
+        (data["strength_score"] >= 55)
+        & (data["pct_above_20"] >= 55),
+        (data["pct_above_20"] < 40)
+        & (data["eq_ret_20d"] < 0),
+        (data["pct_above_20"] > 80)
+        & (data["median_dist_52w_high"] > -0.05),
     ]
 
     labels = ["Strong", "Emerging", "Weakening", "Exhausted"]
 
-    df["regime"] = np.select(
+    data["regime"] = np.select(
         conditions,
         labels,
         default="Bottoming",
     )
 
-    return df
+    return data
 
 
 def main() -> None:
@@ -279,12 +333,14 @@ def main() -> None:
         "close",
         "volume",
     ]
-
-    for column in required_price_columns:
-        if column not in prices.columns:
-            raise ValueError(
-                f"Missing required prices column: {column}"
-            )
+    missing_price_columns = [
+        column for column in required_price_columns if column not in prices.columns
+    ]
+    if missing_price_columns:
+        raise ValueError(
+            "Prices file is missing required columns: "
+            f"{missing_price_columns}"
+        )
 
     if "turnover" not in prices.columns:
         prices["turnover"] = prices["close"] * prices["volume"]
@@ -297,13 +353,11 @@ def main() -> None:
         "sector",
         "series",
     ]
-
     missing_master_columns = [
         column
         for column in required_master_columns
         if column not in master.columns
     ]
-
     if missing_master_columns:
         raise ValueError(
             "Classified master is missing required columns: "
@@ -311,7 +365,6 @@ def main() -> None:
         )
 
     join_columns = required_master_columns.copy()
-
     if "mcap" in master.columns:
         join_columns.append("mcap")
 
@@ -326,7 +379,6 @@ def main() -> None:
         on="symbol",
         how="left",
     )
-
     stock["date"] = pd.to_datetime(stock["date"])
 
     if "mcap" not in stock.columns:
@@ -339,23 +391,22 @@ def main() -> None:
     )
 
     stock = add_stock_indicators(stock, settings)
+    stock = add_stock_strength(stock, settings)
 
     write_parquet(
         stock,
         processed / "stock_daily_features.parquet",
     )
 
-    industry = aggregate_group(stock, "industry")
+    industry = aggregate_group(stock, "industry", settings)
     industry = add_group_scores(industry, settings)
-
     write_parquet(
         industry,
         processed / "industry_daily_features.parquet",
     )
 
-    basic = aggregate_group(stock, "basic_industry")
+    basic = aggregate_group(stock, "basic_industry", settings)
     basic = add_group_scores(basic, settings)
-
     write_parquet(
         basic,
         processed / "basic_industry_daily_features.parquet",
