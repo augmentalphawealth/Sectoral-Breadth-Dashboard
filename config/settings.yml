@@ -25,11 +25,15 @@ analysis:
   pivot_proximity_threshold: 0.05
   vcp_range_contraction_threshold: 0.08
   vcp_volume_dryup_threshold: 0.65
+  volume_shock_threshold: 1.5
+  high_strength_threshold: 70
+  small_industry_limit: 5
 
 scoring:
-  trend: 25
-  breadth: 20
-  rs: 20
-  volume: 15
-  breakout: 10
-  penalty: 10
+  trend: 20
+  breadth: 15
+  rs: 15
+  high_strength: 20
+  volume: 10
+  breakout: 15
+  penalty: 5
