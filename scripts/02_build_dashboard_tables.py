@@ -28,44 +28,48 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
         "breakout_55",
         "vcp_ready",
     ]
-
-    missing = [
-        column
-        for column in required
-        if column not in data.columns
-    ]
-
+    missing = [column for column in required if column not in data.columns]
     if missing:
         raise ValueError(
             "Stock feature file is missing required columns: "
             f"{missing}"
         )
 
-    data["stock_strength_score"] = (
-        data["ret_20d"].rank(pct=True) * 35
-        + data["ret_60d"].rank(pct=True) * 35
-        + data["above_50"] * 15
-        + data["above_200"] * 10
-        + data["breakout_55"] * 3
-        + data["vcp_ready"] * 2
+    if "stock_strength_score" not in data.columns:
+        data["stock_strength_score"] = (
+            data["ret_20d"].rank(pct=True) * 35
+            + data["ret_60d"].rank(pct=True) * 35
+            + data["above_50"] * 15
+            + data["above_200"] * 10
+            + data["breakout_55"] * 3
+            + data["vcp_ready"] * 2
+        )
+
+    data["stock_strength_score"] = pd.to_numeric(
+        data["stock_strength_score"],
+        errors="coerce",
     )
 
     group_keys = ["date", "basic_industry"]
 
-    data["high_strength_flag"] = (
-        data["stock_strength_score"] >= HIGH_STRENGTH_THRESHOLD
-    ).astype(int)
+    if "high_strength_flag" not in data.columns:
+        data["high_strength_flag"] = (
+            data["stock_strength_score"] >= HIGH_STRENGTH_THRESHOLD
+        ).astype(int)
+    else:
+        data["high_strength_flag"] = pd.to_numeric(
+            data["high_strength_flag"],
+            errors="coerce",
+        ).fillna(0).astype(int)
 
     data["basic_industry_members"] = (
         data.groupby(group_keys)["symbol"].transform("nunique")
     )
-
-    data["high_strength_count"] = (
+    data["high_strength_count_snapshot"] = (
         data.groupby(group_keys)["high_strength_flag"].transform("sum")
     )
-
-    data["pct_high_strength"] = (
-        data["high_strength_count"]
+    data["pct_high_strength_snapshot"] = (
+        data["high_strength_count_snapshot"]
         / data["basic_industry_members"].clip(lower=1)
         * 100
     )
@@ -94,18 +98,30 @@ def main() -> None:
                 "date",
                 "basic_industry",
                 "basic_industry_members",
-                "high_strength_count",
-                "pct_high_strength",
+                "high_strength_count_snapshot",
+                "pct_high_strength_snapshot",
             ]
         ]
         .drop_duplicates(
             subset=["date", "basic_industry"],
             keep="last",
         )
+        .rename(
+            columns={
+                "high_strength_count_snapshot": "high_strength_count_snapshot",
+                "pct_high_strength_snapshot": "pct_high_strength_snapshot",
+            }
+        )
         .copy()
     )
 
-    basic_latest = latest(basic).merge(
+    basic_latest = latest(basic).copy()
+
+    for column in ["high_strength_count", "pct_high_strength"]:
+        if column in basic_latest.columns:
+            basic_latest = basic_latest.drop(columns=[column])
+
+    basic_latest = basic_latest.merge(
         strength_summary,
         on=["date", "basic_industry"],
         how="left",
@@ -115,16 +131,21 @@ def main() -> None:
         basic_latest["basic_industry_members"]
         .fillna(basic_latest["members"])
     )
-
     basic_latest["high_strength_count"] = (
-        basic_latest["high_strength_count"]
+        basic_latest["high_strength_count_snapshot"]
         .fillna(0)
         .astype(int)
     )
-
     basic_latest["pct_high_strength"] = (
-        basic_latest["pct_high_strength"]
+        basic_latest["pct_high_strength_snapshot"]
         .fillna(0.0)
+    )
+    basic_latest = basic_latest.drop(
+        columns=[
+            "high_strength_count_snapshot",
+            "pct_high_strength_snapshot",
+        ],
+        errors="ignore",
     )
 
     basic_latest["small_industry"] = (
@@ -171,12 +192,10 @@ def main() -> None:
         basic_latest,
         processed / "dashboard_basic_industry_latest.parquet",
     )
-
     write_parquet(
         industry_latest,
         processed / "dashboard_industry_latest.parquet",
     )
-
     write_parquet(
         watch,
         processed / "dashboard_stock_watchlist_latest.parquet",
@@ -184,7 +203,7 @@ def main() -> None:
 
     print("dashboard tables ready")
     print(
-        "Basic Industries with 70+ participation data: "
+        "Basic Industries with high-strength participation data: "
         f"{basic_latest['pct_high_strength'].notna().sum()}"
     )
 
