@@ -290,43 +290,114 @@ def format_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
         if column in data.columns:
             data[column] = data[column].apply(fmt_num)
     if "Trend Template" in data.columns:
-        data["Trend Template"] = data["Trend Template"].map(lambda value: "Pass" if bool(value) else "Fail")
+        data["Trend Template"] = data["Trend Template"].map(
+            lambda value: "Pass" if bool(value) else "Fail"
+        )
     for column in ["55-Day Breakout", "VCP Ready"]:
         if column in data.columns:
             data[column] = data[column].map(lambda value: "Yes" if bool(value) else "No")
     return data
 
 
-def group_chart(history: pd.DataFrame, group: str) -> None:
-    st.markdown("#### Industry trend — last 9 months")
-    data = history[history["basic_industry"] == group].copy()
-    if data.empty:
-        st.info("No history is available for this Basic Industry.")
+def setup_state(data: pd.DataFrame) -> tuple[str, str]:
+    if len(data) < 20 or "strength_score" not in data.columns:
+        return "Insufficient history", "At least 20 trading days are required."
+
+    latest = data.iloc[-1]
+    score = as_number(latest.get("strength_score"))
+    score_10 = as_number(latest.get("strength_ma_10"))
+    score_20 = as_number(latest.get("strength_ma_20"))
+    score_20d_ago = as_number(data.iloc[-min(20, len(data))].get("strength_score"))
+    ret_20d = as_number(latest.get("eq_ret_20d"))
+    breadth_50 = as_number(latest.get("pct_above_50"))
+
+    if score is None or score_10 is None or score_20 is None:
+        return "Insufficient history", "Strength averages are not available."
+
+    ret_positive = ret_20d is not None and ret_20d > 0
+    breadth_ok = breadth_50 is not None and (breadth_50 >= 0.5 or breadth_50 >= 50)
+    above_averages = score > score_10 and score > score_20
+    improving = score_10 > score_20
+    gained = score_20d_ago is not None and score > score_20d_ago
+    extension = score - score_20
+
+    if score >= 80 and extension >= 10:
+        return "Extended", "High strength and materially above its 20-day strength average."
+    if score >= 70 and above_averages and improving and ret_positive and breadth_ok:
+        return "Confirmed leadership", "Strong trend, positive return confirmation and broad participation."
+    if above_averages and improving and gained:
+        return "Emerging leadership", "Strength is rising above both averages after a recent improvement."
+    if score > score_10 and gained:
+        return "Early recovery", "Strength is improving, but the 10-day/20-day trend confirmation is incomplete."
+    if score < score_10 and score_10 < score_20:
+        return "Weakening", "Strength is below both its 10-day and 20-day averages."
+    return "Neutral transition", "No confirmed leadership or weakness pattern yet."
+
+
+def group_setup_chart(history: pd.DataFrame, group: str) -> None:
+    st.markdown("### Industry Setup Trend")
+    st.caption(
+        "Use this as a rotation and setup view: a rising score after a base is generally more useful "
+        "for VCP candidate selection than an already-extended industry."
+    )
+
+    data = history[history["basic_industry"] == group].copy().sort_values("date")
+    if data.empty or "strength_score" not in data.columns:
+        st.info("No strength history is available for this Basic Industry.")
         return
-    cutoff = data["date"].max() - pd.Timedelta(days=274)
-    data = data[data["date"] >= cutoff].sort_values("date")
-    options = {
-        "Equal-weighted strength score": "strength_score",
-        "Equal-weighted 20D return": "eq_ret_20d",
-        "Breadth above 50 DMA": "pct_above_50",
-        "Breadth above 200 DMA": "pct_above_200",
-    }
-    available = {label: column for label, column in options.items() if column in data.columns}
-    if not available:
-        st.info("No chart metric is available.")
-        return
-    selected = st.selectbox("Industry chart metric", list(available), key="industry_trend_metric")
-    values = data[["date", available[selected]]].set_index("date")
-    if available[selected] in {"pct_above_50", "pct_above_200"} and is_fraction_series(values.iloc[:, 0]):
-        values = values * 100.0
-    st.line_chart(values, height=330, use_container_width=True)
+
+    data["strength_score"] = pd.to_numeric(data["strength_score"], errors="coerce")
+    data["strength_ma_10"] = data["strength_score"].rolling(10, min_periods=5).mean()
+    data["strength_ma_20"] = data["strength_score"].rolling(20, min_periods=10).mean()
+
+    control_left, control_right = st.columns([1.1, 6.9])
+    with control_left:
+        period = st.selectbox("View", ["3 months", "6 months", "9 months"], index=1, key="setup_period")
+    months = {"3 months": 92, "6 months": 183, "9 months": 274}[period]
+
+    chart_data = data[data["date"] >= data["date"].max() - pd.Timedelta(days=months)].copy()
+    chart_data = chart_data.set_index("date")[["strength_score", "strength_ma_10", "strength_ma_20"]]
+    chart_data = chart_data.rename(columns={
+        "strength_score": "Strength Score",
+        "strength_ma_10": "10D Strength Average",
+        "strength_ma_20": "20D Strength Average",
+    })
+
+    state, explanation = setup_state(data)
+    latest = data.iloc[-1]
+
+    metrics = st.columns(5)
+    metrics[0].metric("Setup state", state)
+    metrics[1].metric("Current strength", fmt_num(latest.get("strength_score")))
+    metrics[2].metric("10D average", fmt_num(latest.get("strength_ma_10")))
+    metrics[3].metric("20D average", fmt_num(latest.get("strength_ma_20")))
+    if "eq_ret_20d" in data.columns:
+        fraction = is_fraction_series(data["eq_ret_20d"])
+        metrics[4].metric("Equal-weighted 20D return", fmt_pct(latest.get("eq_ret_20d"), fraction))
+    else:
+        metrics[4].metric("Equal-weighted 20D return", "—")
+
+    st.caption(explanation)
+    st.line_chart(chart_data, height=360, use_container_width=True)
+
+    summary = st.columns(3)
+    if "pct_above_50" in data.columns:
+        fraction = is_fraction_series(data["pct_above_50"])
+        summary[0].metric("Breadth above 50 DMA", fmt_pct(latest.get("pct_above_50"), fraction))
+    if "pct_above_200" in data.columns:
+        fraction = is_fraction_series(data["pct_above_200"])
+        summary[1].metric("Breadth above 200 DMA", fmt_pct(latest.get("pct_above_200"), fraction))
+    if "breakout_count" in data.columns:
+        summary[2].metric("Current breakouts", fmt_int(latest.get("breakout_count")))
 
 
 def stock_chart(history: pd.DataFrame, group: str, selected_stocks: pd.DataFrame) -> None:
-    st.markdown("#### Top-stock comparison — last 6 months")
+    st.markdown("### Top-Stock Comparison")
+    st.caption("Last 6 months. Default selection is the five highest-strength stocks in the selected Basic Industry.")
     top_symbols = (
         selected_stocks.sort_values("stock_strength_score", ascending=False)["symbol"].drop_duplicates().head(5).tolist()
-        if "stock_strength_score" in selected_stocks.columns else selected_stocks["symbol"].drop_duplicates().head(5).tolist()
+        if "stock_strength_score" in selected_stocks.columns
+        else selected_stocks["symbol"].drop_duplicates().head(5).tolist()
     )
     symbols = selected_stocks["symbol"].drop_duplicates().tolist()
     chosen = st.multiselect(
@@ -359,7 +430,7 @@ def stock_chart(history: pd.DataFrame, group: str, selected_stocks: pd.DataFrame
     chart = chart[chart.index >= cutoff]
     if available[selected] in {"ret_20d", "ret_60d"} and is_fraction_series(chart.stack()):
         chart = chart * 100.0
-    st.line_chart(chart, height=330, use_container_width=True)
+    st.line_chart(chart, height=360, use_container_width=True)
 
 
 def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame) -> None:
@@ -411,8 +482,11 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
             small_display = format_group_table(small_raw)
             st.dataframe(style_with_heatmap(small_raw, small_display), use_container_width=True, hide_index=True, height=260)
 
-    st.markdown("### Constituent stock strength")
+    st.markdown("### Selected Basic Industry")
     selected_group = st.selectbox("Basic Industry", raw_table["Basic Industry"].tolist(), key="basic_group_selector")
+
+    group_setup_chart(basic_history, selected_group)
+
     available_stock_dates = set(pd.to_datetime(stock_history["date"]).dt.normalize().unique())
     if selected_date not in available_stock_dates:
         st.info("Stock-level data is not available for this historical date.")
@@ -426,6 +500,7 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         st.info("No constituent stocks are available for this Basic Industry on the selected date.")
         return
 
+    st.markdown("### Constituent Stock Strength")
     raw_stocks = make_stock_table(stocks)
     display_stocks = format_stock_table(raw_stocks)
     st.dataframe(style_with_heatmap(raw_stocks, display_stocks), use_container_width=True, hide_index=True, height=410)
@@ -437,7 +512,6 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         key="download_stock_table",
     )
 
-    group_chart(basic_history, selected_group)
     stock_chart(stock_history, selected_group, stocks)
 
 
@@ -482,6 +556,10 @@ def methodology_view() -> None:
         """
         **Industry strength** is based on precomputed, equal-weighted constituent participation and return measures.
         This dashboard reads prepared EOD data and does not recalculate indicators in the browser.
+
+        **Industry Setup Trend** shows daily Strength Score together with its 10-day and 20-day averages.
+        It is intended to identify recovery, emerging leadership, confirmation, extension, and weakening phases.
+        It is a group-selection aid; individual VCP structure, pivot, volume and risk still determine trade entry.
 
         **Heatmap colour** is driven by the underlying Strength score: dark green is strongest; lighter green,
         amber, orange, and red represent progressively weaker scores.
