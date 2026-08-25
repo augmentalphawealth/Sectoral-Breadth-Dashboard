@@ -110,6 +110,35 @@ def style_with_heatmap(raw: pd.DataFrame, display: pd.DataFrame):
     return display.style.apply(lambda _: styles, axis=None)
 
 
+def style_metric_heatmap(raw: pd.DataFrame, display: pd.DataFrame, column: str):
+    styles = pd.DataFrame("", index=display.index, columns=display.columns)
+    if column in raw.columns and column in display.columns:
+        numeric = pd.to_numeric(raw[column], errors="coerce")
+        valid = numeric.dropna()
+        if not valid.empty:
+            low = valid.min()
+            high = valid.max()
+            spread = max(high - low, 1e-9)
+
+            def color(value: object) -> str:
+                number = as_number(value)
+                if number is None:
+                    return ""
+                ratio = (number - low) / spread
+                if ratio >= 0.8:
+                    return "background-color: #14532d; color: #ffffff; font-weight: 700;"
+                if ratio >= 0.6:
+                    return "background-color: #22c55e; color: #052e16; font-weight: 700;"
+                if ratio >= 0.4:
+                    return "background-color: #bbf7d0; color: #14532d; font-weight: 700;"
+                if ratio >= 0.2:
+                    return "background-color: #fef3c7; color: #78350f;"
+                return "background-color: #f8fafc; color: #475569;"
+
+            styles.loc[:, column] = numeric.map(color)
+    return display.style.apply(lambda _: styles, axis=None)
+
+
 @st.cache_data(show_spinner=False)
 def load_parquet(path: str) -> pd.DataFrame:
     frame = pd.read_parquet(path)
@@ -197,10 +226,10 @@ def section_header(title: str, dates: list[pd.Timestamp], key: str) -> pd.Timest
 
 def make_group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
     wanted = [
-        group_column, "regime", "members", "strength_score", "eq_ret_1d",
-        "eq_ret_5d", "eq_ret_20d", "eq_ret_60d", "pct_above_50",
-        "pct_above_200", "acc_minus_dist", "breakout_count", "vcp_ready_count",
-        "median_dist_52w_high",
+        group_column, "regime", "members", "strength_score", "pct_high_strength",
+        "eq_ret_1d", "eq_ret_5d", "eq_ret_20d", "eq_ret_60d", "pct_above_50",
+        "pct_above_200", "acc_minus_dist", "breakout_count", "breakout_pct",
+        "vcp_ready_count", "vcp_ready_pct", "median_dist_52w_high",
     ]
     data = frame[[column for column in wanted if column in frame.columns]].copy()
     data = data.rename(columns={
@@ -208,6 +237,7 @@ def make_group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
         "regime": "Regime",
         "members": "Constituent Stocks",
         "strength_score": "Strength",
+        "pct_high_strength": "Stocks With Strength ≥70",
         "eq_ret_1d": "1D Return",
         "eq_ret_5d": "5D Return",
         "eq_ret_20d": "20D Return",
@@ -216,7 +246,9 @@ def make_group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
         "pct_above_200": "Stocks Above 200 DMA",
         "acc_minus_dist": "Accumulation − Distribution",
         "breakout_count": "Breakouts",
+        "breakout_pct": "Breakout Participation",
         "vcp_ready_count": "VCP Ready",
+        "vcp_ready_pct": "VCP-Ready Participation",
         "median_dist_52w_high": "Distance from 52W High",
     })
     if "Strength" in data.columns:
@@ -258,8 +290,9 @@ def make_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
 def format_group_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
     for column in [
-        "1D Return", "5D Return", "20D Return", "60D Return",
-        "Stocks Above 50 DMA", "Stocks Above 200 DMA", "Distance from 52W High",
+        "Stocks With Strength ≥70", "1D Return", "5D Return", "20D Return", "60D Return",
+        "Stocks Above 50 DMA", "Stocks Above 200 DMA", "Breakout Participation",
+        "VCP-Ready Participation", "Distance from 52W High",
     ]:
         if column in data.columns:
             fraction = is_fraction_series(data[column])
@@ -350,22 +383,19 @@ def group_setup_chart(history: pd.DataFrame, group: str) -> None:
     data["strength_ma_10"] = data["strength_score"].rolling(10, min_periods=5).mean()
     data["strength_ma_20"] = data["strength_score"].rolling(20, min_periods=10).mean()
 
-    control_left, control_right = st.columns([1.1, 6.9])
+    control_left, _ = st.columns([1.1, 6.9])
     with control_left:
         period = st.selectbox("View", ["3 months", "6 months", "9 months"], index=1, key="setup_period")
-    months = {"3 months": 92, "6 months": 183, "9 months": 274}[period]
+    days = {"3 months": 92, "6 months": 183, "9 months": 274}[period]
 
-    chart_data = data[data["date"] >= data["date"].max() - pd.Timedelta(days=months)].copy()
-    chart_data = chart_data.set_index("date")[["strength_score", "strength_ma_10", "strength_ma_20"]]
-    chart_data = chart_data.rename(columns={
-        "strength_score": "Strength Score",
-        "strength_ma_10": "10D Strength Average",
-        "strength_ma_20": "20D Strength Average",
-    })
+    chart_data = data[data["date"] >= data["date"].max() - pd.Timedelta(days=days)].copy()
+    chart_data = chart_data.set_index("date")["strength_score"].to_frame()
+    chart_data["10D Strength Average"] = data.set_index("date")["strength_ma_10"]
+    chart_data["20D Strength Average"] = data.set_index("date")["strength_ma_20"]
+    chart_data = chart_data.rename(columns={"strength_score": "Strength Score"})
 
     state, explanation = setup_state(data)
     latest = data.iloc[-1]
-
     metrics = st.columns(5)
     metrics[0].metric("Setup state", state)
     metrics[1].metric("Current strength", fmt_num(latest.get("strength_score")))
@@ -380,15 +410,15 @@ def group_setup_chart(history: pd.DataFrame, group: str) -> None:
     st.caption(explanation)
     st.line_chart(chart_data, height=360, use_container_width=True)
 
-    summary = st.columns(3)
+    summary = st.columns(4)
     if "pct_above_50" in data.columns:
-        fraction = is_fraction_series(data["pct_above_50"])
-        summary[0].metric("Breadth above 50 DMA", fmt_pct(latest.get("pct_above_50"), fraction))
+        summary[0].metric("Breadth above 50 DMA", fmt_pct(latest.get("pct_above_50"), is_fraction_series(data["pct_above_50"])))
     if "pct_above_200" in data.columns:
-        fraction = is_fraction_series(data["pct_above_200"])
-        summary[1].metric("Breadth above 200 DMA", fmt_pct(latest.get("pct_above_200"), fraction))
+        summary[1].metric("Breadth above 200 DMA", fmt_pct(latest.get("pct_above_200"), is_fraction_series(data["pct_above_200"])))
+    if "pct_high_strength" in data.columns:
+        summary[2].metric("Stocks with strength ≥70", fmt_pct(latest.get("pct_high_strength"), is_fraction_series(data["pct_high_strength"])))
     if "breakout_count" in data.columns:
-        summary[2].metric("Current breakouts", fmt_int(latest.get("breakout_count")))
+        summary[3].metric("Current breakouts", fmt_int(latest.get("breakout_count")))
 
 
 def stock_chart(history: pd.DataFrame, group: str, selected_stocks: pd.DataFrame) -> None:
@@ -463,8 +493,7 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         st.warning("No Basic Industries match the selected filters.")
         return
 
-    display = format_group_table(raw_table)
-    st.dataframe(style_with_heatmap(raw_table, display), use_container_width=True, hide_index=True, height=410)
+    st.dataframe(style_with_heatmap(raw_table, format_group_table(raw_table)), use_container_width=True, hide_index=True, height=410)
     st.download_button(
         "Download Basic Industry table",
         raw_table.to_csv(index=False).encode("utf-8"),
@@ -479,12 +508,10 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     if not small.empty:
         with st.expander(f"Small Industries ({len(small)}) — fewer than {SMALL_GROUP_LIMIT} stocks", expanded=False):
             small_raw = make_group_table(small, "basic_industry")
-            small_display = format_group_table(small_raw)
-            st.dataframe(style_with_heatmap(small_raw, small_display), use_container_width=True, hide_index=True, height=260)
+            st.dataframe(style_with_heatmap(small_raw, format_group_table(small_raw)), use_container_width=True, hide_index=True, height=260)
 
     st.markdown("### Selected Basic Industry")
     selected_group = st.selectbox("Basic Industry", raw_table["Basic Industry"].tolist(), key="basic_group_selector")
-
     group_setup_chart(basic_history, selected_group)
 
     available_stock_dates = set(pd.to_datetime(stock_history["date"]).dt.normalize().unique())
@@ -502,8 +529,7 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
 
     st.markdown("### Constituent Stock Strength")
     raw_stocks = make_stock_table(stocks)
-    display_stocks = format_stock_table(raw_stocks)
-    st.dataframe(style_with_heatmap(raw_stocks, display_stocks), use_container_width=True, hide_index=True, height=410)
+    st.dataframe(style_with_heatmap(raw_stocks, format_stock_table(raw_stocks)), use_container_width=True, hide_index=True, height=410)
     st.download_button(
         "Download constituent stock table",
         raw_stocks.to_csv(index=False).encode("utf-8"),
@@ -515,39 +541,146 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     stock_chart(stock_history, selected_group, stocks)
 
 
-def industry_view(industry_history: pd.DataFrame) -> None:
-    selected_date = section_header("Industry Leadership", trading_dates(industry_history), "industry")
-    selected = industry_history[industry_history["date"] == selected_date].copy()
-    raw_table = make_group_table(selected, "industry")
-    if raw_table.empty:
-        st.warning("No Industry data is available for this date.")
+def compact_panel_table(raw: pd.DataFrame, columns: list[str], percent_columns: list[str] | None = None) -> pd.DataFrame:
+    display = raw[[column for column in columns if column in raw.columns]].copy()
+    percent_columns = percent_columns or []
+    for column in percent_columns:
+        if column in display.columns:
+            fraction = is_fraction_series(display[column])
+            display[column] = display[column].apply(lambda value: fmt_pct(value, fraction))
+    for column in ["Constituent Stocks", "Breakouts", "VCP Ready", "Buy Shock Stocks", "Sell Shock Stocks", "70+ Stocks"]:
+        if column in display.columns:
+            display[column] = display[column].apply(fmt_int)
+    if "Strength" in display.columns:
+        display["Strength"] = display["Strength"].apply(fmt_num)
+    return display
+
+
+def volume_shock_panels(basic: pd.DataFrame) -> None:
+    required = {"buy_volume_shock_pct", "sell_volume_shock_pct"}
+    if not required.issubset(basic.columns):
+        st.info("Volume shock data will appear after the next successful EOD rebuild.")
         return
-    display = format_group_table(raw_table)
-    st.dataframe(style_with_heatmap(raw_table, display), use_container_width=True, hide_index=True, height=470)
-    st.download_button(
-        "Download Industry table",
-        raw_table.to_csv(index=False).encode("utf-8"),
-        f"industry_{selected_date.strftime('%Y%m%d')}.csv",
-        "text/csv",
-        key="download_industry_table",
+
+    data = basic.copy()
+    if "members" in data.columns:
+        data = data[data["members"] >= SMALL_GROUP_LIMIT]
+    data = data.rename(columns={
+        "basic_industry": "Basic Industry",
+        "members": "Constituent Stocks",
+        "strength_score": "Strength",
+        "buy_volume_shock_count": "Buy Shock Stocks",
+        "sell_volume_shock_count": "Sell Shock Stocks",
+        "buy_volume_shock_pct": "Buy Volume Shock",
+        "sell_volume_shock_pct": "Sell Volume Shock",
+        "median_volume_shock": "Median Volume Shock",
+        "eq_ret_1d": "1D Return",
+    })
+
+    left, right = st.columns(2)
+    with left:
+        st.markdown("#### Buying Volume Shock Leaders")
+        top_buy = data.sort_values("Buy Volume Shock", ascending=False).head(5)
+        buy_display = compact_panel_table(
+            top_buy,
+            ["Basic Industry", "Buy Shock Stocks", "Buy Volume Shock", "Median Volume Shock", "1D Return", "Strength"],
+            ["Buy Volume Shock", "1D Return"],
+        )
+        st.dataframe(style_metric_heatmap(top_buy, buy_display, "Buy Volume Shock"), use_container_width=True, hide_index=True, height=230)
+    with right:
+        st.markdown("#### Selling Volume Shock Leaders")
+        top_sell = data.sort_values("Sell Volume Shock", ascending=False).head(5)
+        sell_display = compact_panel_table(
+            top_sell,
+            ["Basic Industry", "Sell Shock Stocks", "Sell Volume Shock", "Median Volume Shock", "1D Return", "Strength"],
+            ["Sell Volume Shock", "1D Return"],
+        )
+        st.dataframe(style_metric_heatmap(top_sell, sell_display, "Sell Volume Shock"), use_container_width=True, hide_index=True, height=230)
+
+
+def breakout_panel(basic: pd.DataFrame) -> None:
+    if "breakout_pct" not in basic.columns:
+        st.info("Breakout participation data will appear after the next successful EOD rebuild.")
+        return
+
+    data = basic.copy()
+    if "members" in data.columns:
+        data = data[data["members"] >= SMALL_GROUP_LIMIT]
+    data = data.rename(columns={
+        "basic_industry": "Basic Industry",
+        "members": "Constituent Stocks",
+        "strength_score": "Strength",
+        "breakout_count": "Breakouts",
+        "breakout_pct": "Breakout Participation",
+        "vcp_ready_count": "VCP Ready",
+        "vcp_ready_pct": "VCP-Ready Participation",
+        "eq_ret_20d": "20D Return",
+    })
+    top = data.sort_values(["Breakout Participation", "VCP-Ready Participation"], ascending=False).head(10)
+    display = compact_panel_table(
+        top,
+        ["Basic Industry", "Constituent Stocks", "Breakouts", "Breakout Participation", "VCP Ready", "VCP-Ready Participation", "20D Return", "Strength"],
+        ["Breakout Participation", "VCP-Ready Participation", "20D Return"],
     )
+    st.dataframe(style_metric_heatmap(top, display, "Breakout Participation"), use_container_width=True, hide_index=True, height=330)
 
 
-def overview_view(basic_history: pd.DataFrame, industry_history: pd.DataFrame) -> None:
+def high_strength_panel(stock_history: pd.DataFrame) -> None:
+    latest_date = stock_history["date"].max()
+    data = stock_history[stock_history["date"] == latest_date].copy()
+    if "stock_strength_score" not in data.columns:
+        st.info("High-strength stocks will appear after the next successful EOD rebuild.")
+        return
+
+    data["stock_strength_score"] = pd.to_numeric(data["stock_strength_score"], errors="coerce")
+    high = data[data["stock_strength_score"] >= 70].copy()
+    if high.empty:
+        st.info("No stocks currently meet the Strength ≥70 threshold.")
+        return
+
+    group_summary = (
+        high.groupby("basic_industry", dropna=False)
+        .agg(
+            **{
+                "70+ Stocks": ("symbol", "nunique"),
+                "Average Strength": ("stock_strength_score", "mean"),
+                "Symbols": ("symbol", lambda values: ", ".join(sorted(set(values))[:12])),
+            }
+        )
+        .reset_index()
+        .rename(columns={"basic_industry": "Basic Industry"})
+        .sort_values(["70+ Stocks", "Average Strength"], ascending=False)
+    )
+    group_summary["Average Strength"] = group_summary["Average Strength"].apply(fmt_num)
+    st.dataframe(group_summary, use_container_width=True, hide_index=True, height=380)
+
+
+def overview_view(basic_history: pd.DataFrame, industry_history: pd.DataFrame, stock_history: pd.DataFrame) -> None:
     st.subheader("Market Breadth Overview")
     latest = max(basic_history["date"].max(), industry_history["date"].max())
     basic = basic_history[basic_history["date"] == latest].copy()
     industry = industry_history[industry_history["date"] == latest].copy()
     regimes = basic["regime"].value_counts()
+
     metrics = st.columns(5)
     metrics[0].metric("Latest data", latest.strftime("%d %b %Y"))
     metrics[1].metric("Basic Industries", fmt_int(basic["basic_industry"].nunique()))
     metrics[2].metric("Industries", fmt_int(industry["industry"].nunique()))
     metrics[3].metric("Strong / Emerging", f"{regimes.get('Strong', 0)} / {regimes.get('Emerging', 0)}")
     metrics[4].metric("Weakening / Exhausted", f"{regimes.get('Weakening', 0)} / {regimes.get('Exhausted', 0)}")
-    st.markdown("#### Current Basic Industry leadership")
+
+    st.markdown("### Current Basic Industry Leadership")
     raw = make_group_table(basic, "basic_industry").head(15)
     st.dataframe(style_with_heatmap(raw, format_group_table(raw)), use_container_width=True, hide_index=True, height=440)
+
+    st.markdown("### Volume Shock Leaders")
+    volume_shock_panels(basic)
+
+    st.markdown("### Breakout Participation Leaders")
+    breakout_panel(basic)
+
+    st.markdown("### Stocks With Strength ≥70")
+    high_strength_panel(stock_history)
 
 
 def methodology_view() -> None:
@@ -561,11 +694,13 @@ def methodology_view() -> None:
         It is intended to identify recovery, emerging leadership, confirmation, extension, and weakening phases.
         It is a group-selection aid; individual VCP structure, pivot, volume and risk still determine trade entry.
 
+        **Volume shock** identifies stocks trading at least 1.5 times their 20-day average volume. Buying shock requires a positive daily return; selling shock requires a negative daily return.
+
+        **High-strength participation** measures the percentage of constituent stocks with Strength ≥70.
+        This supports identifying broad industry leadership rather than leadership driven by only one or two stocks.
+
         **Heatmap colour** is driven by the underlying Strength score: dark green is strongest; lighter green,
         amber, orange, and red represent progressively weaker scores.
-
-        **Strength percentile** is each stock's percentile rank inside its selected Basic Industry.
-        A reading of 100.00% identifies the highest-ranked stock in that group.
 
         **Stocks Above 50 DMA / 200 DMA** show industry-level participation above those moving averages.
         Small Industries with fewer than five constituents are separated to reduce ranking noise.
@@ -595,7 +730,7 @@ def main() -> None:
     with tabs[1]:
         industry_view(industry_history)
     with tabs[2]:
-        overview_view(basic_history, industry_history)
+        overview_view(basic_history, industry_history, stock_history)
     with tabs[3]:
         methodology_view()
 
