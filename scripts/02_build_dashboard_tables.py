@@ -14,9 +14,7 @@ def latest(df: pd.DataFrame) -> pd.DataFrame:
     return df[df["date"] == max_date].copy()
 
 
-def build_stock_strength_snapshot(
-    stock: pd.DataFrame,
-) -> pd.DataFrame:
+def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
     data = latest(stock).copy()
 
     required = [
@@ -59,13 +57,11 @@ def build_stock_strength_snapshot(
     ).astype(int)
 
     data["basic_industry_members"] = (
-        data.groupby(group_keys)["symbol"]
-        .transform("nunique")
+        data.groupby(group_keys)["symbol"].transform("nunique")
     )
 
     data["high_strength_count"] = (
-        data.groupby(group_keys)["high_strength_flag"]
-        .transform("sum")
+        data.groupby(group_keys)["high_strength_flag"].transform("sum")
     )
 
     data["pct_high_strength"] = (
@@ -158,4 +154,40 @@ def main() -> None:
         + watch["breakout_55"] * 20
         + watch["above_50"] * 10
         + watch["above_200"] * 10
-        + (watch["dist_52w_high"] > -0.10).astype(int) *
+        + (watch["dist_52w_high"] > -0.10).astype(int) * 5
+    )
+
+    watch = watch.sort_values(
+        [
+            "high_strength_flag",
+            "quality_rank",
+            "stock_strength_score",
+            "ret_20d",
+        ],
+        ascending=[False, False, False, False],
+    )
+
+    write_parquet(
+        basic_latest,
+        processed / "dashboard_basic_industry_latest.parquet",
+    )
+
+    write_parquet(
+        industry_latest,
+        processed / "dashboard_industry_latest.parquet",
+    )
+
+    write_parquet(
+        watch,
+        processed / "dashboard_stock_watchlist_latest.parquet",
+    )
+
+    print("dashboard tables ready")
+    print(
+        "Basic Industries with 70+ participation data: "
+        f"{basic_latest['pct_high_strength'].notna().sum()}"
+    )
+
+
+if __name__ == "__main__":
+    main()
