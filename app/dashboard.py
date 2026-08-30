@@ -679,11 +679,6 @@ def high_strength_panel(stock_history: pd.DataFrame) -> None:
 
 
 def intraday_sector_panel() -> None:
-    """
-    Intraday Sector Movers — Live during market hours
-    Shows top sectors by intraday strength with stock lists
-    """
-    # Check if within market hours (9:15 AM - 3:30 PM IST)
     IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     now_ist = datetime.datetime.now(IST)
     market_open = datetime.time(9, 15)
@@ -713,10 +708,8 @@ def intraday_sector_panel() -> None:
     st.markdown("### 🔴 Intraday Sector Movers — Live")
     st.caption(f"Last updated: {now_ist.strftime('%I:%M %p IST')} | Top sectors by intraday strength")
     
-    # Display top 10 sectors
     top_10 = intraday.head(10).copy()
     
-    # Format for display
     display = top_10.rename(columns={
         "sector_rank": "Rank",
         "basic_industry": "Basic Industry",
@@ -729,7 +722,6 @@ def intraday_sector_panel() -> None:
         "intraday_strength_score": "Strength Score",
     })
     
-    # Format numbers
     for col in ["Avg Return %", "Median Return %"]:
         if col in display.columns:
             display[col] = display[col].apply(lambda x: f"{x:.2f}%" if pd.notna(x) else "—")
@@ -748,7 +740,6 @@ def intraday_sector_panel() -> None:
     
     st.dataframe(display, use_container_width=True, hide_index=True, height=310)
     
-    # Show top stocks for selected sector
     if top_stocks_file.exists():
         try:
             top_stocks = pd.read_parquet(top_stocks_file)
@@ -790,11 +781,6 @@ def intraday_sector_panel() -> None:
 
 
 def top_improving_sectors_panel(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
-    """
-    Top Improving Sectors — Quick View
-    Shows top 4-5 sectors by 5-day percentage improvement in Strength,
-    plus a grouped bar chart of last 10 days for top 10 improvers.
-    """
     st.markdown("### Top Improving Sectors — Quick View")
     st.caption("Top Basic Industries by 5-day percentage Strength improvement, with 10-day trend visualization.")
 
@@ -916,18 +902,6 @@ def top_improving_sectors_panel(basic_history: pd.DataFrame, selected_date: pd.T
 
 
 def industry_opportunity_scan(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
-    """
-    Industry Opportunity Scan — Emerging Next-Leg Candidates
-
-    Filters for Basic Industries with:
-    - At least 5 constituent stocks
-    - Strength between 45 and 75
-    - Current score above both 10-day and 20-day averages
-    - 10-day average above 20-day average
-    - Positive equal-weighted 20-day return
-    - At least 50% of stocks above 50 DMA
-    - At least one breakout or VCP-ready stock
-    """
     st.markdown("### Industry Opportunity Scan — Emerging Next-Leg Candidates")
     st.caption(
         "Industries with improving strength structure, positive momentum, and participation. "
@@ -1133,8 +1107,7 @@ def main() -> None:
     missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]
     if missing:
         st.error("Required dashboard files are missing. Run the data workflow first.")
-        st.code("
-".join(missing))
+        st.code("\n".join(missing))
         st.stop()
 
     basic_history = ensure_group_columns(load_parquet(str(BASIC_HISTORY_FILE)), "basic_industry")
