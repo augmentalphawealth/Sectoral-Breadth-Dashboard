@@ -45,6 +45,8 @@ def main() -> None:
         "dist_day",
         "breakout_55",
         "vcp_ready",
+        "stock_strength_score",  # ✅ Now read from 01 (pre-computed)
+        "high_strength_flag",    # ✅ Now read from 01 (pre-computed)
     ]
 
     missing_columns = [
@@ -89,15 +91,8 @@ def main() -> None:
         keep="last",
     )
 
-    # Composite score used only for ranking stocks within their Basic Industry.
-    df["stock_strength_score"] = (
-        df["ret_20d"].rank(pct=True) * 35
-        + df["ret_60d"].rank(pct=True) * 35
-        + df["above_50"] * 15
-        + df["above_200"] * 10
-        + df["breakout_55"] * 3
-        + df["vcp_ready"] * 2
-    )
+    # ✅ NO RECOMPUTATION - Use stock_strength_score from 01_build_group_features.py
+    # This ensures consistency across all dashboard tabs
 
     group_keys = ["date", "basic_industry"]
 
@@ -113,9 +108,8 @@ def main() -> None:
         * 100
     )
 
-    df["high_strength_flag"] = (
-        df["stock_strength_score"] >= HIGH_STRENGTH_THRESHOLD
-    ).astype(int)
+    # ✅ Use high_strength_flag from 01 (pre-computed with within-day ranking)
+    df["high_strength_flag"] = df["high_strength_flag"].astype(int)
 
     df["basic_industry_members"] = (
         df.groupby(group_keys)["symbol"].transform("nunique")
