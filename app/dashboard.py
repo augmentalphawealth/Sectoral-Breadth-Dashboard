@@ -162,7 +162,7 @@ def ensure_group_columns(frame: pd.DataFrame, group_column: str) -> pd.DataFrame
     if "regime" not in data.columns:
         data["regime"] = "Unclassified"
     data[group_column] = data[group_column].map(clean_text)
-    data["regime"] = data["regime"].map(clean_text)
+    data["regime"] = data["regime].map(clean_text)
     return data
 
 
@@ -675,6 +675,266 @@ def high_strength_panel(stock_history: pd.DataFrame) -> None:
     st.dataframe(group_summary, use_container_width=True, hide_index=True, height=380)
 
 
+def top_improving_sectors_panel(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
+    """
+    Top Improving Sectors — Quick View
+    Shows top 4-5 sectors by 5-day percentage improvement in Strength,
+    plus a grouped bar chart of last 10 days for top 10 improvers.
+    """
+    st.markdown("### Top Improving Sectors — Quick View")
+    st.caption("Top Basic Industries by 5-day percentage Strength improvement, with 10-day trend visualization.")
+
+    data = basic_history.copy()
+    if "date" not in data.columns or "basic_industry" not in data.columns or "strength_score" not in data.columns:
+        st.info("Top Improving Sectors requires date, basic_industry, and strength_score columns.")
+        return
+
+    data["strength_score"] = pd.to_numeric(data["strength_score"], errors="coerce")
+    data = data[data["date"] <= selected_date].copy()
+
+    latest = data[data["date"] == selected_date].copy()
+    if latest.empty:
+        st.info("No data available for the selected date.")
+        return
+
+    five_days_ago = selected_date - pd.Timedelta(days=7)
+    valid_dates = sorted(data["date"].unique())
+    closest_5d = [d for d in valid_dates if d <= five_days_ago]
+    date_5d_ago = closest_5d[-1] if closest_5d else selected_date - pd.Timedelta(days=5)
+
+    history_5d = data[data["date"] == date_5d_ago][["basic_industry", "strength_score"]].copy()
+    history_5d = history_5d.rename(columns={"strength_score": "strength_5d_ago"})
+
+    comparison = latest.merge(history_5d, on="basic_industry", how="left")
+    comparison["strength_5d_ago"] = pd.to_numeric(comparison["strength_5d_ago"], errors="coerce")
+
+    comparison["pct_change_5d"] = (
+        (comparison["strength_score"] - comparison["strength_5d_ago"])
+        / comparison["strength_5d_ago"].replace(0, pd.NA)
+        * 100
+    )
+
+    ten_days_ago = selected_date - pd.Timedelta(days=14)
+    valid_dates = sorted(data["date"].unique())
+    start_10d = [d for d in valid_dates if d >= ten_days_ago and d <= selected_date]
+    if len(start_10d) >= 10:
+        start_10d = sorted(start_10d)[-10:]
+    else:
+        start_10d = valid_dates[-min(10, len(valid_dates)):]
+
+    chart_data = data[data["date"].isin(start_10d)].copy()
+
+    top_by_pct = comparison.dropna(subset=["pct_change_5d"]).sort_values("pct_change_5d", ascending=False)
+    top_10_symbols = top_by_pct["basic_industry"].head(10).tolist()
+    top_5_symbols = top_by_pct["basic_industry"].head(5).tolist()
+
+    if not top_10_symbols:
+        st.info("No sectors have comparable 5-day data for improvement calculation.")
+        return
+
+    chart_pivot = chart_data[chart_data["basic_industry"].isin(top_10_symbols)].pivot(
+        index="date", columns="basic_industry", values="strength_score"
+    )
+    chart_pivot = chart_pivot.sort_index()
+
+    display = comparison[comparison["basic_industry"].isin(top_5_symbols)].copy()
+    display = display.rename(columns={
+        "basic_industry": "Basic Industry",
+        "strength_score": "Current Strength",
+        "pct_change_5d": "5D % Change",
+        "members": "Constituent Stocks",
+    })
+
+    if "strength_ma_10" in comparison.columns and "strength_ma_20" in comparison.columns:
+        display["10D % Change"] = display.apply(
+            lambda row: fmt_num(
+                ((row.get("Current Strength", 0) - row.get("strength_ma_10", row.get("Current Strength", 0)))
+                 / row.get("strength_ma_10", 1)) * 100
+            ),
+            axis=1
+        )
+    else:
+        display["10D % Change"] = "—"
+
+    if "regime" in comparison.columns:
+        display["Setup State"] = comparison["regime"]
+
+    if "eq_ret_20d" in comparison.columns:
+        latest_full = latest[latest["basic_industry"].isin(top_5_symbols)][["basic_industry", "eq_ret_20d"]].copy()
+        display = display.merge(
+            latest_full.rename(columns={"basic_industry": "Basic Industry", "eq_ret_20d": "20D Return"}),
+            on="Basic Industry",
+            how="left"
+        )
+    else:
+        display["20D Return"] = "—"
+
+    display["Constituent Stocks"] = comparison[comparison["basic_industry"].isin(top_5_symbols)]["members"].values
+
+    display = display.sort_values("5D % Change", ascending=False).reset_index(drop=True)
+    display.insert(0, "Rank", range(1, len(display) + 1))
+
+    for column in ["5D % Change", "20D Return"]:
+        if column in display.columns:
+            display[column] = display[column].apply(lambda v: fmt_pct(v / 100.0 if pd.notnull(v) and abs(v) > 1 else v, False) if v != "—" else "—")
+
+    for column in ["Current Strength"]:
+        if column in display.columns:
+            display[column] = display[column].apply(fmt_num)
+
+    for column in ["Constituent Stocks"]:
+        if column in display.columns:
+            display[column] = display[column].apply(fmt_int)
+
+    st.dataframe(display, use_container_width=True, hide_index=True, height=230)
+
+    if not chart_pivot.empty and len(chart_pivot.columns) > 0:
+        st.bar_chart(chart_pivot, height=360, use_container_width=True)
+        st.caption("Grouped bars show last 10 trading days of Strength for top 10 improving sectors.")
+
+    st.download_button(
+        "Download Top Improving Sectors",
+        display.to_csv(index=False).encode("utf-8"),
+        f"top_improving_sectors_{selected_date.strftime('%Y%m%d')}.csv",
+        "text/csv",
+        key="download_top_improving",
+    )
+
+
+def industry_opportunity_scan(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
+    """
+    Industry Opportunity Scan — Emerging Next-Leg Candidates
+
+    Filters for Basic Industries with:
+    - At least 5 constituent stocks
+    - Strength between 45 and 75
+    - Current score above both 10-day and 20-day averages
+    - 10-day average above 20-day average
+    - Positive equal-weighted 20-day return
+    - At least 50% of stocks above 50 DMA
+    - At least one breakout or VCP-ready stock
+    """
+    st.markdown("### Industry Opportunity Scan — Emerging Next-Leg Candidates")
+    st.caption(
+        "Industries with improving strength structure, positive momentum, and participation. "
+        "This scan targets emerging leadership, not already-extended groups."
+    )
+
+    data = basic_history.copy()
+    if "date" not in data.columns or "basic_industry" not in data.columns:
+        st.info("Industry opportunity scan requires date and basic_industry columns.")
+        return
+
+    data = data[data["date"] <= selected_date].copy()
+    latest = data[data["date"] == selected_date].copy()
+
+    if "members" not in latest.columns or "strength_score" not in latest.columns:
+        st.info("Required columns for opportunity scan are not available.")
+        return
+
+    required_for_averages = {"strength_score", "date", "basic_industry"}
+    if not required_for_averages.issubset(data.columns):
+        st.info("Strength history is incomplete for calculating averages.")
+        return
+
+    data["strength_score"] = pd.to_numeric(data["strength_score"], errors="coerce")
+
+    averages = (
+        data.groupby("basic_industry")
+        .apply(
+            lambda group: pd.Series({
+                "strength_ma_10": group["strength_score"].rolling(10, min_periods=5).mean().iloc[-1] if len(group) >= 5 else None,
+                "strength_ma_20": group["strength_score"].rolling(20, min_periods=10).mean().iloc[-1] if len(group) >= 10 else None,
+            })
+        )
+        .reset_index()
+    )
+
+    latest = latest.merge(averages, on="basic_industry", how="left")
+
+    candidates = latest.copy()
+    candidates = candidates[candidates["members"] >= SMALL_GROUP_LIMIT]
+    candidates = candidates[candidates["strength_score"].between(45, 75)]
+    candidates = candidates[candidates["strength_score"] > candidates["strength_ma_10"]]
+    candidates = candidates[candidates["strength_score"] > candidates["strength_ma_20"]]
+    candidates = candidates[candidates["strength_ma_10"] > candidates["strength_ma_20"]]
+
+    if "eq_ret_20d" in candidates.columns:
+        candidates = candidates[candidates["eq_ret_20d"] > 0]
+
+    if "pct_above_50" in candidates.columns:
+        candidates = candidates[candidates["pct_above_50"] >= 0.5]
+
+    breakout_or_vcp = False
+    if "breakout_count" in candidates.columns:
+        breakout_or_vcp = True
+        candidates = candidates[candidates["breakout_count"] >= 1]
+    if "vcp_ready_count" in candidates.columns:
+        breakout_or_vcp = True
+        candidates = candidates[candidates["vcp_ready_count"] >= 1]
+
+    if not breakout_or_vcp:
+        st.info("Breakout or VCP-ready data is not available for filtering.")
+        return
+
+    if candidates.empty:
+        st.info("No industries currently match the opportunity scan criteria.")
+        return
+
+    candidates["emerging_score"] = (
+        (candidates["strength_score"] - candidates["strength_ma_20"])
+        + (candidates["strength_ma_10"] - candidates["strength_ma_20"]).fillna(0)
+        + candidates["eq_ret_20d"].clip(upper=0.1).fillna(0) * 100
+    )
+
+    display_columns = [
+        "basic_industry", "strength_score", "strength_ma_10", "strength_ma_20",
+        "eq_ret_20d", "pct_above_50", "pct_high_strength",
+        "breakout_count", "vcp_ready_count", "members", "emerging_score",
+    ]
+
+    display = candidates[[col for col in display_columns if col in candidates.columns]].copy()
+    display = display.rename(columns={
+        "basic_industry": "Basic Industry",
+        "strength_score": "Strength",
+        "strength_ma_10": "10D Strength Average",
+        "strength_ma_20": "20D Strength Average",
+        "eq_ret_20d": "20D Return",
+        "pct_above_50": "Above 50 DMA",
+        "pct_high_strength": "Stocks scoring 70+",
+        "breakout_count": "Breakouts",
+        "vcp_ready_count": "VCP Ready",
+        "members": "Constituent Stocks",
+        "emerging_score": "Emerging Score",
+    })
+
+    display = display.sort_values("Emerging Score", ascending=False).reset_index(drop=True)
+    display.insert(0, "Rank", range(1, len(display) + 1))
+
+    for column in ["Above 50 DMA", "Stocks scoring 70+", "20D Return"]:
+        if column in display.columns:
+            fraction = is_fraction_series(display[column])
+            display[column] = display[column].apply(lambda value: fmt_pct(value, fraction))
+
+    for column in ["Constituent Stocks", "Breakouts", "VCP Ready"]:
+        if column in display.columns:
+            display[column] = display[column].apply(fmt_int)
+
+    for column in ["Strength", "10D Strength Average", "20D Strength Average", "Emerging Score"]:
+        if column in display.columns:
+            display[column] = display[column].apply(fmt_num)
+
+    st.dataframe(display, use_container_width=True, hide_index=True, height=380)
+
+    st.download_button(
+        "Download Opportunity Scan",
+        display.to_csv(index=False).encode("utf-8"),
+        f"opportunity_scan_{selected_date.strftime('%Y%m%d')}.csv",
+        "text/csv",
+        key="download_opportunity_scan",
+    )
+
+
 def overview_view(basic_history: pd.DataFrame, industry_history: pd.DataFrame, stock_history: pd.DataFrame) -> None:
     st.subheader("Market Breadth Overview")
     latest = max(basic_history["date"].max(), industry_history["date"].max())
@@ -688,6 +948,12 @@ def overview_view(basic_history: pd.DataFrame, industry_history: pd.DataFrame, s
     metrics[2].metric("Industries", fmt_int(industry["industry"].nunique()))
     metrics[3].metric("Strong / Emerging", f"{regimes.get('Strong', 0)} / {regimes.get('Emerging', 0)}")
     metrics[4].metric("Weakening / Exhausted", f"{regimes.get('Weakening', 0)} / {regimes.get('Exhausted', 0)}")
+
+    st.markdown("### Top Improving Sectors")
+    top_improving_sectors_panel(basic_history, latest)
+
+    st.markdown("### Industry Opportunity Scan")
+    industry_opportunity_scan(basic_history, latest)
 
     st.markdown("### Current Basic Industry Leadership")
     raw = make_group_table(basic, "basic_industry").head(15)
@@ -724,6 +990,23 @@ def methodology_view() -> None:
 
         **Stocks Above 50 DMA / 200 DMA** show industry-level participation above those moving averages.
         Small Industries with fewer than five constituents are separated to reduce ranking noise.
+
+        **Top Improving Sectors** identifies the 4–5 Basic Industries with the largest 5-day percentage improvement in Strength,
+        and visualizes the last 10 days of Strength evolution for the top 10 improvers.
+
+        **Industry Opportunity Scan** identifies emerging next-leg candidates by filtering for:
+        - Strength between 45–75 (not already extended)
+        - Current score above both 10-day and 20-day averages
+        - 10-day average above 20-day average (improving trend)
+        - Positive 20-day equal-weighted return
+        - At least 50% breadth above 50 DMA
+        - At least one breakout or VCP-ready stock
+        - Minimum five constituent stocks
+
+        Industries are ranked by an **Emerging Score** that weights acceleration above raw level:
+        ```
+        Emerging Score = (Current − 20D Avg) + (10D Avg − 20D Avg) + min(20D Return × 100, 10)
+        ```
         """
     )
 
