@@ -144,9 +144,10 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         DEFAULT_HIGH_STRENGTH_THRESHOLD,
     )
 
+    # FIX: Rank within each trading date, not across entire history
     data["stock_strength_score"] = (
-        data["ret_20d"].rank(pct=True) * 35
-        + data["ret_60d"].rank(pct=True) * 35
+        data.groupby("date")["ret_20d"].rank(pct=True) * 35
+        + data.groupby("date")["ret_60d"].rank(pct=True) * 35
         + data["above_50"] * 15
         + data["above_200"] * 10
         + data["breakout_55"] * 3
@@ -239,9 +240,10 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             f"{missing_weights}"
         )
 
+    # FIX: All rankings now within each trading date
     data["trend_score"] = (
-        (data["eq_ret_20d"].rank(pct=True) * 40)
-        + (data["eq_ret_60d"].rank(pct=True) * 40)
+        (data.groupby("date")["eq_ret_20d"].rank(pct=True) * 40)
+        + (data.groupby("date")["eq_ret_60d"].rank(pct=True) * 40)
         + ((data["pct_above_50"] / 100) * 20)
     ) / 100 * w["trend"]
 
@@ -251,7 +253,7 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     ) * w["breadth"]
 
     data["rs_score"] = (
-        (data["eq_ret_20d"].rank(pct=True) + data["eq_ret_60d"].rank(pct=True))
+        (data.groupby("date")["eq_ret_20d"].rank(pct=True) + data.groupby("date")["eq_ret_60d"].rank(pct=True))
         / 2
     ) * w["rs"]
 
@@ -260,11 +262,11 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     ) * w["high_strength"]
 
     data["volume_score"] = (
-        0.70 * data["acc_minus_dist"].rank(pct=True)
+        0.70 * data.groupby("date")["acc_minus_dist"].rank(pct=True)
         + 0.30 * (
-            data["buy_volume_shock_pct"]
-            - data["sell_volume_shock_pct"]
-        ).rank(pct=True)
+            data.groupby("date")["buy_volume_shock_pct"].rank(pct=True)
+            - data.groupby("date")["sell_volume_shock_pct"].rank(pct=True)
+        )
     ) * w["volume"]
 
     data["breakout_score"] = (
