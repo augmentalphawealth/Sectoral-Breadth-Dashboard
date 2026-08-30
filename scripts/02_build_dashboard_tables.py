@@ -27,6 +27,8 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
         "above_200",
         "breakout_55",
         "vcp_ready",
+        "stock_strength_score",  # ✅ Now required from 01 (pre-computed)
+        "high_strength_flag",    # ✅ Now required from 01 (pre-computed)
     ]
     missing = [column for column in required if column not in data.columns]
     if missing:
@@ -35,16 +37,7 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
             f"{missing}"
         )
 
-    if "stock_strength_score" not in data.columns:
-        data["stock_strength_score"] = (
-            data["ret_20d"].rank(pct=True) * 35
-            + data["ret_60d"].rank(pct=True) * 35
-            + data["above_50"] * 15
-            + data["above_200"] * 10
-            + data["breakout_55"] * 3
-            + data["vcp_ready"] * 2
-        )
-
+    # ✅ NO RECOMPUTATION - Use pre-computed scores from 01_build_group_features.py
     data["stock_strength_score"] = pd.to_numeric(
         data["stock_strength_score"],
         errors="coerce",
@@ -52,15 +45,11 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
 
     group_keys = ["date", "basic_industry"]
 
-    if "high_strength_flag" not in data.columns:
-        data["high_strength_flag"] = (
-            data["stock_strength_score"] >= HIGH_STRENGTH_THRESHOLD
-        ).astype(int)
-    else:
-        data["high_strength_flag"] = pd.to_numeric(
-            data["high_strength_flag"],
-            errors="coerce",
-        ).fillna(0).astype(int)
+    # ✅ Use pre-computed high_strength_flag from 01
+    data["high_strength_flag"] = pd.to_numeric(
+        data["high_strength_flag"],
+        errors="coerce",
+    ).fillna(0).astype(int)
 
     data["basic_industry_members"] = (
         data.groupby(group_keys)["symbol"].transform("nunique")
