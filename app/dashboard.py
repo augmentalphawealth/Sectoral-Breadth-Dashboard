@@ -162,7 +162,7 @@ def ensure_group_columns(frame: pd.DataFrame, group_column: str) -> pd.DataFrame
     if "regime" not in data.columns:
         data["regime"] = "Unclassified"
     data[group_column] = data[group_column].map(clean_text)
-    data["regime"] = data["regime].map(clean_text)
+    data["regime"] = data["regime"].map(clean_text)
     return data
 
 
