@@ -1,0 +1,138 @@
+name: intraday-sector-movers
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every 30 minutes from 9:30 AM to 3:30 PM IST
+    # IST = UTC+5:30, so 9:30 AM IST = 4:00 AM UTC, 3:30 PM IST = 10:00 AM UTC
+    - cron: '0,30 4,5,6,7,8,9,10 * * 1-5'
+
+jobs:
+  check-nse-trading:
+    runs-on: ubuntu-latest
+    outputs:
+      is_trading_day: ${{ steps.check.outputs.is_trading_day }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas
+      
+      - name: Check if NSE is trading (via NIFTY futures)
+        id: check
+        run: |
+          python << 'EOF'
+          import requests
+          import pandas as pd
+          from datetime import datetime, time
+          
+          # Get current IST time
+          IST = pd.Timestamp.now().tz_localize('UTC').tz_convert('Asia/Kolkata')
+          current_time = IST.time()
+          
+          # Check if within market hours (9:15 AM - 3:30 PM IST)
+          market_open = time(9, 15)
+          market_close = time(15, 30)
+          
+          if not (market_open <= current_time <= market_close):
+              print(f"⏰ Outside market hours ({current_time})")
+              with open("is_trading.txt", "w") as f:
+                  f.write("false")
+              exit(0)
+          
+          # Try to fetch NIFTY price from NSE API
+          try:
+              headers = {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                  "Accept": "application/json",
+              }
+              response = requests.get(
+                  "https://www.nseindia.com/api/marketStatus",
+                  headers=headers,
+                  timeout=10,
+              )
+              
+              if response.status_code == 200:
+                  data = response.json()
+                  # Check if market is open
+                  market_status = data.get('marketStatus', 'CLOSE')
+                  if market_status == 'Open':
+                      print(f"✅ NSE is OPEN (status: {market_status})")
+                      with open("is_trading.txt", "w") as f:
+                          f.write("true")
+                  else:
+                      print(f"❌ NSE is CLOSED (status: {market_status})")
+                      with open("is_trading.txt", "w") as f:
+                          f.write("false")
+              else:
+                  print(f"⚠️ Could not fetch NSE status (HTTP {response.status_code})")
+                  with open("is_trading.txt", "w") as f:
+                      f.write("false")
+          except Exception as e:
+              print(f"⚠️ Error checking NSE status: {e}")
+              with open("is_trading.txt", "w") as f:
+                  f.write("false")
+          EOF
+      
+      - name: Upload trading check result
+        uses: actions/upload-artifact@v4
+        with:
+          name: trading-check
+          path: is_trading.txt
+  
+  build-intraday-sector-panel:
+    needs: check-nse-trading
+    runs-on: ubuntu-latest
+    if: needs.check-nse-trading.outputs.is_trading_day == 'true'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Clone Situational-Awareness for intraday data
+        run: |
+          git clone https://github.com/augmentalphawealth/Situational-Awareness.git ../Situational-Awareness
+      
+      - name: Check if intraday data exists
+        run: |
+          if [ ! -f "../Situational-Awareness/dashboard_data.parquet" ]; then
+            echo "❌ Intraday data not found. Situational-Awareness workflow may not have run yet."
+            exit 1
+          fi
+          echo "✅ Intraday data found"
+      
+      - name: Run intraday sector panel build
+        run: |
+          python scripts/14_build_intraday_sector_panel.py
+      
+      - name: Commit and push intraday outputs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update intraday sector movers'
+          file_pattern: 'data/processed/intraday_*.parquet'
+          push_options: '--force'
+  
+  skip-not-trading:
+    needs: check-nse-trading
+    runs-on: ubuntu-latest
+    if: needs.check-nse-trading.outputs.is_trading_day != 'true'
+    
+    steps:
+      - name: Skip - not a trading day
+        run: |
+          echo "⏭️ Skipping intraday sector panel - NSE is not trading today"
