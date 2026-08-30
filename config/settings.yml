@@ -6,22 +6,18 @@ paths:
   processed_dir: data/processed
 
 universe:
-  min_adv_rupees: 100000000
-  min_mcap_rupees: 10000000000
+  # Kept for future use (not currently wired up)
   use_series:
     - EQ
     - BE
     - BZ
 
 analysis:
-  market_benchmark_symbol: NIFTY500
-  rs_windows: [20, 60]
+  # Removed unused: market_benchmark_symbol, rs_windows, high_lookback, exhaustion_extension_threshold
   return_windows: [5, 10, 20, 60]
   breakout_lookback: 55
-  high_lookback: 252
   accumulation_volume_multiplier: 1.2
   distribution_volume_multiplier: 1.2
-  exhaustion_extension_threshold: 0.15
   pivot_proximity_threshold: 0.05
   vcp_range_contraction_threshold: 0.08
   vcp_volume_dryup_threshold: 0.65
@@ -30,10 +26,15 @@ analysis:
   small_industry_limit: 5
 
 scoring:
-  trend: 20
-  breadth: 15
-  rs: 15
-  high_strength: 20
-  volume: 10
-  breakout: 15
-  penalty: 5
+  # FIX Issue #5: Rebalanced weights (reduce correlated, increase uncorrelated)
+  trend: 15          # ↓ from 20 (was over-weighted, highly correlated)
+  breadth: 10        # ↓ from 15 (redundant with trend)
+  rs: 10             # ↓ from 15 (not true RS, just peer rank)
+  high_strength: 15  # ↓ from 20 (redundant with trend)
+  volume: 20         # ↑ from 10 (uncorrelated signal - adds diversification)
+  breakout: 25       # ↑ from 15 (uncorrelated signal - adds diversification)
+  penalty: 5         # unchanged
+  
+  # Total: 100 points
+  # Before: 70% correlated (trend+breadth+rs+high_strength), 25% uncorrelated (volume+breakout)
+  # After:  50% correlated, 45% uncorrelated (better diversification)
