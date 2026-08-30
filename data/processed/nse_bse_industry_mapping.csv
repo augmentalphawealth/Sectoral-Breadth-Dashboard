@@ -2102,7 +2102,7 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2101,SOLARA,Solara Active Pharma Sciences Limited,EQ,INE624Z01016,541540,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
 2102,SOLARINDS,Solar Industries India Limited,EQ,INE343H01029,532725,Commodities,Explosives,Chemicals,Chemicals & Petrochemicals,Explosives,CLASSIFIED
 2103,SOLARWORLD,Solarworld Energy Solutions Limited,EQ,INE0TY101024,544532,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
-2104,SOLEX,Solex Energy Limited,EQ,INE880Y01017,,,,,,,NOT_FOUND
+2104,SOLEX,Solex Energy Limited,EQ,INE880Y01017,544862,Industrials,Other Electrical Equipment,Capital Goods,Electrical Equipment,Other Electrical Equipment,CLASSIFIED
 2105,SOMANYCERA,Somany Ceramics Limited,EQ,INE355A01028,531548,Consumer Discretionary,Ceramics,Consumer Durables,Consumer Durables,Ceramics,CLASSIFIED
 2106,SOMATEX,Soma Textiles & Industries Limited,EQ,INE314C01013,521034,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
 2107,SOMICONVEY,Somi Conveyor Beltings Limited,EQ,INE323J01019,533001,Industrials,Industrial Products,Capital Goods,Industrial Manufacturing,Industrial Products,CLASSIFIED
@@ -2124,7 +2124,7 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2123,SPIC,Southern Petrochemicals Industries Corporation  Limited,EQ,INE147A01011,590030,Commodities,Fertilizers,Chemicals,Fertilizers & Agrochemicals,Fertilizers,CLASSIFIED
 2124,SPLIL,SPL Industries Limited,EQ,INE978G01016,532651,Consumer Discretionary,Trading - Textile Products,Textiles,Textiles & Apparels,Trading - Textile Products,CLASSIFIED
 2125,SPLPETRO,Supreme Petrochem Limited,EQ,INE663A01033,500405,Commodities,Petrochemicals,Chemicals,Chemicals & Petrochemicals,Petrochemicals,CLASSIFIED
-2126,SPMLINFRA,SPML Infra Limited,EQ,INE937A01023,,,,,,,NOT_FOUND
+2126,SPMLINFRA,SPML Infra Limited,EQ,INE937A01023,500402,Industrials,Civil Construction,Construction,Construction,Civil Construction,CLASSIFIED
 2127,SPORTKING,Sportking India Limited,EQ,INE885H01029,539221,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
 2128,SRD,Shankar Lal Rampal Dye-Chem Limited,EQ,INE01NE01012,542232,Commodities,Trading - Chemicals,Chemicals,Chemicals & Petrochemicals,Trading - Chemicals,CLASSIFIED
 2129,SREEL,Sreeleathers Limited,EQ,INE099F01013,535601,Consumer Discretionary,Footwear,Consumer Durables,Consumer Durables,Footwear,CLASSIFIED
@@ -2136,7 +2136,7 @@ row_number,symbol,company_name,series,isin,bse_code,bse_sector,bse_industry,bse_
 2135,SRTL,Shree Ram Twistex Limited,EQ,INE19GK01015,544716,Consumer Discretionary,Other Textile Products,Textiles,Textiles & Apparels,Other Textile Products,CLASSIFIED
 2136,SSDL,Saraswati Saree Depot Limited,EQ,INE0PQ101010,544230,Consumer Discretionary,Garments & Apparels,Textiles,Textiles & Apparels,Garments & Apparels,CLASSIFIED
 2137,SSWL,Steel Strips Wheels Limited,EQ,INE802C01033,513262,Consumer Discretionary,Auto Components & Equipments,Automobile and Auto Components,Auto Components,Auto Components & Equipments,CLASSIFIED
-2138,STALLION,Stallion India Fluorochemicals Limited,BE,INE0RYC01010,,,,,,,NOT_FOUND
+2138,STALLION,Stallion India Fluorochemicals Limited,BE,INE0RYC01010,544342,Commodities,Industrial Gases,Chemicals,Chemicals & Petrochemicals,Industrial Gases,CLASSIFIED
 2139,STANLEY,Stanley Lifestyles Limited,EQ,INE01A001028,544202,Consumer Discretionary,"Furniture, Home Furnishing",Consumer Durables,Consumer Durables,"Furniture, Home Furnishing",CLASSIFIED
 2140,STAR,Strides Pharma Science Limited,EQ,INE939A01011,532531,Healthcare,Pharmaceuticals,Healthcare,Pharmaceuticals & Biotechnology,Pharmaceuticals,CLASSIFIED
 2141,STARCEMENT,Star Cement Limited,EQ,INE460H01021,540575,Commodities,Cement & Cement Products,Construction Materials,Cement & Cement Products,Cement & Cement Products,CLASSIFIED
