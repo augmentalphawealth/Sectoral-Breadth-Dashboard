@@ -1,9 +1,9 @@
 {
   "industry": {
-    "rows": 123028,
+    "rows": 123088,
     "groups": 60,
     "start_date": "2018-04-02",
-    "latest_date": "2026-08-28",
+    "latest_date": "2026-08-31",
     "file": "dashboard_industry_history.parquet",
     "columns": [
       "industry",
@@ -39,10 +39,10 @@
     ]
   },
   "basic_industry": {
-    "rows": 359762,
-    "groups": 187,
+    "rows": 359950,
+    "groups": 188,
     "start_date": "2018-04-02",
-    "latest_date": "2026-08-28",
+    "latest_date": "2026-08-31",
     "file": "dashboard_basic_industry_history.parquet",
     "columns": [
       "basic_industry",
@@ -77,5 +77,5 @@
       "median_dist_52w_high"
     ]
   },
-  "generated_at_utc": "2026-08-30T19:21:53.276265+00:00"
+  "generated_at_utc": "2026-08-31T13:26:20.546271+00:00"
 }
