@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-
 import pandas as pd
-
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
@@ -45,8 +43,15 @@ def main() -> None:
         "dist_day",
         "breakout_55",
         "vcp_ready",
-        "stock_strength_score",  # ✅ Now read from 01 (pre-computed)
-        "high_strength_flag",    # ✅ Now read from 01 (pre-computed)
+        "stock_strength_score",
+        "high_strength_flag",
+        "established_buy_setup",
+        "ipo_buy_setup",
+        "buy_setup_score",
+        "gain_6m",
+        "daily_range",
+        "vol_ratio_50",
+        "vol_2x_count_6m",
     ]
 
     missing_columns = [
@@ -91,9 +96,6 @@ def main() -> None:
         keep="last",
     )
 
-    # ✅ NO RECOMPUTATION - Use stock_strength_score from 01_build_group_features.py
-    # This ensures consistency across all dashboard tabs
-
     group_keys = ["date", "basic_industry"]
 
     df["stock_rank_in_basic_industry"] = (
@@ -108,7 +110,6 @@ def main() -> None:
         * 100
     )
 
-    # ✅ Use high_strength_flag from 01 (pre-computed with within-day ranking)
     df["high_strength_flag"] = df["high_strength_flag"].astype(int)
 
     df["basic_industry_members"] = (
@@ -139,7 +140,6 @@ def main() -> None:
     print(f"Start date: {df['date'].min().date()}")
     print(f"Latest date: {df['date'].max().date()}")
     print(f"Trading days retained: {len(kept_dates)}")
-    print(f"High-strength threshold: {HIGH_STRENGTH_THRESHOLD:.0f}")
     print(f"Output: {OUTPUT_FILE}")
 
 
