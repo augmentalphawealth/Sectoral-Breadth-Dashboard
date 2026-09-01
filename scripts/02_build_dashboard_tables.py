@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from utils import p, read_parquet_safe, write_parquet
-
 
 HIGH_STRENGTH_THRESHOLD = 70.0
 SMALL_GROUP_LIMIT = 5
@@ -27,8 +25,15 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
         "above_200",
         "breakout_55",
         "vcp_ready",
-        "stock_strength_score",  # ✅ Now required from 01 (pre-computed)
-        "high_strength_flag",    # ✅ Now required from 01 (pre-computed)
+        "stock_strength_score",
+        "high_strength_flag",
+        "established_buy_setup",
+        "ipo_buy_setup",
+        "buy_setup_score",
+        "gain_6m",
+        "daily_range",
+        "vol_ratio_50",
+        "vol_2x_count_6m",
     ]
     missing = [column for column in required if column not in data.columns]
     if missing:
@@ -37,7 +42,6 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
             f"{missing}"
         )
 
-    # ✅ NO RECOMPUTATION - Use pre-computed scores from 01_build_group_features.py
     data["stock_strength_score"] = pd.to_numeric(
         data["stock_strength_score"],
         errors="coerce",
@@ -45,7 +49,6 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
 
     group_keys = ["date", "basic_industry"]
 
-    # ✅ Use pre-computed high_strength_flag from 01
     data["high_strength_flag"] = pd.to_numeric(
         data["high_strength_flag"],
         errors="coerce",
@@ -94,12 +97,6 @@ def main() -> None:
         .drop_duplicates(
             subset=["date", "basic_industry"],
             keep="last",
-        )
-        .rename(
-            columns={
-                "high_strength_count_snapshot": "high_strength_count_snapshot",
-                "pct_high_strength_snapshot": "pct_high_strength_snapshot",
-            }
         )
         .copy()
     )
@@ -151,6 +148,38 @@ def main() -> None:
         ascending=[False, False],
     )
 
+    # Filter Top 15 Eligible Basic Industries
+    eligible_top_15_industries = (
+        basic_latest[basic_latest["members"] >= SMALL_GROUP_LIMIT]
+        .head(15)["basic_industry"]
+        .dropna()
+        .unique()
+        .tolist()
+    )
+
+    # 1. Main Buy Candidates (Established Stocks)
+    top_buy_candidates = stock_snapshot[
+        (stock_snapshot["basic_industry"].isin(eligible_top_15_industries))
+        & (stock_snapshot["established_buy_setup"] == 1)
+    ].copy()
+
+    top_buy_candidates = top_buy_candidates.sort_values(
+        ["buy_setup_score", "stock_strength_score", "gain_6m"],
+        ascending=[False, False, False],
+    ).head(15)
+
+    # 2. IPO Watchlist (IPOs in Top 15 Industries)
+    ipo_watchlist = stock_snapshot[
+        (stock_snapshot["basic_industry"].isin(eligible_top_15_industries))
+        & (stock_snapshot["ipo_buy_setup"] == 1)
+    ].copy()
+
+    ipo_watchlist = ipo_watchlist.sort_values(
+        "daily_range",
+        ascending=True,
+    )
+
+    # Legacy Watchlist
     watch = stock_snapshot[
         (stock_snapshot["trend_template_pass"] == 1)
         | (stock_snapshot["vcp_ready"] == 1)
@@ -186,15 +215,22 @@ def main() -> None:
         processed / "dashboard_industry_latest.parquet",
     )
     write_parquet(
+        top_buy_candidates,
+        processed / "dashboard_top_buy_candidates.parquet",
+    )
+    write_parquet(
+        ipo_watchlist,
+        processed / "dashboard_ipo_watchlist.parquet",
+    )
+    write_parquet(
         watch,
         processed / "dashboard_stock_watchlist_latest.parquet",
     )
 
     print("dashboard tables ready")
-    print(
-        "Basic Industries with high-strength participation data: "
-        f"{basic_latest['pct_high_strength'].notna().sum()}"
-    )
+    print(f"Top 15 Industries selected: {len(eligible_top_15_industries)}")
+    print(f"Top Buy Setups identified: {len(top_buy_candidates)}")
+    print(f"IPO Watchlist candidates: {len(ipo_watchlist)}")
 
 
 if __name__ == "__main__":
