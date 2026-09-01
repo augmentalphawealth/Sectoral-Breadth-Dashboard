@@ -17,7 +17,7 @@ SYNC_FILE = PROCESSED / "last_sync.txt"
 SMALL_GROUP_LIMIT = 5
 
 st.set_page_config(
-    page_title="NSE Sectoral Breadth",
+    page_title="NSE Sectoral Breadth & Buy Setups",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -107,6 +107,8 @@ def style_with_heatmap(raw: pd.DataFrame, display: pd.DataFrame):
         styles.loc[:, "Strength"] = colors
         if "Regime" in display.columns:
             styles.loc[:, "Regime"] = colors
+    if "Buy Setup Score" in raw.columns and "Buy Setup Score" in display.columns:
+        styles.loc[:, "Buy Setup Score"] = raw["Buy Setup Score"].map(heat_color)
     return display.style.apply(lambda _: styles, axis=None)
 
 
@@ -242,8 +244,8 @@ def make_group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
         "eq_ret_5d": "5D Return",
         "eq_ret_20d": "20D Return",
         "eq_ret_60d": "60D Return",
-        "pct_above_50": "Stocks Above 50 DMA",
-        "pct_above_200": "Stocks Above 200 DMA",
+        "pct_above_50": "Stocks Above 50 EMA",
+        "pct_above_200": "Stocks Above 200 EMA",
         "acc_minus_dist": "Accumulation − Distribution",
         "breakout_count": "Breakouts",
         "breakout_pct": "Breakout Participation",
@@ -291,7 +293,7 @@ def format_group_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
     for column in [
         "Stocks With Strength ≥70", "1D Return", "5D Return", "20D Return", "60D Return",
-        "Stocks Above 50 DMA", "Stocks Above 200 DMA", "Breakout Participation",
+        "Stocks Above 50 EMA", "Stocks Above 200 EMA", "Breakout Participation",
         "VCP-Ready Participation", "Distance from 52W High",
     ]:
         if column in data.columns:
@@ -306,17 +308,16 @@ def format_group_table(frame: pd.DataFrame) -> pd.DataFrame:
 
 def format_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
-    for column in ["1D Return", "5D Return", "20D Return", "60D Return", "Distance from 52W High"]:
+    for column in ["1D Return", "5D Return", "20D Return", "60D Return", "Distance from 52W High", "6M Gain", "Candle Range"]:
         if column in data.columns:
             data[column] = data[column].apply(lambda value: fmt_pct(value, True))
-    if "Strength Percentile" in data.columns:
-        data["Strength Percentile"] = data["Strength Percentile"].apply(
-            lambda value: fmt_pct(value, True)
-        )
-    for column in ["Rank", "Accumulation Day", "Distribution Day"]:
+    for column in ["Strength Percentile"]:
+        if column in data.columns:
+            data[column] = data[column].apply(lambda value: fmt_pct(value, True))
+    for column in ["Rank", "Accumulation Day", "Distribution Day", "Heavy Volume Days (6M)"]:
         if column in data.columns:
             data[column] = data[column].apply(fmt_int)
-    for column in ["Strength", "Close"]:
+    for column in ["Strength", "Close", "Buy Setup Score", "Current Vol vs 50D Avg"]:
         if column in data.columns:
             data[column] = data[column].apply(fmt_num)
     if "Trend Template" in data.columns:
@@ -410,9 +411,9 @@ def group_setup_chart(history: pd.DataFrame, group: str) -> None:
 
     summary = st.columns(4)
     if "pct_above_50" in data.columns:
-        summary[0].metric("Breadth above 50 DMA", fmt_pct(latest.get("pct_above_50"), True))
+        summary[0].metric("Breadth above 50 EMA", fmt_pct(latest.get("pct_above_50"), True))
     if "pct_above_200" in data.columns:
-        summary[1].metric("Breadth above 200 DMA", fmt_pct(latest.get("pct_above_200"), True))
+        summary[1].metric("Breadth above 200 EMA", fmt_pct(latest.get("pct_above_200"), True))
     if "pct_high_strength" in data.columns:
         summary[2].metric("Stocks with strength ≥70", fmt_pct(latest.get("pct_high_strength"), True))
     if "breakout_count" in data.columns:
@@ -477,6 +478,111 @@ def constituent_stock_panel(
         "Download constituent stock table", raw_stocks.to_csv(index=False).encode("utf-8"),
         f"{safe_name}_stocks_{selected_date.strftime('%Y%m%d')}.csv", "text/csv",
         key=f"{key_prefix}_download_stocks",
+    )
+
+
+def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
+    st.subheader("🎯 Strong Sector Buy Setups")
+    st.caption(
+        "Top 15 Basic Industries with ≥5 stocks, screened for established trend alignment "
+        "(Price > 50 > 200 EMA & 20 > 50 > 200 EMA), ≥20% 6-month advance with institutional volume (≥2x 50D avg), "
+        "and active price/volume contraction."
+    )
+
+    basic_latest = basic_history[basic_history["date"] == selected_date].copy()
+    stock_latest = stock_history[stock_history["date"] == selected_date].copy()
+
+    # Get Top 15 Basic Industries
+    eligible_industries_df = basic_latest[basic_latest["members"] >= SMALL_GROUP_LIMIT].sort_values(
+        "strength_score", ascending=False
+    ).head(15)
+    top_15_names = eligible_industries_df["basic_industry"].tolist()
+
+    if not top_15_names:
+        st.warning("No eligible Basic Industries found for this date.")
+        return
+
+    # Filter Established Candidates
+    buy_candidates = stock_latest[
+        (stock_latest["basic_industry"].isin(top_15_names))
+        & (stock_latest["established_buy_setup"] == 1)
+    ].copy()
+
+    # Filter IPO Candidates
+    ipo_candidates = stock_latest[
+        (stock_latest["basic_industry"].isin(top_15_names))
+        & (stock_latest["ipo_buy_setup"] == 1)
+    ].copy()
+
+    m_col = st.columns(4)
+    m_col[0].metric("Qualified Buy Setups", fmt_int(len(buy_candidates)))
+    m_col[1].metric("IPO Tight Setups", fmt_int(len(ipo_candidates)))
+    m_col[2].metric("Leading Basic Industries", fmt_int(len(top_15_names)))
+    m_col[3].metric("Scan Date", selected_date.strftime("%d %b %Y"))
+
+    st.markdown("### Top Buy Setups (Established Stocks)")
+    if buy_candidates.empty:
+        st.info("No established stocks currently meet all 6-month gain, volume push, and volatility contraction criteria.")
+    else:
+        buy_candidates = buy_candidates.sort_values(
+            ["buy_setup_score", "stock_strength_score"], ascending=[False, False]
+        ).head(15).reset_index(drop=True)
+        buy_candidates.insert(0, "Rank", range(1, len(buy_candidates) + 1))
+
+        display_buy = buy_candidates.rename(columns={
+            "symbol": "Symbol",
+            "basic_industry": "Basic Industry",
+            "buy_setup_score": "Buy Setup Score",
+            "stock_strength_score": "Strength",
+            "close": "Close",
+            "gain_6m": "6M Gain",
+            "vol_2x_count_6m": "Heavy Volume Days (6M)",
+            "daily_range": "Candle Range",
+            "vol_ratio_50": "Current Vol vs 50D Avg",
+        })
+
+        keep_cols = [
+            "Rank", "Symbol", "Basic Industry", "Buy Setup Score", "Strength",
+            "Close", "6M Gain", "Heavy Volume Days (6M)", "Candle Range", "Current Vol vs 50D Avg"
+        ]
+        display_buy = display_buy[[col for col in keep_cols if col in display_buy.columns]]
+        st.dataframe(
+            style_with_heatmap(display_buy, format_stock_table(display_buy)),
+            use_container_width=True, hide_index=True, height=380,
+        )
+        st.download_button(
+            "Download Buy Setups CSV", display_buy.to_csv(index=False).encode("utf-8"),
+            f"top_buy_setups_{selected_date.strftime('%Y%m%d')}.csv", "text/csv",
+            key="download_top_buys",
+        )
+
+    st.markdown("### IPO Tight Setups (New Listings)")
+    st.caption("Newly listed IPO stocks in the Top 15 Basic Industries with tight daily candle ranges.")
+    if ipo_candidates.empty:
+        st.info("No newly listed IPO stocks in leading industries currently show tight candle ranges.")
+    else:
+        ipo_candidates = ipo_candidates.sort_values("daily_range", ascending=True).reset_index(drop=True)
+        ipo_candidates.insert(0, "Rank", range(1, len(ipo_candidates) + 1))
+        display_ipo = ipo_candidates.rename(columns={
+            "symbol": "Symbol",
+            "basic_industry": "Basic Industry",
+            "close": "Close",
+            "daily_range": "Candle Range",
+            "stock_strength_score": "Strength",
+            "ret_20d": "20D Return",
+        })
+        keep_ipo = ["Rank", "Symbol", "Basic Industry", "Close", "Candle Range", "20D Return", "Strength"]
+        display_ipo = display_ipo[[col for col in keep_ipo if col in display_ipo.columns]]
+        st.dataframe(
+            style_with_heatmap(display_ipo, format_stock_table(display_ipo)),
+            use_container_width=True, hide_index=True, height=280,
+        )
+
+    st.markdown("### Top 15 Driver Basic Industries")
+    raw_leaders = make_group_table(eligible_industries_df, "basic_industry")
+    st.dataframe(
+        style_with_heatmap(raw_leaders, format_group_table(raw_leaders)),
+        use_container_width=True, hide_index=True, height=350,
     )
 
 
@@ -730,10 +836,10 @@ def industry_opportunity_scan(basic_history: pd.DataFrame, selected_date: pd.Tim
     candidates["Emerging Score"] = (candidates["strength_score"] - candidates["strength_ma_20"]) + (candidates["strength_ma_10"] - candidates["strength_ma_20"]) + candidates.get("eq_ret_20d", 0).clip(upper=0.1).fillna(0) * 100
     columns = ["basic_industry", "strength_score", "strength_ma_10", "strength_ma_20", "eq_ret_20d", "pct_above_50", "pct_high_strength", "breakout_count", "vcp_ready_count", "members", "Emerging Score"]
     display = candidates[[column for column in columns if column in candidates.columns]].copy().rename(columns={
-        "basic_industry": "Basic Industry", "strength_score": "Strength", "strength_ma_10": "10D Strength Average", "strength_ma_20": "20D Strength Average", "eq_ret_20d": "20D Return", "pct_above_50": "Above 50 DMA", "pct_high_strength": "Stocks scoring 70+", "breakout_count": "Breakouts", "vcp_ready_count": "VCP Ready", "members": "Constituent Stocks",
+        "basic_industry": "Basic Industry", "strength_score": "Strength", "strength_ma_10": "10D Strength Average", "strength_ma_20": "20D Strength Average", "eq_ret_20d": "20D Return", "pct_above_50": "Above 50 EMA", "pct_high_strength": "Stocks scoring 70+", "breakout_count": "Breakouts", "vcp_ready_count": "VCP Ready", "members": "Constituent Stocks",
     }).sort_values("Emerging Score", ascending=False).reset_index(drop=True)
     display.insert(0, "Rank", range(1, len(display) + 1))
-    for column in ["20D Return", "Above 50 DMA", "Stocks scoring 70+"]:
+    for column in ["20D Return", "Above 50 EMA", "Stocks scoring 70+"]:
         if column in display.columns:
             display[column] = display[column].apply(lambda value: fmt_pct(value, True))
     for column in ["Rank", "Constituent Stocks", "Breakouts", "VCP Ready"]:
@@ -790,6 +896,8 @@ def methodology_view() -> None:
     st.subheader("Methodology")
     st.markdown(
         """
+        **Top Buy Setups** filters the top 15 strongest Basic Industries for stocks with an established trend (Price > 50 > 200 EMA & 20 > 50 > 200 EMA), at least a 20% gain over 6 months with institutional volume support (≥2x 50D avg volume), and active price/volume contraction.
+
         **Industry strength** is based on precomputed, equal-weighted constituent participation and return measures. This dashboard reads prepared EOD data and does not recalculate indicators in the browser.
 
         **Industry Setup Trend** shows daily Strength Score with 10-day and 20-day averages. It helps identify recovery, emerging leadership, confirmation, extension, and weakening phases.
@@ -817,14 +925,19 @@ def main() -> None:
     sync_text = SYNC_FILE.read_text(encoding="utf-8").strip() if SYNC_FILE.exists() else "Not available"
     st.caption(f"Data as of {sync_text.replace('T', ' ').replace('Z', ' IST')}")
 
-    tabs = st.tabs(["Basic Industry", "Industry", "Overview", "Methodology"])
+    tabs = st.tabs(["🎯 Top Buy Setups", "Basic Industry", "Industry", "Overview", "Methodology"])
+    
     with tabs[0]:
-        basic_industry_view(basic_history, stock_history)
+        # Buy Setups utilizes a local date selector header like the other tabs
+        buy_setup_date = section_header("Top Buy Setups", trading_dates(stock_history), "buys")
+        top_buy_setups_view(basic_history, stock_history, buy_setup_date)
     with tabs[1]:
-        industry_view(industry_history, stock_history)
+        basic_industry_view(basic_history, stock_history)
     with tabs[2]:
-        overview_view(basic_history, industry_history, stock_history)
+        industry_view(industry_history, stock_history)
     with tabs[3]:
+        overview_view(basic_history, industry_history, stock_history)
+    with tabs[4]:
         methodology_view()
 
 
