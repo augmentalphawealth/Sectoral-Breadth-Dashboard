@@ -24,7 +24,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         df[f"ema_{span}"] = g["close"].transform(
             lambda s: s.ewm(span=span, min_periods=max(5, span // 4)).mean()
         )
-        # Maintain sma aliases for backwards compatibility with downstream modules
         df[f"sma_{span}"] = df[f"ema_{span}"]
 
     # 2. Volume and Turnover Averages
@@ -464,6 +463,19 @@ def main() -> None:
     if "mcap" not in stock.columns:
         stock["mcap"] = np.nan
 
+    # =========================================================================
+    # STRICT EQ-ONLY FIREWALL (PURGES BE, BZ, SME, AND UNCLASSIFIED NOISE)
+    # Aligns universe strictly to Mainboard EQ equities tradable on Zerodha Kite.
+    # =========================================================================
+    stock["series"] = stock["series"].fillna("").astype(str).str.strip()
+    stock = stock[stock["series"] == "EQ"].copy()
+
+    missing_classification = stock["industry"].isna().sum()
+    print(
+        "Price rows without industry classification: "
+        f"{missing_classification}"
+    )
+
     stock = add_stock_indicators(stock, settings)
     stock = add_stock_strength(stock, settings)
 
@@ -486,7 +498,7 @@ def main() -> None:
         processed / "basic_industry_daily_features.parquet",
     )
 
-    print("feature build complete")
+    print("feature build complete (Strict EQ Mainboard Only)")
 
 
 if __name__ == "__main__":
