@@ -12,6 +12,8 @@ PROCESSED = ROOT / "data" / "processed"
 BASIC_HISTORY_FILE = PROCESSED / "dashboard_basic_industry_history.parquet"
 INDUSTRY_HISTORY_FILE = PROCESSED / "dashboard_industry_history.parquet"
 STOCK_HISTORY_FILE = PROCESSED / "dashboard_stock_history.parquet"
+TOP_BUY_FILE = PROCESSED / "dashboard_top_buy_candidates.parquet"
+IPO_WATCH_FILE = PROCESSED / "dashboard_ipo_watchlist.parquet"
 METADATA_FILE = PROCESSED / "dashboard_metadata.json"
 SYNC_FILE = PROCESSED / "last_sync.txt"
 SMALL_GROUP_LIMIT = 5
@@ -802,23 +804,25 @@ def industry_opportunity_scan(basic_history: pd.DataFrame, selected_date: pd.Tim
     if not required.issubset(basic_history.columns):
         st.info("Required opportunity-scan columns are unavailable.")
         return
+        
     data = basic_history[basic_history["date"] <= selected_date].copy()
     data["strength_score"] = pd.to_numeric(data["strength_score"], errors="coerce")
-    latest = data[data["date"] == selected_date].copy()
-    if latest.empty:
+    
+    # Safely calculate rolling averages to prevent Pandas aggregate ValueError
+    data = data.sort_values(["basic_industry", "date"])
+    data["strength_ma_10"] = data.groupby("basic_industry")["strength_score"].transform(
+        lambda s: s.rolling(10, min_periods=5).mean()
+    )
+    data["strength_ma_20"] = data.groupby("basic_industry")["strength_score"].transform(
+        lambda s: s.rolling(20, min_periods=10).mean()
+    )
+    
+    candidates = data[data["date"] == selected_date].copy()
+    
+    if candidates.empty:
         st.info("No data available for the selected date.")
         return
-    rolling = (
-        data.sort_values("date").groupby("basic_industry", group_keys=False)["strength_score"]
-        .agg(lambda values: pd.Series({
-            "strength_ma_10": values.rolling(10, min_periods=5).mean().iloc[-1],
-            "strength_ma_20": values.rolling(20, min_periods=10).mean().iloc[-1],
-        }))
-    )
-    if isinstance(rolling, pd.Series):
-        rolling = rolling.unstack()
-    rolling = rolling.reset_index()
-    candidates = latest.merge(rolling, on="basic_industry", how="left")
+
     candidates = candidates[candidates["members"] >= SMALL_GROUP_LIMIT]
     candidates = candidates[candidates["strength_score"].between(45, 75)]
     candidates = candidates[(candidates["strength_score"] > candidates["strength_ma_10"]) & (candidates["strength_score"] > candidates["strength_ma_20"]) & (candidates["strength_ma_10"] > candidates["strength_ma_20"])]
@@ -928,7 +932,6 @@ def main() -> None:
     tabs = st.tabs(["🎯 Top Buy Setups", "Basic Industry", "Industry", "Overview", "Methodology"])
     
     with tabs[0]:
-        # Buy Setups utilizes a local date selector header like the other tabs
         buy_setup_date = section_header("Top Buy Setups", trading_dates(stock_history), "buys")
         top_buy_setups_view(basic_history, stock_history, buy_setup_date)
     with tabs[1]:
