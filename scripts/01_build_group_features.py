@@ -5,7 +5,6 @@ import pandas as pd
 
 from utils import load_settings, p, read_parquet_safe, write_parquet
 
-
 DEFAULT_VOLUME_SHOCK_THRESHOLD = 1.5
 DEFAULT_HIGH_STRENGTH_THRESHOLD = 70.0
 DEFAULT_SMALL_GROUP_LIMIT = 5
@@ -13,33 +12,41 @@ DEFAULT_SMALL_GROUP_LIMIT = 5
 
 def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df = df.sort_values(["symbol", "date"]).copy()
-    analysis = settings["analysis"]
+    analysis = settings.get("analysis", {})
     volume_shock_threshold = analysis.get(
         "volume_shock_threshold",
         DEFAULT_VOLUME_SHOCK_THRESHOLD,
     )
     g = df.groupby("symbol", group_keys=False)
 
-    for win in [20, 50, 150, 200]:
-        df[f"sma_{win}"] = g["close"].transform(
-            lambda s: s.rolling(win, min_periods=max(5, win // 4)).mean()
+    # 1. Exponential Moving Averages (EMAs)
+    for span in [10, 20, 50, 150, 200]:
+        df[f"ema_{span}"] = g["close"].transform(
+            lambda s: s.ewm(span=span, min_periods=max(5, span // 4)).mean()
         )
+        # Maintain sma aliases for backwards compatibility with downstream modules
+        df[f"sma_{span}"] = df[f"ema_{span}"]
 
+    # 2. Volume and Turnover Averages
     df["avg_vol_20"] = g["volume"].transform(
         lambda s: s.rolling(20, min_periods=10).mean()
+    )
+    df["avg_vol_50"] = g["volume"].transform(
+        lambda s: s.rolling(50, min_periods=15).mean()
     )
     df["avg_val_20"] = g["turnover"].transform(
         lambda s: s.rolling(20, min_periods=10).mean()
     )
     df["ret_1d"] = g["close"].pct_change(1)
 
-    for win in analysis["return_windows"]:
+    for win in analysis.get("return_windows", [5, 10, 20, 60]):
         df[f"ret_{win}d"] = g["close"].pct_change(win)
 
-    df["above_20"] = (df["close"] > df["sma_20"]).astype(int)
-    df["above_50"] = (df["close"] > df["sma_50"]).astype(int)
-    df["above_200"] = (df["close"] > df["sma_200"]).astype(int)
+    df["above_20"] = (df["close"] > df["ema_20"]).astype(int)
+    df["above_50"] = (df["close"] > df["ema_50"]).astype(int)
+    df["above_200"] = (df["close"] > df["ema_200"]).astype(int)
 
+    # 3. 52-Week High and Low Metrics
     df["dist_52w_high"] = g["close"].transform(
         lambda s: s / s.rolling(252, min_periods=60).max() - 1
     )
@@ -63,14 +70,14 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             df["close"]
             > g["high"].transform(
                 lambda s: s.shift(1).rolling(
-                    analysis["breakout_lookback"],
+                    analysis.get("breakout_lookback", 55),
                     min_periods=20,
                 ).max()
             )
         )
         & (
             df["volume"]
-            > analysis["accumulation_volume_multiplier"] * df["avg_vol_20"]
+            > analysis.get("accumulation_volume_multiplier", 1.2) * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -78,7 +85,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         (df["close"] > g["close"].shift(1))
         & (
             df["volume"]
-            > analysis["accumulation_volume_multiplier"] * df["avg_vol_20"]
+            > analysis.get("accumulation_volume_multiplier", 1.2) * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -86,7 +93,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         (df["close"] < g["close"].shift(1))
         & (
             df["volume"]
-            > analysis["distribution_volume_multiplier"] * df["avg_vol_20"]
+            > analysis.get("distribution_volume_multiplier", 1.2) * df["avg_vol_20"]
         )
     ).astype(int)
 
@@ -106,14 +113,42 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         & (df["ret_1d"] < 0)
     ).astype(int)
 
+    # 4. Trend Template (EMA Stacking Order)
     df["trend_template_pass"] = (
-        (df["close"] > df["sma_150"])
-        & (df["close"] > df["sma_200"])
-        & (df["sma_150"] > df["sma_200"])
-        & (df["sma_50"] > df["sma_150"])
+        (df["close"] > df["ema_50"])
+        & (df["close"] > df["ema_200"])
+        & (df["ema_20"] > df["ema_50"])
+        & (df["ema_50"] > df["ema_200"])
         & (df["dist_52w_high"] > -0.25)
     ).astype(int)
 
+    # 5. Price Tightness Calculations (Multi-Day Squeeze, ADR Compression, Consecutive Closes)
+    df["daily_range"] = np.where(df["close"] > 0, (df["high"] - df["low"]) / df["close"], np.nan)
+    
+    roll_high_5 = g["high"].transform(lambda s: s.rolling(5, min_periods=3).max())
+    roll_low_5 = g["low"].transform(lambda s: s.rolling(5, min_periods=3).min())
+    df["tightness_squeeze_5d"] = (roll_high_5 / roll_low_5) - 1.0
+    df["tight_squeeze_pass"] = (df["tightness_squeeze_5d"] <= 0.08).astype(int)
+
+    adr_20 = g["daily_range"].transform(lambda s: s.rolling(20, min_periods=10).mean())
+    adr_5 = g["daily_range"].transform(lambda s: s.rolling(5, min_periods=3).mean())
+    df["tight_adr_pass"] = ((adr_5 <= 0.5 * adr_20) & (df["daily_range"] <= 0.05)).astype(int)
+
+    tight_single_day = (df["daily_range"] <= 0.05).astype(int)
+    df["tight_consecutive_pass"] = (
+        g["daily_range"].transform(
+            lambda s: (s <= 0.05).rolling(3, min_periods=3).min()
+        ) == 1
+    ).astype(int)
+
+    df["price_tightness_pass"] = (
+        (tight_single_day == 1)
+        | (df["tight_squeeze_pass"] == 1)
+        | (df["tight_adr_pass"] == 1)
+        | (df["tight_consecutive_pass"] == 1)
+    ).astype(int)
+
+    # Legacy VCP Support
     df["range_20"] = g.apply(
         lambda x: (
             x["high"].rolling(20, min_periods=10).max()
@@ -123,15 +158,49 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     ).reset_index(level=0, drop=True)
 
     df["vcp_ready"] = (
-        (df["range_20"] <= analysis["vcp_range_contraction_threshold"])
+        (df["range_20"] <= analysis.get("vcp_range_contraction_threshold", 0.08))
         & (
             df["volume"]
-            <= analysis["vcp_volume_dryup_threshold"] * df["avg_vol_20"]
+            <= analysis.get("vcp_volume_dryup_threshold", 0.65) * df["avg_vol_20"]
         )
         & (
             df["dist_52w_high"]
-            > -analysis["pivot_proximity_threshold"]
+            > -analysis.get("pivot_proximity_threshold", 0.05)
         )
+    ).astype(int)
+
+    # 6. Prior 6-Month Move (125 Days) & Volume Dry-Up Verification
+    roll_min_125 = g["low"].transform(lambda s: s.rolling(125, min_periods=25).min())
+    df["gain_6m"] = np.where(roll_min_125 > 0, (df["close"] / roll_min_125) - 1.0, 0.0)
+
+    df["vol_ratio_50"] = np.where(df["avg_vol_50"] > 0, df["volume"] / df["avg_vol_50"], np.nan)
+    vol_2x_hit = (df["volume"] >= 2.0 * df["avg_vol_50"]).astype(int)
+    df["vol_2x_count_6m"] = g["volume"].transform(
+        lambda s: vol_2x_hit.loc[s.index].rolling(125, min_periods=25).sum()
+    )
+    df["max_vol_ratio_6m"] = g["vol_ratio_50"].transform(
+        lambda s: s.rolling(125, min_periods=25).max()
+    )
+
+    df["vol_dryup_pass"] = (df["volume"] <= 0.5 * df["avg_vol_50"]).astype(int)
+
+    # 7. IPO vs Established Classification
+    history_count = g["close"].transform(lambda s: s.rolling(200, min_periods=1).count())
+    df["is_ipo"] = (history_count < 150).astype(int)
+
+    # Buy Setup Flags
+    df["established_buy_setup"] = (
+        (df["is_ipo"] == 0)
+        & (df["trend_template_pass"] == 1)
+        & (df["gain_6m"] >= 0.20)
+        & (df["vol_2x_count_6m"] >= 2)
+        & (df["vol_dryup_pass"] == 1)
+        & (df["price_tightness_pass"] == 1)
+    ).astype(int)
+
+    df["ipo_buy_setup"] = (
+        (df["is_ipo"] == 1)
+        & (df["price_tightness_pass"] == 1)
     ).astype(int)
 
     return df
@@ -139,12 +208,12 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
 
 def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data = df.copy()
-    threshold = settings["analysis"].get(
+    threshold = settings.get("analysis", {}).get(
         "high_strength_threshold",
         DEFAULT_HIGH_STRENGTH_THRESHOLD,
     )
 
-    # FIX: Rank within each trading date, not across entire history
+    # Rank within each trading date
     data["stock_strength_score"] = (
         data.groupby("date")["ret_20d"].rank(pct=True) * 35
         + data.groupby("date")["ret_60d"].rank(pct=True) * 35
@@ -158,11 +227,21 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         data["stock_strength_score"] >= threshold
     ).astype(int)
 
+    # Buy Setup Ranking Score (Point system: Gain Size + Peak Volume + Tightness)
+    gain_pts = data.groupby("date")["gain_6m"].rank(pct=True) * 35
+    vol_pts = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35
+    price_tight_pts = (1.0 - data.groupby("date")["daily_range"].rank(pct=True)) * 15
+    vol_tight_pts = (1.0 - data.groupby("date")["vol_ratio_50"].rank(pct=True)) * 15
+
+    data["buy_setup_score"] = (
+        gain_pts.fillna(0) + vol_pts.fillna(0) + price_tight_pts.fillna(0) + vol_tight_pts.fillna(0)
+    ).round(2)
+
     return data
 
 
 def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.DataFrame:
-    small_group_limit = settings["analysis"].get(
+    small_group_limit = settings.get("analysis", {}).get(
         "small_industry_limit",
         DEFAULT_SMALL_GROUP_LIMIT,
     )
@@ -240,7 +319,6 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             f"{missing_weights}"
         )
 
-    # FIX: All rankings now within each trading date
     data["trend_score"] = (
         (data.groupby("date")["eq_ret_20d"].rank(pct=True) * 40)
         + (data.groupby("date")["eq_ret_60d"].rank(pct=True) * 40)
@@ -385,12 +463,6 @@ def main() -> None:
 
     if "mcap" not in stock.columns:
         stock["mcap"] = np.nan
-
-    missing_classification = stock["industry"].isna().sum()
-    print(
-        "Price rows without industry classification: "
-        f"{missing_classification}"
-    )
 
     stock = add_stock_indicators(stock, settings)
     stock = add_stock_strength(stock, settings)
