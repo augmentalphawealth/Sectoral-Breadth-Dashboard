@@ -133,6 +133,8 @@ jobs:
             data/processed/dashboard_industry_latest.parquet \
             data/processed/dashboard_basic_industry_latest.parquet \
             data/processed/dashboard_stock_watchlist_latest.parquet \
+            data/processed/dashboard_top_buy_candidates.parquet \
+            data/processed/dashboard_ipo_watchlist.parquet \
             data/processed/dashboard_industry_history.parquet \
             data/processed/dashboard_basic_industry_history.parquet \
             data/processed/dashboard_stock_history.parquet \
@@ -158,6 +160,8 @@ jobs:
             data/processed/dashboard_industry_latest.parquet
             data/processed/dashboard_basic_industry_latest.parquet
             data/processed/dashboard_stock_watchlist_latest.parquet
+            data/processed/dashboard_top_buy_candidates.parquet
+            data/processed/dashboard_ipo_watchlist.parquet
             data/processed/dashboard_industry_history.parquet
             data/processed/dashboard_basic_industry_history.parquet
             data/processed/dashboard_stock_history.parquet
