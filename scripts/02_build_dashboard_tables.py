@@ -34,6 +34,13 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
         "daily_range",
         "vol_ratio_50",
         "vol_2x_count_6m",
+        "actionable_setup_pass",
+        "up_down_ratio",
+        "atr_14",
+        "range_3d",
+        "tight_3d_range",
+        "ipo_turnover_avg",
+        "close",
     ]
     missing = [column for column in required if column not in data.columns]
     if missing:
@@ -139,45 +146,69 @@ def main() -> None:
     ).astype(int)
 
     basic_latest = basic_latest.sort_values(
-        ["strength_score", "pct_high_strength", "eq_ret_20d"],
+        ["leadership_score", "actionability_score", "eq_ret_20d"],
         ascending=[False, False, False],
     )
 
     industry_latest = latest(industry).sort_values(
-        ["strength_score", "eq_ret_20d"],
-        ascending=[False, False],
+        ["leadership_score", "actionability_score", "eq_ret_20d"],
+        ascending=[False, False, False],
     )
 
-    # Filter Top 15 Eligible Basic Industries
-    eligible_top_15_industries = (
-        basic_latest[basic_latest["members"] >= SMALL_GROUP_LIMIT]
+    # Filter Leading Basic Industries (Leadership >= 70, Exclude Unclassified & Small Groups)
+    eligible_top_industries = (
+        basic_latest[
+            (basic_latest["members"] >= SMALL_GROUP_LIMIT)
+            & (basic_latest["leadership_score"] >= 70.0)
+            & (basic_latest["basic_industry"] != "Unclassified")
+        ]
         .head(15)["basic_industry"]
         .dropna()
         .unique()
         .tolist()
     )
 
-    # 1. Main Buy Candidates (Established Stocks)
+    # Fallback to top 5 if entire market is in severe drawdown
+    if not eligible_top_industries:
+        eligible_top_industries = (
+            basic_latest[
+                (basic_latest["members"] >= SMALL_GROUP_LIMIT)
+                & (basic_latest["basic_industry"] != "Unclassified")
+            ]
+            .head(5)["basic_industry"]
+            .dropna()
+            .unique()
+            .tolist()
+        )
+
+    # =========================================================================
+    # THE TRIPLE-GATE TOP BUY JOIN:
+    # 1. Industry Leadership >= 70
+    # 2. Stock passes 5-rule gauntlet (actionable_setup_pass == 1)
+    # 3. Established stock (is_ipo == 0)
+    # =========================================================================
     top_buy_candidates = stock_snapshot[
-        (stock_snapshot["basic_industry"].isin(eligible_top_15_industries))
+        (stock_snapshot["basic_industry"].isin(eligible_top_industries))
         & (stock_snapshot["established_buy_setup"] == 1)
     ].copy()
 
     top_buy_candidates = top_buy_candidates.sort_values(
-        ["buy_setup_score", "stock_strength_score", "gain_6m"],
+        ["gain_6m", "buy_setup_score", "stock_strength_score"],
         ascending=[False, False, False],
-    ).head(15)
+    ).head(20)
 
-    # 2. IPO Watchlist (IPOs in Top 15 Industries)
+    # =========================================================================
+    # IPO WATCHLIST (IPOs in Leading Industries with > 5 Cr Volume)
+    # =========================================================================
     ipo_watchlist = stock_snapshot[
-        (stock_snapshot["basic_industry"].isin(eligible_top_15_industries))
+        (stock_snapshot["basic_industry"].isin(eligible_top_industries))
         & (stock_snapshot["ipo_buy_setup"] == 1)
     ].copy()
 
     ipo_watchlist = ipo_watchlist.sort_values(
         "daily_range",
         ascending=True,
-    )
+    ).head(15)
 
     # Legacy Watchlist
     watch = stock_snapshot[
@@ -228,9 +259,9 @@ def main() -> None:
     )
 
     print("dashboard tables ready")
-    print(f"Top 15 Industries selected: {len(eligible_top_15_industries)}")
+    print(f"Leading Industries selected: {len(eligible_top_industries)}")
     print(f"Top Buy Setups identified: {len(top_buy_candidates)}")
-    print(f"IPO Watchlist candidates: {len(ipo_watchlist)}")
+    print(f"Mainboard IPO Watchlist candidates: {len(ipo_watchlist)}")
 
 
 if __name__ == "__main__":
