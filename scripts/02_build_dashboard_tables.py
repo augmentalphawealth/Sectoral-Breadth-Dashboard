@@ -192,9 +192,10 @@ def main() -> None:
         & (stock_snapshot["established_buy_setup"] == 1)
     ].copy()
 
+    # PRIMARY FIX: Rank by Micro-Tightness (Coil) first, then Volume Dry-Up, then Prior Momentum
     top_buy_candidates = top_buy_candidates.sort_values(
-        ["gain_6m", "buy_setup_score", "stock_strength_score"],
-        ascending=[False, False, False],
+        ["tight_3d_range", "vol_ratio_50", "gain_6m"],
+        ascending=[True, True, False],
     ).head(20)
 
     # =========================================================================
