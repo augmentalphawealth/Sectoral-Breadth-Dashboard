@@ -355,10 +355,23 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     if buy_candidates.empty:
         st.info("No established stocks currently meet all 5 criteria in leading sectors today.")
     else:
-        # Ranked strictly by Coil and Dry-Up to surface the best VCPs
-        buy_candidates = buy_candidates.sort_values(
-            ["tight_3d_range", "vol_ratio_50", "gain_6m"], ascending=[True, True, False]
-        ).reset_index(drop=True)
+        # Safely rank by Coil and Dry-Up (handles missing columns from history script)
+        sort_columns = []
+        sort_directions = []
+        if "tight_3d_range" in buy_candidates.columns:
+            sort_columns.append("tight_3d_range")
+            sort_directions.append(True)
+        if "vol_ratio_50" in buy_candidates.columns:
+            sort_columns.append("vol_ratio_50")
+            sort_directions.append(True)
+        if "gain_6m" in buy_candidates.columns:
+            sort_columns.append("gain_6m")
+            sort_directions.append(False)
+            
+        if sort_columns:
+            buy_candidates = buy_candidates.sort_values(sort_columns, ascending=sort_directions)
+            
+        buy_candidates = buy_candidates.reset_index(drop=True)
         buy_candidates.insert(0, "Rank", range(1, len(buy_candidates) + 1))
 
         # TradingView Clickable Chart Links
