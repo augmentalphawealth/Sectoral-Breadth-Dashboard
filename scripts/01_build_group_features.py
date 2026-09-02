@@ -112,27 +112,50 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         & (df["ret_1d"] < 0)
     ).astype(int)
 
-    # 4. Trend Template (EMA Stacking Order)
+    # 4. Moving Average Stacking Order
+    df["full_alignment"] = (
+        (df["ema_20"] > df["ema_50"])
+        & (df["ema_50"] > df["ema_200"])
+    ).astype(int)
+
     df["trend_template_pass"] = (
         (df["close"] > df["ema_50"])
         & (df["close"] > df["ema_200"])
-        & (df["ema_20"] > df["ema_50"])
-        & (df["ema_50"] > df["ema_200"])
+        & (df["full_alignment"] == 1)
         & (df["dist_52w_high"] > -0.25)
     ).astype(int)
 
-    # 5. Price Tightness Calculations (Multi-Day Squeeze, ADR Compression, Consecutive Closes)
+    # 5. Up/Down Volume Ratio (50-Day Cumulative Institutional Skew)
+    df["up_vol"] = np.where(df["ret_1d"] > 0, df["volume"], 0.0)
+    df["down_vol"] = np.where(df["ret_1d"] < 0, df["volume"], 0.0)
+    up_vol_50 = g["up_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
+    down_vol_50 = g["down_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
+    df["up_down_ratio"] = np.where(down_vol_50 > 0, up_vol_50 / down_vol_50, 1.0)
+
+    # 6. ATR (Average True Range) & 3-Day Squeeze Calculation
+    prev_close = g["close"].shift(1)
+    tr = np.maximum(
+        df["high"] - df["low"],
+        np.maximum(abs(df["high"] - prev_close), abs(df["low"] - prev_close)),
+    )
+    df["atr_14"] = tr.groupby(df["symbol"]).transform(
+        lambda s: s.rolling(14, min_periods=5).mean()
+    )
+
+    roll_high_3 = g["high"].transform(lambda s: s.rolling(3, min_periods=3).max())
+    roll_low_3 = g["low"].transform(lambda s: s.rolling(3, min_periods=3).min())
+    df["range_3d"] = roll_high_3 - roll_low_3
+    df["tight_3d_range"] = np.where(df["close"] > 0, df["range_3d"] / df["close"], np.nan)
+
+    # Daily range & legacy tightness passes
     df["daily_range"] = np.where(df["close"] > 0, (df["high"] - df["low"]) / df["close"], np.nan)
-    
     roll_high_5 = g["high"].transform(lambda s: s.rolling(5, min_periods=3).max())
     roll_low_5 = g["low"].transform(lambda s: s.rolling(5, min_periods=3).min())
     df["tightness_squeeze_5d"] = (roll_high_5 / roll_low_5) - 1.0
     df["tight_squeeze_pass"] = (df["tightness_squeeze_5d"] <= 0.08).astype(int)
-
     adr_20 = g["daily_range"].transform(lambda s: s.rolling(20, min_periods=10).mean())
     adr_5 = g["daily_range"].transform(lambda s: s.rolling(5, min_periods=3).mean())
     df["tight_adr_pass"] = ((adr_5 <= 0.5 * adr_20) & (df["daily_range"] <= 0.05)).astype(int)
-
     tight_single_day = (df["daily_range"] <= 0.05).astype(int)
     df["tight_consecutive_pass"] = (
         g["daily_range"].transform(
@@ -140,12 +163,8 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         ) == 1
     ).astype(int)
 
-    df["price_tightness_pass"] = (
-        (tight_single_day == 1)
-        | (df["tight_squeeze_pass"] == 1)
-        | (df["tight_adr_pass"] == 1)
-        | (df["tight_consecutive_pass"] == 1)
-    ).astype(int)
+    # Price tightness pass upgraded to ATR-normalized squeeze
+    df["price_tightness_pass"] = (df["range_3d"] <= (1.2 * df["atr_14"])).astype(int)
 
     # Legacy VCP Support
     df["range_20"] = g.apply(
@@ -168,7 +187,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         )
     ).astype(int)
 
-    # 6. Prior 6-Month Move (125 Days) & Volume Dry-Up Verification
+    # 7. 6-Month Advance (125 Sessions) & Volume Accumulation
     roll_min_125 = g["low"].transform(lambda s: s.rolling(125, min_periods=25).min())
     df["gain_6m"] = np.where(roll_min_125 > 0, (df["close"] / roll_min_125) - 1.0, 0.0)
 
@@ -180,26 +199,69 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["max_vol_ratio_6m"] = g["vol_ratio_50"].transform(
         lambda s: s.rolling(125, min_periods=25).max()
     )
-
     df["vol_dryup_pass"] = (df["volume"] <= 0.5 * df["avg_vol_50"]).astype(int)
 
-    # 7. IPO vs Established Classification
+    # 8. Net New Highs (20-Day Lookback)
+    high_20 = g["high"].transform(lambda s: s.rolling(20, min_periods=10).max())
+    low_20 = g["low"].transform(lambda s: s.rolling(20, min_periods=10).min())
+    df["is_new_high_20"] = (df["close"] >= high_20).astype(int)
+    df["is_new_low_20"] = (df["close"] <= low_20).astype(int)
+    df["nh_nl_val"] = df["is_new_high_20"] - df["is_new_low_20"]
+
+    # =========================================================================
+    # THE 5-RULE ACTIONABILITY GAUNTLET (MICRO SETUP TRIGGER)
+    # =========================================================================
+    # Rule 1: Macro Trend Health (Price > 50 EMA > 200 EMA)
+    rule_trend = (df["close"] > df["ema_50"]) & (df["ema_50"] > df["ema_200"])
+
+    # Rule 2: Prior 6-Month Institutional Advance >= 30%
+    rule_power = df["gain_6m"] >= 0.30
+
+    # Rule 3: Strike Zone (Resting within -1% to +5% of 10 EMA OR 20 EMA OR 50 EMA)
+    dist_10 = (df["close"] - df["ema_10"]) / df["ema_10"]
+    dist_20 = (df["close"] - df["ema_20"]) / df["ema_20"]
+    dist_50 = (df["close"] - df["ema_50"]) / df["ema_50"]
+    rule_strike_zone = (
+        ((dist_10 >= -0.01) & (dist_10 <= 0.05))
+        | ((dist_20 >= -0.01) & (dist_20 <= 0.05))
+        | ((dist_50 >= -0.01) & (dist_50 <= 0.05))
+    )
+
+    # Rule 4: Abnormal Volatility Contraction (3-Day Range <= 1.2x ATR-14)
+    rule_coil = df["range_3d"] <= (1.2 * df["atr_14"])
+
+    # Rule 5: Volume Dry-Up (Today's Volume <= 0.5x 50D Average)
+    rule_dryup = df["volume"] <= (0.5 * df["avg_vol_50"])
+
+    df["actionable_setup_pass"] = (
+        rule_trend & rule_power & rule_strike_zone & rule_coil & rule_dryup
+    ).astype(int)
+
+    # =========================================================================
+    # IPO CLASSIFICATION & VOLUME (5 Crore Avg Ex-Listing Day)
+    # =========================================================================
     history_count = g["close"].transform(lambda s: s.rolling(200, min_periods=1).count())
     df["is_ipo"] = (history_count < 150).astype(int)
 
-    # Buy Setup Flags
+    df["days_listed"] = g.cumcount() + 1
+    if "turnover" not in df.columns:
+        df["turnover"] = df["close"] * df["volume"]
+    df["turnover_ex_list"] = np.where(df["days_listed"] == 1, np.nan, df["turnover"])
+
+    expanding_avg = g["turnover_ex_list"].transform(lambda s: s.expanding().mean())
+    rolling_avg = g["turnover_ex_list"].transform(lambda s: s.rolling(20, min_periods=1).mean())
+
+    df["ipo_turnover_avg"] = np.where(df["days_listed"] < 21, expanding_avg, rolling_avg)
+    df["ipo_vol_pass"] = (df["ipo_turnover_avg"] >= 50000000).astype(int)
+    df["ipo_tight_pass"] = (df["daily_range"] <= 0.05).astype(int)
+
+    # Qualified Setups
     df["established_buy_setup"] = (
-        (df["is_ipo"] == 0)
-        & (df["trend_template_pass"] == 1)
-        & (df["gain_6m"] >= 0.20)
-        & (df["vol_2x_count_6m"] >= 2)
-        & (df["vol_dryup_pass"] == 1)
-        & (df["price_tightness_pass"] == 1)
+        (df["is_ipo"] == 0) & (df["actionable_setup_pass"] == 1)
     ).astype(int)
 
     df["ipo_buy_setup"] = (
-        (df["is_ipo"] == 1)
-        & (df["price_tightness_pass"] == 1)
+        (df["is_ipo"] == 1) & (df["ipo_tight_pass"] == 1) & (df["ipo_vol_pass"] == 1)
     ).astype(int)
 
     return df
@@ -212,7 +274,6 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         DEFAULT_HIGH_STRENGTH_THRESHOLD,
     )
 
-    # Rank within each trading date
     data["stock_strength_score"] = (
         data.groupby("date")["ret_20d"].rank(pct=True) * 35
         + data.groupby("date")["ret_60d"].rank(pct=True) * 35
@@ -226,14 +287,17 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         data["stock_strength_score"] >= threshold
     ).astype(int)
 
-    # Buy Setup Ranking Score (Point system: Gain Size + Peak Volume + Tightness)
+    # Buy Setup Ranking Score (Points: Gain Size + Peak Volume + Tightness)
     gain_pts = data.groupby("date")["gain_6m"].rank(pct=True) * 35
     vol_pts = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35
-    price_tight_pts = (1.0 - data.groupby("date")["daily_range"].rank(pct=True)) * 15
+    price_tight_pts = (1.0 - data.groupby("date")["tight_3d_range"].rank(pct=True)) * 15
     vol_tight_pts = (1.0 - data.groupby("date")["vol_ratio_50"].rank(pct=True)) * 15
 
     data["buy_setup_score"] = (
-        gain_pts.fillna(0) + vol_pts.fillna(0) + price_tight_pts.fillna(0) + vol_tight_pts.fillna(0)
+        gain_pts.fillna(0)
+        + vol_pts.fillna(0)
+        + price_tight_pts.fillna(0)
+        + vol_tight_pts.fillna(0)
     ).round(2)
 
     return data
@@ -252,6 +316,12 @@ def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.Data
         eq_ret_10d=("ret_10d", "mean"),
         eq_ret_20d=("ret_20d", "mean"),
         eq_ret_60d=("ret_60d", "mean"),
+        med_ret_20d=("ret_20d", "median"),
+        med_ret_60d=("ret_60d", "median"),
+        pct_aligned=("full_alignment", "mean"),
+        med_up_down_ratio=("up_down_ratio", "median"),
+        actionability_raw=("actionable_setup_pass", "mean"),
+        nh_nl_net=("nh_nl_val", "mean"),
         pct_above_20=("above_20", "mean"),
         pct_above_50=("above_50", "mean"),
         pct_above_200=("above_200", "mean"),
@@ -299,91 +369,61 @@ def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.Data
 
 
 def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
-    w = settings["scoring"]
     data = df.copy()
+    group_col = data.columns[1]
 
-    required_weights = [
-        "trend",
-        "breadth",
-        "rs",
-        "high_strength",
-        "volume",
-        "breakout",
-        "penalty",
-    ]
-    missing_weights = [key for key in required_weights if key not in w]
-    if missing_weights:
-        raise ValueError(
-            "Missing scoring settings: "
-            f"{missing_weights}"
-        )
+    # =========================================================================
+    # AXIS 1: LEADERSHIP SCORE (MACRO INSTITUTIONAL FOOTPRINT)
+    # 35% Price Velocity (Median Returns)
+    # 35% Structural Alignment (20 > 50 > 200 EMA)
+    # 30% Institutional Volume Footprint (50-Day Cumulative Up/Down Volume Ratio)
+    # =========================================================================
+    v_20 = data.groupby("date")["med_ret_20d"].rank(pct=True)
+    v_60 = data.groupby("date")["med_ret_60d"].rank(pct=True)
+    velocity_pts = ((v_20 + v_60) / 2.0) * 35.0
 
-    data["trend_score"] = (
-        (data.groupby("date")["eq_ret_20d"].rank(pct=True) * 40)
-        + (data.groupby("date")["eq_ret_60d"].rank(pct=True) * 40)
-        + ((data["pct_above_50"] / 100) * 20)
-    ) / 100 * w["trend"]
+    structure_pts = data.groupby("date")["pct_aligned"].rank(pct=True) * 35.0
+    volume_pts = data.groupby("date")["med_up_down_ratio"].rank(pct=True) * 30.0
 
-    data["breadth_score"] = (
-        (data["pct_above_20"] + data["pct_above_50"] + data["pct_above_200"])
-        / 300
-    ) * w["breadth"]
+    data["leadership_score"] = (velocity_pts + structure_pts + volume_pts).clip(lower=0, upper=100)
 
-    data["rs_score"] = (
-        (data.groupby("date")["eq_ret_20d"].rank(pct=True) + data.groupby("date")["eq_ret_60d"].rank(pct=True))
-        / 2
-    ) * w["rs"]
+    # 3-Day EWM Smoothing on Leadership Score to prevent daily noise whipsaws
+    data["leadership_score"] = (
+        data.groupby(group_col)["leadership_score"]
+        .transform(lambda s: s.ewm(span=3, min_periods=1).mean())
+        .round(1)
+    )
 
-    data["high_strength_score"] = (
-        data["pct_high_strength"] / 100
-    ) * w["high_strength"]
+    # Backward compatibility alias for existing dashboard views
+    data["strength_score"] = data["leadership_score"]
 
-    data["volume_score"] = (
-        0.70 * data.groupby("date")["acc_minus_dist"].rank(pct=True)
-        + 0.30 * (
-            data.groupby("date")["buy_volume_shock_pct"].rank(pct=True)
-            - data.groupby("date")["sell_volume_shock_pct"].rank(pct=True)
-        )
-    ) * w["volume"]
+    # =========================================================================
+    # AXIS 2: ACTIONABILITY SCORE (RAW SETUP DENSITY %)
+    # Displays the exact % of constituents passing the 5-rule gauntlet today
+    # =========================================================================
+    data["actionability_score"] = (data["actionability_raw"] * 100).round(1)
 
-    data["breakout_score"] = (
-        0.60 * (data["breakout_pct"] / 100)
-        + 0.40 * (data["vcp_ready_pct"] / 100)
-    ) * w["breakout"]
+    # Breadth net metric
+    data["nh_nl_net"] = (data["nh_nl_net"] * 100).round(1)
 
-    data["penalty_score"] = (
-        ((data["median_dist_52w_high"] < -0.20).astype(int) * 0.4)
-        + ((data["pct_above_20"] > 85).astype(int) * 0.6)
-    ) * w["penalty"]
-
-    data["strength_score"] = (
-        data["trend_score"]
-        + data["breadth_score"]
-        + data["rs_score"]
-        + data["high_strength_score"]
-        + data["volume_score"]
-        + data["breakout_score"]
-        - data["penalty_score"]
-    ).clip(lower=0, upper=100)
-
+    # State Assignment
     conditions = [
-        (data["strength_score"] >= 70)
-        & (data["pct_above_50"] >= 60)
-        & (data["pct_high_strength"] >= 35),
-        (data["strength_score"] >= 55)
-        & (data["pct_above_20"] >= 55),
-        (data["pct_above_20"] < 40)
-        & (data["eq_ret_20d"] < 0),
-        (data["pct_above_20"] > 80)
-        & (data["median_dist_52w_high"] > -0.05),
+        (data["leadership_score"] >= 70) & (data["actionability_score"] >= 15),
+        (data["leadership_score"] >= 70) & (data["actionability_score"] < 15),
+        (data["leadership_score"] < 50) & (data["actionability_score"] >= 15),
+        (data["leadership_score"] < 50) & (data["actionability_score"] < 15),
     ]
-
-    labels = ["Strong", "Emerging", "Weakening", "Exhausted"]
+    labels = [
+        "Fresh Leader (HUNT)",
+        "Extended Leader (WAIT)",
+        "Speculative Coil (AVOID)",
+        "Dead (AVOID)",
+    ]
 
     data["regime"] = np.select(
         conditions,
         labels,
-        default="Bottoming",
+        default="Neutral Transition",
     )
 
     return data
@@ -498,7 +538,7 @@ def main() -> None:
         processed / "basic_industry_daily_features.parquet",
     )
 
-    print("feature build complete (Strict EQ Mainboard Only)")
+    print("feature build complete (Strict EQ Mainboard Only, 2-Axis Engine Locked)")
 
 
 if __name__ == "__main__":
