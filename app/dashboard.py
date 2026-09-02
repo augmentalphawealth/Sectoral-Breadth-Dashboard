@@ -292,7 +292,7 @@ def format_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
     for column in [
         "1D Return", "5D Return", "20D Return", "60D Return",
-        "Distance from 52W High", "6M Gain", "Candle Range", "3-Day Squeeze",
+        "Distance from 52W High", "6M Gain", "Candle Range", "Price Tightness (3D)",
     ]:
         if column in data.columns:
             data[column] = data[column].apply(lambda value: fmt_pct(value, True))
@@ -300,7 +300,7 @@ def format_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
         if column in data.columns:
             data[column] = data[column].apply(fmt_int)
     for column in [
-        "Strength", "Close", "Buy Setup Score", "Current Vol vs 50D Avg",
+        "Strength", "Close", "Buy Setup Score", "Vol Contraction (vs 50D)",
         "50D Up/Down Vol", "14D ATR", "Avg Turnover (Cr)",
     ]:
         if column in data.columns:
@@ -355,8 +355,9 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     if buy_candidates.empty:
         st.info("No established stocks currently meet all 5 criteria in leading sectors today.")
     else:
+        # Ranked strictly by Coil and Dry-Up to surface the best VCPs
         buy_candidates = buy_candidates.sort_values(
-            ["gain_6m", "stock_strength_score"], ascending=[False, False]
+            ["tight_3d_range", "vol_ratio_50", "gain_6m"], ascending=[True, True, False]
         ).reset_index(drop=True)
         buy_candidates.insert(0, "Rank", range(1, len(buy_candidates) + 1))
 
@@ -367,16 +368,15 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
             "symbol": "Symbol",
             "basic_industry": "Basic Industry",
             "close": "Close",
+            "tight_3d_range": "Price Tightness (3D)",
+            "vol_ratio_50": "Vol Contraction (vs 50D)",
             "gain_6m": "6M Gain",
-            "up_down_ratio": "50D Up/Down Vol",
-            "atr_14": "14D ATR",
-            "tight_3d_range": "3-Day Squeeze",
-            "stock_strength_score": "Strength",
         })
 
+        # Focused execution columns only
         keep_cols = [
-            "Rank", "Symbol", "Chart", "Basic Industry", "Close", "6M Gain",
-            "50D Up/Down Vol", "14D ATR", "3-Day Squeeze", "Strength",
+            "Rank", "Symbol", "Chart", "Basic Industry", "Close",
+            "Price Tightness (3D)", "Vol Contraction (vs 50D)", "6M Gain"
         ]
         display_buy = display_buy[[col for col in keep_cols if col in display_buy.columns]]
         st.dataframe(
@@ -412,11 +412,10 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
             "close": "Close",
             "daily_range": "Candle Range",
             "ret_20d": "20D Return",
-            "stock_strength_score": "Strength",
         })
         keep_ipo = [
             "Rank", "Symbol", "Chart", "Basic Industry", "Close",
-            "Candle Range", "Avg Turnover (Cr)", "20D Return", "Strength",
+            "Candle Range", "Avg Turnover (Cr)", "20D Return",
         ]
         display_ipo = display_ipo[[col for col in keep_ipo if col in display_ipo.columns]]
         st.dataframe(
