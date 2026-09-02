@@ -33,9 +33,11 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["avg_vol_50"] = g["volume"].transform(
         lambda s: s.rolling(50, min_periods=15).mean()
     )
+    # 20-Day Average Rupee Turnover (Used for Liquidity Filter)
     df["avg_val_20"] = g["turnover"].transform(
         lambda s: s.rolling(20, min_periods=10).mean()
     )
+    
     df["ret_1d"] = g["close"].pct_change(1)
 
     for win in analysis.get("return_windows", [5, 10, 20, 60]):
@@ -209,10 +211,18 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["nh_nl_val"] = df["is_new_high_20"] - df["is_new_low_20"]
 
     # =========================================================================
-    # THE 5-RULE ACTIONABILITY GAUNTLET (MICRO SETUP TRIGGER)
+    # THE 6-RULE ACTIONABILITY GAUNTLET (MICRO SETUP TRIGGER)
     # =========================================================================
-    # Rule 1: Macro Trend Health (Price > 50 EMA > 200 EMA)
-    rule_trend = (df["close"] > df["ema_50"]) & (df["ema_50"] > df["ema_200"])
+    # Rule 0: Baseline Liquidity (20-Day Avg Turnover >= 5 Crore)
+    rule_liquidity = df["avg_val_20"] >= 50000000
+
+    # Rule 1: Macro Trend Health (True Stage 2: Price > 50, 20>50>200, within 25% of 52W High)
+    rule_trend = (
+        (df["close"] > df["ema_50"]) 
+        & (df["ema_20"] > df["ema_50"]) 
+        & (df["ema_50"] > df["ema_200"])
+        & (df["dist_52w_high"] >= -0.25)
+    )
 
     # Rule 2: Prior 6-Month Institutional Advance >= 30%
     rule_power = df["gain_6m"] >= 0.30
@@ -234,7 +244,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     rule_dryup = df["volume"] <= (0.5 * df["avg_vol_50"])
 
     df["actionable_setup_pass"] = (
-        rule_trend & rule_power & rule_strike_zone & rule_coil & rule_dryup
+        rule_liquidity & rule_trend & rule_power & rule_strike_zone & rule_coil & rule_dryup
     ).astype(int)
 
     # =========================================================================
