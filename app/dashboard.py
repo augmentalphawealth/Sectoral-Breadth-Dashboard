@@ -392,11 +392,18 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     st.markdown("### IPO Tight Setups (New Listings)")
     st.caption("Newly listed IPO stocks in leading industries with daily range ≤ 5% and average turnover > 5 Crore.")
     if ipo_candidates.empty:
-        st.info("No newly listed IPO stocks in leading industries currently meet the 5-Crore turnover and tightness criteria.")
+        st.info("No newly listed IPO stocks in leading industries currently meet the turnover and tightness criteria.")
     else:
-        ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates["ipo_turnover_avg"] / 10000000.0
+        # Quick Fix: Safely handle missing ipo_turnover_avg until the history script is updated
+        if "ipo_turnover_avg" in ipo_candidates.columns:
+            ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates["ipo_turnover_avg"] / 10000000.0
+        else:
+            ipo_candidates["Avg Turnover (Cr)"] = None
+            
         ipo_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + ipo_candidates["symbol"].astype(str)
-        ipo_candidates = ipo_candidates.sort_values("daily_range", ascending=True).reset_index(drop=True)
+        if "daily_range" in ipo_candidates.columns:
+            ipo_candidates = ipo_candidates.sort_values("daily_range", ascending=True)
+        ipo_candidates = ipo_candidates.reset_index(drop=True)
         ipo_candidates.insert(0, "Rank", range(1, len(ipo_candidates) + 1))
 
         display_ipo = ipo_candidates.rename(columns={
@@ -489,7 +496,9 @@ def basic_industry_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     ].copy()
     if not stocks.empty:
         stocks["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + stocks["symbol"].astype(str)
-        stocks = stocks.sort_values("ret_20d", ascending=False).reset_index(drop=True)
+        if "ret_20d" in stocks.columns:
+            stocks = stocks.sort_values("ret_20d", ascending=False)
+        stocks = stocks.reset_index(drop=True)
         stocks.insert(0, "Rank", range(1, len(stocks) + 1))
         disp_stocks = stocks.rename(columns={
             "symbol": "Symbol",
