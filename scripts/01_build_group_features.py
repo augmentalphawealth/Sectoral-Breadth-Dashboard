@@ -19,21 +19,18 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     )
     g = df.groupby("symbol", group_keys=False)
 
-    # 1. Exponential Moving Averages (EMAs)
     for span in [10, 20, 50, 150, 200]:
         df[f"ema_{span}"] = g["close"].transform(
             lambda s: s.ewm(span=span, min_periods=max(5, span // 4)).mean()
         )
         df[f"sma_{span}"] = df[f"ema_{span}"]
 
-    # 2. Volume and Turnover Averages
     df["avg_vol_20"] = g["volume"].transform(
         lambda s: s.rolling(20, min_periods=10).mean()
     )
     df["avg_vol_50"] = g["volume"].transform(
         lambda s: s.rolling(50, min_periods=15).mean()
     )
-    # 20-Day Average Rupee Turnover (Used for Liquidity Filter)
     df["avg_val_20"] = g["turnover"].transform(
         lambda s: s.rolling(20, min_periods=10).mean()
     )
@@ -47,7 +44,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["above_50"] = (df["close"] > df["ema_50"]).astype(int)
     df["above_200"] = (df["close"] > df["ema_200"]).astype(int)
 
-    # 3. 52-Week High and Low Metrics
     df["dist_52w_high"] = g["close"].transform(
         lambda s: s / s.rolling(252, min_periods=60).max() - 1
     )
@@ -114,7 +110,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         & (df["ret_1d"] < 0)
     ).astype(int)
 
-    # 4. Moving Average Stacking Order
     df["full_alignment"] = (
         (df["ema_20"] > df["ema_50"])
         & (df["ema_50"] > df["ema_200"])
@@ -127,14 +122,12 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         & (df["dist_52w_high"] > -0.25)
     ).astype(int)
 
-    # 5. Up/Down Volume Ratio (50-Day Cumulative Institutional Skew)
     df["up_vol"] = np.where(df["ret_1d"] > 0, df["volume"], 0.0)
     df["down_vol"] = np.where(df["ret_1d"] < 0, df["volume"], 0.0)
     up_vol_50 = g["up_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
     down_vol_50 = g["down_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
     df["up_down_ratio"] = np.where(down_vol_50 > 0, up_vol_50 / down_vol_50, 1.0)
 
-    # 6. ATR (Average True Range) & 3-Day Squeeze Calculation
     prev_close = g["close"].shift(1)
     tr = np.maximum(
         df["high"] - df["low"],
@@ -149,7 +142,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["range_3d"] = roll_high_3 - roll_low_3
     df["tight_3d_range"] = np.where(df["close"] > 0, df["range_3d"] / df["close"], np.nan)
 
-    # Daily range & legacy tightness passes
     df["daily_range"] = np.where(df["close"] > 0, (df["high"] - df["low"]) / df["close"], np.nan)
     roll_high_5 = g["high"].transform(lambda s: s.rolling(5, min_periods=3).max())
     roll_low_5 = g["low"].transform(lambda s: s.rolling(5, min_periods=3).min())
@@ -165,10 +157,8 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         ) == 1
     ).astype(int)
 
-    # Price tightness pass upgraded to ATR-normalized squeeze
     df["price_tightness_pass"] = (df["range_3d"] <= (1.2 * df["atr_14"])).astype(int)
 
-    # Legacy VCP Support
     df["range_20"] = g.apply(
         lambda x: (
             x["high"].rolling(20, min_periods=10).max()
@@ -189,7 +179,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         )
     ).astype(int)
 
-    # 7. 6-Month Advance (125 Sessions) & Volume Accumulation
     roll_min_125 = g["low"].transform(lambda s: s.rolling(125, min_periods=25).min())
     df["gain_6m"] = np.where(roll_min_125 > 0, (df["close"] / roll_min_125) - 1.0, 0.0)
 
@@ -203,20 +192,14 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     )
     df["vol_dryup_pass"] = (df["volume"] <= 0.5 * df["avg_vol_50"]).astype(int)
 
-    # 8. Net New Highs (20-Day Lookback)
     high_20 = g["high"].transform(lambda s: s.rolling(20, min_periods=10).max())
     low_20 = g["low"].transform(lambda s: s.rolling(20, min_periods=10).min())
     df["is_new_high_20"] = (df["close"] >= high_20).astype(int)
     df["is_new_low_20"] = (df["close"] <= low_20).astype(int)
     df["nh_nl_val"] = df["is_new_high_20"] - df["is_new_low_20"]
 
-    # =========================================================================
-    # THE 6-RULE ACTIONABILITY GAUNTLET (MICRO SETUP TRIGGER)
-    # =========================================================================
-    # Rule 0: Baseline Liquidity (20-Day Avg Turnover >= 5 Crore)
     rule_liquidity = df["avg_val_20"] >= 50000000
 
-    # Rule 1: Macro Trend Health (True Stage 2: Price > 50, 20>50>200, within 25% of 52W High)
     rule_trend = (
         (df["close"] > df["ema_50"]) 
         & (df["ema_20"] > df["ema_50"]) 
@@ -224,10 +207,8 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         & (df["dist_52w_high"] >= -0.25)
     )
 
-    # Rule 2: Prior 6-Month Institutional Advance >= 30%
     rule_power = df["gain_6m"] >= 0.30
 
-    # Rule 3: Strike Zone (Resting within -1% to +5% of 10 EMA OR 20 EMA OR 50 EMA)
     dist_10 = (df["close"] - df["ema_10"]) / df["ema_10"]
     dist_20 = (df["close"] - df["ema_20"]) / df["ema_20"]
     dist_50 = (df["close"] - df["ema_50"]) / df["ema_50"]
@@ -237,19 +218,13 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         | ((dist_50 >= -0.01) & (dist_50 <= 0.05))
     )
 
-    # Rule 4: Abnormal Volatility Contraction (3-Day Range <= 1.2x ATR-14)
     rule_coil = df["range_3d"] <= (1.2 * df["atr_14"])
-
-    # Rule 5: Volume Dry-Up (Today's Volume <= 0.5x 50D Average)
     rule_dryup = df["volume"] <= (0.5 * df["avg_vol_50"])
 
     df["actionable_setup_pass"] = (
         rule_liquidity & rule_trend & rule_power & rule_strike_zone & rule_coil & rule_dryup
     ).astype(int)
 
-    # =========================================================================
-    # IPO CLASSIFICATION & VOLUME (5 Crore Avg Ex-Listing Day)
-    # =========================================================================
     history_count = g["close"].transform(lambda s: s.rolling(200, min_periods=1).count())
     df["is_ipo"] = (history_count < 150).astype(int)
 
@@ -265,7 +240,6 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     df["ipo_vol_pass"] = (df["ipo_turnover_avg"] >= 50000000).astype(int)
     df["ipo_tight_pass"] = (df["daily_range"] <= 0.05).astype(int)
 
-    # Qualified Setups
     df["established_buy_setup"] = (
         (df["is_ipo"] == 0) & (df["actionable_setup_pass"] == 1)
     ).astype(int)
@@ -297,7 +271,6 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         data["stock_strength_score"] >= threshold
     ).astype(int)
 
-    # Buy Setup Ranking Score (Points: Gain Size + Peak Volume + Tightness)
     gain_pts = data.groupby("date")["gain_6m"].rank(pct=True) * 35
     vol_pts = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35
     price_tight_pts = (1.0 - data.groupby("date")["tight_3d_range"].rank(pct=True)) * 15
@@ -382,12 +355,6 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data = df.copy()
     group_col = data.columns[1]
 
-    # =========================================================================
-    # AXIS 1: LEADERSHIP SCORE (MACRO INSTITUTIONAL FOOTPRINT)
-    # 35% Price Velocity (Median Returns)
-    # 35% Structural Alignment (20 > 50 > 200 EMA)
-    # 30% Institutional Volume Footprint (50-Day Cumulative Up/Down Volume Ratio)
-    # =========================================================================
     v_20 = data.groupby("date")["med_ret_20d"].rank(pct=True)
     v_60 = data.groupby("date")["med_ret_60d"].rank(pct=True)
     velocity_pts = ((v_20 + v_60) / 2.0) * 35.0
@@ -397,26 +364,17 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
 
     data["leadership_score"] = (velocity_pts + structure_pts + volume_pts).clip(lower=0, upper=100)
 
-    # 3-Day EWM Smoothing on Leadership Score to prevent daily noise whipsaws
     data["leadership_score"] = (
         data.groupby(group_col)["leadership_score"]
         .transform(lambda s: s.ewm(span=3, min_periods=1).mean())
         .round(1)
     )
 
-    # Backward compatibility alias for existing dashboard views
     data["strength_score"] = data["leadership_score"]
 
-    # =========================================================================
-    # AXIS 2: ACTIONABILITY SCORE (RAW SETUP DENSITY %)
-    # Displays the exact % of constituents passing the 5-rule gauntlet today
-    # =========================================================================
     data["actionability_score"] = (data["actionability_raw"] * 100).round(1)
-
-    # Breadth net metric
     data["nh_nl_net"] = (data["nh_nl_net"] * 100).round(1)
 
-    # State Assignment
     conditions = [
         (data["leadership_score"] >= 70) & (data["actionability_score"] >= 15),
         (data["leadership_score"] >= 70) & (data["actionability_score"] < 15),
@@ -449,104 +407,50 @@ def main() -> None:
     master = read_parquet_safe(master_file)
     prices = read_parquet_safe(prices_file)
 
-    print(f"Using classified master: {master_file}")
-    print(f"Master stocks: {len(master)}")
-    print(f"Price rows: {len(prices)}")
-
     required_price_columns = [
-        "symbol",
-        "date",
-        "open",
-        "high",
-        "low",
-        "close",
-        "volume",
+        "symbol", "date", "open", "high", "low", "close", "volume",
     ]
-    missing_price_columns = [
-        column for column in required_price_columns if column not in prices.columns
-    ]
+    missing_price_columns = [col for col in required_price_columns if col not in prices.columns]
     if missing_price_columns:
-        raise ValueError(
-            "Prices file is missing required columns: "
-            f"{missing_price_columns}"
-        )
+        raise ValueError(f"Prices file is missing required columns: {missing_price_columns}")
 
     if "turnover" not in prices.columns:
         prices["turnover"] = prices["close"] * prices["volume"]
 
     required_master_columns = [
-        "symbol",
-        "isin",
-        "industry",
-        "basic_industry",
-        "sector",
-        "series",
+        "symbol", "isin", "industry", "basic_industry", "sector", "series",
     ]
-    missing_master_columns = [
-        column
-        for column in required_master_columns
-        if column not in master.columns
-    ]
+    missing_master_columns = [col for col in required_master_columns if col not in master.columns]
     if missing_master_columns:
-        raise ValueError(
-            "Classified master is missing required columns: "
-            f"{missing_master_columns}"
-        )
+        raise ValueError(f"Classified master is missing required columns: {missing_master_columns}")
 
     join_columns = required_master_columns.copy()
     if "mcap" in master.columns:
         join_columns.append("mcap")
 
-    master_for_join = (
-        master[join_columns]
-        .drop_duplicates(subset=["symbol"])
-        .copy()
-    )
+    master_for_join = master[join_columns].drop_duplicates(subset=["symbol"]).copy()
 
-    stock = prices.merge(
-        master_for_join,
-        on="symbol",
-        how="left",
-    )
+    stock = prices.merge(master_for_join, on="symbol", how="left")
     stock["date"] = pd.to_datetime(stock["date"])
 
     if "mcap" not in stock.columns:
         stock["mcap"] = np.nan
 
-    # =========================================================================
-    # STRICT EQ-ONLY FIREWALL (PURGES BE, BZ, SME, AND UNCLASSIFIED NOISE)
-    # Aligns universe strictly to Mainboard EQ equities tradable on Zerodha Kite.
-    # =========================================================================
     stock["series"] = stock["series"].fillna("").astype(str).str.strip()
     stock = stock[stock["series"] == "EQ"].copy()
-
-    missing_classification = stock["industry"].isna().sum()
-    print(
-        "Price rows without industry classification: "
-        f"{missing_classification}"
-    )
 
     stock = add_stock_indicators(stock, settings)
     stock = add_stock_strength(stock, settings)
 
-    write_parquet(
-        stock,
-        processed / "stock_daily_features.parquet",
-    )
+    write_parquet(stock, processed / "stock_daily_features.parquet")
 
     industry = aggregate_group(stock, "industry", settings)
     industry = add_group_scores(industry, settings)
-    write_parquet(
-        industry,
-        processed / "industry_daily_features.parquet",
-    )
+    write_parquet(industry, processed / "industry_daily_features.parquet")
 
     basic = aggregate_group(stock, "basic_industry", settings)
     basic = add_group_scores(basic, settings)
-    write_parquet(
-        basic,
-        processed / "basic_industry_daily_features.parquet",
-    )
+    write_parquet(basic, processed / "basic_industry_daily_features.parquet")
 
     print("feature build complete (Strict EQ Mainboard Only, 2-Axis Engine Locked)")
 
