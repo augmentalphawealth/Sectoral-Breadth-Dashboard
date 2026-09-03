@@ -140,13 +140,17 @@ def render_setup_matrix(buy_candidates: pd.DataFrame):
     if buy_candidates.empty: return
     
     chart_df = buy_candidates.copy()
-    # Safely generate columns for charting
-    chart_df["3D Range %"] = chart_df.get("tight_3d_range", pd.Series([0]*len(chart_df))) * 100
-    chart_df["6M Gain %"] = chart_df.get("gain_6m", pd.Series([0]*len(chart_df))) * 100
+    
+    # Safely extract and format columns for charting
+    tight_val = chart_df.get("tight_3d_range", pd.Series([0]*len(chart_df), index=chart_df.index))
+    gain_val = chart_df.get("gain_6m", pd.Series([0]*len(chart_df), index=chart_df.index))
+    vol_ratio = chart_df.get("vol_ratio_50", pd.Series([1]*len(chart_df), index=chart_df.index))
+    
+    chart_df["3D Range %"] = tight_val.fillna(0) * 100
+    chart_df["6M Gain %"] = gain_val.fillna(0) * 100
     
     # Inverse volume ratio for bubble size (drier volume = bigger bubble)
-    vol_ratio = chart_df.get("vol_ratio_50", pd.Series([1]*len(chart_df)))
-    chart_df["Dryness Bubble"] = 1.0 / (vol_ratio.clip(lower=0.1) + 0.1)
+    chart_df["Dryness Bubble"] = 1.0 / (vol_ratio.fillna(1.0).clip(lower=0.1) + 0.1)
     
     fig = px.scatter(
         chart_df, x="3D Range %", y="6M Gain %", size="Dryness Bubble", 
@@ -242,23 +246,23 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         keep_cols = ["Rank", "Symbol", "Chart", "Basic Industry", "Close", "Priority Score", "3-Day Range", "Vol vs 50D", "6M Gain"]
         display_buy = display_buy[[col for col in keep_cols if col in display_buy.columns]]
 
-        # Convert ranges to actual percentages for display
+        # Convert ranges to actual percentages for display safely
         if "3-Day Range" in display_buy.columns:
-            display_buy["3-Day Range"] = display_buy["3-Day Range"] * 100
+            display_buy["3-Day Range"] = display_buy["3-Day Range"].fillna(0) * 100
         if "6M Gain" in display_buy.columns:
-            display_buy["6M Gain"] = display_buy["6M Gain"] * 100
+            display_buy["6M Gain"] = display_buy["6M Gain"].fillna(0) * 100
 
         st.dataframe(
             display_buy,
             use_container_width=True, hide_index=True, height=450,
             column_config={
                 "Rank": st.column_config.NumberColumn(width="small"),
-                "Symbol": st.column_config.TextColumn(weight="bold"),
+                "Symbol": st.column_config.TextColumn(),
                 "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗", width="small"),
                 "Priority Score": st.column_config.ProgressColumn("Score (0-100)", format="%.1f", min_value=0, max_value=100),
                 "3-Day Range": st.column_config.NumberColumn("3-Day Range %", format="%.2f%%"),
                 "Vol vs 50D": st.column_config.NumberColumn("Volume (vs 50D)", format="%.2fx"),
-                "6M Gain": st.column_config.NumberColumn("6M Gain", format="+%.1f%%"),
+                "6M Gain": st.column_config.NumberColumn("6M Gain", format="%+.1f%%"),
             }
         )
 
@@ -280,7 +284,10 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
         st.info("No newly listed IPO stocks in leading industries currently meet criteria.")
         return
 
-    ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates.get("ipo_turnover_avg", pd.Series([0]*len(ipo_candidates), dtype=float)) / 10000000.0
+    # Safely extract IPO turnover and calculate Crores
+    turnover_series = ipo_candidates.get("ipo_turnover_avg", pd.Series([0]*len(ipo_candidates), dtype=float))
+    ipo_candidates["Avg Turnover (Cr)"] = turnover_series.fillna(0) / 10000000.0
+    
     ipo_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + ipo_candidates["symbol"].astype(str)
     
     if "daily_range" in ipo_candidates.columns:
@@ -295,10 +302,10 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
     })
     
     if "1-Day Range" in display_ipo.columns:
-        display_ipo["1-Day Range"] = display_ipo["1-Day Range"] * 100
+        display_ipo["1-Day Range"] = display_ipo["1-Day Range"].fillna(0) * 100
         
     if "20D Return" in display_ipo.columns:
-        display_ipo["20D Return"] = display_ipo["20D Return"] * 100
+        display_ipo["20D Return"] = display_ipo["20D Return"].fillna(0) * 100
     
     keep_ipo = ["Rank", "Symbol", "Chart", "Basic Industry", "Close", "1-Day Range", "Avg Turnover (Cr)", "20D Return"]
     display_ipo = display_ipo[[col for col in keep_ipo if col in display_ipo.columns]]
@@ -308,7 +315,7 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
         use_container_width=True, hide_index=True, height=400,
         column_config={
             "Rank": st.column_config.NumberColumn(width="small"),
-            "Symbol": st.column_config.TextColumn(weight="bold"),
+            "Symbol": st.column_config.TextColumn(),
             "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗", width="small"),
             "1-Day Range": st.column_config.NumberColumn("1-Day Range %", format="%.2f%%"),
             "Avg Turnover (Cr)": st.column_config.NumberColumn("Turnover (₹ Cr)", format="₹%.1f Cr"),
@@ -341,7 +348,7 @@ def sector_leadership_view(basic_history: pd.DataFrame, selected_date: pd.Timest
         })
         
         if "20D Ret" in display_basic.columns:
-            display_basic["20D Ret"] = display_basic["20D Ret"] * 100
+            display_basic["20D Ret"] = display_basic["20D Ret"].fillna(0) * 100
         
         keep = ["Rank", "Basic Industry", "State", "Leadership", "Setup %", "Stocks", "20D Ret"]
         display_basic = display_basic[[c for c in keep if c in display_basic.columns]]
@@ -350,7 +357,7 @@ def sector_leadership_view(basic_history: pd.DataFrame, selected_date: pd.Timest
             display_basic, use_container_width=True, hide_index=True, height=450,
             column_config={
                 "Rank": st.column_config.NumberColumn(width="small"),
-                "Basic Industry": st.column_config.TextColumn(weight="bold"),
+                "Basic Industry": st.column_config.TextColumn(),
                 "State": st.column_config.TextColumn(width="medium"),
                 "Leadership": st.column_config.ProgressColumn(format="%.1f", min_value=0, max_value=100),
                 "Setup %": st.column_config.NumberColumn(format="%.1f%%"),
