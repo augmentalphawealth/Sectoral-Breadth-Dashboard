@@ -205,8 +205,8 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
 
     # --- TOP METRICS ---
     m_col = st.columns(4)
-    m_col[0].metric("Actionable Buy Setups", fmt_int(len(buy_candidates)))
-    m_col[1].metric("Leading Basic Industries", fmt_int(len(top_leaders)))
+    m_col[0].metric("Actionable Buy Setups", str(len(buy_candidates)))
+    m_col[1].metric("Leading Basic Industries", str(len(top_leaders)))
     m_col[2].metric("Market Breadth (Top Tier)", f"{len(top_leaders)} / {len(basic_latest[basic_latest.get('members', 0) >= SMALL_GROUP_LIMIT])}")
     m_col[3].metric("Data Sync", selected_date.strftime("%d %b %Y"))
 
@@ -216,7 +216,7 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
     st.markdown("### The Setup Matrix")
     st.caption("Visually hunt the best setups. Top-Right corner = Tighter Squeeze & Higher Historical Momentum.")
     if buy_candidates.empty:
-        st.info("No established stocks currently meet all 5 criteria in leading sectors today.")
+        st.info("No established stocks currently meet all criteria in leading sectors today.")
     else:
         render_setup_matrix(buy_candidates)
 
@@ -242,7 +242,12 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
         keep_cols = ["Rank", "Symbol", "Chart", "Basic Industry", "Close", "Priority Score", "3-Day Range", "Vol vs 50D", "6M Gain"]
         display_buy = display_buy[[col for col in keep_cols if col in display_buy.columns]]
 
-        # Using Streamlit Column Config for beautiful, interactive tables
+        # Convert ranges to actual percentages for display
+        if "3-Day Range" in display_buy.columns:
+            display_buy["3-Day Range"] = display_buy["3-Day Range"] * 100
+        if "6M Gain" in display_buy.columns:
+            display_buy["6M Gain"] = display_buy["6M Gain"] * 100
+
         st.dataframe(
             display_buy,
             use_container_width=True, hide_index=True, height=450,
@@ -251,9 +256,9 @@ def top_buy_setups_view(basic_history: pd.DataFrame, stock_history: pd.DataFrame
                 "Symbol": st.column_config.TextColumn(weight="bold"),
                 "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗", width="small"),
                 "Priority Score": st.column_config.ProgressColumn("Score (0-100)", format="%.1f", min_value=0, max_value=100),
-                "3-Day Range": st.column_config.NumberColumn("3-Day Range", format="%.3f"),
+                "3-Day Range": st.column_config.NumberColumn("3-Day Range %", format="%.2f%%"),
                 "Vol vs 50D": st.column_config.NumberColumn("Volume (vs 50D)", format="%.2fx"),
-                "6M Gain": st.column_config.NumberColumn("6M Gain", format="%.2f"),
+                "6M Gain": st.column_config.NumberColumn("6M Gain", format="+%.1f%%"),
             }
         )
 
@@ -275,7 +280,7 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
         st.info("No newly listed IPO stocks in leading industries currently meet criteria.")
         return
 
-    ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates.get("ipo_turnover_avg", pd.Series(dtype=float)) / 10000000.0
+    ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates.get("ipo_turnover_avg", pd.Series([0]*len(ipo_candidates), dtype=float)) / 10000000.0
     ipo_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + ipo_candidates["symbol"].astype(str)
     
     if "daily_range" in ipo_candidates.columns:
@@ -289,6 +294,12 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
         "daily_range": "1-Day Range", "ret_20d": "20D Return"
     })
     
+    if "1-Day Range" in display_ipo.columns:
+        display_ipo["1-Day Range"] = display_ipo["1-Day Range"] * 100
+        
+    if "20D Return" in display_ipo.columns:
+        display_ipo["20D Return"] = display_ipo["20D Return"] * 100
+    
     keep_ipo = ["Rank", "Symbol", "Chart", "Basic Industry", "Close", "1-Day Range", "Avg Turnover (Cr)", "20D Return"]
     display_ipo = display_ipo[[col for col in keep_ipo if col in display_ipo.columns]]
     
@@ -296,10 +307,12 @@ def ipo_watchlist_view(stock_history: pd.DataFrame, basic_history: pd.DataFrame,
         display_ipo,
         use_container_width=True, hide_index=True, height=400,
         column_config={
-            "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
-            "1-Day Range": st.column_config.NumberColumn(format="%.3f"),
+            "Rank": st.column_config.NumberColumn(width="small"),
+            "Symbol": st.column_config.TextColumn(weight="bold"),
+            "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗", width="small"),
+            "1-Day Range": st.column_config.NumberColumn("1-Day Range %", format="%.2f%%"),
             "Avg Turnover (Cr)": st.column_config.NumberColumn("Turnover (₹ Cr)", format="₹%.1f Cr"),
-            "20D Return": st.column_config.NumberColumn(format="%.3f"),
+            "20D Return": st.column_config.NumberColumn(format="%+.2f%%"),
         }
     )
 
@@ -327,16 +340,21 @@ def sector_leadership_view(basic_history: pd.DataFrame, selected_date: pd.Timest
             "eq_ret_20d": "20D Ret"
         })
         
+        if "20D Ret" in display_basic.columns:
+            display_basic["20D Ret"] = display_basic["20D Ret"] * 100
+        
         keep = ["Rank", "Basic Industry", "State", "Leadership", "Setup %", "Stocks", "20D Ret"]
         display_basic = display_basic[[c for c in keep if c in display_basic.columns]]
         
         st.dataframe(
             display_basic, use_container_width=True, hide_index=True, height=450,
             column_config={
+                "Rank": st.column_config.NumberColumn(width="small"),
+                "Basic Industry": st.column_config.TextColumn(weight="bold"),
                 "State": st.column_config.TextColumn(width="medium"),
                 "Leadership": st.column_config.ProgressColumn(format="%.1f", min_value=0, max_value=100),
                 "Setup %": st.column_config.NumberColumn(format="%.1f%%"),
-                "20D Ret": st.column_config.NumberColumn(format="%.3f"),
+                "20D Ret": st.column_config.NumberColumn(format="%+.2f%%"),
             }
         )
 
