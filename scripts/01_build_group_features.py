@@ -242,19 +242,28 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
         df["actionable_setup_pass"] = 0
 
     # =========================================================================
-    # EMA PROXIMITY TAG (CONTEXTUAL, NOT SCORED)
+    # EMA PROXIMITY TAG (CONTEXTUAL, NOT SCORED) - FIXED FOR ALL-NA ROWS
     # =========================================================================
-    dist_10 = (df["close"] - df["ema_10"]) / df["ema_10"].clip(lower=1e-9)
-    dist_20 = (df["close"] - df["ema_20"]) / df["ema_20"].clip(lower=1e-9)
-    dist_50 = (df["close"] - df["ema_50"]) / df["ema_50"].clip(lower=1e-9)
+    ema10 = df["ema_10"].clip(lower=1e-9)
+    ema20 = df["ema_20"].clip(lower=1e-9)
+    ema50 = df["ema_50"].clip(lower=1e-9)
+
+    dist_10 = (df["close"] - ema10) / ema10
+    dist_20 = (df["close"] - ema20) / ema20
+    dist_50 = (df["close"] - ema50) / ema50
+
+    # Only compute where at least one EMA is valid
+    valid_ema_mask = df[["ema_10", "ema_20", "ema_50"]].notna().any(axis=1)
 
     abs_dist = pd.concat([dist_10.abs(), dist_20.abs(), dist_50.abs()], axis=1)
     nearest_idx = abs_dist.idxmin(axis=1)
     nearest_dist = pd.concat([dist_10, dist_20, dist_50], axis=1).apply(
-        lambda row: row[nearest_idx[row.name]], axis=1
+        lambda row: row[nearest_idx[row.name]] if valid_ema_mask[row.name] else np.nan, axis=1
     )
 
     def _ema_tag(d: float) -> str:
+        if pd.isna(d):
+            return "N/A"
         if -0.01 <= d <= 0.01:
             return "On EMA"
         elif 0.01 < d <= 0.05:
