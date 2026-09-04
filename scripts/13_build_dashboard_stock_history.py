@@ -1,3 +1,6 @@
+# scripts/13_build_dashboard_stock_history.py
+# Extended to retain setup_precision_score, nearest_ema_tag, momentum_badge in history
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,14 +15,12 @@ OUTPUT_FILE = PROCESSED / "dashboard_stock_history.parquet"
 RECENT_TRADING_DAYS = 400
 HIGH_STRENGTH_THRESHOLD = 70.0
 
-
 def main() -> None:
     if not INPUT_FILE.exists():
-        raise FileNotFoundError(f"Missing required temporary file: {INPUT_FILE}")
+        raise FileNotFoundError(f"Missing required file: {INPUT_FILE}")
 
     df = pd.read_parquet(INPUT_FILE)
 
-    # Added the new columns: up_down_ratio, atr_14, range_3d, tight_3d_range, ipo_turnover_avg, actionable_setup_pass
     required_columns = [
         "date", "symbol", "industry", "basic_industry", "sector", "close",
         "ret_1d", "ret_5d", "ret_20d", "ret_60d", "above_20", "above_50",
@@ -28,11 +29,11 @@ def main() -> None:
         "high_strength_flag", "established_buy_setup", "ipo_buy_setup",
         "buy_setup_score", "gain_6m", "daily_range", "vol_ratio_50",
         "vol_2x_count_6m", "up_down_ratio", "atr_14", "range_3d", 
-        "tight_3d_range", "ipo_turnover_avg", "actionable_setup_pass"
+        "tight_3d_range", "ipo_turnover_avg", "actionable_setup_pass",
+        "setup_precision_score", "nearest_ema_tag", "momentum_badge",
     ]
 
-    # Dynamically keep columns that exist to prevent crashes
-    keep_cols = [col for col in required_columns if col in df.columns]
+    keep_cols = [c for c in required_columns if c in df.columns]
     df = df[keep_cols].copy()
 
     df["date"] = pd.to_datetime(df["date"])
@@ -70,7 +71,8 @@ def main() -> None:
 
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(OUTPUT_FILE, index=False)
-    print("========== STOCK HISTORY BUILD COMPLETE ==========")
+    print("========== STOCK HISTORY BUILD COMPLETE (v2) ==========")
+
 
 if __name__ == "__main__":
     main()
