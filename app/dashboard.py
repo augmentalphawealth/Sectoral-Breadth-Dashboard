@@ -176,7 +176,6 @@ def trading_dates(frame: pd.DataFrame) -> list[pd.Timestamp]:
 
 
 def global_date_navigator(dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
-    """Global historical date selector used across all tabs."""
     latest = pd.Timestamp(dates[-1])
     state_key = f"{key}_selected_date"
     if state_key not in st.session_state:
@@ -296,7 +295,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     basic = basic_history[basic_history["date"] == selected_date].copy()
     industry = industry_history[industry_history["date"] == selected_date].copy()
 
-    # KPI strip with sparklines (last 20 days ending at selected_date)
     kpi_dates = basic_history["date"].sort_values().unique()[-20:]
     basic_kpi = basic_history[basic_history["date"].isin(kpi_dates)]
 
@@ -317,7 +315,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     with kpi5:
         st.metric("Avg Actionability", fmt_num(basic["actionability_score"].mean(), 1), chart_data=avg_actionability, chart_type="area")
 
-    # Sector treemap
     st.markdown("### Sector Leadership Treemap")
     treemap_df = basic[basic["members"] >= SMALL_GROUP_LIMIT].copy()
     fig_treemap = go.Figure(go.Treemap(
@@ -330,7 +327,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     fig_treemap.update_layout(title="Sector Size (Members) colored by Leadership Score", margin=dict(l=10, r=10, t=40, b=10))
     st.plotly_chart(styled_fig(fig_treemap, height=400), use_container_width=True)
 
-    # Regime history stacked area
     st.markdown("### Regime Composition (Last 60 Sessions)")
     regime_dates = basic_history["date"].sort_values().unique()[-60:]
     regime_df = basic_history[basic_history["date"].isin(regime_dates)].copy()
@@ -350,7 +346,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     fig_regime.update_layout(title="Regime Mix Over Time", barmode="stack", yaxis_title="Count", margin=dict(l=10, r=10, t=40, b=10))
     st.plotly_chart(styled_fig(fig_regime, height=320), use_container_width=True)
 
-    # Breadth gauges
     st.markdown("### Market Breadth Gauges")
     g1, g2 = st.columns(2)
     pct_above_50 = (basic["pct_above_50"].mean()) if "pct_above_50" in basic.columns else 0
@@ -373,7 +368,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
         ))
         st.plotly_chart(styled_fig(fig_gauge_200, height=220), use_container_width=True)
 
-    # Leadership vs Actionability scatter
     st.markdown("### Leadership vs Actionability Scatter")
     scatter_df = basic[basic["members"] >= SMALL_GROUP_LIMIT].copy()
     fig_scatter = go.Figure(go.Scatter(
@@ -399,7 +393,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     )
     st.plotly_chart(styled_fig(fig_scatter, height=380), use_container_width=True)
 
-    # Current Basic Industry Leadership table
     st.markdown("### Current Basic Industry Leadership (2-Axis Matrix)")
     eligible_basic = basic[basic["members"] >= SMALL_GROUP_LIMIT] if "members" in basic.columns else basic
     raw = make_group_table(eligible_basic, "basic_industry")
@@ -518,22 +511,27 @@ def top_buy_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, select
             ipo_candidates["Avg Turnover (Cr)"] = None
 
         ipo_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + ipo_candidates["symbol"].astype(str)
+        
+        # FIX: Only sort if ipo_setup_score column exists
         if "ipo_setup_score" in ipo_candidates.columns:
             ipo_candidates = ipo_candidates.sort_values("ipo_setup_score", ascending=False)
+        
         ipo_candidates = ipo_candidates.reset_index(drop=True)
         ipo_candidates.insert(0, "Rank", range(1, len(ipo_candidates) + 1))
 
-        chart_df = ipo_candidates.head(10).sort_values("ipo_setup_score")
-        fig = go.Figure(go.Bar(
-            x=chart_df["ipo_setup_score"],
-            y=chart_df["symbol"],
-            orientation="h",
-            marker=dict(color=PALETTE["Extended Leader (WAIT)"]),
-            text=chart_df["ipo_setup_score"].round(1),
-            textposition="outside",
-        ))
-        fig.update_layout(title="Top IPO Setups by Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 108]))
-        st.plotly_chart(styled_fig(fig, height=max(220, 34 * len(chart_df))), use_container_width=True)
+        # FIX: Only create chart if ipo_setup_score exists
+        if "ipo_setup_score" in ipo_candidates.columns:
+            chart_df = ipo_candidates.head(10).sort_values("ipo_setup_score")
+            fig = go.Figure(go.Bar(
+                x=chart_df["ipo_setup_score"],
+                y=chart_df["symbol"],
+                orientation="h",
+                marker=dict(color=PALETTE["Extended Leader (WAIT)"]),
+                text=chart_df["ipo_setup_score"].round(1),
+                textposition="outside",
+            ))
+            fig.update_layout(title="Top IPO Setups by Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 108]))
+            st.plotly_chart(styled_fig(fig, height=max(220, 34 * len(chart_df))), use_container_width=True)
 
         display_ipo = ipo_candidates.rename(columns={
             "symbol": "Symbol",
