@@ -1,3 +1,6 @@
+# scripts/02_build_dashboard_tables.py
+# Single consolidated buy_priority_score (30% tightness, 25% vol, 20% gain, 15% up/down, 10% strength)
+
 from __future__ import annotations
 
 import pandas as pd
@@ -23,24 +26,20 @@ def build_stock_strength_snapshot(stock: pd.DataFrame) -> pd.DataFrame:
         "ipo_buy_setup", "buy_setup_score", "gain_6m", "daily_range",
         "vol_ratio_50", "vol_2x_count_6m", "actionable_setup_pass",
         "up_down_ratio", "atr_14", "range_3d", "tight_3d_range",
-        "ipo_turnover_avg", "close",
+        "ipo_turnover_avg", "close", "nearest_ema_tag", "momentum_badge",
     ]
-    missing = [column for column in required if column not in data.columns]
+    missing = [c for c in required if c not in data.columns]
     if missing:
-        raise ValueError(f"Stock feature file is missing required columns: {missing}")
+        raise ValueError(f"Stock feature file missing columns: {missing}")
 
     data["stock_strength_score"] = pd.to_numeric(data["stock_strength_score"], errors="coerce")
-
     group_keys = ["date", "basic_industry"]
-
     data["high_strength_flag"] = pd.to_numeric(data["high_strength_flag"], errors="coerce").fillna(0).astype(int)
-
     data["basic_industry_members"] = data.groupby(group_keys)["symbol"].transform("nunique")
     data["high_strength_count_snapshot"] = data.groupby(group_keys)["high_strength_flag"].transform("sum")
     data["pct_high_strength_snapshot"] = (
         data["high_strength_count_snapshot"] / data["basic_industry_members"].clip(lower=1) * 100
     )
-
     return data
 
 
@@ -61,7 +60,6 @@ def main() -> None:
     )
 
     basic_latest = latest(basic).copy()
-
     for column in ["high_strength_count", "pct_high_strength"]:
         if column in basic_latest.columns:
             basic_latest = basic_latest.drop(columns=[column])
@@ -71,9 +69,7 @@ def main() -> None:
     basic_latest["high_strength_count"] = basic_latest["high_strength_count_snapshot"].fillna(0).astype(int)
     basic_latest["pct_high_strength"] = basic_latest["pct_high_strength_snapshot"].fillna(0.0)
     basic_latest = basic_latest.drop(columns=["high_strength_count_snapshot", "pct_high_strength_snapshot"], errors="ignore")
-
     basic_latest["small_industry"] = (basic_latest["members"] < SMALL_GROUP_LIMIT).astype(int)
-
     basic_latest = basic_latest.sort_values(
         ["leadership_score", "actionability_score", "eq_ret_20d"],
         ascending=[False, False, False],
@@ -91,7 +87,6 @@ def main() -> None:
             & (basic_latest["basic_industry"] != "Unclassified")
         ].head(15)["basic_industry"].dropna().unique().tolist()
     )
-
     if not eligible_top_industries:
         eligible_top_industries = (
             basic_latest[
@@ -129,13 +124,12 @@ def main() -> None:
         (stock_snapshot["basic_industry"].isin(eligible_top_industries))
         & (stock_snapshot["ipo_buy_setup"] == 1)
     ].copy()
-
     ipo_watchlist = ipo_watchlist.sort_values("daily_range", ascending=True).head(15)
 
     legacy_required = ["trend_template_pass", "dist_52w_high"]
     missing_legacy = [c for c in legacy_required if c not in stock_snapshot.columns]
     if missing_legacy:
-        raise ValueError(f"Legacy watchlist is missing required columns: {missing_legacy}")
+        raise ValueError(f"Legacy watchlist missing columns: {missing_legacy}")
 
     watch = stock_snapshot[
         (stock_snapshot["trend_template_pass"] == 1)
@@ -165,6 +159,7 @@ def main() -> None:
     write_parquet(watch, processed / "dashboard_stock_watchlist_latest.parquet")
 
     print("dashboard tables ready")
+
 
 if __name__ == "__main__":
     main()
