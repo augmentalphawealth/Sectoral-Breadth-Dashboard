@@ -103,6 +103,35 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     rule_liquidity = df["avg_val_20"] >= 50000000
     rule_trend = ((df["close"] > df["ema_50"]) & (df["ema_20"] > df["ema_50"]) & (df["ema_50"] > df["ema_200"]) & (df["dist_52w_high"] >= -0.25))
     precision_pool_mask = rule_liquidity & rule_trend
+
+    # ---- Data-quality guard ----
+    # The eligible pool should not collapse to near-zero overnight while the
+    # rest of the market looks normal (stock count, strength scores, returns
+    # unchanged). If it does, that's almost always a broken/partial fetch for
+    # the latest date, not a real market event -- surface it loudly instead
+    # of silently shipping a dashboard where every industry reads "nothing
+    # is actionable anywhere," which is indistinguishable from "it's working
+    # correctly and the market is just quiet" unless someone digs in.
+    latest_date = df["date"].max()
+    prior_window = sorted(d for d in df["date"].unique() if d < latest_date)[-10:]
+    if len(prior_window) >= 5:
+        latest_pool = int(precision_pool_mask[df["date"] == latest_date].sum())
+        prior_pool_sizes = sorted(int(precision_pool_mask[df["date"] == d].sum()) for d in prior_window)
+        baseline = prior_pool_sizes[len(prior_pool_sizes) // 2]
+        if baseline >= 20 and latest_pool < 0.2 * baseline:
+            latest_liq = int(rule_liquidity[df["date"] == latest_date].sum())
+            latest_trend = int(rule_trend[df["date"] == latest_date].sum())
+            latest_rows = int((df["date"] == latest_date).sum())
+            print(
+                f"DATA QUALITY WARNING: eligible pool collapsed on {pd.Timestamp(latest_date).date()} "
+                f"-- {latest_pool} stocks vs a {baseline}-stock trailing 10-day median "
+                f"({', '.join(str(x) for x in prior_pool_sizes)}). "
+                f"rule_liquidity passed {latest_liq}/{latest_rows}, rule_trend passed {latest_trend}/{latest_rows}. "
+                "This is almost certainly an incomplete/stale fetch for the latest date, not a real "
+                "market move -- verify the raw price data for this date before trusting today's "
+                "Top Buy Setups or Actionability numbers."
+            )
+
     pool_idx = df.index[precision_pool_mask]
 
     if len(pool_idx) > 0:

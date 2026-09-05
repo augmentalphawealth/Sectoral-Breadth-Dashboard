@@ -12,7 +12,11 @@ PROCESSED = ROOT / "data" / "processed"
 INPUT_FILE = PROCESSED / "stock_daily_features.parquet"
 OUTPUT_FILE = PROCESSED / "dashboard_stock_history.parquet"
 
-RECENT_TRADING_DAYS = 400
+RECENT_TRADING_DAYS = 200  # was 400 -- that put this file at 92.5MB, ~7MB under GitHub's
+                           # 100MB hard limit, with no room for new columns. If a git push
+                           # of this file ever gets rejected for size, the live dashboard
+                           # silently stops updating with no visible error -- same failure
+                           # mode as the missing prices.parquet, just one file over.
 HIGH_STRENGTH_THRESHOLD = 70.0
 
 def main() -> None:
@@ -31,6 +35,8 @@ def main() -> None:
         "vol_2x_count_6m", "up_down_ratio", "atr_14", "range_3d", 
         "tight_3d_range", "ipo_turnover_avg", "actionable_setup_pass",
         "setup_precision_score", "nearest_ema_tag", "momentum_badge",
+        "ipo_setup_score", "vwap_premium", "retracement_from_listing_high",
+        "days_listed", "ipo_phase", "hh_hl_streak_5d",
     ]
 
     keep_cols = [c for c in required_columns if c in df.columns]

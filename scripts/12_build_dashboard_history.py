@@ -28,6 +28,8 @@ COMMON_COLUMNS = [
     "date",
     "members",
     "strength_score",
+    "leadership_score",
+    "actionability_score",
     "regime",
     "eq_ret_1d",
     "eq_ret_5d",
@@ -54,6 +56,7 @@ COMMON_COLUMNS = [
     "median_volume_shock",
     "small_industry",
     "median_dist_52w_high",
+    "nh_nl_net",
 ]
 
 
