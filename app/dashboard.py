@@ -1,12 +1,8 @@
-# app/dashboard.py
-# NSE Sectoral Breadth — Interactive Historical Dashboard (v2)
 # Requirements: streamlit>=1.60.0, plotly>=6.0.0
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
-from datetime import timedelta
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -18,11 +14,11 @@ PROCESSED = ROOT / "data" / "processed"
 BASIC_HISTORY_FILE = PROCESSED / "dashboard_basic_industry_history.parquet"
 INDUSTRY_HISTORY_FILE = PROCESSED / "dashboard_industry_history.parquet"
 STOCK_HISTORY_FILE = PROCESSED / "dashboard_stock_history.parquet"
-TOP_BUY_FILE = PROCESSED / "dashboard_top_buy_candidates.parquet"
-IPO_WATCH_FILE = PROCESSED / "dashboard_ipo_watchlist.parquet"
-METADATA_FILE = PROCESSED / "dashboard_metadata.json"
 SYNC_FILE = PROCESSED / "last_sync.txt"
 SMALL_GROUP_LIMIT = 5
+TOP_N_SETUPS = 20
+MAX_LABELED_BUBBLES = 15
+MAX_LABELED_TILES = 25
 
 INK = "#1F2937"
 PALETTE = {
@@ -32,13 +28,14 @@ PALETTE = {
     "Dead (AVOID)": "#B0483C",
     "Neutral Transition": "#9AA5B1",
 }
+
 CHART_FONT = dict(family="Inter, -apple-system, Segoe UI, sans-serif", color=INK, size=13)
 
 
 def styled_fig(fig: go.Figure, height: int = 320) -> go.Figure:
     fig.update_layout(
         height=height,
-        margin=dict(l=10, r=10, t=36, b=10),
+        margin=dict(l=10, r=10, t=48, b=10),
         font=CHART_FONT,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -142,6 +139,8 @@ def style_with_heatmap(raw: pd.DataFrame, display: pd.DataFrame):
     styles = pd.DataFrame("", index=display.index, columns=display.columns)
     if "Leadership Score" in raw.columns and "Leadership Score" in display.columns:
         styles.loc[:, "Leadership Score"] = raw["Leadership Score"].map(heat_color)
+    if "Industry Leadership Score" in raw.columns and "Industry Leadership Score" in display.columns:
+        styles.loc[:, "Industry Leadership Score"] = raw["Industry Leadership Score"].map(heat_color)
     if "Strength" in raw.columns and "Strength" in display.columns:
         styles.loc[:, "Strength"] = raw["Strength"].map(heat_color)
     if "Actionability (Setup %)" in raw.columns and "Actionability (Setup %)" in display.columns:
@@ -267,10 +266,7 @@ def make_group_table(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
 
 def format_group_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
-    for column in [
-        "1D Return", "5D Return", "20D Return", "60D Return",
-        "Stocks Above 50 EMA", "Stocks Above 200 EMA",
-    ]:
+    for column in ["1D Return", "5D Return", "20D Return", "60D Return", "Stocks Above 50 EMA", "Stocks Above 200 EMA"]:
         if column in data.columns:
             data[column] = data[column].apply(lambda value: fmt_pct(value, True))
     for column in ["Rank", "Constituent Stocks", "Accumulation − Distribution", "Breakouts", "VCP Ready"]:
@@ -284,19 +280,13 @@ def format_group_table(frame: pd.DataFrame) -> pd.DataFrame:
 
 def format_stock_table(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
-    for column in [
-        "1D Return", "5D Return", "20D Return", "60D Return",
-        "Distance from 52W High", "6M Gain", "Candle Range", "Price Tightness (3D)",
-    ]:
+    for column in ["1D Return", "5D Return", "20D Return", "60D Return", "Distance from 52W High", "6M Gain", "Candle Range", "Price Tightness (3D)"]:
         if column in data.columns:
             data[column] = data[column].apply(lambda value: fmt_pct(value, True))
-    for column in ["Rank", "Heavy Volume Days (6M)"]:
+    for column in ["Rank", "Industry Rank", "Heavy Volume Days (6M)"]:
         if column in data.columns:
             data[column] = data[column].apply(fmt_int)
-    for column in [
-        "Strength", "Close", "Buy Setup Score", "Vol Contraction (vs 50D)",
-        "50D Up/Down Vol", "14D ATR", "Avg Turnover (Cr)",
-    ]:
+    for column in ["Strength", "Close", "Buy Setup Score", "Buy Priority Score", "Vol Contraction (vs 50D)", "50D Up/Down Vol", "14D ATR", "Avg Turnover (Cr)", "Industry Leadership Score"]:
         if column in data.columns:
             data[column] = data[column].apply(fmt_num)
     return data
@@ -306,7 +296,6 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     st.subheader("Market Breadth & 2-Axis Overview")
 
     basic = basic_history[basic_history["date"] == selected_date].copy()
-    industry = industry_history[industry_history["date"] == selected_date].copy()
 
     kpi_dates = basic_history["date"].sort_values().unique()[-20:]
     basic_kpi = basic_history[basic_history["date"].isin(kpi_dates)]
@@ -329,16 +318,20 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
         st.metric("Avg Actionability", fmt_num(basic["actionability_score"].mean(), 1), chart_data=avg_actionability, chart_type="area")
 
     st.markdown("### Sector Leadership Treemap")
-    treemap_df = basic[basic["members"] >= SMALL_GROUP_LIMIT].copy()
+    treemap_df = basic[basic["members"] >= SMALL_GROUP_LIMIT].copy().sort_values("members", ascending=False)
+    labeled_idx = treemap_df.head(MAX_LABELED_TILES).index
+    treemap_df["tile_label"] = treemap_df["basic_industry"].where(treemap_df.index.isin(labeled_idx), "")
     fig_treemap = go.Figure(go.Treemap(
         labels=treemap_df["basic_industry"],
         parents=[""] * len(treemap_df),
         values=treemap_df["members"],
+        text=treemap_df["tile_label"],
+        textinfo="text",
         marker=dict(colors=treemap_df["leadership_score"], colorscale="Greens", showscale=True),
-        hovertemplate="<b>%{label}</b><br>Members: %{value}<br>Leadership: %{marker.color:.1f}<extra></extra>",
+        hovertemplate="%{label}<br>Members: %{value}<br>Leadership: %{marker.color:.1f}<extra></extra>",
     ))
-    fig_treemap.update_layout(title="Sector Size (Members) colored by Leadership Score", margin=dict(l=10, r=10, t=40, b=10))
-    st.plotly_chart(styled_fig(fig_treemap, height=400), use_container_width=True)
+    fig_treemap.update_layout(title="Sector Size (Members) colored by Leadership Score, top 25 tiles labeled", margin=dict(l=10, r=10, t=44, b=10))
+    st.plotly_chart(styled_fig(fig_treemap, height=420), use_container_width=True)
 
     st.markdown("### Regime Composition (Last 60 Sessions)")
     regime_dates = basic_history["date"].sort_values().unique()[-60:]
@@ -349,14 +342,10 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
     for regime in ["Fresh Leader (HUNT)", "Extended Leader (WAIT)", "Neutral Transition", "Speculative Coil (AVOID)", "Dead (AVOID)"]:
         if regime in regime_counts.columns:
             fig_regime.add_trace(go.Scatter(
-                x=regime_counts["date"],
-                y=regime_counts[regime],
-                stackgroup="one",
-                name=regime,
-                fillcolor=PALETTE.get(regime, "#9AA5B1"),
-                line=dict(width=0),
+                x=regime_counts["date"], y=regime_counts[regime], stackgroup="one",
+                name=regime, fillcolor=PALETTE.get(regime, "#9AA5B1"), line=dict(width=0),
             ))
-    fig_regime.update_layout(title="Regime Mix Over Time", barmode="stack", yaxis_title="Count", margin=dict(l=10, r=10, t=40, b=10))
+    fig_regime.update_layout(title="Regime Mix Over Time", barmode="stack", yaxis_title="Count", margin=dict(l=10, r=10, t=44, b=10))
     st.plotly_chart(styled_fig(fig_regime, height=320), use_container_width=True)
 
     st.markdown("### Market Breadth Gauges")
@@ -366,99 +355,87 @@ def overview_tab(basic_history: pd.DataFrame, industry_history: pd.DataFrame, st
 
     with g1:
         fig_gauge_50 = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=pct_above_50,
+            mode="gauge+number", value=pct_above_50,
             title=dict(text="% Stocks Above 50 EMA", font=dict(size=14)),
-            gauge=dict(axis=dict(range=[0, 100]), steps=[dict(range=[0, 30], color="#fecaca"), dict(range=[30, 70], color="#fef3c7"), dict(range=[70, 100], color="#86efac")]),
+            gauge=dict(axis=dict(range=[0, 100]), steps=[
+                dict(range=[0, 30], color="#fecaca"), dict(range=[30, 70], color="#fef3c7"), dict(range=[70, 100], color="#86efac"),
+            ]),
         ))
-        st.plotly_chart(styled_fig(fig_gauge_50, height=220), use_container_width=True)
+        st.plotly_chart(styled_fig(fig_gauge_50, height=270), use_container_width=True)
     with g2:
         fig_gauge_200 = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=pct_above_200,
+            mode="gauge+number", value=pct_above_200,
             title=dict(text="% Stocks Above 200 EMA", font=dict(size=14)),
-            gauge=dict(axis=dict(range=[0, 100]), steps=[dict(range=[0, 30], color="#fecaca"), dict(range=[30, 70], color="#fef3c7"), dict(range=[70, 100], color="#86efac")]),
+            gauge=dict(axis=dict(range=[0, 100]), steps=[
+                dict(range=[0, 30], color="#fecaca"), dict(range=[30, 70], color="#fef3c7"), dict(range=[70, 100], color="#86efac"),
+            ]),
         ))
-        st.plotly_chart(styled_fig(fig_gauge_200, height=220), use_container_width=True)
+        st.plotly_chart(styled_fig(fig_gauge_200, height=270), use_container_width=True)
 
     st.markdown("### Leadership vs Actionability Scatter")
     scatter_df = basic[basic["members"] >= SMALL_GROUP_LIMIT].copy()
+    top_label_idx = scatter_df.nlargest(MAX_LABELED_BUBBLES, "leadership_score").index
+    scatter_df["point_label"] = scatter_df["basic_industry"].where(scatter_df.index.isin(top_label_idx), "")
     fig_scatter = go.Figure(go.Scatter(
-        x=scatter_df["leadership_score"],
-        y=scatter_df["actionability_score"],
-        mode="markers+text",
-        text=scatter_df["basic_industry"],
-        textposition="top center",
+        x=scatter_df["leadership_score"], y=scatter_df["actionability_score"],
+        mode="markers+text", text=scatter_df["point_label"], textposition="top center",
         marker=dict(
             size=scatter_df["members"] * 2,
             color=scatter_df["regime"].map(PALETTE).fillna("#9AA5B1"),
             line=dict(width=1, color="white"),
         ),
-        hovertemplate="<b>%{text}</b><br>Leadership: %{x:.1f}<br>Actionability: %{y:.1f}%<br>Members: %{marker.size:.0f}<extra></extra>",
+        hovertext=scatter_df["basic_industry"],
+        hovertemplate="%{hovertext}<br>Leadership: %{x:.1f}<br>Actionability: %{y:.1f}%<br>Members: %{marker.size:.0f}<extra></extra>",
     ))
     fig_scatter.update_layout(
-        title="Each bubble = Basic Industry (size = members, color = regime)",
-        xaxis_title="Leadership Score",
-        yaxis_title="Actionability (Setup %)",
+        title="Each bubble = Basic Industry (size = members, color = regime); top 15 leaders labeled",
+        xaxis_title="Leadership Score", yaxis_title="Actionability (Setup %)",
         xaxis=dict(range=[0, 100]),
         yaxis=dict(range=[0, max(scatter_df["actionability_score"].max() * 1.2, 30)]),
-        margin=dict(l=10, r=10, t=40, b=10),
+        margin=dict(l=10, r=10, t=44, b=10),
     )
-    st.plotly_chart(styled_fig(fig_scatter, height=380), use_container_width=True)
+    st.plotly_chart(styled_fig(fig_scatter, height=400), use_container_width=True)
 
     st.markdown("### Current Basic Industry Leadership (2-Axis Matrix)")
     eligible_basic = basic[basic["members"] >= SMALL_GROUP_LIMIT] if "members" in basic.columns else basic
     raw = make_group_table(eligible_basic, "basic_industry")
-    st.dataframe(
-        style_with_heatmap(raw, format_group_table(raw)),
-        use_container_width=True,
-        hide_index=True,
-        height=480,
-    )
+    st.dataframe(style_with_heatmap(raw, format_group_table(raw)), use_container_width=True, hide_index=True, height=480)
 
 
 def top_buy_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
-    st.subheader("🎯 Strong Sector Buy Setups")
+    st.subheader("🎯 Top Individual Buy Setups")
     st.caption(
-        "Macro leaders (Leadership ≥ 70) screened for liquidity, trend, and the 3-metric "
-        "precision score (20% Power, 35% Coil, 45% Dry-up). Ranked by a blended Priority Score. "
-        "EMA proximity and momentum badges are contextual, not scored."
+        "Stock-level ranking only — no parent-industry gate. Every stock already passes the hard "
+        "gates (liquidity ≥ 5 Cr turnover, full EMA alignment, trend, volatility/volume contraction, "
+        "precision score). Industry Rank/Leadership are shown as CONTEXT so you can judge a strong "
+        "stock sitting in a lagging industry yourself."
     )
 
     basic_latest = basic_history[basic_history["date"] == selected_date].copy()
     stock_latest = stock_history[stock_history["date"] == selected_date].copy()
 
-    eligible_df = basic_latest[
-        (basic_latest["members"] >= SMALL_GROUP_LIMIT)
-        & (basic_latest["leadership_score"] >= 70.0)
-    ].sort_values("leadership_score", ascending=False)
-    top_leaders = eligible_df["basic_industry"].tolist()
+    industry_context = basic_latest[["basic_industry", "leadership_score", "regime"]].copy()
+    industry_context = industry_context.sort_values("leadership_score", ascending=False).reset_index(drop=True)
+    industry_context.insert(0, "industry_rank", range(1, len(industry_context) + 1))
+    industry_context = industry_context.rename(columns={
+        "basic_industry": "Basic Industry",
+        "leadership_score": "Industry Leadership Score",
+        "regime": "Industry Regime",
+        "industry_rank": "Industry Rank",
+    })
 
-    if not top_leaders:
-        eligible_df = basic_latest[basic_latest["members"] >= SMALL_GROUP_LIMIT].sort_values(
-            "leadership_score", ascending=False
-        ).head(5)
-        top_leaders = eligible_df["basic_industry"].tolist()
-
-    buy_candidates = stock_latest[
-        (stock_latest["basic_industry"].isin(top_leaders))
-        & (stock_latest["established_buy_setup"] == 1)
-    ].copy()
-
-    ipo_candidates = stock_latest[
-        (stock_latest["basic_industry"].isin(top_leaders))
-        & (stock_latest["ipo_buy_setup"] == 1)
-    ].copy()
+    buy_candidates = stock_latest[stock_latest["established_buy_setup"] == 1].copy()
+    ipo_candidates = stock_latest[stock_latest["ipo_buy_setup"] == 1].copy()
 
     m_col = st.columns(4)
-    m_col[0].metric("Qualified Buy Setups", fmt_int(len(buy_candidates)))
-    m_col[1].metric("IPO Setups (>5 Cr)", fmt_int(len(ipo_candidates)))
-    m_col[2].metric("Leading Basic Industries (≥70)", fmt_int(len(top_leaders)))
+    m_col[0].metric("Total Qualified Setups", fmt_int(len(buy_candidates)))
+    m_col[1].metric("Total IPO Setups (>5 Cr)", fmt_int(len(ipo_candidates)))
+    m_col[2].metric("Shortlist Size", f"Top {TOP_N_SETUPS}")
     m_col[3].metric("Scan Date", selected_date.strftime("%d %b %Y"))
 
-    st.markdown("### Top Buy Setups (Established Stocks)")
+    st.markdown("### Top 20 Established Buy Setups (Individual Ranking)")
     if buy_candidates.empty:
-        st.info("No established stocks currently meet all criteria in leading sectors today.")
+        st.info("No stocks currently pass the hard gates (liquidity, EMA alignment, trend, precision score) on this date.")
     else:
         buy_candidates["buy_priority_score"] = (
             0.30 * (1 - buy_candidates["tight_3d_range"].rank(pct=True))
@@ -467,117 +444,108 @@ def top_buy_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, select
             + 0.15 * buy_candidates["up_down_ratio"].rank(pct=True)
             + 0.10 * buy_candidates["stock_strength_score"].rank(pct=True)
         ) * 100
-        buy_candidates = buy_candidates.sort_values("buy_priority_score", ascending=False)
+
+        buy_candidates = buy_candidates.merge(
+            industry_context[["Basic Industry", "Industry Rank", "Industry Leadership Score"]],
+            left_on="basic_industry", right_on="Basic Industry", how="left",
+        )
+
+        buy_candidates = buy_candidates.sort_values("buy_priority_score", ascending=False).head(TOP_N_SETUPS)
         buy_candidates = buy_candidates.reset_index(drop=True)
         buy_candidates.insert(0, "Rank", range(1, len(buy_candidates) + 1))
 
-        chart_df = buy_candidates.head(10).sort_values("buy_priority_score")
+        chart_df = buy_candidates.sort_values("buy_priority_score")
         fig = go.Figure(go.Bar(
-            x=chart_df["buy_priority_score"],
-            y=chart_df["symbol"],
-            orientation="h",
+            x=chart_df["buy_priority_score"].round(1), y=chart_df["symbol"], orientation="h",
             marker=dict(color=PALETTE["Fresh Leader (HUNT)"]),
-            text=chart_df["buy_priority_score"].round(1),
-            textposition="outside",
+            text=chart_df["buy_priority_score"].round(1), textposition="outside",
         ))
-        fig.update_layout(title="Top 10 by Priority Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 108]))
-        st.plotly_chart(styled_fig(fig, height=max(220, 34 * len(chart_df))), use_container_width=True)
+        fig.update_layout(title="Top 20 by Priority Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 115]))
+        st.plotly_chart(styled_fig(fig, height=max(240, 30 * len(chart_df))), use_container_width=True)
 
         buy_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + buy_candidates["symbol"].astype(str)
 
         display_buy = buy_candidates.rename(columns={
-            "symbol": "Symbol",
-            "basic_industry": "Basic Industry",
-            "close": "Close",
-            "tight_3d_range": "Price Tightness (3D)",
-            "vol_ratio_50": "Vol Contraction (vs 50D)",
-            "gain_6m": "6M Gain",
-            "nearest_ema_tag": "EMA Proximity",
-            "momentum_badge": "Momentum",
+            "symbol": "Symbol", "basic_industry": "Basic Industry", "close": "Close",
+            "buy_priority_score": "Buy Priority Score",
+            "tight_3d_range": "Price Tightness (3D)", "vol_ratio_50": "Vol Contraction (vs 50D)",
+            "gain_6m": "6M Gain", "nearest_ema_tag": "EMA Proximity", "momentum_badge": "Momentum",
         })
         keep_cols = [
-            "Rank", "Symbol", "Chart", "Basic Industry", "Close", "buy_priority_score",
-            "Price Tightness (3D)", "Vol Contraction (vs 50D)", "6M Gain", "EMA Proximity", "Momentum"
+            "Rank", "Symbol", "Chart", "Basic Industry", "Industry Rank", "Industry Leadership Score",
+            "Close", "Buy Priority Score", "Price Tightness (3D)", "Vol Contraction (vs 50D)",
+            "6M Gain", "EMA Proximity", "Momentum",
         ]
         display_buy = display_buy[[col for col in keep_cols if col in display_buy.columns]]
+
         st.dataframe(
             style_with_heatmap(display_buy, format_stock_table(display_buy)),
-            use_container_width=True,
-            hide_index=True,
-            height=380,
+            use_container_width=True, hide_index=True, height=560,
             column_config={
                 "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
+                "Industry Leadership Score": st.column_config.ProgressColumn("Industry Leadership Score", min_value=0, max_value=100, format="%.1f"),
             },
         )
 
-    st.markdown("### IPO Setups (New Listings)")
-    st.caption(
-        "Newly listed stocks in leading industries, turnover > 5 Cr (hard liquidity gate). "
-        "Ranked by a blended Setup Score (tightness, volume dry-up, VWAP premium, retracement, HH-HL count)."
-    )
+    st.markdown("### Top 20 IPO Setups (Individual Ranking)")
+    st.caption("Newly listed stocks (<150 days), gated only on liquidity (turnover > 5 Cr). No industry filter — ranked purely by Setup Score.")
     if ipo_candidates.empty:
-        st.info("No newly listed stocks in leading industries currently meet the liquidity and score bar.")
+        st.info("No newly listed stocks currently meet the liquidity and score bar.")
     else:
         if "ipo_turnover_avg" in ipo_candidates.columns:
             ipo_candidates["Avg Turnover (Cr)"] = ipo_candidates["ipo_turnover_avg"] / 10000000.0
         else:
             ipo_candidates["Avg Turnover (Cr)"] = None
 
+        ipo_candidates = ipo_candidates.merge(
+            industry_context[["Basic Industry", "Industry Rank", "Industry Leadership Score"]],
+            left_on="basic_industry", right_on="Basic Industry", how="left",
+        )
         ipo_candidates["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + ipo_candidates["symbol"].astype(str)
-        
-        # FIX: Only sort if ipo_setup_score column exists
+
         if "ipo_setup_score" in ipo_candidates.columns:
-            ipo_candidates = ipo_candidates.sort_values("ipo_setup_score", ascending=False)
-        
+            ipo_candidates = ipo_candidates.sort_values("ipo_setup_score", ascending=False).head(TOP_N_SETUPS)
+        else:
+            ipo_candidates = ipo_candidates.head(TOP_N_SETUPS)
+
         ipo_candidates = ipo_candidates.reset_index(drop=True)
         ipo_candidates.insert(0, "Rank", range(1, len(ipo_candidates) + 1))
 
-        # FIX: Only create chart if ipo_setup_score exists
         if "ipo_setup_score" in ipo_candidates.columns:
-            chart_df = ipo_candidates.head(10).sort_values("ipo_setup_score")
+            chart_df = ipo_candidates.sort_values("ipo_setup_score")
             fig = go.Figure(go.Bar(
-                x=chart_df["ipo_setup_score"],
-                y=chart_df["symbol"],
-                orientation="h",
+                x=chart_df["ipo_setup_score"].round(1), y=chart_df["symbol"], orientation="h",
                 marker=dict(color=PALETTE["Extended Leader (WAIT)"]),
-                text=chart_df["ipo_setup_score"].round(1),
-                textposition="outside",
+                text=chart_df["ipo_setup_score"].round(1), textposition="outside",
             ))
-            fig.update_layout(title="Top IPO Setups by Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 108]))
-            st.plotly_chart(styled_fig(fig, height=max(220, 34 * len(chart_df))), use_container_width=True)
+            fig.update_layout(title="Top 20 IPO Setups by Score", xaxis_title=None, yaxis_title=None, xaxis=dict(range=[0, 115]))
+            st.plotly_chart(styled_fig(fig, height=max(240, 30 * len(chart_df))), use_container_width=True)
 
         display_ipo = ipo_candidates.rename(columns={
-            "symbol": "Symbol",
-            "basic_industry": "Basic Industry",
-            "close": "Close",
-            "days_listed": "Days Listed",
-            "ipo_phase": "Phase",
-            "ipo_setup_score": "Setup Score",
-            "vwap_premium": "Above VWAP",
-            "retracement_from_listing_high": "Off Post-List High",
+            "symbol": "Symbol", "basic_industry": "Basic Industry", "close": "Close",
+            "days_listed": "Days Listed", "ipo_phase": "Phase", "ipo_setup_score": "Setup Score",
+            "vwap_premium": "Above VWAP", "retracement_from_listing_high": "Off Post-List High",
         })
         keep_ipo = [
-            "Rank", "Symbol", "Chart", "Basic Industry", "Close", "Days Listed", "Phase",
-            "Setup Score", "Above VWAP", "Off Post-List High", "Avg Turnover (Cr)",
+            "Rank", "Symbol", "Chart", "Basic Industry", "Industry Rank", "Industry Leadership Score",
+            "Close", "Days Listed", "Phase", "Setup Score", "Above VWAP", "Off Post-List High", "Avg Turnover (Cr)",
         ]
         display_ipo = display_ipo[[col for col in keep_ipo if col in display_ipo.columns]]
+
         st.dataframe(
             style_with_heatmap(display_ipo, format_stock_table(display_ipo)),
-            use_container_width=True,
-            hide_index=True,
-            height=280,
+            use_container_width=True, hide_index=True, height=max(240, 40 * len(display_ipo) + 60),
             column_config={
                 "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
+                "Industry Leadership Score": st.column_config.ProgressColumn("Industry Leadership Score", min_value=0, max_value=100, format="%.1f"),
             },
         )
 
-    st.markdown("### Leading Basic Industries (2-Axis Overview)")
-    raw_leaders = make_group_table(eligible_df, "basic_industry")
+    st.markdown("### Reference: Full Basic Industry Leaderboard (context only, not a filter)")
+    st.caption("Use this to manually check whether a stock above sits in a lagging industry before you buy.")
     st.dataframe(
-        style_with_heatmap(raw_leaders, format_group_table(raw_leaders)),
-        use_container_width=True,
-        hide_index=True,
-        height=320,
+        industry_context, use_container_width=True, hide_index=True, height=360,
+        column_config={"Industry Leadership Score": st.column_config.ProgressColumn("Industry Leadership Score", min_value=0, max_value=100, format="%.1f")},
     )
 
 
@@ -605,25 +573,17 @@ def basic_industry_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame)
     raw_table = make_group_table(selected, "basic_industry")
     if ranking == "Lowest Leadership" and "Leadership Score" in raw_table.columns:
         raw_table = raw_table.sort_values("Leadership Score").reset_index(drop=True)
-    raw_table["Rank"] = range(1, len(raw_table) + 1)
+        raw_table["Rank"] = range(1, len(raw_table) + 1)
     if raw_table.empty:
         st.warning("No Basic Industries match the selected filters.")
         return
 
-    st.dataframe(
-        style_with_heatmap(raw_table, format_group_table(raw_table)),
-        use_container_width=True,
-        hide_index=True,
-        height=410,
-    )
+    st.dataframe(style_with_heatmap(raw_table, format_group_table(raw_table)), use_container_width=True, hide_index=True, height=410)
 
     st.markdown("### Selected Basic Industry Details")
     selected_group = st.selectbox("Basic Industry", raw_table["Basic Industry"].tolist(), key="basic_group_selector")
 
-    stocks = stock_history[
-        (stock_history["date"] == selected_date)
-        & (stock_history["basic_industry"] == selected_group)
-    ].copy()
+    stocks = stock_history[(stock_history["date"] == selected_date) & (stock_history["basic_industry"] == selected_group)].copy()
     if not stocks.empty:
         stocks["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + stocks["symbol"].astype(str)
         if "ret_20d" in stocks.columns:
@@ -631,23 +591,15 @@ def basic_industry_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame)
         stocks = stocks.reset_index(drop=True)
         stocks.insert(0, "Rank", range(1, len(stocks) + 1))
         disp_stocks = stocks.rename(columns={
-            "symbol": "Symbol",
-            "close": "Close",
-            "ret_20d": "20D Return",
-            "ret_60d": "60D Return",
-            "gain_6m": "6M Gain",
-            "stock_strength_score": "Strength",
+            "symbol": "Symbol", "close": "Close", "ret_20d": "20D Return", "ret_60d": "60D Return",
+            "gain_6m": "6M Gain", "stock_strength_score": "Strength",
         })
         keep_cols = ["Rank", "Symbol", "Chart", "Close", "20D Return", "60D Return", "6M Gain", "Strength"]
         disp_stocks = disp_stocks[[col for col in keep_cols if col in disp_stocks.columns]]
         st.dataframe(
             style_with_heatmap(disp_stocks, format_stock_table(disp_stocks)),
-            use_container_width=True,
-            hide_index=True,
-            height=320,
-            column_config={
-                "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
-            },
+            use_container_width=True, hide_index=True, height=320,
+            column_config={"Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗")},
         )
 
 
@@ -660,20 +612,12 @@ def industry_tab(industry_history: pd.DataFrame, stock_history: pd.DataFrame) ->
     if raw_table.empty:
         st.warning("No Industry data is available for this date.")
         return
-    st.dataframe(
-        style_with_heatmap(raw_table, format_group_table(raw_table)),
-        use_container_width=True,
-        hide_index=True,
-        height=470,
-    )
+    st.dataframe(style_with_heatmap(raw_table, format_group_table(raw_table)), use_container_width=True, hide_index=True, height=470)
 
     st.markdown("### Selected Industry Details")
     selected_group = st.selectbox("Industry", raw_table["Industry"].tolist(), key="industry_group_selector")
 
-    stocks = stock_history[
-        (stock_history["date"] == selected_date)
-        & (stock_history["industry"] == selected_group)
-    ].copy()
+    stocks = stock_history[(stock_history["date"] == selected_date) & (stock_history["industry"] == selected_group)].copy()
     if not stocks.empty:
         stocks["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + stocks["symbol"].astype(str)
         if "ret_20d" in stocks.columns:
@@ -681,29 +625,16 @@ def industry_tab(industry_history: pd.DataFrame, stock_history: pd.DataFrame) ->
         stocks = stocks.reset_index(drop=True)
         stocks.insert(0, "Rank", range(1, len(stocks) + 1))
         disp_stocks = stocks.rename(columns={
-            "symbol": "Symbol",
-            "basic_industry": "Basic Industry",
-            "close": "Close",
-            "ret_20d": "20D Return",
-            "ret_60d": "60D Return",
-            "gain_6m": "6M Gain",
-            "stock_strength_score": "Strength",
-            "nearest_ema_tag": "EMA Proximity",
-            "momentum_badge": "Momentum",
+            "symbol": "Symbol", "basic_industry": "Basic Industry", "close": "Close",
+            "ret_20d": "20D Return", "ret_60d": "60D Return", "gain_6m": "6M Gain",
+            "stock_strength_score": "Strength", "nearest_ema_tag": "EMA Proximity", "momentum_badge": "Momentum",
         })
-        keep_cols = [
-            "Rank", "Symbol", "Chart", "Basic Industry", "Close",
-            "20D Return", "60D Return", "6M Gain", "Strength", "EMA Proximity", "Momentum",
-        ]
+        keep_cols = ["Rank", "Symbol", "Chart", "Basic Industry", "Close", "20D Return", "60D Return", "6M Gain", "Strength", "EMA Proximity", "Momentum"]
         disp_stocks = disp_stocks[[col for col in keep_cols if col in disp_stocks.columns]]
         st.dataframe(
             style_with_heatmap(disp_stocks, format_stock_table(disp_stocks)),
-            use_container_width=True,
-            hide_index=True,
-            height=320,
-            column_config={
-                "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
-            },
+            use_container_width=True, hide_index=True, height=320,
+            column_config={"Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗")},
         )
 
 
@@ -725,19 +656,21 @@ Displays the exact raw percentage of stocks in that industry passing the **2-Rul
 3. **Coil (35%):** 3-Day Range ÷ ATR-14, percentile-ranked (tighter = higher score).
 4. **Dry-up (45%):** Today's volume ÷ 50-day average volume, percentile-ranked (lower = higher score).
 
-**Top Buy Setups Filter**
-A stock is only eligible if its parent industry has a Leadership Score ≥ 70 AND the stock
-passes the hard gates AND achieves a Precision Score ≥ 60. Within that pool, stocks are ranked by a blended **Priority Score**
-(tightness 30%, vol contraction 25%, gain 20%, up/down ratio 15%, strength 10%).
+**Top Buy Setups (Individual Ranking, no industry gate)**
+A stock is eligible purely on its own merits: it must pass the hard gates (liquidity, EMA alignment,
+trend, precision score) via the `established_buy_setup` flag. Within that pool, stocks are ranked by a
+blended **Priority Score** (tightness 30%, vol contraction 25%, gain 20%, up/down ratio 15%, strength 10%).
+The stock's parent Basic Industry Rank and Leadership Score are shown as context columns only — use them
+to manually judge whether a strong stock in a lagging industry is worth the risk.
 
-**IPO Setups (New Listings)**
+**IPO Setups (New Listings, no industry gate)**
 Stocks listed <150 days, gated on liquidity only (≥ 5 Crore average turnover).
 Ranked by a blended **Setup Score**: tightness 25%, dry-up 20%, VWAP premium 20%, retracement 20%, HH-HL structure 15%.
 
 **EMA Proximity Tag**
 Contextual metadata showing signed distance to the nearest of 10/20/50 EMA ("On EMA", "Testing", "Riding", "Extended", "Broken").
 This is displayed but not scored — it is a trader's timing filter, not a model input.
-"""
+        """
     )
 
 
