@@ -55,6 +55,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+st.markdown(
+    """
+    <style>
+    .block-container { padding-top: 1.6rem; padding-bottom: 2.5rem; max-width: 1440px; }
+    [data-testid="stMetricValue"] { font-size: 1.5rem; font-weight: 700; }
+    [data-testid="stMetricLabel"] { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.03em; }
+    h1 { font-weight: 700; letter-spacing: -0.02em; }
+    h3 { font-weight: 600; margin-top: 1.6rem; color: #1F2937; }
+    [data-testid="stDataFrame"] { border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
+    .stTabs [data-baseweb="tab"] { border-radius: 8px 8px 0 0; padding: 8px 18px; }
+    div[data-testid="stExpander"] { border: 1px solid #e5e7eb; border-radius: 10px; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 def clean_text(value: object) -> str:
     if value is None or pd.isna(value):
@@ -124,13 +141,9 @@ def actionability_color(value: object) -> str:
 def style_with_heatmap(raw: pd.DataFrame, display: pd.DataFrame):
     styles = pd.DataFrame("", index=display.index, columns=display.columns)
     if "Leadership Score" in raw.columns and "Leadership Score" in display.columns:
-        colors = raw["Leadership Score"].map(heat_color)
-        styles.loc[:, "Leadership Score"] = colors
+        styles.loc[:, "Leadership Score"] = raw["Leadership Score"].map(heat_color)
     if "Strength" in raw.columns and "Strength" in display.columns:
-        colors = raw["Strength"].map(heat_color)
-        styles.loc[:, "Strength"] = colors
-    if "Regime" in display.columns:
-        styles.loc[:, "Regime"] = colors
+        styles.loc[:, "Strength"] = raw["Strength"].map(heat_color)
     if "Actionability (Setup %)" in raw.columns and "Actionability (Setup %)" in display.columns:
         styles.loc[:, "Actionability (Setup %)"] = raw["Actionability (Setup %)"].map(actionability_color)
     if "Buy Setup Score" in raw.columns and "Buy Setup Score" in display.columns:
@@ -653,6 +666,45 @@ def industry_tab(industry_history: pd.DataFrame, stock_history: pd.DataFrame) ->
         hide_index=True,
         height=470,
     )
+
+    st.markdown("### Selected Industry Details")
+    selected_group = st.selectbox("Industry", raw_table["Industry"].tolist(), key="industry_group_selector")
+
+    stocks = stock_history[
+        (stock_history["date"] == selected_date)
+        & (stock_history["industry"] == selected_group)
+    ].copy()
+    if not stocks.empty:
+        stocks["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + stocks["symbol"].astype(str)
+        if "ret_20d" in stocks.columns:
+            stocks = stocks.sort_values("ret_20d", ascending=False)
+        stocks = stocks.reset_index(drop=True)
+        stocks.insert(0, "Rank", range(1, len(stocks) + 1))
+        disp_stocks = stocks.rename(columns={
+            "symbol": "Symbol",
+            "basic_industry": "Basic Industry",
+            "close": "Close",
+            "ret_20d": "20D Return",
+            "ret_60d": "60D Return",
+            "gain_6m": "6M Gain",
+            "stock_strength_score": "Strength",
+            "nearest_ema_tag": "EMA Proximity",
+            "momentum_badge": "Momentum",
+        })
+        keep_cols = [
+            "Rank", "Symbol", "Chart", "Basic Industry", "Close",
+            "20D Return", "60D Return", "6M Gain", "Strength", "EMA Proximity", "Momentum",
+        ]
+        disp_stocks = disp_stocks[[col for col in keep_cols if col in disp_stocks.columns]]
+        st.dataframe(
+            style_with_heatmap(disp_stocks, format_stock_table(disp_stocks)),
+            use_container_width=True,
+            hide_index=True,
+            height=320,
+            column_config={
+                "Chart": st.column_config.LinkColumn("TradingView", display_text="Open ↗"),
+            },
+        )
 
 
 def methodology_tab() -> None:
