@@ -10,6 +10,8 @@
       "date",
       "members",
       "strength_score",
+      "leadership_score",
+      "actionability_score",
       "regime",
       "eq_ret_1d",
       "eq_ret_5d",
@@ -35,7 +37,8 @@
       "sell_volume_shock_pct",
       "median_volume_shock",
       "small_industry",
-      "median_dist_52w_high"
+      "median_dist_52w_high",
+      "nh_nl_net"
     ]
   },
   "basic_industry": {
@@ -49,6 +52,8 @@
       "date",
       "members",
       "strength_score",
+      "leadership_score",
+      "actionability_score",
       "regime",
       "eq_ret_1d",
       "eq_ret_5d",
@@ -74,8 +79,9 @@
       "sell_volume_shock_pct",
       "median_volume_shock",
       "small_industry",
-      "median_dist_52w_high"
+      "median_dist_52w_high",
+      "nh_nl_net"
     ]
   },
-  "generated_at_utc": "2026-09-04T13:32:31.546521+00:00"
+  "generated_at_utc": "2026-09-05T08:30:34.553732+00:00"
 }
