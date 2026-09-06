@@ -42,19 +42,19 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        .block-container {max-width: 1480px; padding-top: 1.2rem; padding-bottom: 2rem;}
-        [data-testid="stMetric"] {background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:0.8rem 1rem;}
-        [data-testid="stMetricLabel"] {font-size:0.78rem; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;}
+        .block-container {max-width: 1480px; padding-top: 1.15rem; padding-bottom: 2rem;}
+        [data-testid="stMetric"] {background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:0.75rem 0.95rem;}
+        [data-testid="stMetricLabel"] {font-size:0.76rem; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;}
         [data-testid="stMetricValue"] {font-weight:700; color:#0F172A;}
-        .improver-card {border:1px solid #E2E8F0; border-left:5px solid #15803D; border-radius:11px; padding:0.75rem 0.9rem; margin:0.4rem 0; background:#FFFFFF;}
-        .improver-name {font-weight:700; color:#0F172A; font-size:0.96rem;}
-        .improver-meta {color:#64748B; font-size:0.78rem; margin-top:0.24rem;}
-        .improver-number {font-weight:800; font-size:1.04rem; text-align:right;}
-        .status-pill {display:inline-block; padding:0.16rem 0.55rem; border-radius:999px; font-size:0.76rem; font-weight:700; white-space:nowrap;}
+        .improver-card {border:1px solid #E2E8F0; border-left:5px solid #15803D; border-radius:11px; padding:0.72rem 0.85rem; margin:0.38rem 0; background:#FFFFFF;}
+        .improver-name {font-weight:700; color:#0F172A; font-size:0.95rem;}
+        .improver-meta {color:#64748B; font-size:0.77rem; margin-top:0.2rem;}
+        .improver-number {font-weight:800; font-size:1.02rem; text-align:right;}
+        .status-pill {display:inline-block; padding:0.16rem 0.52rem; border-radius:999px; font-size:0.75rem; font-weight:700; white-space:nowrap;}
         @media (max-width: 800px) {
             .block-container {padding-left:0.7rem; padding-right:0.7rem;}
-            .improver-name {font-size:0.87rem;}
-            .improver-number {font-size:0.92rem;}
+            .improver-name {font-size:0.86rem;}
+            .improver-number {font-size:0.9rem;}
         }
     </style>
     """,
@@ -138,12 +138,12 @@ def score_color(value: object) -> str:
 
 def change_color(value: object) -> str:
     try:
-        change = float(value)
+        value = float(value)
     except (TypeError, ValueError):
         return MUTED
-    if change > 0.05:
+    if value > 0.05:
         return GREEN
-    if change < -0.05:
+    if value < -0.05:
         return RED
     return MUTED
 
@@ -158,6 +158,24 @@ def change_indicator(value: object) -> str:
     if number < -0.05:
         return f"🔴 {format_signed(number)}"
     return f"⚪ {format_signed(number)}"
+
+
+def quality_indicator(value: object, lower_is_better: bool = False) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "⚪ —"
+    if lower_is_better:
+        if number <= 0.7:
+            return f"🟢 {format_number(number)}"
+        if number <= 1.0:
+            return f"🟡 {format_number(number)}"
+        return f"🔴 {format_number(number)}"
+    if number >= 1.5:
+        return f"🟢 {format_number(number)}"
+    if number >= 1.0:
+        return f"🟡 {format_number(number)}"
+    return f"🔴 {format_number(number)}"
 
 
 def leadership_status(score: object, change: object) -> tuple[str, str, str]:
@@ -263,10 +281,7 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
         st.session_state[state_key] = latest
     selected_index = all_dates.index(selected)
 
-    heading, previous, calendar, next_button = st.columns([3.8, 0.45, 2.0, 0.45])
-    with heading:
-        st.markdown("#### Analysis date")
-        st.caption("Choose an available trading session")
+    previous, calendar, next_button, selected_label = st.columns([0.5, 2.0, 0.5, 3.4])
     with previous:
         if st.button("‹", key=f"{key}_previous", disabled=selected_index == 0, use_container_width=True):
             st.session_state[state_key] = all_dates[selected_index - 1]
@@ -285,13 +300,20 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
         if st.button("›", key=f"{key}_next", disabled=selected_index == len(all_dates) - 1, use_container_width=True):
             st.session_state[state_key] = all_dates[selected_index + 1]
             st.rerun()
+    with selected_label:
+        st.markdown(f"<div style='padding-top:0.34rem; color:{MUTED}; font-size:0.88rem;'>Analysis date: <b style='color:{INK};'>{selected.strftime('%d %b %Y')}</b></div>", unsafe_allow_html=True)
 
-    valid_dates = [date for date in all_dates if date <= pd.Timestamp(requested)]
-    resolved = valid_dates[-1] if valid_dates else all_dates[0]
+    requested_timestamp = pd.Timestamp(requested).normalize()
+    if requested_timestamp in all_dates:
+        resolved = requested_timestamp
+    else:
+        prior_dates = [date for date in all_dates if date <= requested_timestamp]
+        resolved = prior_dates[-1] if prior_dates else all_dates[0]
     if resolved != selected:
         st.session_state[state_key] = resolved
         st.rerun()
-    st.caption(f"Showing: {resolved.strftime('%d %b %Y')}")
+    if requested_timestamp != resolved:
+        st.caption(f"{requested_timestamp.strftime('%d %b %Y')} has no EOD data. Showing prior trading session: {resolved.strftime('%d %b %Y')}.")
     return resolved
 
 
@@ -341,12 +363,9 @@ def render_improver_cards(current: pd.DataFrame) -> None:
         st.info("No Basic Industry improved in Leadership Score over the last five available trading sessions.")
         return
     improving["Improver Priority"] = priority_score(improving)
-    improving = improving.sort_values(
-        ["Improver Priority", "5D Leadership Change", "Leadership Score"],
-        ascending=[False, False, False],
-    ).head(TOP_INDUSTRIES).reset_index(drop=True)
+    improving = improving.sort_values(["Improver Priority", "5D Leadership Change", "Leadership Score"], ascending=[False, False, False]).head(TOP_INDUSTRIES).reset_index(drop=True)
     st.markdown("### Leadership Improvers")
-    st.caption("Ranks current leadership quality and five-session improvement together. A strong leader improving further ranks above a weak rebound.")
+    st.caption("Ranking rewards current leadership quality and five-session improvement together.")
     for rank, row in improving.iterrows():
         status, status_color, status_bg = leadership_status(row["Leadership Score"], row["5D Leadership Change"])
         st.markdown(
@@ -371,20 +390,12 @@ def render_improver_cards(current: pd.DataFrame) -> None:
 def render_selected_industry(basic_history: pd.DataFrame, selected_date: pd.Timestamp, current: pd.DataFrame) -> None:
     ranked = current.copy()
     ranked["Improver Priority"] = priority_score(ranked)
-    ranked = ranked.sort_values(
-        ["Improver Priority", "5D Leadership Change", "Leadership Score"],
-        ascending=[False, False, False],
-    )
+    ranked = ranked.sort_values(["Improver Priority", "5D Leadership Change", "Leadership Score"], ascending=[False, False, False])
     options = ranked["basic_industry"].tolist()
     if not options:
         st.info("No Basic Industry is available for the selected date.")
         return
-    selected_group = st.selectbox(
-        "Select Basic Industry",
-        options,
-        key="selected_basic_industry",
-        help="Industries begin with the highest improvement priority and descend.",
-    )
+    selected_group = st.selectbox("Select Basic Industry", options, key="selected_basic_industry", help="Starts with the highest improvement priority and descends.")
     row = current[current["basic_industry"] == selected_group].iloc[-1]
     score = float(row["Leadership Score"])
     change = float(row["5D Leadership Change"])
@@ -393,23 +404,12 @@ def render_selected_industry(basic_history: pd.DataFrame, selected_date: pd.Time
     c1.metric("Current leadership", format_number(score))
     c2.metric("5-session change", format_signed(change))
     c3.metric("Current regime", regime)
-
-    history = basic_history[(basic_history["basic_industry"] == selected_group) & (basic_history["date"] <= selected_date)].copy()
-    history = history.sort_values("date").tail(30)
+    history = basic_history[(basic_history["basic_industry"] == selected_group) & (basic_history["date"] <= selected_date)].copy().sort_values("date").tail(30)
     if history.empty:
         st.info("No trend history is available for this industry.")
         return
     history["Leadership Score"] = normalize_score(history["leadership_score"]).fillna(0.0)
-    figure = go.Figure(
-        go.Scatter(
-            x=history["date"],
-            y=history["Leadership Score"],
-            mode="lines+markers",
-            line=dict(color=score_color(score), width=3),
-            marker=dict(size=7),
-            hovertemplate="<b>%{x|%d %b %Y}</b><br>Leadership score: %{y:.1f}<extra></extra>",
-        )
-    )
+    figure = go.Figure(go.Scatter(x=history["date"], y=history["Leadership Score"], mode="lines+markers", line=dict(color=score_color(score), width=3), marker=dict(size=7), hovertemplate="<b>%{x|%d %b %Y}</b><br>Leadership score: %{y:.1f}<extra></extra>"))
     for threshold, color in [(70, DARK_GREEN), (60, GREEN), (50, AMBER)]:
         figure.add_hline(y=threshold, line_dash="dot", line_color=color, opacity=0.85)
     figure.update_layout(title=f"{selected_group}: Leadership Score trend", xaxis_title=None, yaxis_title="Leadership Score")
@@ -423,15 +423,11 @@ def industry_monitor_tab(basic_history: pd.DataFrame, selected_date: pd.Timestam
         st.warning("No Basic Industry data is available for the selected date.")
         return
     current = add_5_session_change(basic_history, current, "basic_industry")
-    improving = int((current["5D Leadership Change"] > 0).sum())
-    weakening = int((current["5D Leadership Change"] < 0).sum())
     c1, c2, c3 = st.columns(3)
     c1.metric("Industries tracked", format_integer(len(current)))
-    c2.metric("Leadership improving", format_integer(improving))
-    c3.metric("Leadership weakening", format_integer(weakening))
-
+    c2.metric("Leadership improving", format_integer((current["5D Leadership Change"] > 0).sum()))
+    c3.metric("Leadership weakening", format_integer((current["5D Leadership Change"] < 0).sum()))
     render_improver_cards(current)
-
     st.markdown("### Industry leadership table")
     table = current[["basic_industry", "Leadership Score", "5D Leadership Change"]].copy()
     table["Status"] = table.apply(lambda row: leadership_status(row["Leadership Score"], row["5D Leadership Change"])[0], axis=1)
@@ -441,9 +437,7 @@ def industry_monitor_tab(basic_history: pd.DataFrame, selected_date: pd.Timestam
     table["Leadership Score"] = table["Leadership Score"].map(lambda value: format_number(value, 1))
     table["5D Leadership Change"] = table["5D Leadership Change"].map(change_indicator)
     show_table(table, max(360, min(760, 35 * len(table) + 60)))
-
     st.markdown("### Selected industry trend")
-    st.caption("The dropdown begins with the highest improvement priority and descends.")
     render_selected_industry(basic_history, selected_date, current)
 
 
@@ -451,65 +445,86 @@ def percentile_rank(frame: pd.DataFrame, column: str, ascending: bool) -> pd.Ser
     return numeric_column(frame, column).rank(pct=True, ascending=ascending).fillna(0.0)
 
 
-def stock_setups_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
-    basic = current_snapshot(basic_history, selected_date, "basic_industry")
+def prior_move_series(data: pd.DataFrame) -> pd.Series:
+    for column in ["gain_6m", "ret_60d", "ret_20d", "ret_120d"]:
+        if column in data.columns:
+            return numeric_column(data, column)
+    return pd.Series(0.0, index=data.index)
+
+
+def volume_dryup_series(data: pd.DataFrame) -> pd.Series:
+    for column in ["vol_ratio_50", "volume_ratio_50", "vol_ratio", "volume_ratio"]:
+        if column in data.columns:
+            return numeric_column(data, column)
+    return pd.Series(0.0, index=data.index)
+
+
+def tightness_series(data: pd.DataFrame) -> pd.Series:
+    for column in ["tight_3d_range", "tightness_3d", "range_3d_pct"]:
+        if column in data.columns:
+            return numeric_column(data, column)
+    return pd.Series(0.0, index=data.index)
+
+
+def render_stock_table(stocks: pd.DataFrame, kind: str, limit: int) -> None:
+    st.markdown(f"### Top {limit} {kind} Setups")
+    if stocks.empty:
+        st.info(f"No {kind.lower()} stocks pass the upstream setup gate on this date.")
+        return
+    data = stocks.copy()
+    tightness = tightness_series(data)
+    volume_ratio = volume_dryup_series(data)
+    prior_move = prior_move_series(data)
+    if kind == "Established":
+        data["Priority Score"] = (
+            0.35 * tightness.rank(pct=True, ascending=True)
+            + 0.25 * volume_ratio.rank(pct=True, ascending=True)
+            + 0.25 * prior_move.rank(pct=True, ascending=False)
+            + 0.15 * numeric_column(data, "stock_strength_score").rank(pct=True, ascending=False)
+        ) * 100.0
+    else:
+        data["Priority Score"] = numeric_column(data, "ipo_setup_score")
+        if (data["Priority Score"] == 0).all():
+            data["Priority Score"] = (
+                0.35 * tightness.rank(pct=True, ascending=True)
+                + 0.25 * volume_ratio.rank(pct=True, ascending=True)
+                + 0.25 * prior_move.rank(pct=True, ascending=False)
+                + 0.15 * numeric_column(data, "stock_strength_score").rank(pct=True, ascending=False)
+            ) * 100.0
+    data["Tightness (3D)"] = tightness
+    data["Volume vs 50D"] = volume_ratio
+    data["Prior Move"] = prior_move
+    data = data.sort_values("Priority Score", ascending=False).head(limit).reset_index(drop=True)
+    data.insert(0, "Rank", range(1, len(data) + 1))
+    data["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + data["symbol"].astype(str)
+    view = data.rename(columns={"symbol": "Symbol", "basic_industry": "Basic Industry"})
+    keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Priority Score", "Tightness (3D)", "Volume vs 50D", "Prior Move"]
+    view = view[[column for column in keep if column in view.columns]]
+    if "Priority Score" in view.columns:
+        view["Priority Score"] = view["Priority Score"].map(lambda value: format_number(value, 1))
+    if "Tightness (3D)" in view.columns:
+        view["Tightness (3D)"] = view["Tightness (3D)"].map(lambda value: quality_indicator(value, lower_is_better=True))
+    if "Volume vs 50D" in view.columns:
+        view["Volume vs 50D"] = view["Volume vs 50D"].map(lambda value: quality_indicator(value, lower_is_better=True))
+    if "Prior Move" in view.columns:
+        view["Prior Move"] = view["Prior Move"].map(format_percent)
+    show_table(view, max(280, 38 * len(view) + 60), chart_links=True)
+
+
+def stock_setups_tab(stock_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
     stocks = stock_history[stock_history["date"] == selected_date].copy()
     if stocks.empty:
         st.warning("No stock data is available for this date.")
         return
-    basic = add_5_session_change(basic_history, basic, "basic_industry")
-    basic = basic.sort_values("Leadership Score", ascending=False).drop_duplicates("basic_industry").reset_index(drop=True)
-    basic["Industry Rank"] = range(1, len(basic) + 1)
-    lookup = basic.set_index("basic_industry")[["Industry Rank", "Leadership Score", "regime"]]
     established = stocks[stocks["established_buy_setup"] == 1].copy()
     ipo = stocks[stocks["ipo_buy_setup"] == 1].copy()
     c1, c2, c3 = st.columns(3)
     c1.metric("Established qualified", format_integer(len(established)))
     c2.metric("IPO qualified", format_integer(len(ipo)))
     c3.metric("Scan date", selected_date.strftime("%d %b %Y"))
-    render_stock_table(established, lookup, "Established", TOP_STOCKS)
-    render_stock_table(ipo, lookup, "IPO", TOP_STOCKS)
-
-
-def render_stock_table(stocks: pd.DataFrame, lookup: pd.DataFrame, kind: str, limit: int) -> None:
-    st.markdown(f"### Top {limit} {kind} Setups")
-    if stocks.empty:
-        st.info(f"No {kind.lower()} stocks pass the upstream setup gate on this date.")
-        return
-    data = stocks.copy()
-    if kind == "Established":
-        data["Priority Score"] = (
-            0.30 * percentile_rank(data, "tight_3d_range", ascending=True)
-            + 0.25 * percentile_rank(data, "vol_ratio_50", ascending=True)
-            + 0.20 * percentile_rank(data, "gain_6m", ascending=False)
-            + 0.15 * percentile_rank(data, "up_down_ratio", ascending=False)
-            + 0.10 * percentile_rank(data, "stock_strength_score", ascending=False)
-        ) * 100.0
-    else:
-        data["Priority Score"] = numeric_column(data, "ipo_setup_score")
-        if (data["Priority Score"] == 0).all():
-            data["Priority Score"] = (
-                0.25 * percentile_rank(data, "tight_3d_range", ascending=True)
-                + 0.20 * percentile_rank(data, "vol_ratio_50", ascending=True)
-                + 0.20 * percentile_rank(data, "vwap_premium", ascending=False)
-                + 0.20 * percentile_rank(data, "retracement_from_listing_high", ascending=True)
-                + 0.15 * percentile_rank(data, "hh_hl_count", ascending=False)
-            ) * 100.0
-    data["Industry Rank"] = data["basic_industry"].map(lookup["Industry Rank"])
-    data["Industry Leadership"] = data["basic_industry"].map(lookup["Leadership Score"])
-    data["Industry Regime"] = data["basic_industry"].map(lookup["regime"])
-    data = data.sort_values("Priority Score", ascending=False).head(limit).reset_index(drop=True)
-    data.insert(0, "Rank", range(1, len(data) + 1))
-    data["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + data["symbol"].astype(str)
-    view = data.rename(columns={"symbol": "Symbol", "basic_industry": "Basic Industry", "close": "Close"})
-    keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Industry Rank", "Industry Leadership", "Industry Regime", "Close", "Priority Score"]
-    view = view[[column for column in keep if column in view.columns]]
-    for column in ["Close", "Priority Score", "Industry Leadership"]:
-        if column in view.columns:
-            view[column] = view[column].map(lambda value: format_number(value, 1))
-    if "Industry Rank" in view.columns:
-        view["Industry Rank"] = view["Industry Rank"].map(format_integer)
-    show_table(view, max(260, 37 * len(view) + 60), chart_links=True)
+    st.caption("Tightness and Volume vs 50D: 🟢 lower values are constructive consolidation/dry-up; 🟡 is neutral; 🔴 is less constructive. Prior Move uses the best available upstream return field.")
+    render_stock_table(established, "Established", TOP_STOCKS)
+    render_stock_table(ipo, "IPO", TOP_STOCKS)
 
 
 def group_detail_tab(history: pd.DataFrame, stock_history: pd.DataFrame, selected_date: pd.Timestamp, group_column: str, title: str) -> None:
@@ -533,7 +548,7 @@ def group_detail_tab(history: pd.DataFrame, stock_history: pd.DataFrame, selecte
 
     st.markdown(f"### {title} constituents")
     options = current.sort_values("5D Leadership Change", ascending=False)[group_column].tolist()
-    selected_group = st.selectbox(title, options, key=f"{group_column}_selector", help="Starts with maximum 5-session improvement and descends.")
+    selected_group = st.selectbox(title, options, key=f"{group_column}_selector", help="Starts with maximum five-session improvement and descends.")
     stock_group_column = "basic_industry" if group_column == "basic_industry" else "industry"
     stocks = stock_history[(stock_history["date"] == selected_date) & (stock_history[stock_group_column] == selected_group)].copy()
     if stocks.empty:
@@ -557,21 +572,69 @@ def group_detail_tab(history: pd.DataFrame, stock_history: pd.DataFrame, selecte
 
 
 def methodology_tab() -> None:
-    st.subheader("How to read the monitor")
+    st.subheader("Detailed methodology and dashboard guide")
     st.markdown(
         """
-        ### Leadership Score
-        - **Leadership Score** is the current relative-strength score for a group, shown on a 0–100 scale.
-        - **5D Leadership Change** equals the current score minus the score five available trading sessions earlier.
-        - The Leadership Improvers section ranks both current leadership and positive improvement so strong industries improving further receive priority over weak rebounds.
+        ## Purpose
+        This monitor is a market-research workspace for identifying Basic Industries that are already showing relative leadership, improving in leadership, and producing individual stock setups. It is not a buy/sell recommendation system.
 
-        ### Colour guide
-        - Green: positive leadership momentum.
-        - Red: negative leadership momentum.
-        - Amber: transition/watchlist condition.
-        - Dark green: strong leadership, normally 70 or above.
+        ## Dates and available EOD data
+        - The Analysis Date selector uses only the EOD dates present in the dashboard data files.
+        - If a calendar date is a weekend, exchange holiday, or has not been downloaded, the dashboard automatically resolves it to the most recent available prior trading session.
+        - The label beside the date selector tells you the exact EOD session currently being shown.
+        - Last Data Refresh is the timestamp recorded by the data workflow. It is displayed in Indian Standard Time when a valid timestamp is available.
 
-        This dashboard is a research tool, not a trade recommendation.
+        ## Industry Leadership Score
+        - Leadership Score is a relative-strength-style score scaled to 0–100.
+        - Higher values represent stronger current leadership versus the rest of the tracked universe.
+        - Scores at or above 70 are shown as strong leadership.
+        - Scores from 60 to 69.9 are constructive/positive transition.
+        - Scores from 50 to 59.9 are neutral-transition/watchlist territory.
+        - Scores below 50 are weak leadership unless there is a sustained improvement in later sessions.
+
+        ## Five-session Leadership Change
+        - 5D Leadership Change equals the current Leadership Score minus the Leadership Score from five available trading sessions earlier.
+        - A positive number means the industry improved relative to the market over that period.
+        - A negative number means leadership deteriorated.
+        - The Industry Leadership Table uses 🟢 for positive change, 🔴 for negative change, and ⚪ for near-zero change.
+        - Change must always be interpreted with the current score. A rise from 40 to 55 is constructive but is not equivalent to a rise from 70 to 80.
+
+        ## Leadership Improvers
+        - The compact Leadership Improvers cards combine current score and recent improvement.
+        - Their internal ranking uses 65% current Leadership Score and 35% positive five-session improvement.
+        - The purpose is to prioritize industries that are both strong now and getting stronger, rather than over-emphasizing weak industries that merely bounced.
+        - Strong Leader · Accelerating normally means a score of at least 70 with positive five-session change.
+        - Improving · Watchlist means momentum improved but the current score still needs confirmation.
+
+        ## Selected Industry Trend
+        - The dropdown starts from the strongest improvement-priority industry and descends.
+        - The line chart shows the most recent 30 available trading sessions through the selected analysis date.
+        - Dotted levels at 50, 60 and 70 provide context for weak, transitional and strong leadership zones.
+        - Use this view to judge whether an improvement is persistent, a recovery from weakness, or merely a short-term bounce.
+
+        ## Top Setup Stocks
+        - These tables contain stocks that passed the upstream Established or IPO setup flags.
+        - The dashboard does not use industry leadership, industry rank, or regime as a hard filter for stocks. A good individual setup can occur in a mixed group, and a strong group can contain extended stocks.
+        - Priority Score ranks qualifying stocks within the displayed category. It is a research-ordering score, not a probability of success.
+
+        ## Setup-table fields
+        - Tightness (3D): uses the best available upstream three-day tightness/range field. Lower values usually indicate a narrower consolidation and are shown as more constructive.
+        - Volume vs 50D: uses the best available volume-ratio field. Values below 1.0 indicate volume below the 50-day normal level. Lower values are often constructive during a base because they can indicate volume dry-up; this should be confirmed visually before a breakout.
+        - Prior Move: uses the best available upstream move field in this order: 6M Gain, 60D Return, 20D Return, then 120D Return. It shows whether the stock had an earlier advance before consolidation.
+        - 🟢 on Tightness or Volume vs 50D means lower/more constructive under the dashboard thresholds. 🟡 is intermediate. 🔴 is less constructive. These are screening cues, not standalone trading signals.
+        - Open ↗ opens the matching NSE symbol in TradingView for chart confirmation.
+
+        ## Suggested workflow
+        1. Begin with Leadership Improvers and identify industries with a high current score plus positive five-session improvement.
+        2. Open the Selected Industry Trend and check whether the improvement is sustained.
+        3. Review Top Setup Stocks for tightness, prior move and volume dry-up.
+        4. Open the chart and manually check base structure, price/volume behaviour, key moving averages, resistance and liquidity.
+        5. Define entry, invalidation level, stop-loss, position size and market-risk conditions independently.
+
+        ## Limitations
+        - Values depend on the accuracy and completeness of the upstream EOD pipeline.
+        - A missing session, small industry membership, corporate action, symbol mapping issue, or stale cache can affect results.
+        - Past price/volume structure does not guarantee a future move. Always use risk management and independent judgement.
         """
     )
 
@@ -600,7 +663,7 @@ def main() -> None:
     with tabs[0]:
         industry_monitor_tab(basic_history, date_picker(all_dates, "monitor"))
     with tabs[1]:
-        stock_setups_tab(basic_history, stock_history, date_picker(all_dates, "setups"))
+        stock_setups_tab(stock_history, date_picker(all_dates, "setups"))
     with tabs[2]:
         group_detail_tab(basic_history, stock_history, date_picker(all_dates, "basic"), "basic_industry", "Basic Industry")
     with tabs[3]:
