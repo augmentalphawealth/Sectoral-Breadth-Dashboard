@@ -6,40 +6,84 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: nse-master-manual-backup
+  cancel-in-progress: false
+
 jobs:
   download-nse-master:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas pyarrow requests
+          pip install -r requirements.txt
 
-      - name: Download and build legacy NSE master
+      - name: Download official NSE master
         run: |
+          set -euo pipefail
           python scripts/05_download_nse_master.py
 
-      - name: Commit legacy master file
+      - name: Validate downloaded master
         run: |
+          set -euo pipefail
+          test -s data/processed/nse_mainboard_master.parquet
+
+          python - <<'PY'
+          import pandas as pd
+
+          path = "data/processed/nse_mainboard_master.parquet"
+          master = pd.read_parquet(path)
+          required = ["symbol", "company_name", "series", "isin"]
+          missing = [column for column in required if column not in master.columns]
+          if missing:
+              raise ValueError(f"NSE master missing columns: {missing}")
+          if master.empty:
+              raise ValueError("NSE master is empty")
+          if master["isin"].fillna("").astype(str).str.strip().eq("").all():
+              raise ValueError("NSE master contains no usable ISIN values")
+
+          print("========== NSE MASTER VALIDATION PASSED ==========")
+          print(f"Master rows: {len(master):,}")
+          print(f"EQ rows: {int(master['series'].fillna('').astype(str).str.strip().eq('EQ').sum()):,}")
+          PY
+
+      - name: Commit official NSE master
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add data/processed/nse_mainboard_master.parquet
 
           if git diff --cached --quiet; then
-            echo "No legacy master changes to commit."
+            echo "No NSE master changes to commit."
           else
-            git commit -m "Update legacy NSE mainboard master"
-            git push
+            git commit -m "Update official NSE mainboard master"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
+
+      - name: Upload master artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nse-mainboard-master
+          retention-days: 14
+          if-no-files-found: warn
+          path: data/processed/nse_mainboard_master.parquet
