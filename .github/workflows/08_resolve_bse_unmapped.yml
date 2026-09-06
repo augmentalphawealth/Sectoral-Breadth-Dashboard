@@ -2,17 +2,19 @@ name: 08 Resolve BSE Unmapped Securities
 
 on:
   workflow_dispatch:
+  schedule:
+    # 12:45 UTC = 6:15 PM IST, Monday to Friday.
+    - cron: "45 12 * * 1-5"
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: bse-unmapped-fallback
   cancel-in-progress: false
 
 jobs:
-  resolve-and-continue:
+  resolve-bse-fallback:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -20,60 +22,68 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WORKFLOW_PAT }}
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Resolve one BSE fallback batch
+      - name: Run BSE fallback classification batch
         run: |
+          set -euo pipefail
           python scripts/08_resolve_bse_unmapped.py
 
-      - name: Count fallback candidates still pending
-        id: remaining
+      - name: Validate BSE fallback outputs
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import os
+          set -euo pipefail
+          test -s data/processed/nse_mainboard_master_bse_classified.parquet
+          test -f data/processed/nse_bse_industry_mapping.csv
+          test -f data/processed/nse_bse_still_unmapped.csv
 
+          python - <<'PY'
           import pandas as pd
 
-          path = Path(
+          master = pd.read_parquet(
               "data/processed/nse_mainboard_master_bse_classified.parquet"
           )
-          df = pd.read_parquet(path)
+          unresolved = pd.read_csv(
+              "data/processed/nse_bse_still_unmapped.csv",
+              dtype=str,
+          ).fillna("")
 
-          status = df["classification_status"].fillna("").astype(str).str.strip()
-          attempted = (
-              df["fallback_bse_attempted"]
-              .fillna("")
-              .astype(str)
-              .str.strip()
-          )
+          required_master = [
+              "symbol", "isin", "sector", "industry", "basic_industry",
+              "classification_status",
+          ]
+          missing = [column for column in required_master if column not in master.columns]
+          if missing:
+              raise ValueError(f"Classified master missing columns: {missing}")
+          if master.empty:
+              raise ValueError("Classified master is empty")
 
-          remaining = int(
-              (
-                  status.eq("NOT_FOUND")
-                  & ~attempted.eq("YES")
-              ).sum()
-          )
+          if not unresolved.empty:
+              required_report = ["symbol", "isin", "classification_status"]
+              report_missing = [column for column in required_report if column not in unresolved.columns]
+              if report_missing:
+                  raise ValueError(f"BSE unresolved report missing columns: {report_missing}")
 
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"remaining={remaining}\n")
-
-          print(f"BSE fallback candidates remaining: {remaining}")
+          print("========== BSE FALLBACK VALIDATION PASSED ==========")
+          print(f"Master rows: {len(master):,}")
+          print(f"Still incomplete/retryable: {len(unresolved):,}")
           PY
 
       - name: Commit BSE fallback results
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -83,23 +93,20 @@ jobs:
             data/processed/nse_bse_still_unmapped.csv
 
           if git diff --cached --quiet; then
-            echo "No output changes to commit."
+            echo "No BSE fallback changes to commit."
           else
-            git commit -m "Resolve BSE unmapped securities"
-            git push origin main
+            git commit -m "Update BSE fallback classifications"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
 
-      - name: Start next BSE fallback batch
-        if: steps.remaining.outputs.remaining != '0'
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-        run: |
-          gh workflow run 08_resolve_bse_unmapped.yml --ref main
-
-      - name: Upload BSE fallback output
+      - name: Upload BSE fallback artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bse-unmapped-fallback-output
+          name: nse-bse-fallback-classification
+          retention-days: 14
+          if-no-files-found: warn
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_bse_industry_mapping.csv

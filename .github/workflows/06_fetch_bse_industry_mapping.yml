@@ -2,17 +2,19 @@ name: 06 Fetch BSE Industry Mapping
 
 on:
   workflow_dispatch:
+  schedule:
+    # 12:35 UTC = 6:05 PM IST, Monday to Friday.
+    - cron: "35 12 * * 1-5"
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: bse-industry-classification
   cancel-in-progress: false
 
 jobs:
-  fetch-and-continue:
+  fetch-bse-classifications:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -20,50 +22,66 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WORKFLOW_PAT }}
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch one BSE batch
+      - name: Run primary BSE classification batch
         run: |
+          set -euo pipefail
           python scripts/06_fetch_bse_industry_mapping.py
 
-      - name: Detect remaining securities
-        id: remaining
+      - name: Validate BSE classification outputs
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import os
+          set -euo pipefail
+          test -s data/processed/nse_mainboard_master_bse_classified.parquet
+          test -f data/processed/nse_bse_industry_mapping.csv
 
+          python - <<'PY'
           import pandas as pd
 
-          path = Path(
+          master = pd.read_parquet(
               "data/processed/nse_mainboard_master_bse_classified.parquet"
           )
-          df = pd.read_parquet(path)
+          required = [
+              "symbol",
+              "isin",
+              "sector",
+              "industry",
+              "basic_industry",
+              "classification_status",
+          ]
+          missing = [column for column in required if column not in master.columns]
+          if missing:
+              raise ValueError(f"Classified master missing required columns: {missing}")
+          if master.empty:
+              raise ValueError("Classified master is empty")
 
-          status = df["classification_status"].fillna("").astype(str).str.strip()
-          remaining = int(
-              (~status.isin(["CLASSIFIED", "NOT_FOUND"])).sum()
+          complete = (
+              master["sector"].fillna("").astype(str).str.strip().ne("")
+              & master["industry"].fillna("").astype(str).str.strip().ne("")
+              & master["basic_industry"].fillna("").astype(str).str.strip().ne("")
           )
-
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"remaining={remaining}\n")
-
-          print(f"Remaining securities: {remaining}")
+          print("========== BSE CLASSIFICATION VALIDATION PASSED ==========")
+          print(f"Master rows: {len(master):,}")
+          print(f"Complete classifications: {int(complete.sum()):,}")
+          print(f"Incomplete/retryable: {int((~complete).sum()):,}")
           PY
 
-      - name: Commit this completed batch
+      - name: Commit BSE classification updates
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -72,23 +90,20 @@ jobs:
             data/processed/nse_bse_industry_mapping.csv
 
           if git diff --cached --quiet; then
-            echo "No output changes to commit."
+            echo "No BSE classification changes to commit."
           else
-            git commit -m "Update BSE classifications"
-            git push origin main
+            git commit -m "Update BSE industry classifications"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
 
-      - name: Start the next automatic batch
-        if: steps.remaining.outputs.remaining != '0'
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-        run: |
-          gh workflow run 06_fetch_bse_industry_mapping.yml --ref main
-
-      - name: Upload this batch output
+      - name: Upload BSE classification artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nse-bse-classification-batch
+          name: nse-bse-primary-classification
+          retention-days: 14
+          if-no-files-found: warn
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_bse_industry_mapping.csv

@@ -2,78 +2,88 @@ name: 09 Resolve Yahoo Unmapped Securities
 
 on:
   workflow_dispatch:
+  schedule:
+    # 12:55 UTC = 6:25 PM IST, Monday to Friday.
+    - cron: "55 12 * * 1-5"
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: yahoo-unmapped-fallback
   cancel-in-progress: false
 
 jobs:
-  resolve-and-continue:
+  resolve-yahoo-fallback:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WORKFLOW_PAT }}
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Resolve one Yahoo fallback batch
+      - name: Run Yahoo fallback batch
         run: |
+          set -euo pipefail
           python scripts/09_resolve_yahoo_unmapped.py
 
-      - name: Count Yahoo candidates still pending
-        id: remaining
+      - name: Validate Yahoo fallback outputs
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import os
+          set -euo pipefail
+          test -s data/processed/nse_mainboard_master_bse_classified.parquet
+          test -f data/processed/nse_yahoo_industry_mapping.csv
+          test -f data/processed/nse_yahoo_still_unmapped.csv
 
+          python - <<'PY'
           import pandas as pd
 
-          path = Path(
+          master = pd.read_parquet(
               "data/processed/nse_mainboard_master_bse_classified.parquet"
           )
-          df = pd.read_parquet(path)
+          unresolved = pd.read_csv(
+              "data/processed/nse_yahoo_still_unmapped.csv",
+              dtype=str,
+          ).fillna("")
 
-          status = df["classification_status"].fillna("").astype(str).str.strip()
-          attempted = (
-              df["yahoo_attempted"]
-              .fillna("")
-              .astype(str)
-              .str.strip()
-          )
+          required_master = [
+              "symbol", "isin", "sector", "industry", "basic_industry",
+              "classification_status", "yahoo_ticker", "yahoo_attempt_count",
+          ]
+          missing = [column for column in required_master if column not in master.columns]
+          if missing:
+              raise ValueError(f"Classified master missing columns: {missing}")
+          if master.empty:
+              raise ValueError("Classified master is empty")
 
-          remaining = int(
-              (
-                  status.eq("NOT_FOUND")
-                  & ~attempted.eq("YES")
-              ).sum()
-          )
+          if not unresolved.empty:
+              required_report = ["symbol", "isin", "classification_status"]
+              report_missing = [column for column in required_report if column not in unresolved.columns]
+              if report_missing:
+                  raise ValueError(f"Yahoo unresolved report missing columns: {report_missing}")
 
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"remaining={remaining}\n")
-
-          print(f"Yahoo fallback candidates remaining: {remaining}")
+          print("========== YAHOO FALLBACK VALIDATION PASSED ==========")
+          print(f"Master rows: {len(master):,}")
+          print(f"Still incomplete/retryable: {len(unresolved):,}")
           PY
 
       - name: Commit Yahoo fallback results
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -83,23 +93,20 @@ jobs:
             data/processed/nse_yahoo_still_unmapped.csv
 
           if git diff --cached --quiet; then
-            echo "No output changes to commit."
+            echo "No Yahoo fallback changes to commit."
           else
-            git commit -m "Resolve Yahoo fallback classifications"
-            git push origin main
+            git commit -m "Update Yahoo fallback classification evidence"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
 
-      - name: Start next Yahoo fallback batch
-        if: steps.remaining.outputs.remaining != '0'
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-        run: |
-          gh workflow run 09_resolve_yahoo_unmapped.yml --ref main
-
-      - name: Upload Yahoo fallback output
+      - name: Upload Yahoo fallback artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: yahoo-unmapped-fallback-output
+          name: nse-yahoo-fallback-classification
+          retention-days: 14
+          if-no-files-found: warn
           path: |
             data/processed/nse_mainboard_master_bse_classified.parquet
             data/processed/nse_yahoo_industry_mapping.csv

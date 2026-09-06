@@ -3,7 +3,8 @@ name: 11 Update NSE Universe
 on:
   workflow_dispatch:
   schedule:
-    - cron: "50 12 * * 1-5"
+    # 12:30 UTC = 6:00 PM IST, Monday to Friday.
+    - cron: "30 12 * * 1-5"
 
 permissions:
   contents: write
@@ -15,43 +16,107 @@ concurrency:
 jobs:
   update-universe:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Download official NSE equity master
+        run: |
+          set -euo pipefail
+          python scripts/05_download_nse_master.py
+
       - name: Update classified NSE universe
         run: |
+          set -euo pipefail
           python scripts/11_update_nse_universe.py
 
-      - name: Commit classified master changes
+      - name: Validate universe outputs
         run: |
+          set -euo pipefail
+          test -s data/processed/nse_mainboard_master.parquet
+          test -s data/processed/nse_mainboard_master_bse_classified.parquet
+
+          python - <<'PY'
+          import pandas as pd
+
+          raw = pd.read_parquet("data/processed/nse_mainboard_master.parquet")
+          classified = pd.read_parquet(
+              "data/processed/nse_mainboard_master_bse_classified.parquet"
+          )
+
+          required = [
+              "symbol",
+              "isin",
+              "classification_status",
+              "sector",
+              "industry",
+              "basic_industry",
+          ]
+          missing = [column for column in required if column not in classified.columns]
+
+          if missing:
+              raise ValueError(
+                  f"Classified NSE master missing required columns: {missing}"
+              )
+          if raw.empty:
+              raise ValueError("Downloaded NSE raw master is empty")
+          if classified.empty:
+              raise ValueError("Classified NSE master is empty")
+          if classified["isin"].fillna("").astype(str).str.strip().eq("").all():
+              raise ValueError("Classified NSE master contains no usable ISIN values")
+
+          print("========== NSE UNIVERSE VALIDATION PASSED ==========")
+          print(f"Raw NSE master rows: {len(raw):,}")
+          print(f"Classified master rows: {len(classified):,}")
+          print(
+              "Pending classifications: "
+              f"{int(classified['classification_status'].fillna('').eq('PENDING').sum()):,}"
+          )
+          PY
+
+      - name: Commit universe changes
+        run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/processed/nse_mainboard_master_bse_classified.parquet
+          git add \
+            data/processed/nse_mainboard_master.parquet \
+            data/processed/nse_mainboard_master_bse_classified.parquet
 
           if git diff --cached --quiet; then
-            echo "No classified universe changes to commit."
+            echo "No NSE universe changes to commit."
           else
-            git commit -m "Update classified NSE mainboard universe"
-            git push
+            git commit -m "Update NSE universe and pending listings"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
 
-      - name: Upload updated master
+      - name: Upload updated universe artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: classified-nse-universe
-          path: data/processed/nse_mainboard_master_bse_classified.parquet
+          name: nse-universe-update
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            data/processed/nse_mainboard_master.parquet
+            data/processed/nse_mainboard_master_bse_classified.parquet

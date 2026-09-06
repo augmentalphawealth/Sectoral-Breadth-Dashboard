@@ -1,170 +1,166 @@
-name: basic-industry-dashboard-eod
+name: sectoral-breadth-dashboard-eod
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "20 13 * * 1-5"
+    # 12:30 UTC = 6:00 PM IST, Monday to Friday.
+    - cron: "30 12 * * 1-5"
 
 permissions:
   contents: write
 
 concurrency:
-  group: eod-dashboard
+  group: sectoral-breadth-eod
   cancel-in-progress: false
 
 jobs:
   build-eod-dashboard:
     runs-on: ubuntu-latest
+    timeout-minutes: 55
 
     steps:
-      - name: Checkout Sectoral dashboard
+      - name: Checkout Sectoral Breadth Dashboard
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Download shared Situational Awareness prices
+      - name: Download shared Situational Awareness price history
         run: |
-          curl -L \
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 5 \
             -H "Accept: application/vnd.github.raw+json" \
             "https://api.github.com/repos/augmentalphawealth/Situational-Awareness/contents/nse_6yr_historical.parquet?ref=main" \
             -o /tmp/nse_6yr_historical.parquet
-
+          test -s /tmp/nse_6yr_historical.parquet
           ls -lh /tmp/nse_6yr_historical.parquet
 
-      - name: Prepare temporary Sectoral prices file
+      - name: Prepare temporary price input
         run: |
           python - <<'PY'
           from pathlib import Path
           import pandas as pd
 
-          source_file = Path("/tmp/nse_6yr_historical.parquet")
-          output_file = Path("data/processed/prices.parquet")
+          source = Path("/tmp/nse_6yr_historical.parquet")
+          target = Path("data/processed/prices.parquet")
+          required = ["Date", "Open", "High", "Low", "Close", "Volume", "Symbol", "Turnover"]
 
-          source_columns = [
-              "Date",
-              "Open",
-              "High",
-              "Low",
-              "Close",
-              "Volume",
-              "Symbol",
-              "Turnover",
-          ]
+          prices = pd.read_parquet(source, columns=required)
+          prices = prices.rename(columns={
+              "Date": "date",
+              "Open": "open",
+              "High": "high",
+              "Low": "low",
+              "Close": "close",
+              "Volume": "volume",
+              "Symbol": "symbol",
+              "Turnover": "turnover",
+          })
+          prices["date"] = pd.to_datetime(prices["date"], errors="coerce").dt.normalize()
+          prices["symbol"] = prices["symbol"].fillna("").astype(str).str.strip()
+          prices = prices.dropna(subset=["date", "open", "high", "low", "close", "volume"])
+          prices = prices[prices["symbol"] != ""].copy()
+          prices = prices.drop_duplicates(["symbol", "date"], keep="last")
+          prices = prices.sort_values(["symbol", "date"]).reset_index(drop=True)
 
-          prices = pd.read_parquet(source_file, columns=source_columns)
+          if prices.empty:
+              raise ValueError("Temporary price input is empty")
 
-          prices = prices.rename(
-              columns={
-                  "Date": "date",
-                  "Open": "open",
-                  "High": "high",
-                  "Low": "low",
-                  "Close": "close",
-                  "Volume": "volume",
-                  "Symbol": "symbol",
-                  "Turnover": "turnover",
-              }
-          )
-
-          prices["date"] = pd.to_datetime(prices["date"])
-          prices["symbol"] = prices["symbol"].astype(str).str.strip()
-
-          prices = prices.dropna(
-              subset=[
-                  "date",
-                  "symbol",
-                  "open",
-                  "high",
-                  "low",
-                  "close",
-                  "volume",
-              ]
-          )
-
-          prices = prices.drop_duplicates(
-              subset=["symbol", "date"],
-              keep="last",
-          )
-
-          prices = prices.sort_values(
-              ["symbol", "date"],
-          ).reset_index(drop=True)
-
-          output_file.parent.mkdir(parents=True, exist_ok=True)
-          prices.to_parquet(output_file, index=False)
-
+          target.parent.mkdir(parents=True, exist_ok=True)
+          prices.to_parquet(target, index=False)
           print("========== TEMPORARY PRICES READY ==========")
-          print(f"Rows: {len(prices)}")
-          print(f"Symbols: {prices['symbol'].nunique()}")
+          print(f"Rows: {len(prices):,}")
+          print(f"Symbols: {prices['symbol'].nunique():,}")
           print(f"Start date: {prices['date'].min().date()}")
           print(f"Latest date: {prices['date'].max().date()}")
           PY
 
-      - name: Run EOD pipeline
+      - name: Run EOD calculation and snapshot pipeline
         run: |
+          set -euo pipefail
           python scripts/03_run_eod_pipeline.py
 
-      - name: Remove temporary and heavy files
+      - name: Verify snapshot outputs before publishing
+        run: |
+          set -euo pipefail
+          test -s data/processed/dashboard_dates.parquet
+          test -d data/processed/dashboard_snapshots
+          test -s data/processed/dashboard_sector_history.parquet
+          test -s data/processed/dashboard_basic_industry_history.parquet
+          test -s data/processed/dashboard_industry_history.parquet
+          test -s data/processed/last_sync.txt
+          echo "========== SNAPSHOT OUTPUTS VERIFIED =========="
+          find data/processed/dashboard_snapshots -mindepth 2 -maxdepth 2 -type f | head -30
+
+      - name: Commit prepared dashboard outputs
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            data/processed/basic_industry_daily_features.parquet \
+            data/processed/industry_daily_features.parquet \
+            data/processed/sector_daily_features.parquet \
+            data/processed/dashboard_basic_industry_latest.parquet \
+            data/processed/dashboard_industry_latest.parquet \
+            data/processed/dashboard_top_buy_candidates.parquet \
+            data/processed/dashboard_ipo_watchlist.parquet \
+            data/processed/dashboard_basic_industry_history.parquet \
+            data/processed/dashboard_industry_history.parquet \
+            data/processed/dashboard_sector_history.parquet \
+            data/processed/dashboard_stock_history.parquet \
+            data/processed/dashboard_stock_history_metadata.json \
+            data/processed/dashboard_dates.parquet \
+            data/processed/dashboard_snapshots \
+            data/processed/dashboard_metadata.json \
+            data/processed/dashboard_snapshot_metadata.json \
+            data/processed/last_sync.txt
+
+          if git diff --cached --quiet; then
+            echo "No dashboard output changes to commit."
+          else
+            git commit -m "Update EOD sectoral breadth dashboard snapshots"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Upload EOD output artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sectoral-breadth-dashboard-eod
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            data/processed/basic_industry_daily_features.parquet
+            data/processed/industry_daily_features.parquet
+            data/processed/sector_daily_features.parquet
+            data/processed/dashboard_basic_industry_history.parquet
+            data/processed/dashboard_industry_history.parquet
+            data/processed/dashboard_sector_history.parquet
+            data/processed/dashboard_stock_history.parquet
+            data/processed/dashboard_dates.parquet
+            data/processed/dashboard_snapshots/**
+            data/processed/dashboard_metadata.json
+            data/processed/dashboard_snapshot_metadata.json
+            data/processed/last_sync.txt
+
+      - name: Remove temporary heavy files
         if: always()
         run: |
           rm -f data/processed/prices.parquet
           rm -f data/processed/stock_daily_features.parquet
           rm -f /tmp/nse_6yr_historical.parquet
-
-      - name: Commit compact dashboard outputs
-        if: success()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add \
-            data/processed/industry_daily_features.parquet \
-            data/processed/basic_industry_daily_features.parquet \
-            data/processed/dashboard_industry_latest.parquet \
-            data/processed/dashboard_basic_industry_latest.parquet \
-            data/processed/dashboard_stock_watchlist_latest.parquet \
-            data/processed/dashboard_top_buy_candidates.parquet \
-            data/processed/dashboard_ipo_watchlist.parquet \
-            data/processed/dashboard_industry_history.parquet \
-            data/processed/dashboard_basic_industry_history.parquet \
-            data/processed/dashboard_stock_history.parquet \
-            data/processed/dashboard_metadata.json \
-            data/processed/last_sync.txt
-
-          if git diff --cached --quiet; then
-            echo "No compact dashboard changes to commit."
-          else
-            git commit -m "Update EOD sectoral breadth dashboard"
-            git pull --rebase origin main
-            git push
-          fi
-
-      - name: Upload compact dashboard outputs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: basic-industry-dashboard-eod
-          path: |
-            data/processed/industry_daily_features.parquet
-            data/processed/basic_industry_daily_features.parquet
-            data/processed/dashboard_industry_latest.parquet
-            data/processed/dashboard_basic_industry_latest.parquet
-            data/processed/dashboard_stock_watchlist_latest.parquet
-            data/processed/dashboard_top_buy_candidates.parquet
-            data/processed/dashboard_ipo_watchlist.parquet
-            data/processed/dashboard_industry_history.parquet
-            data/processed/dashboard_basic_industry_history.parquet
-            data/processed/dashboard_stock_history.parquet
-            data/processed/dashboard_metadata.json
-            data/processed/last_sync.txt
-          if-no-files-found: warn
