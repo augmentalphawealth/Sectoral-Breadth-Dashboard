@@ -1,5 +1,6 @@
 # scripts/01_build_group_features.py
 # NSE Sectoral Breadth — 2-Axis Engine v2
+# Heavy calculations run in GitHub Actions. Streamlit reads only prepared files.
 
 from __future__ import annotations
 
@@ -14,230 +15,195 @@ DEFAULT_SMALL_GROUP_LIMIT = 5
 
 
 def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
-    df = df.sort_values(["symbol", "date"]).copy()
+    data = df.sort_values(["symbol", "date"]).copy()
     analysis = settings.get("analysis", {})
     volume_shock_threshold = analysis.get("volume_shock_threshold", DEFAULT_VOLUME_SHOCK_THRESHOLD)
-    g = df.groupby("symbol", group_keys=False)
+    grouped = data.groupby("symbol", group_keys=False)
 
     for span in [10, 20, 50, 150, 200]:
-        df[f"ema_{span}"] = g["close"].transform(
-            lambda s: s.ewm(span=span, min_periods=max(5, span // 4)).mean()
+        data[f"ema_{span}"] = grouped["close"].transform(
+            lambda series: series.ewm(span=span, min_periods=max(5, span // 4)).mean()
         )
-        df[f"sma_{span}"] = df[f"ema_{span}"]
+        data[f"sma_{span}"] = data[f"ema_{span}"]
 
-    df["avg_vol_20"] = g["volume"].transform(lambda s: s.rolling(20, min_periods=10).mean())
-    df["avg_vol_50"] = g["volume"].transform(lambda s: s.rolling(50, min_periods=15).mean())
-    df["avg_val_20"] = g["turnover"].transform(lambda s: s.rolling(20, min_periods=10).mean())
-    df["ret_1d"] = g["close"].pct_change(1)
+    data["avg_vol_20"] = grouped["volume"].transform(lambda series: series.rolling(20, min_periods=10).mean())
+    data["avg_vol_50"] = grouped["volume"].transform(lambda series: series.rolling(50, min_periods=15).mean())
+    data["avg_val_20"] = grouped["turnover"].transform(lambda series: series.rolling(20, min_periods=10).mean())
+    data["ret_1d"] = grouped["close"].pct_change(1)
 
-    for win in analysis.get("return_windows", [5, 10, 20, 60]):
-        df[f"ret_{win}d"] = g["close"].pct_change(win)
+    for window in analysis.get("return_windows", [5, 10, 20, 60]):
+        data[f"ret_{window}d"] = grouped["close"].pct_change(window)
 
-    df["above_20"] = (df["close"] > df["ema_20"]).astype(int)
-    df["above_50"] = (df["close"] > df["ema_50"]).astype(int)
-    df["above_200"] = (df["close"] > df["ema_200"]).astype(int)
-    df["dist_52w_high"] = g["close"].transform(lambda s: s / s.rolling(252, min_periods=60).max() - 1)
-    df["new_high_55"] = (df["close"] >= g["high"].transform(lambda s: s.rolling(55, min_periods=20).max())).astype(int)
-    df["new_high_252"] = (df["close"] >= g["high"].transform(lambda s: s.rolling(252, min_periods=60).max())).astype(int)
+    data["above_20"] = (data["close"] > data["ema_20"]).astype(int)
+    data["above_50"] = (data["close"] > data["ema_50"]).astype(int)
+    data["above_200"] = (data["close"] > data["ema_200"]).astype(int)
+    data["dist_52w_high"] = grouped["close"].transform(lambda series: series / series.rolling(252, min_periods=60).max() - 1.0)
+    data["new_high_55"] = (data["close"] >= grouped["high"].transform(lambda series: series.rolling(55, min_periods=20).max())).astype(int)
+    data["new_high_252"] = (data["close"] >= grouped["high"].transform(lambda series: series.rolling(252, min_periods=60).max())).astype(int)
 
-    df["breakout_55"] = (
-        (df["close"] > g["high"].transform(lambda s: s.shift(1).rolling(analysis.get("breakout_lookback", 55), min_periods=20).max()))
-        & (df["volume"] > analysis.get("accumulation_volume_multiplier", 1.2) * df["avg_vol_20"])
+    breakout_high = grouped["high"].transform(
+        lambda series: series.shift(1).rolling(analysis.get("breakout_lookback", 55), min_periods=20).max()
+    )
+    accumulation_multiplier = analysis.get("accumulation_volume_multiplier", 1.2)
+    distribution_multiplier = analysis.get("distribution_volume_multiplier", 1.2)
+    data["breakout_55"] = ((data["close"] > breakout_high) & (data["volume"] > accumulation_multiplier * data["avg_vol_20"])).astype(int)
+    data["acc_day"] = ((data["close"] > grouped["close"].shift(1)) & (data["volume"] > accumulation_multiplier * data["avg_vol_20"])).astype(int)
+    data["dist_day"] = ((data["close"] < grouped["close"].shift(1)) & (data["volume"] > distribution_multiplier * data["avg_vol_20"])).astype(int)
+    data["volume_shock_ratio"] = np.where(data["avg_vol_20"] > 0, data["volume"] / data["avg_vol_20"], np.nan)
+    data["buy_volume_shock"] = ((data["volume_shock_ratio"] >= volume_shock_threshold) & (data["ret_1d"] > 0)).astype(int)
+    data["sell_volume_shock"] = ((data["volume_shock_ratio"] >= volume_shock_threshold) & (data["ret_1d"] < 0)).astype(int)
+    data["full_alignment"] = ((data["ema_20"] > data["ema_50"]) & (data["ema_50"] > data["ema_200"])).astype(int)
+    data["trend_template_pass"] = ((data["close"] > data["ema_50"]) & (data["close"] > data["ema_200"]) & (data["full_alignment"] == 1) & (data["dist_52w_high"] > -0.25)).astype(int)
+
+    data["up_vol"] = np.where(data["ret_1d"] > 0, data["volume"], 0.0)
+    data["down_vol"] = np.where(data["ret_1d"] < 0, data["volume"], 0.0)
+    up_volume_50 = grouped["up_vol"].transform(lambda series: series.rolling(50, min_periods=15).sum())
+    down_volume_50 = grouped["down_vol"].transform(lambda series: series.rolling(50, min_periods=15).sum())
+    data["up_down_ratio"] = np.where(down_volume_50 > 0, up_volume_50 / down_volume_50, 1.0)
+
+    previous_close = grouped["close"].shift(1)
+    true_range = np.maximum(
+        data["high"] - data["low"],
+        np.maximum((data["high"] - previous_close).abs(), (data["low"] - previous_close).abs()),
+    )
+    data["atr_14"] = true_range.groupby(data["symbol"]).transform(lambda series: series.rolling(14, min_periods=5).mean())
+    high_3 = grouped["high"].transform(lambda series: series.rolling(3, min_periods=3).max())
+    low_3 = grouped["low"].transform(lambda series: series.rolling(3, min_periods=3).min())
+    data["range_3d"] = high_3 - low_3
+    data["tight_3d_range"] = np.where(data["close"] > 0, data["range_3d"] / data["close"], np.nan)
+    data["daily_range"] = np.where(data["close"] > 0, (data["high"] - data["low"]) / data["close"], np.nan)
+
+    high_5 = grouped["high"].transform(lambda series: series.rolling(5, min_periods=3).max())
+    low_5 = grouped["low"].transform(lambda series: series.rolling(5, min_periods=3).min())
+    data["tightness_squeeze_5d"] = (high_5 / low_5) - 1.0
+    data["tight_squeeze_pass"] = (data["tightness_squeeze_5d"] <= 0.08).astype(int)
+    adr_20 = grouped["daily_range"].transform(lambda series: series.rolling(20, min_periods=10).mean())
+    adr_5 = grouped["daily_range"].transform(lambda series: series.rolling(5, min_periods=3).mean())
+    data["tight_adr_pass"] = ((adr_5 <= 0.5 * adr_20) & (data["daily_range"] <= 0.05)).astype(int)
+    data["tight_consecutive_pass"] = (grouped["daily_range"].transform(lambda series: (series <= 0.05).rolling(3, min_periods=3).min()) == 1).astype(int)
+    data["price_tightness_pass"] = (data["range_3d"] <= 1.2 * data["atr_14"]).astype(int)
+
+    high_20 = grouped["high"].transform(lambda series: series.rolling(20, min_periods=10).max())
+    low_20 = grouped["low"].transform(lambda series: series.rolling(20, min_periods=10).min())
+    data["range_20"] = (high_20 / low_20) - 1.0
+    data["vcp_ready"] = (
+        (data["range_20"] <= analysis.get("vcp_range_contraction_threshold", 0.08))
+        & (data["volume"] <= analysis.get("vcp_volume_dryup_threshold", 0.65) * data["avg_vol_20"])
+        & (data["dist_52w_high"] > -analysis.get("pivot_proximity_threshold", 0.05))
     ).astype(int)
 
-    df["acc_day"] = ((df["close"] > g["close"].shift(1)) & (df["volume"] > analysis.get("accumulation_volume_multiplier", 1.2) * df["avg_vol_20"])).astype(int)
-    df["dist_day"] = ((df["close"] < g["close"].shift(1)) & (df["volume"] > analysis.get("distribution_volume_multiplier", 1.2) * df["avg_vol_20"])).astype(int)
-    df["volume_shock_ratio"] = np.where(df["avg_vol_20"] > 0, df["volume"] / df["avg_vol_20"], np.nan)
-    df["buy_volume_shock"] = ((df["volume_shock_ratio"] >= volume_shock_threshold) & (df["ret_1d"] > 0)).astype(int)
-    df["sell_volume_shock"] = ((df["volume_shock_ratio"] >= volume_shock_threshold) & (df["ret_1d"] < 0)).astype(int)
-    df["full_alignment"] = ((df["ema_20"] > df["ema_50"]) & (df["ema_50"] > df["ema_200"])).astype(int)
-    df["trend_template_pass"] = ((df["close"] > df["ema_50"]) & (df["close"] > df["ema_200"]) & (df["full_alignment"] == 1) & (df["dist_52w_high"] > -0.25)).astype(int)
+    low_125 = grouped["low"].transform(lambda series: series.rolling(125, min_periods=25).min())
+    data["gain_6m"] = np.where(low_125 > 0, data["close"] / low_125 - 1.0, 0.0)
+    data["vol_ratio_50"] = np.where(data["avg_vol_50"] > 0, data["volume"] / data["avg_vol_50"], np.nan)
+    vol_2x_hit = (data["volume"] >= 2.0 * data["avg_vol_50"]).astype(int)
+    data["vol_2x_count_6m"] = vol_2x_hit.groupby(data["symbol"]).transform(lambda series: series.rolling(125, min_periods=25).sum())
+    data["max_vol_ratio_6m"] = grouped["vol_ratio_50"].transform(lambda series: series.rolling(125, min_periods=25).max())
+    data["vol_dryup_pass"] = (data["volume"] <= 0.5 * data["avg_vol_50"]).astype(int)
 
-    df["up_vol"] = np.where(df["ret_1d"] > 0, df["volume"], 0.0)
-    df["down_vol"] = np.where(df["ret_1d"] < 0, df["volume"], 0.0)
-    up_vol_50 = g["up_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
-    down_vol_50 = g["down_vol"].transform(lambda s: s.rolling(50, min_periods=15).sum())
-    df["up_down_ratio"] = np.where(down_vol_50 > 0, up_vol_50 / down_vol_50, 1.0)
+    data["is_new_high_20"] = (data["close"] >= high_20).astype(int)
+    data["is_new_low_20"] = (data["close"] <= low_20).astype(int)
+    data["nh_nl_val"] = data["is_new_high_20"] - data["is_new_low_20"]
 
-    prev_close = g["close"].shift(1)
-    tr = np.maximum(df["high"] - df["low"], np.maximum(abs(df["high"] - prev_close), abs(df["low"] - prev_close)))
-    df["atr_14"] = tr.groupby(df["symbol"]).transform(lambda s: s.rolling(14, min_periods=5).mean())
-    roll_high_3 = g["high"].transform(lambda s: s.rolling(3, min_periods=3).max())
-    roll_low_3 = g["low"].transform(lambda s: s.rolling(3, min_periods=3).min())
-    df["range_3d"] = roll_high_3 - roll_low_3
-    df["tight_3d_range"] = np.where(df["close"] > 0, df["range_3d"] / df["close"], np.nan)
-    df["daily_range"] = np.where(df["close"] > 0, (df["high"] - df["low"]) / df["close"], np.nan)
-
-    roll_high_5 = g["high"].transform(lambda s: s.rolling(5, min_periods=3).max())
-    roll_low_5 = g["low"].transform(lambda s: s.rolling(5, min_periods=3).min())
-    df["tightness_squeeze_5d"] = (roll_high_5 / roll_low_5) - 1.0
-    df["tight_squeeze_pass"] = (df["tightness_squeeze_5d"] <= 0.08).astype(int)
-    adr_20 = g["daily_range"].transform(lambda s: s.rolling(20, min_periods=10).mean())
-    adr_5 = g["daily_range"].transform(lambda s: s.rolling(5, min_periods=3).mean())
-    df["tight_adr_pass"] = ((adr_5 <= 0.5 * adr_20) & (df["daily_range"] <= 0.05)).astype(int)
-    df["tight_consecutive_pass"] = (g["daily_range"].transform(lambda s: (s <= 0.05).rolling(3, min_periods=3).min()) == 1).astype(int)
-    df["price_tightness_pass"] = (df["range_3d"] <= (1.2 * df["atr_14"])).astype(int)
-
-    df["range_20"] = g.apply(lambda x: (x["high"].rolling(20, min_periods=10).max() / x["low"].rolling(20, min_periods=10).min()) - 1).reset_index(level=0, drop=True)
-    df["vcp_ready"] = (
-        (df["range_20"] <= analysis.get("vcp_range_contraction_threshold", 0.08))
-        & (df["volume"] <= analysis.get("vcp_volume_dryup_threshold", 0.65) * df["avg_vol_20"])
-        & (df["dist_52w_high"] > -analysis.get("pivot_proximity_threshold", 0.05))
-    ).astype(int)
-
-    roll_min_125 = g["low"].transform(lambda s: s.rolling(125, min_periods=25).min())
-    df["gain_6m"] = np.where(roll_min_125 > 0, (df["close"] / roll_min_125) - 1.0, 0.0)
-    df["vol_ratio_50"] = np.where(df["avg_vol_50"] > 0, df["volume"] / df["avg_vol_50"], np.nan)
-    vol_2x_hit = (df["volume"] >= 2.0 * df["avg_vol_50"]).astype(int)
-    df["vol_2x_count_6m"] = g["volume"].transform(lambda s: vol_2x_hit.loc[s.index].rolling(125, min_periods=25).sum())
-    df["max_vol_ratio_6m"] = g["vol_ratio_50"].transform(lambda s: s.rolling(125, min_periods=25).max())
-    df["vol_dryup_pass"] = (df["volume"] <= 0.5 * df["avg_vol_50"]).astype(int)
-
-    high_20 = g["high"].transform(lambda s: s.rolling(20, min_periods=10).max())
-    low_20 = g["low"].transform(lambda s: s.rolling(20, min_periods=10).min())
-    df["is_new_high_20"] = (df["close"] >= high_20).astype(int)
-    df["is_new_low_20"] = (df["close"] <= low_20).astype(int)
-    df["nh_nl_val"] = df["is_new_high_20"] - df["is_new_low_20"]
-
-    # ACTIONABLE SETUP
-    rule_liquidity = df["avg_val_20"] >= 50000000
-    rule_trend = ((df["close"] > df["ema_50"]) & (df["ema_20"] > df["ema_50"]) & (df["ema_50"] > df["ema_200"]) & (df["dist_52w_high"] >= -0.25))
+    rule_liquidity = data["avg_val_20"] >= 50_000_000
+    rule_trend = ((data["close"] > data["ema_50"]) & (data["ema_20"] > data["ema_50"]) & (data["ema_50"] > data["ema_200"]) & (data["dist_52w_high"] >= -0.25))
     precision_pool_mask = rule_liquidity & rule_trend
 
-    # ---- Data-quality guard ----
-    # The eligible pool should not collapse to near-zero overnight while the
-    # rest of the market looks normal (stock count, strength scores, returns
-    # unchanged). If it does, that's almost always a broken/partial fetch for
-    # the latest date, not a real market event -- surface it loudly instead
-    # of silently shipping a dashboard where every industry reads "nothing
-    # is actionable anywhere," which is indistinguishable from "it's working
-    # correctly and the market is just quiet" unless someone digs in.
-    latest_date = df["date"].max()
-    prior_window = sorted(d for d in df["date"].unique() if d < latest_date)[-10:]
-    if len(prior_window) >= 5:
-        latest_pool = int(precision_pool_mask[df["date"] == latest_date].sum())
-        prior_pool_sizes = sorted(int(precision_pool_mask[df["date"] == d].sum()) for d in prior_window)
-        baseline = prior_pool_sizes[len(prior_pool_sizes) // 2]
-        if baseline >= 20 and latest_pool < 0.2 * baseline:
-            latest_liq = int(rule_liquidity[df["date"] == latest_date].sum())
-            latest_trend = int(rule_trend[df["date"] == latest_date].sum())
-            latest_rows = int((df["date"] == latest_date).sum())
-            print(
-                f"DATA QUALITY WARNING: eligible pool collapsed on {pd.Timestamp(latest_date).date()} "
-                f"-- {latest_pool} stocks vs a {baseline}-stock trailing 10-day median "
-                f"({', '.join(str(x) for x in prior_pool_sizes)}). "
-                f"rule_liquidity passed {latest_liq}/{latest_rows}, rule_trend passed {latest_trend}/{latest_rows}. "
-                "This is almost certainly an incomplete/stale fetch for the latest date, not a real "
-                "market move -- verify the raw price data for this date before trusting today's "
-                "Top Buy Setups or Actionability numbers."
-            )
-
-    pool_idx = df.index[precision_pool_mask]
-
-    if len(pool_idx) > 0:
-        pool_data = df.loc[pool_idx, ["date", "gain_6m", "range_3d", "atr_14", "volume", "avg_vol_50"]].copy()
+    pool_data = data.loc[precision_pool_mask, ["date", "gain_6m", "range_3d", "atr_14", "volume", "avg_vol_50"]].copy()
+    data["setup_precision_score"] = np.nan
+    if not pool_data.empty:
         pool_data["coil_raw"] = pool_data["range_3d"] / pool_data["atr_14"].clip(lower=1e-9)
         pool_data["dryup_raw"] = pool_data["volume"] / pool_data["avg_vol_50"].clip(lower=1e-9)
-        power_pts = pool_data.groupby("date")["gain_6m"].rank(pct=True, ascending=True) * 20.0
-        coil_pts = (1.0 - pool_data.groupby("date")["coil_raw"].rank(pct=True, ascending=True)) * 35.0
-        dryup_pts = (1.0 - pool_data.groupby("date")["dryup_raw"].rank(pct=True, ascending=True)) * 45.0
-        setup_precision_score = (power_pts + coil_pts + dryup_pts).round(1)
-        df.loc[pool_idx, "setup_precision_score"] = setup_precision_score
-        df["actionable_setup_pass"] = (precision_pool_mask & (df["setup_precision_score"] >= 60)).astype(int)
-    else:
-        df["setup_precision_score"] = np.nan
-        df["actionable_setup_pass"] = 0
+        power_points = pool_data.groupby("date")["gain_6m"].rank(pct=True) * 20.0
+        coil_points = (1.0 - pool_data.groupby("date")["coil_raw"].rank(pct=True)) * 35.0
+        dryup_points = (1.0 - pool_data.groupby("date")["dryup_raw"].rank(pct=True)) * 45.0
+        data.loc[pool_data.index, "setup_precision_score"] = (power_points + coil_points + dryup_points).round(1)
+    data["actionable_setup_pass"] = (precision_pool_mask & (data["setup_precision_score"] >= 60.0)).astype(int)
 
-    # EMA PROXIMITY TAG - ROBUST VERSION (no idxmin on all-NA)
-    df["nearest_ema_tag"] = "N/A"
-    valid_ema_mask = df[["ema_10", "ema_20", "ema_50"]].notna().any(axis=1)
-    
-    if valid_ema_mask.any():
-        ema10 = df.loc[valid_ema_mask, "ema_10"].clip(lower=1e-9)
-        ema20 = df.loc[valid_ema_mask, "ema_20"].clip(lower=1e-9)
-        ema50 = df.loc[valid_ema_mask, "ema_50"].clip(lower=1e-9)
-        close_valid = df.loc[valid_ema_mask, "close"]
-        
-        dist_10 = (close_valid - ema10) / ema10
-        dist_20 = (close_valid - ema20) / ema20
-        dist_50 = (close_valid - ema50) / ema50
-        
-        abs_dist = pd.concat([dist_10.abs(), dist_20.abs(), dist_50.abs()], axis=1)
-        nearest_idx = abs_dist.idxmin(axis=1)
-        nearest_dist = pd.concat([dist_10, dist_20, dist_50], axis=1).apply(
-            lambda row: row[nearest_idx[row.name]], axis=1
-        )
-        
-        def _ema_tag(d):
-            if pd.isna(d): return "N/A"
-            elif -0.01 <= d <= 0.01: return "On EMA"
-            elif 0.01 < d <= 0.05: return f"Riding +{d*100:.0f}%"
-            elif d > 0.05: return f"Extended +{d*100:.0f}%"
-            elif -0.05 <= d < -0.01: return f"Testing -{abs(d)*100:.0f}%"
-            else: return f"Broken -{abs(d)*100:.0f}%"
-        
-        df.loc[valid_ema_mask, "nearest_ema_tag"] = nearest_dist.apply(_ema_tag)
+    data["nearest_ema_tag"] = "N/A"
+    valid_ema = data[["ema_10", "ema_20", "ema_50"]].notna().any(axis=1)
+    if valid_ema.any():
+        subset = data.loc[valid_ema, ["close", "ema_10", "ema_20", "ema_50"]].copy()
+        distances = pd.DataFrame({
+            "EMA 10": (subset["close"] - subset["ema_10"].clip(lower=1e-9)) / subset["ema_10"].clip(lower=1e-9),
+            "EMA 20": (subset["close"] - subset["ema_20"].clip(lower=1e-9)) / subset["ema_20"].clip(lower=1e-9),
+            "EMA 50": (subset["close"] - subset["ema_50"].clip(lower=1e-9)) / subset["ema_50"].clip(lower=1e-9),
+        })
+        nearest_name = distances.abs().idxmin(axis=1)
+        nearest_distance = distances.lookup(distances.index, nearest_name)
 
-    # MOMENTUM BADGE
-    df["momentum_badge"] = ""
-    if len(pool_idx) > 0:
-        pool_gain = df.loc[pool_idx, ["date", "gain_6m"]].copy()
-        q75 = pool_gain.groupby("date")["gain_6m"].transform(lambda s: s.quantile(0.75))
-        df.loc[pool_idx, "momentum_badge"] = np.where(pool_gain["gain_6m"] >= q75, "🔥 High Momentum", "")
+        def ema_tag(distance: float) -> str:
+            if pd.isna(distance): return "N/A"
+            if -0.01 <= distance <= 0.01: return "On EMA"
+            if 0.01 < distance <= 0.05: return f"Riding +{distance * 100:.0f}%"
+            if distance > 0.05: return f"Extended +{distance * 100:.0f}%"
+            if -0.05 <= distance < -0.01: return f"Testing -{abs(distance) * 100:.0f}%"
+            return f"Broken -{abs(distance) * 100:.0f}%"
 
-    # IPO
-    history_count = g["close"].transform(lambda s: s.rolling(200, min_periods=1).count())
-    df["is_ipo"] = (history_count < 150).astype(int)
-    df["days_listed"] = g.cumcount() + 1
-    if "turnover" not in df.columns:
-        df["turnover"] = df["close"] * df["volume"]
-    df["turnover_ex_list"] = np.where(df["days_listed"] == 1, np.nan, df["turnover"])
-    expanding_avg = g["turnover_ex_list"].transform(lambda s: s.expanding().mean())
-    rolling_avg = g["turnover_ex_list"].transform(lambda s: s.rolling(20, min_periods=1).mean())
-    df["ipo_turnover_avg"] = np.where(df["days_listed"] < 21, expanding_avg, rolling_avg)
-    df["ipo_vol_pass"] = (df["ipo_turnover_avg"] >= 50000000).astype(int)
-    df["ipo_phase"] = np.select([df["days_listed"] <= 15, df["days_listed"] <= 40], ["discovery", "basing"], default="graduating")
-    df["vwap_since_listing"] = g["turnover"].transform(lambda s: s.cumsum()) / g["volume"].transform(lambda s: s.cumsum())
-    df["vwap_premium"] = (df["close"] / df["vwap_since_listing"]) - 1.0
-    high_since_listing = g["high"].transform(lambda s: s.cummax())
-    df["retracement_from_listing_high"] = (df["close"] / high_since_listing) - 1.0
-    higher_high = df["high"] > g["high"].shift(1)
-    higher_low = df["low"] > g["low"].shift(1)
-    hh_hl_day = (higher_high & higher_low).astype(int)
-    df["hh_hl_streak_5d"] = g["high"].transform(lambda s: hh_hl_day.loc[s.index].rolling(5, min_periods=3).sum())
-    range_avg_10 = g["daily_range"].transform(lambda s: s.rolling(10, min_periods=3).mean())
-    df["ipo_tight_pass"] = (df["daily_range"] <= 0.7 * range_avg_10).astype(int)
-    ipo_mask = df["is_ipo"] == 1
-    ipo_scratch = df.loc[ipo_mask, ["date", "daily_range", "vol_ratio_50", "vwap_premium", "retracement_from_listing_high", "hh_hl_streak_5d"]]
-    tight_pts = (1.0 - ipo_scratch.groupby("date")["daily_range"].rank(pct=True)) * 25.0
-    dryup_pts = (1.0 - ipo_scratch.groupby("date")["vol_ratio_50"].rank(pct=True)) * 20.0
-    vwap_pts = ipo_scratch.groupby("date")["vwap_premium"].rank(pct=True) * 20.0
-    retr_pts = ipo_scratch.groupby("date")["retracement_from_listing_high"].rank(pct=True) * 20.0
-    hhhl_pts = ipo_scratch.groupby("date")["hh_hl_streak_5d"].rank(pct=True) * 15.0
-    df["ipo_setup_score"] = np.nan
-    df.loc[ipo_mask, "ipo_setup_score"] = (tight_pts.fillna(0) + dryup_pts.fillna(0) + vwap_pts.fillna(0) + retr_pts.fillna(0) + hhhl_pts.fillna(0)).round(1)
-    df["established_buy_setup"] = ((df["is_ipo"] == 0) & (df["actionable_setup_pass"] == 1)).astype(int)
-    df["ipo_buy_setup"] = ((df["is_ipo"] == 1) & (df["ipo_vol_pass"] == 1) & (df["ipo_setup_score"] >= 60)).astype(int)
+        data.loc[valid_ema, "nearest_ema_tag"] = pd.Series(nearest_distance, index=distances.index).map(ema_tag)
 
-    return df
+    data["momentum_badge"] = ""
+    if not pool_data.empty:
+        pool_gain = data.loc[pool_data.index, ["date", "gain_6m"]].copy()
+        threshold_75 = pool_gain.groupby("date")["gain_6m"].transform(lambda series: series.quantile(0.75))
+        data.loc[pool_data.index, "momentum_badge"] = np.where(pool_gain["gain_6m"] >= threshold_75, "High Momentum", "")
+
+    history_count = grouped["close"].transform(lambda series: series.rolling(200, min_periods=1).count())
+    data["is_ipo"] = (history_count < 150).astype(int)
+    data["days_listed"] = grouped.cumcount() + 1
+    data["turnover_ex_list"] = np.where(data["days_listed"] == 1, np.nan, data["turnover"])
+    expanding_turnover = grouped["turnover_ex_list"].transform(lambda series: series.expanding().mean())
+    rolling_turnover = grouped["turnover_ex_list"].transform(lambda series: series.rolling(20, min_periods=1).mean())
+    data["ipo_turnover_avg"] = np.where(data["days_listed"] < 21, expanding_turnover, rolling_turnover)
+    data["ipo_vol_pass"] = (data["ipo_turnover_avg"] >= 50_000_000).astype(int)
+    data["ipo_phase"] = np.select([data["days_listed"] <= 15, data["days_listed"] <= 40], ["discovery", "basing"], default="graduating")
+    data["vwap_since_listing"] = grouped["turnover"].transform(lambda series: series.cumsum()) / grouped["volume"].transform(lambda series: series.cumsum()).clip(lower=1e-9)
+    data["vwap_premium"] = data["close"] / data["vwap_since_listing"] - 1.0
+    high_since_listing = grouped["high"].transform(lambda series: series.cummax())
+    data["retracement_from_listing_high"] = data["close"] / high_since_listing - 1.0
+    higher_high_low = ((data["high"] > grouped["high"].shift(1)) & (data["low"] > grouped["low"].shift(1))).astype(int)
+    data["hh_hl_streak_5d"] = higher_high_low.groupby(data["symbol"]).transform(lambda series: series.rolling(5, min_periods=3).sum())
+    range_average_10 = grouped["daily_range"].transform(lambda series: series.rolling(10, min_periods=3).mean())
+    data["ipo_tight_pass"] = (data["daily_range"] <= 0.7 * range_average_10).astype(int)
+
+    ipo_mask = data["is_ipo"].eq(1)
+    data["ipo_setup_score"] = np.nan
+    ipo_data = data.loc[ipo_mask, ["date", "daily_range", "vol_ratio_50", "vwap_premium", "retracement_from_listing_high", "hh_hl_streak_5d"]].copy()
+    if not ipo_data.empty:
+        tight_points = (1.0 - ipo_data.groupby("date")["daily_range"].rank(pct=True)) * 25.0
+        dryup_points = (1.0 - ipo_data.groupby("date")["vol_ratio_50"].rank(pct=True)) * 20.0
+        vwap_points = ipo_data.groupby("date")["vwap_premium"].rank(pct=True) * 20.0
+        retracement_points = ipo_data.groupby("date")["retracement_from_listing_high"].rank(pct=True) * 20.0
+        hh_hl_points = ipo_data.groupby("date")["hh_hl_streak_5d"].rank(pct=True) * 15.0
+        data.loc[ipo_data.index, "ipo_setup_score"] = (tight_points.fillna(0) + dryup_points.fillna(0) + vwap_points.fillna(0) + retracement_points.fillna(0) + hh_hl_points.fillna(0)).round(1)
+
+    data["established_buy_setup"] = ((data["is_ipo"] == 0) & (data["actionable_setup_pass"] == 1)).astype(int)
+    data["ipo_buy_setup"] = ((data["is_ipo"] == 1) & (data["ipo_vol_pass"] == 1) & (data["ipo_setup_score"] >= 60.0)).astype(int)
+    return data
 
 
 def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data = df.copy()
     threshold = settings.get("analysis", {}).get("high_strength_threshold", DEFAULT_HIGH_STRENGTH_THRESHOLD)
-    data["stock_strength_score"] = (data.groupby("date")["ret_20d"].rank(pct=True) * 35 + data.groupby("date")["ret_60d"].rank(pct=True) * 35 + data["above_50"] * 15 + data["above_200"] * 10 + data["breakout_55"] * 3 + data["vcp_ready"] * 2)
+    data["stock_strength_score"] = (
+        data.groupby("date")["ret_20d"].rank(pct=True) * 35.0
+        + data.groupby("date")["ret_60d"].rank(pct=True) * 35.0
+        + data["above_50"] * 15.0
+        + data["above_200"] * 10.0
+        + data["breakout_55"] * 3.0
+        + data["vcp_ready"] * 2.0
+    )
     data["high_strength_flag"] = (data["stock_strength_score"] >= threshold).astype(int)
-    gain_pts = data.groupby("date")["gain_6m"].rank(pct=True) * 35
-    vol_pts = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35
-    price_tight_pts = (1.0 - data.groupby("date")["tight_3d_range"].rank(pct=True)) * 15
-    vol_tight_pts = (1.0 - data.groupby("date")["vol_ratio_50"].rank(pct=True)) * 15
-    data["buy_setup_score"] = (gain_pts.fillna(0) + vol_pts.fillna(0) + price_tight_pts.fillna(0) + vol_tight_pts.fillna(0)).round(2)
+    gain_points = data.groupby("date")["gain_6m"].rank(pct=True) * 35.0
+    volume_points = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35.0
+    price_tight_points = (1.0 - data.groupby("date")["tight_3d_range"].rank(pct=True)) * 15.0
+    volume_tight_points = (1.0 - data.groupby("date")["vol_ratio_50"].rank(pct=True)) * 15.0
+    data["buy_setup_score"] = (gain_points.fillna(0) + volume_points.fillna(0) + price_tight_points.fillna(0) + volume_tight_points.fillna(0)).round(2)
     return data
 
 
-def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.DataFrame:
+def aggregate_group(df: pd.DataFrame, group_column: str, settings: dict) -> pd.DataFrame:
     small_group_limit = settings.get("analysis", {}).get("small_industry_limit", DEFAULT_SMALL_GROUP_LIMIT)
-    agg = df.groupby(["date", group_col], dropna=False).agg(
+    grouped = df.groupby(["date", group_column], dropna=False).agg(
         members=("symbol", "nunique"), eq_ret_1d=("ret_1d", "mean"), eq_ret_5d=("ret_5d", "mean"), eq_ret_10d=("ret_10d", "mean"),
         eq_ret_20d=("ret_20d", "mean"), eq_ret_60d=("ret_60d", "mean"), med_ret_20d=("ret_20d", "median"), med_ret_60d=("ret_60d", "median"),
         pct_aligned=("full_alignment", "mean"), med_up_down_ratio=("up_down_ratio", "median"), actionability_raw=("actionable_setup_pass", "mean"),
@@ -247,33 +213,40 @@ def aggregate_group(df: pd.DataFrame, group_col: str, settings: dict) -> pd.Data
         high_strength_count=("high_strength_flag", "sum"), buy_volume_shock_count=("buy_volume_shock", "sum"), sell_volume_shock_count=("sell_volume_shock", "sum"),
         median_volume_shock=("volume_shock_ratio", "median"), median_dist_52w_high=("dist_52w_high", "median"),
     ).reset_index()
-    agg["acc_minus_dist"] = agg["acc_days"] - agg["dist_days"]
-    for count_column, pct_column in [("breakout_count", "breakout_pct"), ("vcp_ready_count", "vcp_ready_pct"), ("high_strength_count", "pct_high_strength"), ("buy_volume_shock_count", "buy_volume_shock_pct"), ("sell_volume_shock_count", "sell_volume_shock_pct")]:
-        agg[pct_column] = np.where(agg["members"] > 0, agg[count_column] / agg["members"] * 100, np.nan)
-    agg["small_industry"] = (agg["members"] < small_group_limit).astype(int)
-    agg["pct_above_20"] *= 100
-    agg["pct_above_50"] *= 100
-    agg["pct_above_200"] *= 100
-    agg["trend_template_pct"] *= 100
-    agg["new_high_55_pct"] *= 100
-    agg["new_high_252_pct"] *= 100
-    return agg
+    grouped["acc_minus_dist"] = grouped["acc_days"] - grouped["dist_days"]
+    for count_column, percent_column in [
+        ("breakout_count", "breakout_pct"), ("vcp_ready_count", "vcp_ready_pct"),
+        ("high_strength_count", "pct_high_strength"), ("buy_volume_shock_count", "buy_volume_shock_pct"),
+        ("sell_volume_shock_count", "sell_volume_shock_pct"),
+    ]:
+        grouped[percent_column] = np.where(grouped["members"] > 0, grouped[count_column] / grouped["members"] * 100.0, np.nan)
+    grouped["small_industry"] = (grouped["members"] < small_group_limit).astype(int)
+    for column in ["pct_above_20", "pct_above_50", "pct_above_200", "trend_template_pct", "new_high_55_pct", "new_high_252_pct"]:
+        grouped[column] *= 100.0
+    return grouped
 
 
 def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data = df.copy()
-    group_col = data.columns[1]
-    v_20 = data.groupby("date")["med_ret_20d"].rank(pct=True)
-    v_60 = data.groupby("date")["med_ret_60d"].rank(pct=True)
-    velocity_pts = ((v_20 + v_60) / 2.0) * 35.0
-    structure_pts = data.groupby("date")["pct_aligned"].rank(pct=True) * 35.0
-    volume_pts = data.groupby("date")["med_up_down_ratio"].rank(pct=True) * 30.0
-    data["leadership_score"] = (velocity_pts + structure_pts + volume_pts).clip(lower=0, upper=100)
-    data["leadership_score"] = data.groupby(group_col)["leadership_score"].transform(lambda s: s.ewm(span=3, min_periods=1).mean()).round(1)
+    group_column = data.columns[1]
+    velocity_20 = data.groupby("date")["med_ret_20d"].rank(pct=True)
+    velocity_60 = data.groupby("date")["med_ret_60d"].rank(pct=True)
+    velocity_points = ((velocity_20 + velocity_60) / 2.0) * 35.0
+    structure_points = data.groupby("date")["pct_aligned"].rank(pct=True) * 35.0
+    volume_points = data.groupby("date")["med_up_down_ratio"].rank(pct=True) * 30.0
+    raw_score = (velocity_points + structure_points + volume_points).clip(lower=0, upper=100)
+    data["leadership_score"] = raw_score.groupby(data[group_column]).transform(lambda series: series.ewm(span=3, min_periods=1).mean()).round(1)
+    data["leadership_change_5d"] = data.groupby(group_column)["leadership_score"].diff(5).fillna(0.0).round(1)
+    data["improver_priority"] = (0.65 * data["leadership_score"] + 0.35 * data["leadership_change_5d"].clip(lower=0)).round(1)
     data["strength_score"] = data["leadership_score"]
-    data["actionability_score"] = (data["actionability_raw"] * 100).round(1)
-    data["nh_nl_net"] = (data["nh_nl_net"] * 100).round(1)
-    conditions = [(data["leadership_score"] >= 70) & (data["actionability_score"] >= 15), (data["leadership_score"] >= 70) & (data["actionability_score"] < 15), (data["leadership_score"] < 50) & (data["actionability_score"] >= 15), (data["leadership_score"] < 50) & (data["actionability_score"] < 15)]
+    data["actionability_score"] = (data["actionability_raw"] * 100.0).round(1)
+    data["nh_nl_net"] = (data["nh_nl_net"] * 100.0).round(1)
+    conditions = [
+        (data["leadership_score"] >= 70) & (data["actionability_score"] >= 15),
+        (data["leadership_score"] >= 70) & (data["actionability_score"] < 15),
+        (data["leadership_score"] < 50) & (data["actionability_score"] >= 15),
+        (data["leadership_score"] < 50) & (data["actionability_score"] < 15),
+    ]
     labels = ["Fresh Leader (HUNT)", "Extended Leader (WAIT)", "Speculative Coil (AVOID)", "Dead (AVOID)"]
     data["regime"] = np.select(conditions, labels, default="Neutral Transition")
     return data
@@ -282,45 +255,49 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
 def main() -> None:
     settings = load_settings()
     processed = p("data", "processed")
-    master_file = processed / "nse_mainboard_master_bse_classified.parquet"
-    prices_file = processed / "prices.parquet"
-    master = read_parquet_safe(master_file)
-    prices = read_parquet_safe(prices_file)
-    print(f"Using classified master: {master_file}")
-    print(f"Master stocks: {len(master)}")
-    print(f"Price rows: {len(prices)}")
-    required_price_columns = ["symbol", "date", "open", "high", "low", "close", "volume"]
-    missing_price_columns = [c for c in required_price_columns if c not in prices.columns]
-    if missing_price_columns:
-        raise ValueError(f"Prices file missing columns: {missing_price_columns}")
+    master = read_parquet_safe(processed / "nse_mainboard_master_bse_classified.parquet")
+    prices = read_parquet_safe(processed / "prices.parquet")
+
+    required_prices = ["symbol", "date", "open", "high", "low", "close", "volume"]
+    missing_prices = [column for column in required_prices if column not in prices.columns]
+    if missing_prices:
+        raise ValueError(f"Prices file missing columns: {missing_prices}")
     if "turnover" not in prices.columns:
         prices["turnover"] = prices["close"] * prices["volume"]
-    required_master_columns = ["symbol", "isin", "industry", "basic_industry", "sector", "series"]
-    missing_master_columns = [c for c in required_master_columns if c not in master.columns]
-    if missing_master_columns:
-        raise ValueError(f"Master missing columns: {missing_master_columns}")
-    join_columns = required_master_columns.copy()
-    if "mcap" in master.columns:
-        join_columns.append("mcap")
-    master_for_join = master[join_columns].drop_duplicates(subset=["symbol"]).copy()
+
+    required_master = ["symbol", "isin", "industry", "basic_industry", "sector", "series"]
+    missing_master = [column for column in required_master if column not in master.columns]
+    if missing_master:
+        raise ValueError(f"Master file missing columns: {missing_master}")
+
+    master_for_join = master[required_master + (["mcap"] if "mcap" in master.columns else [])].drop_duplicates("symbol").copy()
     stock = prices.merge(master_for_join, on="symbol", how="left")
-    stock["date"] = pd.to_datetime(stock["date"])
-    if "mcap" not in stock.columns:
-        stock["mcap"] = np.nan
+    stock["date"] = pd.to_datetime(stock["date"], errors="coerce").dt.normalize()
     stock["series"] = stock["series"].fillna("").astype(str).str.strip()
-    stock = stock[stock["series"] == "EQ"].copy()
-    missing_classification = stock["industry"].isna().sum()
-    print(f"Price rows without industry classification: {missing_classification}")
+    stock = stock[stock["series"].eq("EQ")].copy()
+
+    # Unclassified data remains visible as explicitly Unclassified. It is never
+    # assigned to a guessed sector/industry/basic industry.
+    for column in ["sector", "industry", "basic_industry"]:
+        stock[column] = stock[column].fillna("Unclassified").astype(str).str.strip().replace("", "Unclassified")
+
+    print(f"Using classified master: {len(master):,} records")
+    print(f"EQ price rows after master join: {len(stock):,}")
+    print(f"Unclassified stock rows: {int(stock['basic_industry'].eq('Unclassified').sum()):,}")
+
     stock = add_stock_indicators(stock, settings)
     stock = add_stock_strength(stock, settings)
     write_parquet(stock, processed / "stock_daily_features.parquet")
-    industry = aggregate_group(stock, "industry", settings)
-    industry = add_group_scores(industry, settings)
+
+    industry = add_group_scores(aggregate_group(stock, "industry", settings), settings)
+    basic = add_group_scores(aggregate_group(stock, "basic_industry", settings), settings)
+    sector = add_group_scores(aggregate_group(stock, "sector", settings), settings)
+
     write_parquet(industry, processed / "industry_daily_features.parquet")
-    basic = aggregate_group(stock, "basic_industry", settings)
-    basic = add_group_scores(basic, settings)
     write_parquet(basic, processed / "basic_industry_daily_features.parquet")
-    print("feature build complete (Strict EQ Mainboard Only, 2-Axis Engine v2)")
+    write_parquet(sector, processed / "sector_daily_features.parquet")
+
+    print("feature build complete: stock, Basic Industry, Industry and Sector features written")
 
 
 if __name__ == "__main__":
