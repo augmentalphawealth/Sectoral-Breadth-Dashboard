@@ -3,9 +3,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -30,19 +28,9 @@ DARK_GREEN = "#166534"
 LIGHT_GREEN = "#DCFCE7"
 RED = "#B91C1C"
 LIGHT_RED = "#FEE2E2"
-BLUE = "#1D4ED8"
 AMBER = "#B45309"
 LIGHT_AMBER = "#FEF3C7"
 PURPLE = "#7C3AED"
-GREY_BG = "#F8FAFC"
-
-REGIME_COLORS = {
-    "Fresh Leader (HUNT)": GREEN,
-    "Extended Leader (WAIT)": AMBER,
-    "Speculative Coil (AVOID)": PURPLE,
-    "Dead (AVOID)": RED,
-    "Neutral Transition": MUTED,
-}
 
 st.set_page_config(
     page_title="NSE Industry Momentum Monitor",
@@ -54,19 +42,19 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        .block-container {max-width: 1480px; padding-top: 1.3rem; padding-bottom: 2rem;}
-        [data-testid="stMetric"] {background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 0.8rem 1rem;}
-        [data-testid="stMetricLabel"] {font-size: 0.78rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;}
-        [data-testid="stMetricValue"] {font-weight: 700; color: #0F172A;}
-        .status-pill {display: inline-block; padding: 0.16rem 0.55rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; white-space: nowrap;}
-        .improver-card {border: 1px solid #E2E8F0; border-left: 5px solid #15803D; border-radius: 11px; padding: 0.75rem 0.85rem; margin: 0.35rem 0; background: #FFFFFF;}
-        .improver-name {font-weight: 700; color: #0F172A; font-size: 0.96rem;}
-        .improver-meta {color: #64748B; font-size: 0.78rem; margin-top: 0.2rem;}
-        .improver-number {font-weight: 800; font-size: 1.02rem; text-align: right;}
-        .caption-muted {color: #64748B; font-size: 0.82rem;}
+        .block-container {max-width: 1480px; padding-top: 1.2rem; padding-bottom: 2rem;}
+        [data-testid="stMetric"] {background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:0.8rem 1rem;}
+        [data-testid="stMetricLabel"] {font-size:0.78rem; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;}
+        [data-testid="stMetricValue"] {font-weight:700; color:#0F172A;}
+        .improver-card {border:1px solid #E2E8F0; border-left:5px solid #15803D; border-radius:11px; padding:0.75rem 0.9rem; margin:0.4rem 0; background:#FFFFFF;}
+        .improver-name {font-weight:700; color:#0F172A; font-size:0.96rem;}
+        .improver-meta {color:#64748B; font-size:0.78rem; margin-top:0.24rem;}
+        .improver-number {font-weight:800; font-size:1.04rem; text-align:right;}
+        .status-pill {display:inline-block; padding:0.16rem 0.55rem; border-radius:999px; font-size:0.76rem; font-weight:700; white-space:nowrap;}
         @media (max-width: 800px) {
-            .block-container {padding-left: 0.75rem; padding-right: 0.75rem;}
-            .improver-name {font-size: 0.88rem;}
+            .block-container {padding-left:0.7rem; padding-right:0.7rem;}
+            .improver-name {font-size:0.87rem;}
+            .improver-number {font-size:0.92rem;}
         }
     </style>
     """,
@@ -126,10 +114,10 @@ def format_percent(value: object) -> str:
     try:
         if value is None or pd.isna(value):
             return "—"
-        numeric = float(value)
-        if abs(numeric) <= 1.5:
-            numeric *= 100.0
-        return f"{numeric:,.1f}%"
+        number = float(value)
+        if abs(number) <= 1.5:
+            number *= 100.0
+        return f"{number:,.1f}%"
     except (TypeError, ValueError):
         return "—"
 
@@ -158,6 +146,18 @@ def change_color(value: object) -> str:
     if change < -0.05:
         return RED
     return MUTED
+
+
+def change_indicator(value: object) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "⚪ —"
+    if number > 0.05:
+        return f"🟢 {format_signed(number)}"
+    if number < -0.05:
+        return f"🔴 {format_signed(number)}"
+    return f"⚪ {format_signed(number)}"
 
 
 def leadership_status(score: object, change: object) -> tuple[str, str, str]:
@@ -242,8 +242,7 @@ def format_sync_time(raw_text: str) -> str:
     if not text or text.lower() == "not available":
         return "Not available"
     try:
-        candidate = text.replace("Z", "+00:00")
-        timestamp = pd.Timestamp(candidate)
+        timestamp = pd.Timestamp(text.replace("Z", "+00:00"))
         if timestamp.tzinfo is None:
             timestamp = timestamp.tz_localize("Asia/Kolkata")
         else:
@@ -267,7 +266,7 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
     heading, previous, calendar, next_button = st.columns([3.8, 0.45, 2.0, 0.45])
     with heading:
         st.markdown("#### Analysis date")
-        st.caption("Choose any available trading session")
+        st.caption("Choose an available trading session")
     with previous:
         if st.button("‹", key=f"{key}_previous", disabled=selected_index == 0, use_container_width=True):
             st.session_state[state_key] = all_dates[selected_index - 1]
@@ -287,25 +286,22 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
             st.session_state[state_key] = all_dates[selected_index + 1]
             st.rerun()
 
-    valid = [date for date in all_dates if date <= pd.Timestamp(requested)]
-    resolved = valid[-1] if valid else all_dates[0]
+    valid_dates = [date for date in all_dates if date <= pd.Timestamp(requested)]
+    resolved = valid_dates[-1] if valid_dates else all_dates[0]
     if resolved != selected:
         st.session_state[state_key] = resolved
         st.rerun()
-    st.caption(f"Showing the latest available trading session on or before: {resolved.strftime('%d %b %Y')}")
+    st.caption(f"Showing: {resolved.strftime('%d %b %Y')}")
     return resolved
 
 
-def show_table(data: pd.DataFrame, height: int, chart_links: bool = False, progress_columns: list[str] | None = None) -> None:
+def show_table(data: pd.DataFrame, height: int, chart_links: bool = False) -> None:
     view = data.copy()
     view.columns = [str(column) for column in view.columns]
     view = view.loc[:, ~view.columns.duplicated(keep="first")]
     config: dict[str, object] = {}
     if chart_links and "Chart" in view.columns:
         config["Chart"] = st.column_config.LinkColumn("Chart", display_text="Open ↗")
-    for column in progress_columns or []:
-        if column in view.columns:
-            config[column] = st.column_config.ProgressColumn(column, min_value=0, max_value=100, format="%.1f")
     st.dataframe(view, use_container_width=True, hide_index=True, height=height, column_config=config)
 
 
@@ -322,12 +318,11 @@ def add_5_session_change(history: pd.DataFrame, current: pd.DataFrame, group_col
     if current.empty:
         return current
     current_date = current["date"].iloc[0]
-    history_dates = get_trading_dates(history)
-    earlier = [date for date in history_dates if date < current_date]
-    if len(earlier) < 5:
+    earlier_dates = [date for date in get_trading_dates(history) if date < current_date]
+    if len(earlier_dates) < 5:
         current["5D Leadership Change"] = 0.0
         return current
-    prior_date = earlier[-5]
+    prior_date = earlier_dates[-5]
     prior = history[history["date"] == prior_date].drop_duplicates(group_column, keep="last").copy()
     prior["Prior Leadership"] = normalize_score(prior["leadership_score"]).fillna(0.0)
     result = current.merge(prior[[group_column, "Prior Leadership"]], on=group_column, how="left")
@@ -337,8 +332,7 @@ def add_5_session_change(history: pd.DataFrame, current: pd.DataFrame, group_col
 
 
 def priority_score(frame: pd.DataFrame) -> pd.Series:
-    positive_change = frame["5D Leadership Change"].clip(lower=0)
-    return (0.65 * frame["Leadership Score"]) + (0.35 * positive_change)
+    return 0.65 * frame["Leadership Score"] + 0.35 * frame["5D Leadership Change"].clip(lower=0)
 
 
 def render_improver_cards(current: pd.DataFrame) -> None:
@@ -352,23 +346,20 @@ def render_improver_cards(current: pd.DataFrame) -> None:
         ascending=[False, False, False],
     ).head(TOP_INDUSTRIES).reset_index(drop=True)
     st.markdown("### Leadership Improvers")
-    st.caption("Ranked by current leadership quality and five-session improvement. A strong industry improving further ranks above a weak rebound.")
+    st.caption("Ranks current leadership quality and five-session improvement together. A strong leader improving further ranks above a weak rebound.")
     for rank, row in improving.iterrows():
         status, status_color, status_bg = leadership_status(row["Leadership Score"], row["5D Leadership Change"])
-        score = format_number(row["Leadership Score"])
-        change = format_signed(row["5D Leadership Change"])
-        group_name = clean_text(row.get("basic_industry", "Unclassified"))
         st.markdown(
             f"""
             <div class="improver-card" style="border-left-color:{status_color};">
                 <div style="display:flex; justify-content:space-between; gap:12px; align-items:start;">
                     <div style="min-width:0;">
-                        <div class="improver-name">{rank + 1}. {group_name}</div>
+                        <div class="improver-name">{rank + 1}. {clean_text(row.get('basic_industry'))}</div>
                         <div class="improver-meta"><span class="status-pill" style="color:{status_color}; background:{status_bg};">{status}</span></div>
                     </div>
                     <div style="display:flex; gap:18px; flex-shrink:0;">
-                        <div class="improver-number" style="color:{score_color(row['Leadership Score'])};">{score}<div class="improver-meta">Current score</div></div>
-                        <div class="improver-number" style="color:{change_color(row['5D Leadership Change'])};">{change}<div class="improver-meta">5-session change</div></div>
+                        <div class="improver-number" style="color:{score_color(row['Leadership Score'])};">{format_number(row['Leadership Score'])}<div class="improver-meta">Current score</div></div>
+                        <div class="improver-number" style="color:{change_color(row['5D Leadership Change'])};">{format_signed(row['5D Leadership Change'])}<div class="improver-meta">5-session change</div></div>
                     </div>
                 </div>
             </div>
@@ -377,26 +368,53 @@ def render_improver_cards(current: pd.DataFrame) -> None:
         )
 
 
-def make_decliners_chart(current: pd.DataFrame) -> None:
-    declining = current[current["5D Leadership Change"] < 0].nsmallest(TOP_INDUSTRIES, "5D Leadership Change").copy()
-    if declining.empty:
-        st.info("No Basic Industry lost Leadership Score over the last five available trading sessions.")
+def render_selected_industry(basic_history: pd.DataFrame, selected_date: pd.Timestamp, current: pd.DataFrame) -> None:
+    ranked = current.copy()
+    ranked["Improver Priority"] = priority_score(ranked)
+    ranked = ranked.sort_values(
+        ["Improver Priority", "5D Leadership Change", "Leadership Score"],
+        ascending=[False, False, False],
+    )
+    options = ranked["basic_industry"].tolist()
+    if not options:
+        st.info("No Basic Industry is available for the selected date.")
         return
-    declining = declining.sort_values("5D Leadership Change", ascending=True)
+    selected_group = st.selectbox(
+        "Select Basic Industry",
+        options,
+        key="selected_basic_industry",
+        help="Industries begin with the highest improvement priority and descend.",
+    )
+    row = current[current["basic_industry"] == selected_group].iloc[-1]
+    score = float(row["Leadership Score"])
+    change = float(row["5D Leadership Change"])
+    regime = clean_text(row.get("regime", "Neutral Transition"))
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Current leadership", format_number(score))
+    c2.metric("5-session change", format_signed(change))
+    c3.metric("Current regime", regime)
+
+    history = basic_history[(basic_history["basic_industry"] == selected_group) & (basic_history["date"] <= selected_date)].copy()
+    history = history.sort_values("date").tail(30)
+    if history.empty:
+        st.info("No trend history is available for this industry.")
+        return
+    history["Leadership Score"] = normalize_score(history["leadership_score"]).fillna(0.0)
     figure = go.Figure(
-        go.Bar(
-            x=declining["5D Leadership Change"],
-            y=declining["basic_industry"],
-            orientation="h",
-            marker_color=RED,
-            text=[format_signed(value) for value in declining["5D Leadership Change"]],
-            textposition="outside",
-            hovertemplate="<b>%{y}</b><br>Current leadership: %{customdata[0]:.1f}<br>5-session change: %{x:+.1f}<extra></extra>",
-            customdata=declining[["Leadership Score"]].to_numpy(),
+        go.Scatter(
+            x=history["date"],
+            y=history["Leadership Score"],
+            mode="lines+markers",
+            line=dict(color=score_color(score), width=3),
+            marker=dict(size=7),
+            hovertemplate="<b>%{x|%d %b %Y}</b><br>Leadership score: %{y:.1f}<extra></extra>",
         )
     )
-    figure.update_layout(title="Largest 5-session leadership deterioration", xaxis_title="Leadership Score change", yaxis_title=None)
-    st.plotly_chart(apply_chart_style(figure, max(300, 31 * len(declining) + 75)), use_container_width=True)
+    for threshold, color in [(70, DARK_GREEN), (60, GREEN), (50, AMBER)]:
+        figure.add_hline(y=threshold, line_dash="dot", line_color=color, opacity=0.85)
+    figure.update_layout(title=f"{selected_group}: Leadership Score trend", xaxis_title=None, yaxis_title="Leadership Score")
+    figure.update_yaxes(range=[0, 100])
+    st.plotly_chart(apply_chart_style(figure, 390), use_container_width=True)
 
 
 def industry_monitor_tab(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
@@ -413,70 +431,24 @@ def industry_monitor_tab(basic_history: pd.DataFrame, selected_date: pd.Timestam
     c3.metric("Leadership weakening", format_integer(weakening))
 
     render_improver_cards(current)
+
     st.markdown("### Industry leadership table")
-    table = current[["basic_industry", "Leadership Score", "5D Leadership Change", "regime"]].copy()
+    table = current[["basic_industry", "Leadership Score", "5D Leadership Change"]].copy()
     table["Status"] = table.apply(lambda row: leadership_status(row["Leadership Score"], row["5D Leadership Change"])[0], axis=1)
     table = table.sort_values(["Leadership Score", "5D Leadership Change"], ascending=[False, False]).reset_index(drop=True)
     table.insert(0, "Rank", range(1, len(table) + 1))
-    table = table.rename(columns={"basic_industry": "Basic Industry", "regime": "Current Regime"})
+    table = table.rename(columns={"basic_industry": "Basic Industry"})
     table["Leadership Score"] = table["Leadership Score"].map(lambda value: format_number(value, 1))
-    table["5D Leadership Change"] = table["5D Leadership Change"].map(lambda value: format_signed(value, 1))
+    table["5D Leadership Change"] = table["5D Leadership Change"].map(change_indicator)
     show_table(table, max(360, min(760, 35 * len(table) + 60)))
 
-    st.markdown("### Leadership moving down")
-    st.caption("Current leadership is included in the hover detail so deterioration can be judged in context.")
-    make_decliners_chart(current)
-
-
-def selected_industry_trend(basic_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
-    current = current_snapshot(basic_history, selected_date, "basic_industry")
-    if current.empty:
-        st.warning("No Basic Industry data is available for the selected date.")
-        return
-    current = add_5_session_change(basic_history, current, "basic_industry")
-    ranked = current.copy()
-    ranked["Improver Priority"] = priority_score(ranked)
-    ranked = ranked.sort_values(["Improver Priority", "5D Leadership Change"], ascending=[False, False])
-    options = ranked["basic_industry"].tolist()
-    selected_group = st.selectbox(
-        "Select Basic Industry",
-        options,
-        key="selected_basic_industry",
-        help="Starts with the highest improvement priority, then descends.",
-    )
-    row = current[current["basic_industry"] == selected_group].iloc[-1]
-    score = float(row["Leadership Score"])
-    change = float(row["5D Leadership Change"])
-    regime = clean_text(row.get("regime", "Neutral Transition"))
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Current leadership", format_number(score), delta=None)
-    c2.metric("5-session change", format_signed(change), delta=None)
-    c3.metric("Current regime", regime)
-
-    history = basic_history[(basic_history["basic_industry"] == selected_group) & (basic_history["date"] <= selected_date)].copy()
-    history = history.sort_values("date").tail(30)
-    if history.empty:
-        st.info("No trend history is available for the selected industry.")
-        return
-    history["Leadership Score"] = normalize_score(history["leadership_score"]).fillna(0.0)
-    figure = go.Figure()
-    figure.add_trace(
-        go.Scatter(
-            x=history["date"], y=history["Leadership Score"], mode="lines+markers",
-            line=dict(color=score_color(score), width=3), marker=dict(size=7),
-            hovertemplate="<b>%{x|%d %b %Y}</b><br>Leadership score: %{y:.1f}<extra></extra>",
-        )
-    )
-    for threshold, color in [(70, DARK_GREEN), (60, GREEN), (50, AMBER)]:
-        figure.add_hline(y=threshold, line_dash="dot", line_color=color, opacity=0.8)
-    figure.update_layout(title=f"{selected_group}: Leadership Score trend", xaxis_title=None, yaxis_title="Leadership Score")
-    figure.update_yaxes(range=[0, 100])
-    st.plotly_chart(apply_chart_style(figure, 390), use_container_width=True)
+    st.markdown("### Selected industry trend")
+    st.caption("The dropdown begins with the highest improvement priority and descends.")
+    render_selected_industry(basic_history, selected_date, current)
 
 
 def percentile_rank(frame: pd.DataFrame, column: str, ascending: bool) -> pd.Series:
-    values = numeric_column(frame, column)
-    return values.rank(pct=True, ascending=ascending).fillna(0.0)
+    return numeric_column(frame, column).rank(pct=True, ascending=ascending).fillna(0.0)
 
 
 def stock_setups_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, selected_date: pd.Timestamp) -> None:
@@ -489,14 +461,12 @@ def stock_setups_tab(basic_history: pd.DataFrame, stock_history: pd.DataFrame, s
     basic = basic.sort_values("Leadership Score", ascending=False).drop_duplicates("basic_industry").reset_index(drop=True)
     basic["Industry Rank"] = range(1, len(basic) + 1)
     lookup = basic.set_index("basic_industry")[["Industry Rank", "Leadership Score", "regime"]]
-
     established = stocks[stocks["established_buy_setup"] == 1].copy()
     ipo = stocks[stocks["ipo_buy_setup"] == 1].copy()
     c1, c2, c3 = st.columns(3)
     c1.metric("Established qualified", format_integer(len(established)))
     c2.metric("IPO qualified", format_integer(len(ipo)))
     c3.metric("Scan date", selected_date.strftime("%d %b %Y"))
-
     render_stock_table(established, lookup, "Established", TOP_STOCKS)
     render_stock_table(ipo, lookup, "IPO", TOP_STOCKS)
 
@@ -550,26 +520,27 @@ def group_detail_tab(history: pd.DataFrame, stock_history: pd.DataFrame, selecte
     current = add_5_session_change(history, current, group_column)
     current = current.sort_values(["Leadership Score", "5D Leadership Change"], ascending=[False, False]).reset_index(drop=True)
     current.insert(0, "Rank", range(1, len(current) + 1))
-    name = "Basic Industry" if group_column == "basic_industry" else "Industry"
-    table = current.rename(columns={group_column: name, "members": "Stocks", "regime": "Current Regime"})
+    display_name = "Basic Industry" if group_column == "basic_industry" else "Industry"
+    table = current.rename(columns={group_column: display_name, "members": "Stocks"})
     table["Status"] = table.apply(lambda row: leadership_status(row["Leadership Score"], row["5D Leadership Change"])[0], axis=1)
-    keep = ["Rank", name, "Leadership Score", "5D Leadership Change", "Status", "Current Regime", "Stocks"]
+    keep = ["Rank", display_name, "Leadership Score", "5D Leadership Change", "Status", "Stocks"]
     table = table[[column for column in keep if column in table.columns]]
     table["Leadership Score"] = table["Leadership Score"].map(lambda value: format_number(value, 1))
-    table["5D Leadership Change"] = table["5D Leadership Change"].map(lambda value: format_signed(value, 1))
+    table["5D Leadership Change"] = table["5D Leadership Change"].map(change_indicator)
     if "Stocks" in table.columns:
         table["Stocks"] = table["Stocks"].map(format_integer)
     show_table(table, max(360, min(760, 35 * len(table) + 60)))
 
     st.markdown(f"### {title} constituents")
     options = current.sort_values("5D Leadership Change", ascending=False)[group_column].tolist()
-    selected_group = st.selectbox(title, options, key=f"{group_column}_selector", help="Starts at maximum five-session improvement and descends.")
+    selected_group = st.selectbox(title, options, key=f"{group_column}_selector", help="Starts with maximum 5-session improvement and descends.")
     stock_group_column = "basic_industry" if group_column == "basic_industry" else "industry"
     stocks = stock_history[(stock_history["date"] == selected_date) & (stock_history[stock_group_column] == selected_group)].copy()
     if stocks.empty:
         st.info("No constituent stock records are available for this selected trading date.")
         return
-    stocks = stocks.sort_values("ret_20d", ascending=False) if "ret_20d" in stocks.columns else stocks
+    if "ret_20d" in stocks.columns:
+        stocks = stocks.sort_values("ret_20d", ascending=False)
     stocks = stocks.head(30).reset_index(drop=True)
     stocks.insert(0, "Rank", range(1, len(stocks) + 1))
     stocks["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + stocks["symbol"].astype(str)
@@ -590,22 +561,15 @@ def methodology_tab() -> None:
     st.markdown(
         """
         ### Leadership Score
-        - **Leadership Score** measures the current relative strength of a group on a 0–100 scale.
-        - **5D Leadership Change** is the current score minus the score five available trading sessions earlier.
-        - The Leadership Improvers panel ranks industries using both current score and positive five-session change, so strong improving industries receive priority over weak rebounds.
+        - **Leadership Score** is the current relative-strength score for a group, shown on a 0–100 scale.
+        - **5D Leadership Change** equals the current score minus the score five available trading sessions earlier.
+        - The Leadership Improvers section ranks both current leadership and positive improvement so strong industries improving further receive priority over weak rebounds.
 
         ### Colour guide
+        - Green: positive leadership momentum.
+        - Red: negative leadership momentum.
+        - Amber: transition/watchlist condition.
         - Dark green: strong leadership, normally 70 or above.
-        - Green: constructive leadership or positive momentum.
-        - Amber: transition/watchlist state.
-        - Red: weak leadership or negative momentum.
-
-        ### Research workflow
-        1. Start with Leadership Improvers.
-        2. Prefer high current scores with positive five-session improvement.
-        3. Open the selected-industry trend and inspect persistence.
-        4. Review individual stock setups and their charts.
-        5. Define entry, risk and position size independently.
 
         This dashboard is a research tool, not a trade recommendation.
         """
@@ -632,18 +596,16 @@ def main() -> None:
     raw_sync = SYNC_FILE.read_text(encoding="utf-8").strip() if SYNC_FILE.exists() else "Not available"
     st.caption(f"Last data refresh: {format_sync_time(raw_sync)}")
 
-    tabs = st.tabs(["Industry Monitor", "Selected Industry", "Top Setups", "Basic Industry", "Industry", "Methodology"])
+    tabs = st.tabs(["Industry Monitor", "Top Setups", "Basic Industry", "Industry", "Methodology"])
     with tabs[0]:
         industry_monitor_tab(basic_history, date_picker(all_dates, "monitor"))
     with tabs[1]:
-        selected_industry_trend(basic_history, date_picker(all_dates, "trend"))
-    with tabs[2]:
         stock_setups_tab(basic_history, stock_history, date_picker(all_dates, "setups"))
-    with tabs[3]:
+    with tabs[2]:
         group_detail_tab(basic_history, stock_history, date_picker(all_dates, "basic"), "basic_industry", "Basic Industry")
-    with tabs[4]:
+    with tabs[3]:
         group_detail_tab(industry_history, stock_history, date_picker(all_dates, "industry"), "industry", "Industry")
-    with tabs[5]:
+    with tabs[4]:
         methodology_tab()
 
 
