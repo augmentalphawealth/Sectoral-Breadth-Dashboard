@@ -1,16 +1,16 @@
-# COMPLETE REPLACEMENT FOR: app/dashboard.py
+# app/dashboard.py
 # NSE Industry Momentum Monitor
-# Fixes:
-# - missing date_picker NameError
-# - duplicate dataframe column errors
-# - pandas Styler / PyArrow errors
-# - 0-to-1 versus 0-to-100 score scaling
-# - cluttered charts and raw Excel-like tables
 #
-# Main purpose:
-# - Show industries whose leadership is improving or weakening
-# - Show setup density only when the data has meaningful non-zero values
-# - Show Top 20 stock setups without filtering out stocks due to industry rank
+# Purpose:
+# 1. Show which Basic Industries are improving or weakening.
+# 2. Show Top 20 individual stock setups across the whole market.
+# 3. Show Industry Rank / Industry Leadership as context only.
+#
+# Important:
+# - No Pandas Styler: avoids Streamlit Styler errors.
+# - No dataframe merge for industry context: avoids duplicate-column errors.
+# - No treemap/scatter: avoids unreadable clutter.
+# - Handles scores stored either as 0-1 or 0-100.
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ import streamlit as st
 
 
 # =============================================================================
-# FILE LOCATIONS
+# FILE PATHS
 # =============================================================================
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,12 +34,12 @@ STOCK_HISTORY_FILE = PROCESSED / "dashboard_stock_history.parquet"
 SYNC_FILE = PROCESSED / "last_sync.txt"
 
 SMALL_GROUP_LIMIT = 5
-TOP_N = 12
-TOP_SETUPS = 20
+TOP_INDUSTRIES = 12
+TOP_STOCKS = 20
 
 
 # =============================================================================
-# DESIGN SETTINGS
+# DISPLAY SETTINGS
 # =============================================================================
 
 INK = "#0F172A"
@@ -56,6 +56,7 @@ REGIME_COLORS = {
     "Dead (AVOID)": RED,
     "Neutral Transition": MUTED,
 }
+
 
 st.set_page_config(
     page_title="NSE Industry Momentum Monitor",
@@ -74,30 +75,29 @@ st.markdown(
     }
 
     h1 {
+        color: #0F172A;
         font-size: 2rem;
         font-weight: 750;
-        letter-spacing: -0.035em;
-        color: #0F172A;
+        letter-spacing: -0.03em;
     }
 
     h2, h3 {
-        font-weight: 700;
         color: #0F172A;
-        letter-spacing: -0.02em;
+        font-weight: 700;
     }
 
     [data-testid="stMetricValue"] {
+        color: #0F172A;
         font-size: 1.55rem;
         font-weight: 750;
-        color: #0F172A;
     }
 
     [data-testid="stMetricLabel"] {
-        font-size: 0.72rem;
         color: #64748B;
+        font-size: 0.72rem;
+        font-weight: 650;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        font-weight: 650;
     }
 
     [data-testid="stDataFrame"] {
@@ -106,11 +106,11 @@ st.markdown(
         overflow: hidden;
     }
 
-    .section-note {
+    .note {
         color: #64748B;
-        font-size: 0.86rem;
+        font-size: 0.88rem;
         margin-top: -0.35rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.9rem;
     }
     </style>
     """,
@@ -119,75 +119,91 @@ st.markdown(
 
 
 # =============================================================================
-# SMALL HELPER FUNCTIONS
+# SAFE HELPERS
 # =============================================================================
 
-def clean(value: object) -> str:
-    """Convert blank or missing text fields to a safe readable value."""
+def clean_text(value: object) -> str:
+    """Return safe text for missing group/symbol values."""
     if value is None or pd.isna(value):
         return "Unclassified"
 
-    value = str(value).strip()
-    return value if value else "Unclassified"
+    text = str(value).strip()
+    return text if text else "Unclassified"
 
 
-def num(frame: pd.DataFrame, column: str, default: float = 0.0) -> pd.Series:
-    """Return a numeric column safely, even if it is missing."""
+def numeric_column(
+    frame: pd.DataFrame,
+    column: str,
+    default: float = 0.0,
+) -> pd.Series:
+    """Return a numeric series even if the original column is missing."""
     if column not in frame.columns:
         return pd.Series(default, index=frame.index, dtype=float)
 
-    return pd.to_numeric(frame[column], errors="coerce").fillna(default)
+    return pd.to_numeric(
+        frame[column],
+        errors="coerce",
+    ).fillna(default)
 
 
-def score_100(values: pd.Series) -> pd.Series:
+def normalize_score(values: pd.Series) -> pd.Series:
     """
-    Fixes the common storage mismatch:
-    Some scores are stored as 0.00–1.00,
-    while the UI expects 0–100.
+    Scores should be shown as 0-100.
+
+    If the upstream pipeline stored a score as 0.00 to 1.00,
+    convert it to 0 to 100. Otherwise leave it unchanged.
     """
     series = pd.to_numeric(values, errors="coerce")
-    non_null = series.dropna()
+    valid = series.dropna()
 
-    if len(non_null) and non_null.max() <= 1.5:
+    if len(valid) > 0 and valid.max() <= 1.5:
         return series * 100.0
 
     return series
 
 
-def fmt_num(value: object, decimals: int = 1) -> str:
+def format_number(value: object, decimals: int = 1) -> str:
     try:
         if value is None or pd.isna(value):
             return "—"
+
         return f"{float(value):,.{decimals}f}"
-    except (ValueError, TypeError):
+
+    except (TypeError, ValueError):
         return "—"
 
 
-def fmt_int(value: object) -> str:
+def format_integer(value: object) -> str:
     try:
         if value is None or pd.isna(value):
             return "—"
+
         return f"{int(round(float(value))):,}"
-    except (ValueError, TypeError):
+
+    except (TypeError, ValueError):
         return "—"
 
 
-def fmt_pct_fraction(value: object) -> str:
+def format_return(value: object) -> str:
     """
-    Use only for return-like fields stored as fractions:
-    0.125 becomes 12.5%.
+    For return fields stored as fractions:
+    0.075 becomes 7.5%.
     """
     try:
         if value is None or pd.isna(value):
             return "—"
+
         return f"{float(value) * 100.0:,.1f}%"
-    except (ValueError, TypeError):
+
+    except (TypeError, ValueError):
         return "—"
 
 
-def fig_style(fig: go.Figure, height: int) -> go.Figure:
-    """Apply a clean institutional-style Plotly layout."""
-    fig.update_layout(
+def apply_chart_style(
+    figure: go.Figure,
+    height: int,
+) -> go.Figure:
+    figure.update_layout(
         height=height,
         margin=dict(l=8, r=25, t=42, b=10),
         font=dict(
@@ -195,9 +211,9 @@ def fig_style(fig: go.Figure, height: int) -> go.Figure:
             size=12,
             color=INK,
         ),
+        title_font=dict(size=14, color=INK),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        title_font=dict(size=14, color=INK),
         xaxis=dict(
             showgrid=True,
             gridcolor="#F1F5F9",
@@ -206,7 +222,8 @@ def fig_style(fig: go.Figure, height: int) -> go.Figure:
         yaxis=dict(showgrid=False),
         showlegend=False,
     )
-    return fig
+
+    return figure
 
 
 # =============================================================================
@@ -218,16 +235,18 @@ def load_parquet(path: str) -> pd.DataFrame:
     frame = pd.read_parquet(path)
 
     if "date" in frame.columns:
-        frame["date"] = pd.to_datetime(frame["date"]).dt.normalize()
+        frame["date"] = pd.to_datetime(
+            frame["date"]
+        ).dt.normalize()
 
     return frame
 
 
-def prepare_groups(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
-    """
-    Prepare Basic Industry or Industry data.
-    Also fixes score scale if stored as 0–1 instead of 0–100.
-    """
+def prepare_group_data(
+    frame: pd.DataFrame,
+    group_column: str,
+) -> pd.DataFrame:
+    """Prepare Basic Industry or Industry history data."""
     data = frame.copy()
 
     if group_column not in data.columns:
@@ -245,62 +264,73 @@ def prepare_groups(frame: pd.DataFrame, group_column: str) -> pd.DataFrame:
     if "actionability_score" not in data.columns:
         data["actionability_score"] = 0.0
 
-    data[group_column] = data[group_column].map(clean)
-    data["regime"] = data["regime"].map(clean)
+    data[group_column] = data[group_column].map(clean_text)
+    data["regime"] = data["regime"].map(clean_text)
 
-    data["leadership_score"] = score_100(
+    data["leadership_score"] = normalize_score(
         data["leadership_score"]
     ).fillna(0.0)
 
-    data["actionability_score"] = score_100(
+    data["actionability_score"] = normalize_score(
         data["actionability_score"]
     ).fillna(0.0)
 
     return data
 
 
-def prepare_stocks(frame: pd.DataFrame) -> pd.DataFrame:
-    """Prepare stock data and guarantee safe stock setup flags."""
+def prepare_stock_data(frame: pd.DataFrame) -> pd.DataFrame:
+    """Prepare stock data and guarantee the setup flags exist."""
     data = frame.copy()
 
-    for column in ["symbol", "basic_industry", "industry", "sector"]:
+    for column in [
+        "symbol",
+        "basic_industry",
+        "industry",
+        "sector",
+    ]:
         if column not in data.columns:
             data[column] = "Unclassified"
 
-        data[column] = data[column].map(clean)
+        data[column] = data[column].map(clean_text)
 
-    for flag in ["established_buy_setup", "ipo_buy_setup"]:
+    for flag in [
+        "established_buy_setup",
+        "ipo_buy_setup",
+    ]:
         if flag not in data.columns:
             data[flag] = 0
 
-        data[flag] = (
-            pd.to_numeric(data[flag], errors="coerce")
-            .fillna(0)
-            .astype(int)
-        )
+        data[flag] = pd.to_numeric(
+            data[flag],
+            errors="coerce",
+        ).fillna(0).astype(int)
 
     return data
 
 
-def get_dates(frame: pd.DataFrame) -> list[pd.Timestamp]:
-    """Get sorted unique trading dates from a data table."""
+def get_trading_dates(frame: pd.DataFrame) -> list[pd.Timestamp]:
     if "date" not in frame.columns:
         return []
 
     return sorted(
         pd.Timestamp(value)
-        for value in pd.to_datetime(frame["date"].dropna().unique())
+        for value in pd.to_datetime(
+            frame["date"].dropna().unique()
+        )
     )
 
 
 # =============================================================================
-# DATE NAVIGATOR
+# DATE PICKER
 # =============================================================================
 
-def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
+def date_picker(
+    all_dates: list[pd.Timestamp],
+    key: str,
+) -> pd.Timestamp:
     """
-    Date selector with previous/next buttons.
-    This function is included specifically to avoid the earlier NameError.
+    This function is included in the replacement.
+    It prevents the earlier: NameError: date_picker is not defined.
     """
     latest = all_dates[-1]
     state_key = f"{key}_selected_date"
@@ -314,7 +344,7 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
         selected = latest
         st.session_state[state_key] = latest
 
-    index = all_dates.index(selected)
+    selected_index = all_dates.index(selected)
 
     left, right = st.columns([5.8, 2.2])
 
@@ -322,20 +352,24 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
         st.subheader("Analysis Date")
 
     with right:
-        previous, calendar, next_button = st.columns([0.4, 1.6, 0.4])
+        previous, calendar, next_button = st.columns(
+            [0.4, 1.6, 0.4]
+        )
 
         with previous:
             if st.button(
                 "‹",
                 key=f"{key}_previous",
-                disabled=index == 0,
+                disabled=selected_index == 0,
                 use_container_width=True,
             ):
-                st.session_state[state_key] = all_dates[index - 1]
+                st.session_state[state_key] = all_dates[
+                    selected_index - 1
+                ]
                 st.rerun()
 
         with calendar:
-            chosen = st.date_input(
+            requested_date = st.date_input(
                 "Date",
                 value=selected.date(),
                 min_value=all_dates[0].date(),
@@ -348,58 +382,68 @@ def date_picker(all_dates: list[pd.Timestamp], key: str) -> pd.Timestamp:
             if st.button(
                 "›",
                 key=f"{key}_next",
-                disabled=index == len(all_dates) - 1,
+                disabled=selected_index == len(all_dates) - 1,
                 use_container_width=True,
             ):
-                st.session_state[state_key] = all_dates[index + 1]
+                st.session_state[state_key] = all_dates[
+                    selected_index + 1
+                ]
                 st.rerun()
 
     valid_dates = [
-        date for date in all_dates
-        if date <= pd.Timestamp(chosen)
+        date
+        for date in all_dates
+        if date <= pd.Timestamp(requested_date)
     ]
 
-    resolved = valid_dates[-1] if valid_dates else all_dates[0]
+    resolved_date = valid_dates[-1] if valid_dates else all_dates[0]
 
-    if resolved != selected:
-        st.session_state[state_key] = resolved
+    if resolved_date != selected:
+        st.session_state[state_key] = resolved_date
         st.rerun()
 
-    st.caption(f"Data as of {resolved.strftime('%d %b %Y')}")
-    return resolved
+    st.caption(
+        f"Data as of {resolved_date.strftime('%d %b %Y')}"
+    )
+
+    return resolved_date
 
 
 # =============================================================================
-# SAFE TABLE DISPLAY
+# SAFE STREAMLIT TABLE
 # =============================================================================
 
 def show_table(
     data: pd.DataFrame,
     height: int,
-    links: bool = False,
+    chart_links: bool = False,
     progress_columns: list[str] | None = None,
 ) -> None:
     """
-    Safe Streamlit table output:
-    - Removes duplicate columns
-    - Does not use Pandas Styler
-    - Avoids previous Arrow/PyArrow errors
-    """
-    data = data.copy()
+    Do not use Pandas Styler here.
 
-    data.columns = [str(column) for column in data.columns]
-    data = data.loc[:, ~data.columns.duplicated(keep="first")]
+    Earlier dashboard errors came from:
+    - Pandas Styler
+    - Duplicate column names
+    - PyArrow serialization
+
+    This function removes duplicate columns before Streamlit displays data.
+    """
+    view = data.copy()
+
+    view.columns = [str(column) for column in view.columns]
+    view = view.loc[:, ~view.columns.duplicated(keep="first")]
 
     config = {}
 
-    if links and "Chart" in data.columns:
+    if chart_links and "Chart" in view.columns:
         config["Chart"] = st.column_config.LinkColumn(
             "Chart",
             display_text="Open ↗",
         )
 
     for column in progress_columns or []:
-        if column in data.columns:
+        if column in view.columns:
             config[column] = st.column_config.ProgressColumn(
                 column,
                 min_value=0,
@@ -408,7 +452,7 @@ def show_table(
             )
 
     st.dataframe(
-        data,
+        view,
         use_container_width=True,
         hide_index=True,
         height=height,
@@ -420,25 +464,30 @@ def show_table(
 # INDUSTRY MOVEMENT CALCULATIONS
 # =============================================================================
 
-def snapshot(
+def current_snapshot(
     history: pd.DataFrame,
     selected_date: pd.Timestamp,
     group_column: str,
 ) -> pd.DataFrame:
-    """Take the current-date snapshot for either industry level."""
-    data = history[history["date"] == selected_date].copy()
-
-    data = data[
-        num(data, "members") >= SMALL_GROUP_LIMIT
+    """Get one latest row per group for the selected date."""
+    data = history[
+        history["date"] == selected_date
     ].copy()
 
-    data = data.drop_duplicates(group_column, keep="last")
+    data = data[
+        numeric_column(data, "members") >= SMALL_GROUP_LIMIT
+    ].copy()
 
-    data["Leadership Score"] = score_100(
+    data = data.drop_duplicates(
+        group_column,
+        keep="last",
+    )
+
+    data["Leadership Score"] = normalize_score(
         data["leadership_score"]
     ).fillna(0.0)
 
-    data["Actionability %"] = score_100(
+    data["Actionability %"] = normalize_score(
         data["actionability_score"]
     ).fillna(0.0)
 
@@ -451,27 +500,30 @@ def add_5_session_change(
     group_column: str,
 ) -> pd.DataFrame:
     """
-    Calculate score movement:
-    current score minus score from five available trading sessions earlier.
+    5D Leadership Change =
+    Current Leadership Score - Leadership Score five sessions earlier.
     """
     if current.empty:
         return current
 
-    selected_date = current["date"].iloc[0]
+    current_date = current["date"].iloc[0]
 
-    available_dates = sorted(
+    history_dates = sorted(
         pd.Timestamp(value)
-        for value in pd.to_datetime(history["date"].dropna().unique())
+        for value in pd.to_datetime(
+            history["date"].dropna().unique()
+        )
     )
 
     earlier_dates = [
-        date for date in available_dates
-        if date < selected_date
+        date
+        for date in history_dates
+        if date < current_date
     ]
 
     if len(earlier_dates) < 5:
-        current["5D Leadership Δ"] = 0.0
-        current["5D Actionability Δ"] = 0.0
+        current["5D Leadership Change"] = 0.0
+        current["5D Actionability Change"] = 0.0
         return current
 
     prior_date = earlier_dates[-5]
@@ -480,17 +532,16 @@ def add_5_session_change(
         history["date"] == prior_date
     ].copy()
 
-    prior = prior.drop_duplicates(group_column, keep="last")
+    prior = prior.drop_duplicates(
+        group_column,
+        keep="last",
+    )
 
-    prior = prior[
-        [group_column, "leadership_score", "actionability_score"]
-    ].copy()
-
-    prior["Prior Leadership"] = score_100(
+    prior["Prior Leadership"] = normalize_score(
         prior["leadership_score"]
     ).fillna(0.0)
 
-    prior["Prior Actionability"] = score_100(
+    prior["Prior Actionability"] = normalize_score(
         prior["actionability_score"]
     ).fillna(0.0)
 
@@ -502,63 +553,66 @@ def add_5_session_change(
         ]
     ]
 
-    current = current.merge(
+    result = current.merge(
         prior,
         on=group_column,
         how="left",
     )
 
-    current["Prior Leadership"] = current[
+    result["Prior Leadership"] = result[
         "Prior Leadership"
-    ].fillna(current["Leadership Score"])
+    ].fillna(result["Leadership Score"])
 
-    current["Prior Actionability"] = current[
+    result["Prior Actionability"] = result[
         "Prior Actionability"
-    ].fillna(current["Actionability %"])
+    ].fillna(result["Actionability %"])
 
-    current["5D Leadership Δ"] = (
-        current["Leadership Score"]
-        - current["Prior Leadership"]
+    result["5D Leadership Change"] = (
+        result["Leadership Score"]
+        - result["Prior Leadership"]
     )
 
-    current["5D Actionability Δ"] = (
-        current["Actionability %"]
-        - current["Prior Actionability"]
+    result["5D Actionability Change"] = (
+        result["Actionability %"]
+        - result["Prior Actionability"]
     )
 
-    return current
+    return result
 
 
-def movement_chart(
-    frame: pd.DataFrame,
-    value_column: str,
+def make_movement_chart(
+    data: pd.DataFrame,
     title: str,
 ) -> None:
-    """Clean horizontal bar chart for rising/falling industry leadership."""
-    data = frame.sort_values(value_column).copy()
+    """Plot a clean industry movement chart."""
+    chart_data = data.sort_values(
+        "5D Leadership Change"
+    ).copy()
 
     colors = [
         GREEN if value >= 0 else RED
-        for value in data[value_column]
+        for value in chart_data["5D Leadership Change"]
     ]
 
-    fig = go.Figure(
+    figure = go.Figure(
         go.Bar(
-            x=data[value_column],
-            y=data["basic_industry"],
+            x=chart_data["5D Leadership Change"],
+            y=chart_data["basic_industry"],
             orientation="h",
             marker_color=colors,
-            text=data[value_column].round(1),
+            text=chart_data[
+                "5D Leadership Change"
+            ].round(1),
             textposition="outside",
             hovertemplate=(
                 "%{y}<br>"
-                "Change: %{x:.1f} points"
+                "5-session leadership change: %{x:.1f}"
                 "<extra></extra>"
             ),
         )
     )
 
-    fig.update_layout(
+    figure.update_layout(
         title=title,
         xaxis_title="Leadership Score change over 5 sessions",
         yaxis_title=None,
@@ -568,47 +622,52 @@ def movement_chart(
                 x0=0,
                 x1=0,
                 y0=-0.5,
-                y1=max(len(data) - 0.5, 0),
+                y1=max(len(chart_data) - 0.5, 0),
                 line=dict(color="#94A3B8", width=1),
             )
         ],
     )
 
     st.plotly_chart(
-        fig_style(fig, max(300, 55 + 29 * len(data))),
+        apply_chart_style(
+            figure,
+            max(300, 55 + 29 * len(chart_data)),
+        ),
         use_container_width=True,
     )
 
 
 # =============================================================================
-# TAB 1 — INDUSTRY MOMENTUM MONITOR
+# INDUSTRY MONITOR TAB
 # =============================================================================
 
 def industry_monitor_tab(
     basic_history: pd.DataFrame,
-    industry_history: pd.DataFrame,
     selected_date: pd.Timestamp,
 ) -> None:
     st.subheader("Industry Momentum Monitor")
 
     st.markdown(
         """
-        <p class="section-note">
-        Focus on change: which Basic Industries are improving,
-        weakening, and developing usable setups?
+        <p class="note">
+        This screen answers one main question:
+        Which Basic Industries are improving or weakening over the last
+        five available trading sessions?
         </p>
         """,
         unsafe_allow_html=True,
     )
 
-    current = snapshot(
+    current = current_snapshot(
         basic_history,
         selected_date,
         "basic_industry",
     )
 
     if current.empty:
-        st.warning("No Basic Industry data is available for this date.")
+        st.warning(
+            "No Basic Industry data is available for the selected date."
+        )
         return
 
     current = add_5_session_change(
@@ -617,40 +676,42 @@ def industry_monitor_tab(
         "basic_industry",
     )
 
-    rising_count = int(
-        (current["5D Leadership Δ"] > 0).sum()
+    improving = int(
+        (current["5D Leadership Change"] > 0).sum()
     )
 
-    falling_count = int(
-        (current["5D Leadership Δ"] < 0).sum()
+    weakening = int(
+        (current["5D Leadership Change"] < 0).sum()
     )
 
-    active_setup_count = int(
+    active_setups = int(
         (current["Actionability %"] > 0).sum()
     )
 
     c1, c2, c3, c4 = st.columns(4)
 
-    c1.metric("Industries Tracked", fmt_int(len(current)))
-    c2.metric("Leadership Improving", fmt_int(rising_count))
-    c3.metric("Leadership Weakening", fmt_int(falling_count))
-    c4.metric("Industries With Setups", fmt_int(active_setup_count))
+    c1.metric("Industries Tracked", format_integer(len(current)))
+    c2.metric("Leadership Improving", format_integer(improving))
+    c3.metric("Leadership Weakening", format_integer(weakening))
+    c4.metric("Industries With Setups", format_integer(active_setups))
 
     st.markdown("### Leadership Moving Up")
 
     st.markdown(
         """
-        <p class="section-note">
-        Top 12 Basic Industries with the biggest positive Leadership Score
-        change compared with five available trading sessions ago.
+        <p class="note">
+        Top Basic Industries gaining the most Leadership Score
+        versus five trading sessions earlier.
         </p>
         """,
         unsafe_allow_html=True,
     )
 
-    movement_chart(
-        current.nlargest(TOP_N, "5D Leadership Δ"),
-        "5D Leadership Δ",
+    make_movement_chart(
+        current.nlargest(
+            TOP_INDUSTRIES,
+            "5D Leadership Change",
+        ),
         "Largest 5-session leadership improvement",
     )
 
@@ -658,53 +719,50 @@ def industry_monitor_tab(
 
     st.markdown(
         """
-        <p class="section-note">
-        Top 12 Basic Industries losing leadership fastest.
-        This helps avoid late entries into fading groups.
+        <p class="note">
+        These are the groups losing leadership fastest.
+        Avoid chasing stocks in these industries unless the individual
+        stock setup is exceptionally strong.
         </p>
         """,
         unsafe_allow_html=True,
     )
 
-    movement_chart(
-        current.nsmallest(TOP_N, "5D Leadership Δ"),
-        "5D Leadership Δ",
+    make_movement_chart(
+        current.nsmallest(
+            TOP_INDUSTRIES,
+            "5D Leadership Change",
+        ),
         "Largest 5-session leadership deterioration",
     )
 
     st.markdown("### Current Setup Density")
 
-    st.markdown(
-        """
-        <p class="section-note">
-        Only industries with a positive Actionability value are shown.
-        A wall of zero-value bars is deliberately hidden.
-        </p>
-        """,
-        unsafe_allow_html=True,
-    )
-
     active = current[
         current["Actionability %"] > 0
-    ].nlargest(TOP_N, "Actionability %").sort_values(
-        "Actionability %"
-    )
+    ].nlargest(
+        TOP_INDUSTRIES,
+        "Actionability %",
+    ).sort_values("Actionability %")
 
     if active.empty:
         st.info(
-            "The processed Basic Industry data has Actionability = 0 "
-            "for every industry on this date. This is an upstream "
-            "data/calculation issue, not a chart issue. The dashboard "
-            "is hiding the meaningless zero-bar chart."
+            "Actionability is zero for every Basic Industry in the "
+            "processed file on this date. The dashboard is correctly "
+            "hiding the useless all-zero chart. This needs an upstream "
+            "data-calculation check."
         )
+
     else:
-        fig = go.Figure(
+        figure = go.Figure(
             go.Bar(
                 x=active["Actionability %"],
                 y=active["basic_industry"],
                 orientation="h",
                 marker_color=BLUE,
-                text=active["Actionability %"].round(1),
+                text=active[
+                    "Actionability %"
+                ].round(1),
                 textposition="outside",
                 hovertemplate=(
                     "%{y}<br>"
@@ -714,15 +772,15 @@ def industry_monitor_tab(
             )
         )
 
-        fig.update_layout(
+        figure.update_layout(
             title="Industries with the most currently actionable stocks",
             xaxis_title="Actionability (%)",
             yaxis_title=None,
         )
 
         st.plotly_chart(
-            fig_style(
-                fig,
+            apply_chart_style(
+                figure,
                 max(300, 55 + 29 * len(active)),
             ),
             use_container_width=True,
@@ -731,20 +789,27 @@ def industry_monitor_tab(
     st.markdown("### Industry Decision Board")
 
     board = current.sort_values(
-        "5D Leadership Δ",
+        "5D Leadership Change",
         ascending=False,
     ).copy().reset_index(drop=True)
 
-    board.insert(0, "Rank", range(1, len(board) + 1))
+    board.insert(
+        0,
+        "Rank",
+        range(1, len(board) + 1),
+    )
 
-    board["Direction"] = board["5D Leadership Δ"].map(
-        lambda value:
-        "↑ Improving"
-        if value > 0.25
-        else (
-            "↓ Weakening"
-            if value < -0.25
-            else "→ Flat"
+    board["Direction"] = board[
+        "5D Leadership Change"
+    ].map(
+        lambda value: (
+            "Improving"
+            if value > 0.25
+            else (
+                "Weakening"
+                if value < -0.25
+                else "Flat"
+            )
         )
     )
 
@@ -756,36 +821,39 @@ def industry_monitor_tab(
         }
     )
 
-    board_columns = [
+    keep_columns = [
         "Rank",
         "Basic Industry",
         "Direction",
         "Leadership Score",
-        "5D Leadership Δ",
+        "5D Leadership Change",
         "Actionability %",
-        "5D Actionability Δ",
+        "5D Actionability Change",
         "Regime",
         "Stocks",
     ]
 
     board = board[
         [
-            column for column in board_columns
+            column
+            for column in keep_columns
             if column in board.columns
         ]
     ]
 
     for column in [
         "Leadership Score",
-        "5D Leadership Δ",
+        "5D Leadership Change",
         "Actionability %",
-        "5D Actionability Δ",
+        "5D Actionability Change",
     ]:
         if column in board.columns:
             board[column] = board[column].round(1)
 
     if "Stocks" in board.columns:
-        board["Stocks"] = board["Stocks"].map(fmt_int)
+        board["Stocks"] = board["Stocks"].map(
+            format_integer
+        )
 
     show_table(
         board,
@@ -798,7 +866,7 @@ def industry_monitor_tab(
 
 
 # =============================================================================
-# STOCK SETUP CALCULATIONS
+# TOP SETUPS TAB
 # =============================================================================
 
 def percentile_rank(
@@ -806,21 +874,17 @@ def percentile_rank(
     column: str,
     ascending: bool,
 ) -> pd.Series:
-    """
-    Percentile rank among qualified candidates.
-    For tightness/volume ratio, ascending=True makes lower values better.
-    """
-    values = num(frame, column, float("nan"))
+    values = numeric_column(
+        frame,
+        column,
+        float("nan"),
+    )
 
     return values.rank(
         pct=True,
         ascending=ascending,
     ).fillna(0.5)
 
-
-# =============================================================================
-# TAB 2 — TOP INDIVIDUAL STOCK SETUPS
-# =============================================================================
 
 def stock_setups_tab(
     basic_history: pd.DataFrame,
@@ -831,9 +895,10 @@ def stock_setups_tab(
 
     st.markdown(
         """
-        <p class="section-note">
-        Selection is stock-level only. Industry score and regime are shown
-        as context; they do not filter out an individual setup.
+        <p class="note">
+        No industry hard filter. Stocks are selected using their individual
+        upstream setup flags. Industry Rank, Leadership and Regime are
+        shown as context only.
         </p>
         """,
         unsafe_allow_html=True,
@@ -869,7 +934,7 @@ def stock_setups_tab(
         ]
     ]
 
-    buy = stocks[
+    established = stocks[
         stocks["established_buy_setup"] == 1
     ].copy()
 
@@ -879,87 +944,106 @@ def stock_setups_tab(
 
     c1, c2, c3 = st.columns(3)
 
-    c1.metric("Established Qualified", fmt_int(len(buy)))
-    c2.metric("IPO Qualified", fmt_int(len(ipo)))
-    c3.metric("Scan Date", selected_date.strftime("%d %b %Y"))
+    c1.metric(
+        "Established Qualified",
+        format_integer(len(established)),
+    )
+
+    c2.metric(
+        "IPO Qualified",
+        format_integer(len(ipo)),
+    )
+
+    c3.metric(
+        "Scan Date",
+        selected_date.strftime("%d %b %Y"),
+    )
 
     st.markdown("### Top 20 Established Setups")
 
-    if buy.empty:
+    if established.empty:
         st.info(
             "No established stocks pass the upstream setup gate "
             "on this date."
         )
 
     else:
-        buy["Priority Score"] = (
+        established["Priority Score"] = (
             0.30 * percentile_rank(
-                buy,
+                established,
                 "tight_3d_range",
                 ascending=True,
             )
             + 0.25 * percentile_rank(
-                buy,
+                established,
                 "vol_ratio_50",
                 ascending=True,
             )
             + 0.20 * percentile_rank(
-                buy,
+                established,
                 "gain_6m",
                 ascending=False,
             )
             + 0.15 * percentile_rank(
-                buy,
+                established,
                 "up_down_ratio",
                 ascending=False,
             )
             + 0.10 * percentile_rank(
-                buy,
+                established,
                 "stock_strength_score",
                 ascending=False,
             )
         ) * 100.0
 
-        buy["Industry Rank"] = buy["basic_industry"].map(
-            lookup["Industry Rank"]
-        )
+        established["Industry Rank"] = established[
+            "basic_industry"
+        ].map(lookup["Industry Rank"])
 
-        buy["Industry Leadership"] = score_100(
-            buy["basic_industry"].map(
+        established["Industry Leadership"] = normalize_score(
+            established["basic_industry"].map(
                 lookup["leadership_score"]
             )
         )
 
-        buy["Industry Regime"] = buy["basic_industry"].map(
-            lookup["regime"]
-        )
+        established["Industry Regime"] = established[
+            "basic_industry"
+        ].map(lookup["regime"])
 
-        buy = buy.sort_values(
+        established = established.sort_values(
             "Priority Score",
             ascending=False,
-        ).head(TOP_SETUPS).reset_index(drop=True)
+        ).head(TOP_STOCKS).reset_index(drop=True)
 
-        buy.insert(0, "Rank", range(1, len(buy) + 1))
-
-        buy["Chart"] = (
-            "https://in.tradingview.com/chart/?symbol=NSE:"
-            + buy["symbol"].astype(str)
+        established.insert(
+            0,
+            "Rank",
+            range(1, len(established) + 1),
         )
 
-        ranked = buy.sort_values("Priority Score")
+        established["Chart"] = (
+            "https://in.tradingview.com/chart/?symbol=NSE:"
+            + established["symbol"].astype(str)
+        )
 
-        fig = go.Figure(
+        chart_data = established.sort_values(
+            "Priority Score"
+        )
+
+        figure = go.Figure(
             go.Bar(
-                x=ranked["Priority Score"],
-                y=ranked["symbol"],
+                x=chart_data["Priority Score"],
+                y=chart_data["symbol"],
                 orientation="h",
                 marker_color=GREEN,
-                text=ranked["Priority Score"].round(1),
+                text=chart_data[
+                    "Priority Score"
+                ].round(1),
                 textposition="outside",
             )
         )
 
-        fig.update_layout(
+        figure.update_layout(
             title="Individual setup ranking",
             xaxis=dict(
                 range=[0, 110],
@@ -969,14 +1053,14 @@ def stock_setups_tab(
         )
 
         st.plotly_chart(
-            fig_style(
-                fig,
-                max(260, 29 * len(ranked) + 60),
+            apply_chart_style(
+                figure,
+                max(260, 29 * len(chart_data) + 60),
             ),
             use_container_width=True,
         )
 
-        view = buy.rename(
+        view = established.rename(
             columns={
                 "symbol": "Symbol",
                 "basic_industry": "Basic Industry",
@@ -989,7 +1073,7 @@ def stock_setups_tab(
             }
         )
 
-        view_columns = [
+        keep_columns = [
             "Rank",
             "Symbol",
             "Chart",
@@ -1008,7 +1092,8 @@ def stock_setups_tab(
 
         view = view[
             [
-                column for column in view_columns
+                column
+                for column in keep_columns
                 if column in view.columns
             ]
         ]
@@ -1020,7 +1105,7 @@ def stock_setups_tab(
         ]:
             if column in view.columns:
                 view[column] = view[column].map(
-                    lambda value: fmt_num(value, 2)
+                    lambda value: format_number(value, 2)
                 )
 
         for column in [
@@ -1029,13 +1114,13 @@ def stock_setups_tab(
         ]:
             if column in view.columns:
                 view[column] = view[column].map(
-                    fmt_pct_fraction
+                    format_return
                 )
 
         if "Industry Rank" in view.columns:
             view["Industry Rank"] = view[
                 "Industry Rank"
-            ].map(fmt_int)
+            ].map(format_integer)
 
         if "Industry Leadership" in view.columns:
             view["Industry Leadership"] = view[
@@ -1045,7 +1130,7 @@ def stock_setups_tab(
         show_table(
             view,
             560,
-            links=True,
+            chart_links=True,
             progress_columns=["Industry Leadership"],
         )
 
@@ -1059,12 +1144,15 @@ def stock_setups_tab(
 
     else:
         ipo["Avg Turnover (Cr)"] = (
-            num(ipo, "ipo_turnover_avg")
+            numeric_column(
+                ipo,
+                "ipo_turnover_avg",
+            )
             / 10_000_000.0
         )
 
         if "ipo_setup_score" in ipo.columns:
-            ipo["Setup Score"] = num(
+            ipo["Setup Score"] = numeric_column(
                 ipo,
                 "ipo_setup_score",
             )
@@ -1098,26 +1186,30 @@ def stock_setups_tab(
                 )
             ) * 100.0
 
-        ipo["Industry Rank"] = ipo["basic_industry"].map(
-            lookup["Industry Rank"]
-        )
+        ipo["Industry Rank"] = ipo[
+            "basic_industry"
+        ].map(lookup["Industry Rank"])
 
-        ipo["Industry Leadership"] = score_100(
+        ipo["Industry Leadership"] = normalize_score(
             ipo["basic_industry"].map(
                 lookup["leadership_score"]
             )
         )
 
-        ipo["Industry Regime"] = ipo["basic_industry"].map(
-            lookup["regime"]
-        )
+        ipo["Industry Regime"] = ipo[
+            "basic_industry"
+        ].map(lookup["regime"])
 
         ipo = ipo.sort_values(
             "Setup Score",
             ascending=False,
-        ).head(TOP_SETUPS).reset_index(drop=True)
+        ).head(TOP_STOCKS).reset_index(drop=True)
 
-        ipo.insert(0, "Rank", range(1, len(ipo) + 1))
+        ipo.insert(
+            0,
+            "Rank",
+            range(1, len(ipo) + 1),
+        )
 
         ipo["Chart"] = (
             "https://in.tradingview.com/chart/?symbol=NSE:"
@@ -1136,7 +1228,7 @@ def stock_setups_tab(
             }
         )
 
-        view_columns = [
+        keep_columns = [
             "Rank",
             "Symbol",
             "Chart",
@@ -1155,7 +1247,8 @@ def stock_setups_tab(
 
         view = view[
             [
-                column for column in view_columns
+                column
+                for column in keep_columns
                 if column in view.columns
             ]
         ]
@@ -1167,7 +1260,7 @@ def stock_setups_tab(
         ]:
             if column in view.columns:
                 view[column] = view[column].map(
-                    lambda value: fmt_num(value, 2)
+                    lambda value: format_number(value, 2)
                 )
 
         for column in [
@@ -1176,18 +1269,18 @@ def stock_setups_tab(
         ]:
             if column in view.columns:
                 view[column] = view[column].map(
-                    fmt_pct_fraction
+                    format_return
                 )
 
         if "Days Listed" in view.columns:
             view["Days Listed"] = view[
                 "Days Listed"
-            ].map(fmt_int)
+            ].map(format_integer)
 
         if "Industry Rank" in view.columns:
             view["Industry Rank"] = view[
                 "Industry Rank"
-            ].map(fmt_int)
+            ].map(format_integer)
 
         if "Industry Leadership" in view.columns:
             view["Industry Leadership"] = view[
@@ -1197,13 +1290,13 @@ def stock_setups_tab(
         show_table(
             view,
             max(260, 40 * len(view) + 60),
-            links=True,
+            chart_links=True,
             progress_columns=["Industry Leadership"],
         )
 
 
 # =============================================================================
-# TAB 3 AND TAB 4 — GROUP DETAILS
+# BASIC INDUSTRY / INDUSTRY DETAIL TAB
 # =============================================================================
 
 def group_detail_tab(
@@ -1213,7 +1306,7 @@ def group_detail_tab(
     group_column: str,
     title: str,
 ) -> None:
-    current = snapshot(
+    current = current_snapshot(
         history,
         selected_date,
         group_column,
@@ -1236,9 +1329,13 @@ def group_detail_tab(
         ascending=False,
     ).reset_index(drop=True)
 
-    current.insert(0, "Rank", range(1, len(current) + 1))
+    current.insert(
+        0,
+        "Rank",
+        range(1, len(current) + 1),
+    )
 
-    display_name = (
+    display_group_name = (
         "Basic Industry"
         if group_column == "basic_industry"
         else "Industry"
@@ -1246,41 +1343,44 @@ def group_detail_tab(
 
     table = current.rename(
         columns={
-            group_column: display_name,
+            group_column: display_group_name,
             "regime": "Regime",
             "members": "Stocks",
         }
     )
 
-    table_columns = [
+    keep_columns = [
         "Rank",
-        display_name,
+        display_group_name,
         "Leadership Score",
-        "5D Leadership Δ",
+        "5D Leadership Change",
         "Actionability %",
-        "5D Actionability Δ",
+        "5D Actionability Change",
         "Regime",
         "Stocks",
     ]
 
     table = table[
         [
-            column for column in table_columns
+            column
+            for column in keep_columns
             if column in table.columns
         ]
     ]
 
     for column in [
         "Leadership Score",
-        "5D Leadership Δ",
+        "5D Leadership Change",
         "Actionability %",
-        "5D Actionability Δ",
+        "5D Actionability Change",
     ]:
         if column in table.columns:
             table[column] = table[column].round(1)
 
     if "Stocks" in table.columns:
-        table["Stocks"] = table["Stocks"].map(fmt_int)
+        table["Stocks"] = table["Stocks"].map(
+            format_integer
+        )
 
     show_table(
         table,
@@ -1295,7 +1395,7 @@ def group_detail_tab(
 
     selected_group = st.selectbox(
         title,
-        table[display_name].tolist(),
+        table[display_group_name].tolist(),
         key=f"{group_column}_selector",
     )
 
@@ -1307,11 +1407,16 @@ def group_detail_tab(
 
     stocks = stock_history[
         (stock_history["date"] == selected_date)
-        & (stock_history[stock_group_column] == selected_group)
+        & (
+            stock_history[stock_group_column]
+            == selected_group
+        )
     ].copy()
 
     if stocks.empty:
-        st.info("No constituent stock records are available.")
+        st.info(
+            "No constituent stock records are available."
+        )
         return
 
     if "ret_20d" in stocks.columns:
@@ -1322,7 +1427,11 @@ def group_detail_tab(
 
     stocks = stocks.head(30).reset_index(drop=True)
 
-    stocks.insert(0, "Rank", range(1, len(stocks) + 1))
+    stocks.insert(
+        0,
+        "Rank",
+        range(1, len(stocks) + 1),
+    )
 
     stocks["Chart"] = (
         "https://in.tradingview.com/chart/?symbol=NSE:"
@@ -1340,7 +1449,7 @@ def group_detail_tab(
         }
     )
 
-    view_columns = [
+    keep_columns = [
         "Rank",
         "Symbol",
         "Chart",
@@ -1355,7 +1464,8 @@ def group_detail_tab(
 
     view = view[
         [
-            column for column in view_columns
+            column
+            for column in keep_columns
             if column in view.columns
         ]
     ]
@@ -1367,7 +1477,7 @@ def group_detail_tab(
     ]:
         if column in view.columns:
             view[column] = view[column].map(
-                fmt_pct_fraction
+                format_return
             )
 
     for column in [
@@ -1376,13 +1486,13 @@ def group_detail_tab(
     ]:
         if column in view.columns:
             view[column] = view[column].map(
-                lambda value: fmt_num(value, 2)
+                lambda value: format_number(value, 2)
             )
 
     show_table(
         view,
         420,
-        links=True,
+        chart_links=True,
     )
 
 
@@ -1395,23 +1505,49 @@ def methodology_tab() -> None:
 
     st.markdown(
         """
-- **Leadership Score:** Current relative strength of an industry, based on upstream price velocity, breadth/EMA alignment, and institutional-volume calculations.
+### Industry Momentum
 
-- **5D Leadership Δ:** Current score minus the score five available trading sessions ago. Positive values mean improving leadership. Negative values mean deterioration.
+- **Leadership Score** is the current relative strength score for the Basic Industry.
 
-- **Actionability %:** Percentage of constituents currently passing the upstream stock-setup rules. This is different from Leadership Score.
+- **5D Leadership Change** is:
 
-- **Top Individual Setups:** Ranked across all industries. Industry leadership is context only; it does not filter out a strong individual stock.
+  Current Leadership Score minus Leadership Score from five available trading sessions earlier.
 
-- **Zero Actionability:** If every industry has Actionability = 0 in the processed data, the dashboard hides the zero-value chart. That is an upstream pipeline/data issue, not a UI issue.
+- Positive change means the industry is improving relative to the rest of the market.
 
-Suggested workflow: first review industries moving up; second check whether setup density is non-zero; third inspect Top Individual Setups; finally open the TradingView chart and define entry, stop/invalidation, and position size.
+- Negative change means the industry is weakening.
+
+### Actionability
+
+- **Actionability %** is the percentage of stocks in that Basic Industry which pass the upstream stock-setup conditions.
+
+- It is separate from Leadership Score.
+
+- A group may have high Leadership but no clean setups because stocks are already extended.
+
+### Top Individual Setups
+
+- Established and IPO stocks are selected using the upstream setup flags.
+
+- Industry Leadership is shown beside each stock as context only.
+
+- Industry score does not filter out a technically strong individual stock.
+
+### Workflow
+
+1. Review Leadership Moving Up.
+2. Check whether that group has usable Actionability.
+3. Open Top Individual Setups.
+4. Review the TradingView chart.
+5. Define entry, invalidation/stop, and position size.
+
+This dashboard is a research tool, not a trade recommendation.
         """
     )
 
 
 # =============================================================================
-# APP ENTRY POINT
+# APP START
 # =============================================================================
 
 def main() -> None:
@@ -1432,29 +1568,28 @@ def main() -> None:
             "Required dashboard data files are missing. "
             "Run the data workflow first."
         )
-        st.code("
-".join(missing))
+        st.code("\n".join(missing))
         st.stop()
 
-    basic = prepare_groups(
+    basic_history = prepare_group_data(
         load_parquet(str(BASIC_HISTORY_FILE)),
         "basic_industry",
     )
 
-    industry = prepare_groups(
+    industry_history = prepare_group_data(
         load_parquet(str(INDUSTRY_HISTORY_FILE)),
         "industry",
     )
 
-    stocks = prepare_stocks(
+    stock_history = prepare_stock_data(
         load_parquet(str(STOCK_HISTORY_FILE))
     )
 
     all_dates = sorted(
         set(
-            get_dates(basic)
-            + get_dates(industry)
-            + get_dates(stocks)
+            get_trading_dates(basic_history)
+            + get_trading_dates(industry_history)
+            + get_trading_dates(stock_history)
         )
     )
 
@@ -1466,7 +1601,7 @@ def main() -> None:
 
     st.title("NSE Industry Momentum Monitor")
 
-    sync = (
+    sync_text = (
         SYNC_FILE.read_text(encoding="utf-8").strip()
         if SYNC_FILE.exists()
         else "Not available"
@@ -1474,7 +1609,7 @@ def main() -> None:
 
     st.caption(
         "Prepared market data: "
-        + sync.replace("T", " ").replace("Z", " IST")
+        + sync_text.replace("T", " ").replace("Z", " IST")
     )
 
     tabs = st.tabs(
@@ -1489,22 +1624,21 @@ def main() -> None:
 
     with tabs[0]:
         industry_monitor_tab(
-            basic,
-            industry,
+            basic_history,
             date_picker(all_dates, "monitor"),
         )
 
     with tabs[1]:
         stock_setups_tab(
-            basic,
-            stocks,
+            basic_history,
+            stock_history,
             date_picker(all_dates, "setups"),
         )
 
     with tabs[2]:
         group_detail_tab(
-            basic,
-            stocks,
+            basic_history,
+            stock_history,
             date_picker(all_dates, "basic"),
             "basic_industry",
             "Basic Industry",
@@ -1512,8 +1646,8 @@ def main() -> None:
 
     with tabs[3]:
         group_detail_tab(
-            industry,
-            stocks,
+            industry_history,
+            stock_history,
             date_picker(all_dates, "industry"),
             "industry",
             "Industry",
