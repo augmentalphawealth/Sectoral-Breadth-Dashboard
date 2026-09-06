@@ -101,8 +101,40 @@ jobs:
           test -s data/processed/dashboard_basic_industry_history.parquet
           test -s data/processed/dashboard_industry_history.parquet
           test -s data/processed/last_sync.txt
-          echo "========== SNAPSHOT OUTPUTS VERIFIED =========="
-          find data/processed/dashboard_snapshots -mindepth 2 -maxdepth 2 -type f | head -30
+
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          dates = pd.read_parquet("data/processed/dashboard_dates.parquet")
+          if dates.empty or "date" not in dates.columns:
+              raise ValueError("dashboard_dates.parquet is empty or lacks a date column")
+
+          dates["date"] = pd.to_datetime(dates["date"], errors="coerce")
+          dates = dates.dropna(subset=["date"])
+          if dates.empty:
+              raise ValueError("dashboard_dates.parquet has no usable dates")
+
+          latest = dates["date"].max().strftime("%Y-%m-%d")
+          snapshot_dir = Path("data/processed/dashboard_snapshots") / latest
+          expected = [
+              snapshot_dir / "basic_industry_snapshot.parquet",
+              snapshot_dir / "industry_snapshot.parquet",
+              snapshot_dir / "stock_snapshot.parquet",
+              snapshot_dir / "top_buy_candidates.parquet",
+              snapshot_dir / "ipo_watchlist.parquet",
+              snapshot_dir / "metadata.json",
+          ]
+          missing = [str(path) for path in expected if not path.exists() or path.stat().st_size == 0]
+          if missing:
+              raise FileNotFoundError("Latest snapshot missing required files: " + ", ".join(missing))
+
+          snapshot_count = sum(1 for path in Path("data/processed/dashboard_snapshots").iterdir() if path.is_dir())
+          print("========== SNAPSHOT OUTPUTS VERIFIED ==========")
+          print(f"Available dates: {len(dates):,}")
+          print(f"Snapshot folders: {snapshot_count:,}")
+          print(f"Latest snapshot: {latest}")
+          PY
 
       - name: Commit prepared dashboard outputs
         run: |
