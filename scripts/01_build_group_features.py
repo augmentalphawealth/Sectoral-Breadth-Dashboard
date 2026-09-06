@@ -41,9 +41,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data["new_high_55"] = (data["close"] >= grouped["high"].transform(lambda series: series.rolling(55, min_periods=20).max())).astype(int)
     data["new_high_252"] = (data["close"] >= grouped["high"].transform(lambda series: series.rolling(252, min_periods=60).max())).astype(int)
 
-    breakout_high = grouped["high"].transform(
-        lambda series: series.shift(1).rolling(analysis.get("breakout_lookback", 55), min_periods=20).max()
-    )
+    breakout_high = grouped["high"].transform(lambda series: series.shift(1).rolling(analysis.get("breakout_lookback", 55), min_periods=20).max())
     accumulation_multiplier = analysis.get("accumulation_volume_multiplier", 1.2)
     distribution_multiplier = analysis.get("distribution_volume_multiplier", 1.2)
     data["breakout_55"] = ((data["close"] > breakout_high) & (data["volume"] > accumulation_multiplier * data["avg_vol_20"])).astype(int)
@@ -62,10 +60,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data["up_down_ratio"] = np.where(down_volume_50 > 0, up_volume_50 / down_volume_50, 1.0)
 
     previous_close = grouped["close"].shift(1)
-    true_range = np.maximum(
-        data["high"] - data["low"],
-        np.maximum((data["high"] - previous_close).abs(), (data["low"] - previous_close).abs()),
-    )
+    true_range = np.maximum(data["high"] - data["low"], np.maximum((data["high"] - previous_close).abs(), (data["low"] - previous_close).abs()))
     data["atr_14"] = true_range.groupby(data["symbol"]).transform(lambda series: series.rolling(14, min_periods=5).mean())
     high_3 = grouped["high"].transform(lambda series: series.rolling(3, min_periods=3).max())
     low_3 = grouped["low"].transform(lambda series: series.rolling(3, min_periods=3).min())
@@ -86,11 +81,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     high_20 = grouped["high"].transform(lambda series: series.rolling(20, min_periods=10).max())
     low_20 = grouped["low"].transform(lambda series: series.rolling(20, min_periods=10).min())
     data["range_20"] = (high_20 / low_20) - 1.0
-    data["vcp_ready"] = (
-        (data["range_20"] <= analysis.get("vcp_range_contraction_threshold", 0.08))
-        & (data["volume"] <= analysis.get("vcp_volume_dryup_threshold", 0.65) * data["avg_vol_20"])
-        & (data["dist_52w_high"] > -analysis.get("pivot_proximity_threshold", 0.05))
-    ).astype(int)
+    data["vcp_ready"] = ((data["range_20"] <= analysis.get("vcp_range_contraction_threshold", 0.08)) & (data["volume"] <= analysis.get("vcp_volume_dryup_threshold", 0.65) * data["avg_vol_20"]) & (data["dist_52w_high"] > -analysis.get("pivot_proximity_threshold", 0.05))).astype(int)
 
     low_125 = grouped["low"].transform(lambda series: series.rolling(125, min_periods=25).min())
     data["gain_6m"] = np.where(low_125 > 0, data["close"] / low_125 - 1.0, 0.0)
@@ -129,7 +120,13 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             "EMA 50": (subset["close"] - subset["ema_50"].clip(lower=1e-9)) / subset["ema_50"].clip(lower=1e-9),
         })
         nearest_name = distances.abs().idxmin(axis=1)
-        nearest_distance = distances.lookup(distances.index, nearest_name)
+        # DataFrame.lookup was removed from pandas. Select row-specific values
+        # by reindexing the chosen column labels, which is pandas 2.x-safe.
+        nearest_distance = pd.Series(
+            [distances.at[index, column] for index, column in nearest_name.items()],
+            index=distances.index,
+            dtype=float,
+        )
 
         def ema_tag(distance: float) -> str:
             if pd.isna(distance): return "N/A"
@@ -139,7 +136,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
             if -0.05 <= distance < -0.01: return f"Testing -{abs(distance) * 100:.0f}%"
             return f"Broken -{abs(distance) * 100:.0f}%"
 
-        data.loc[valid_ema, "nearest_ema_tag"] = pd.Series(nearest_distance, index=distances.index).map(ema_tag)
+        data.loc[valid_ema, "nearest_ema_tag"] = nearest_distance.map(ema_tag)
 
     data["momentum_badge"] = ""
     if not pool_data.empty:
@@ -184,14 +181,7 @@ def add_stock_indicators(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
 def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data = df.copy()
     threshold = settings.get("analysis", {}).get("high_strength_threshold", DEFAULT_HIGH_STRENGTH_THRESHOLD)
-    data["stock_strength_score"] = (
-        data.groupby("date")["ret_20d"].rank(pct=True) * 35.0
-        + data.groupby("date")["ret_60d"].rank(pct=True) * 35.0
-        + data["above_50"] * 15.0
-        + data["above_200"] * 10.0
-        + data["breakout_55"] * 3.0
-        + data["vcp_ready"] * 2.0
-    )
+    data["stock_strength_score"] = (data.groupby("date")["ret_20d"].rank(pct=True) * 35.0 + data.groupby("date")["ret_60d"].rank(pct=True) * 35.0 + data["above_50"] * 15.0 + data["above_200"] * 10.0 + data["breakout_55"] * 3.0 + data["vcp_ready"] * 2.0)
     data["high_strength_flag"] = (data["stock_strength_score"] >= threshold).astype(int)
     gain_points = data.groupby("date")["gain_6m"].rank(pct=True) * 35.0
     volume_points = data.groupby("date")["max_vol_ratio_6m"].rank(pct=True) * 35.0
@@ -204,21 +194,10 @@ def add_stock_strength(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
 def aggregate_group(df: pd.DataFrame, group_column: str, settings: dict) -> pd.DataFrame:
     small_group_limit = settings.get("analysis", {}).get("small_industry_limit", DEFAULT_SMALL_GROUP_LIMIT)
     grouped = df.groupby(["date", group_column], dropna=False).agg(
-        members=("symbol", "nunique"), eq_ret_1d=("ret_1d", "mean"), eq_ret_5d=("ret_5d", "mean"), eq_ret_10d=("ret_10d", "mean"),
-        eq_ret_20d=("ret_20d", "mean"), eq_ret_60d=("ret_60d", "mean"), med_ret_20d=("ret_20d", "median"), med_ret_60d=("ret_60d", "median"),
-        pct_aligned=("full_alignment", "mean"), med_up_down_ratio=("up_down_ratio", "median"), actionability_raw=("actionable_setup_pass", "mean"),
-        nh_nl_net=("nh_nl_val", "mean"), pct_above_20=("above_20", "mean"), pct_above_50=("above_50", "mean"), pct_above_200=("above_200", "mean"),
-        trend_template_pct=("trend_template_pass", "mean"), new_high_55_pct=("new_high_55", "mean"), new_high_252_pct=("new_high_252", "mean"),
-        acc_days=("acc_day", "sum"), dist_days=("dist_day", "sum"), breakout_count=("breakout_55", "sum"), vcp_ready_count=("vcp_ready", "sum"),
-        high_strength_count=("high_strength_flag", "sum"), buy_volume_shock_count=("buy_volume_shock", "sum"), sell_volume_shock_count=("sell_volume_shock", "sum"),
-        median_volume_shock=("volume_shock_ratio", "median"), median_dist_52w_high=("dist_52w_high", "median"),
+        members=("symbol", "nunique"), eq_ret_1d=("ret_1d", "mean"), eq_ret_5d=("ret_5d", "mean"), eq_ret_10d=("ret_10d", "mean"), eq_ret_20d=("ret_20d", "mean"), eq_ret_60d=("ret_60d", "mean"), med_ret_20d=("ret_20d", "median"), med_ret_60d=("ret_60d", "median"), pct_aligned=("full_alignment", "mean"), med_up_down_ratio=("up_down_ratio", "median"), actionability_raw=("actionable_setup_pass", "mean"), nh_nl_net=("nh_nl_val", "mean"), pct_above_20=("above_20", "mean"), pct_above_50=("above_50", "mean"), pct_above_200=("above_200", "mean"), trend_template_pct=("trend_template_pass", "mean"), new_high_55_pct=("new_high_55", "mean"), new_high_252_pct=("new_high_252", "mean"), acc_days=("acc_day", "sum"), dist_days=("dist_day", "sum"), breakout_count=("breakout_55", "sum"), vcp_ready_count=("vcp_ready", "sum"), high_strength_count=("high_strength_flag", "sum"), buy_volume_shock_count=("buy_volume_shock", "sum"), sell_volume_shock_count=("sell_volume_shock", "sum"), median_volume_shock=("volume_shock_ratio", "median"), median_dist_52w_high=("dist_52w_high", "median"),
     ).reset_index()
     grouped["acc_minus_dist"] = grouped["acc_days"] - grouped["dist_days"]
-    for count_column, percent_column in [
-        ("breakout_count", "breakout_pct"), ("vcp_ready_count", "vcp_ready_pct"),
-        ("high_strength_count", "pct_high_strength"), ("buy_volume_shock_count", "buy_volume_shock_pct"),
-        ("sell_volume_shock_count", "sell_volume_shock_pct"),
-    ]:
+    for count_column, percent_column in [("breakout_count", "breakout_pct"), ("vcp_ready_count", "vcp_ready_pct"), ("high_strength_count", "pct_high_strength"), ("buy_volume_shock_count", "buy_volume_shock_pct"), ("sell_volume_shock_count", "sell_volume_shock_pct")]:
         grouped[percent_column] = np.where(grouped["members"] > 0, grouped[count_column] / grouped["members"] * 100.0, np.nan)
     grouped["small_industry"] = (grouped["members"] < small_group_limit).astype(int)
     for column in ["pct_above_20", "pct_above_50", "pct_above_200", "trend_template_pct", "new_high_55_pct", "new_high_252_pct"]:
@@ -241,12 +220,7 @@ def add_group_scores(df: pd.DataFrame, settings: dict) -> pd.DataFrame:
     data["strength_score"] = data["leadership_score"]
     data["actionability_score"] = (data["actionability_raw"] * 100.0).round(1)
     data["nh_nl_net"] = (data["nh_nl_net"] * 100.0).round(1)
-    conditions = [
-        (data["leadership_score"] >= 70) & (data["actionability_score"] >= 15),
-        (data["leadership_score"] >= 70) & (data["actionability_score"] < 15),
-        (data["leadership_score"] < 50) & (data["actionability_score"] >= 15),
-        (data["leadership_score"] < 50) & (data["actionability_score"] < 15),
-    ]
+    conditions = [(data["leadership_score"] >= 70) & (data["actionability_score"] >= 15), (data["leadership_score"] >= 70) & (data["actionability_score"] < 15), (data["leadership_score"] < 50) & (data["actionability_score"] >= 15), (data["leadership_score"] < 50) & (data["actionability_score"] < 15)]
     labels = ["Fresh Leader (HUNT)", "Extended Leader (WAIT)", "Speculative Coil (AVOID)", "Dead (AVOID)"]
     data["regime"] = np.select(conditions, labels, default="Neutral Transition")
     return data
@@ -257,46 +231,29 @@ def main() -> None:
     processed = p("data", "processed")
     master = read_parquet_safe(processed / "nse_mainboard_master_bse_classified.parquet")
     prices = read_parquet_safe(processed / "prices.parquet")
-
     required_prices = ["symbol", "date", "open", "high", "low", "close", "volume"]
     missing_prices = [column for column in required_prices if column not in prices.columns]
-    if missing_prices:
-        raise ValueError(f"Prices file missing columns: {missing_prices}")
-    if "turnover" not in prices.columns:
-        prices["turnover"] = prices["close"] * prices["volume"]
-
+    if missing_prices: raise ValueError(f"Prices file missing columns: {missing_prices}")
+    if "turnover" not in prices.columns: prices["turnover"] = prices["close"] * prices["volume"]
     required_master = ["symbol", "isin", "industry", "basic_industry", "sector", "series"]
     missing_master = [column for column in required_master if column not in master.columns]
-    if missing_master:
-        raise ValueError(f"Master file missing columns: {missing_master}")
-
+    if missing_master: raise ValueError(f"Master file missing columns: {missing_master}")
     master_for_join = master[required_master + (["mcap"] if "mcap" in master.columns else [])].drop_duplicates("symbol").copy()
     stock = prices.merge(master_for_join, on="symbol", how="left")
     stock["date"] = pd.to_datetime(stock["date"], errors="coerce").dt.normalize()
     stock["series"] = stock["series"].fillna("").astype(str).str.strip()
     stock = stock[stock["series"].eq("EQ")].copy()
-
-    # Unclassified data remains visible as explicitly Unclassified. It is never
-    # assigned to a guessed sector/industry/basic industry.
     for column in ["sector", "industry", "basic_industry"]:
         stock[column] = stock[column].fillna("Unclassified").astype(str).str.strip().replace("", "Unclassified")
-
     print(f"Using classified master: {len(master):,} records")
     print(f"EQ price rows after master join: {len(stock):,}")
     print(f"Unclassified stock rows: {int(stock['basic_industry'].eq('Unclassified').sum()):,}")
-
     stock = add_stock_indicators(stock, settings)
     stock = add_stock_strength(stock, settings)
     write_parquet(stock, processed / "stock_daily_features.parquet")
-
-    industry = add_group_scores(aggregate_group(stock, "industry", settings), settings)
-    basic = add_group_scores(aggregate_group(stock, "basic_industry", settings), settings)
-    sector = add_group_scores(aggregate_group(stock, "sector", settings), settings)
-
-    write_parquet(industry, processed / "industry_daily_features.parquet")
-    write_parquet(basic, processed / "basic_industry_daily_features.parquet")
-    write_parquet(sector, processed / "sector_daily_features.parquet")
-
+    write_parquet(add_group_scores(aggregate_group(stock, "industry", settings), settings), processed / "industry_daily_features.parquet")
+    write_parquet(add_group_scores(aggregate_group(stock, "basic_industry", settings), settings), processed / "basic_industry_daily_features.parquet")
+    write_parquet(add_group_scores(aggregate_group(stock, "sector", settings), settings), processed / "sector_daily_features.parquet")
     print("feature build complete: stock, Basic Industry, Industry and Sector features written")
 
 
