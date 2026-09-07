@@ -1,6 +1,5 @@
 {
-  "latest_date": "2026-09-04",
-  "dates": 2091,
-  "snapshot_root": "/home/runner/work/Sectoral-Breadth-Dashboard/Sectoral-Breadth-Dashboard/data/processed/dashboard_snapshots",
-  "latest_stock_rows": 2251
+  "latest_date": "2026-09-07",
+  "dates": 2092,
+  "sector_snapshots": 2092
 }
