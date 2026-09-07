@@ -1,11 +1,10 @@
 # app/dashboard.py
 # Fast snapshot-only Streamlit dashboard.
-# GitHub Actions prepares feature calculations and date snapshots; this app
-# reads prepared files only and presents interactive group details.
+# GitHub Actions prepares every calculation and every date snapshot. This app
+# only reads the selected prepared snapshot and displays it.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 import pandas as pd
@@ -46,15 +45,9 @@ st.markdown(
     [data-testid="stMetric"] {background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:.72rem .9rem;}
     [data-testid="stMetricLabel"] {font-size:.75rem; color:#64748B; text-transform:uppercase; letter-spacing:.04em;}
     [data-testid="stMetricValue"] {font-weight:700; color:#0F172A;}
-    .improver-card {border:1px solid #E2E8F0; border-left:5px solid #15803D; border-radius:11px; padding:.68rem .82rem; margin:.34rem 0; background:#FFFFFF;}
-    .improver-name {font-weight:700; color:#0F172A; font-size:.94rem;}
-    .improver-meta {color:#64748B; font-size:.76rem; margin-top:.2rem;}
-    .improver-number {font-weight:800; font-size:1.0rem; text-align:right;}
     .status-pill {display:inline-block; padding:.16rem .50rem; border-radius:999px; font-size:.74rem; font-weight:700; white-space:nowrap;}
-    div.stButton > button[kind="tertiary"] {padding:0; min-height:0; border:0; color:#1D4ED8; font-size:.74rem; justify-content:flex-start;}
-    div.stButton > button[kind="tertiary"]:hover {color:#1E40AF; text-decoration:underline;}
-    div.stButton > button[kind="secondary"] {text-align:left; justify-content:flex-start; white-space:normal; min-height:2.15rem;}
-    @media (max-width:800px) {.block-container {padding-left:.7rem; padding-right:.7rem;}.improver-name {font-size:.85rem;}.improver-number {font-size:.89rem;}}
+    div.stButton > button[kind="secondary"] {text-align:left; justify-content:flex-start; white-space:normal; min-height:2.25rem;}
+    @media (max-width:800px) {.block-container {padding-left:.7rem; padding-right:.7rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -68,7 +61,7 @@ def clean_text(value: object) -> str:
     return text if text else "Unclassified"
 
 
-def number(value: object, default: float = 0.0) -> float:
+def to_number(value: object, default: float = 0.0) -> float:
     try:
         if value is None or pd.isna(value):
             return default
@@ -116,7 +109,7 @@ def format_percent(value: object) -> str:
 
 
 def score_color(value: object) -> str:
-    value = number(value)
+    value = to_number(value)
     if value >= 70:
         return DARK_GREEN
     if value >= 60:
@@ -126,18 +119,9 @@ def score_color(value: object) -> str:
     return RED
 
 
-def change_color(value: object) -> str:
-    value = number(value)
-    if value > 0.05:
-        return GREEN
-    if value < -0.05:
-        return RED
-    return MUTED
-
-
 def leadership_status(score: object, change: object) -> tuple[str, str, str]:
-    score_value = number(score)
-    change_value = number(change)
+    score_value = to_number(score)
+    change_value = to_number(change)
     if score_value >= 70 and change_value > 0:
         return "Strong leader · Accelerating", DARK_GREEN, LIGHT_GREEN
     if score_value >= 70:
@@ -238,8 +222,7 @@ def load_trend(group_column: str, selected_date: pd.Timestamp, group_name: str) 
     history = load_snapshot(str(path), path.stat().st_mtime)
     if group_column not in history.columns or "date" not in history.columns:
         return pd.DataFrame()
-    result = history[(history[group_column].map(clean_text) == group_name) & (history["date"] <= selected_date)].copy()
-    return result.sort_values("date").tail(60)
+    return history[(history[group_column].map(clean_text) == group_name) & (history["date"] <= selected_date)].copy().sort_values("date").tail(60)
 
 
 def format_sync_time() -> str:
@@ -271,7 +254,7 @@ def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
     selected = resolve_date(st.session_state[state_key], dates)
     st.session_state[state_key] = selected
 
-    previous, calendar, next_button, label, spacer = st.columns([0.28, 1.15, 0.28, 1.45, 3.84])
+    previous, calendar, next_button, label, _ = st.columns([0.28, 1.15, 0.28, 1.45, 3.84])
     index = dates.index(selected)
     with previous:
         if st.button("‹", key="global_previous_date", disabled=index == 0, use_container_width=True):
@@ -304,18 +287,22 @@ def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
 
 
 def show_table(data: pd.DataFrame, chart_links: bool = False) -> None:
+    """Render only real rows. Never pass height=None to Streamlit."""
     view = data.copy()
     view.columns = [str(column) for column in view.columns]
     view = view.loc[:, ~view.columns.duplicated(keep="first")]
+    if view.empty:
+        st.info("No rows are available for this selection.")
+        return
     config: dict[str, object] = {}
     if chart_links and "Chart" in view.columns:
         config["Chart"] = st.column_config.LinkColumn("Chart", display_text="Open ↗")
-    st.dataframe(view, use_container_width=True, hide_index=True, height=None, column_config=config)
+    st.dataframe(view, use_container_width=True, hide_index=True, column_config=config)
 
 
 def group_metrics(groups: pd.DataFrame, group_column: str) -> pd.DataFrame:
     if groups.empty or group_column not in groups.columns:
-        return pd.DataFrame(columns=["Rank", "Group", "Leadership Score", "5D Leadership Change", "No. of Stocks", "Status"])
+        return pd.DataFrame(columns=["Rank", "Group", "Leadership Score", "5D Leadership Change", "No. of Stocks", "Status", "_score", "_change"])
     score_column = get_score_column(groups)
     change_column = get_change_column(groups)
     count_column = get_count_column(groups)
@@ -327,7 +314,7 @@ def group_metrics(groups: pd.DataFrame, group_column: str) -> pd.DataFrame:
     data["_count"] = pd.to_numeric(data[count_column], errors="coerce") if count_column else pd.NA
     data = data.drop_duplicates("_name", keep="first").sort_values(["_score", "_change"], ascending=[False, False]).reset_index(drop=True)
     status = data[status_column].map(clean_text) if status_column else [leadership_status(score, change)[0] for score, change in zip(data["_score"], data["_change"])]
-    result = pd.DataFrame({
+    return pd.DataFrame({
         "Rank": range(1, len(data) + 1),
         "Group": data["_name"],
         "Leadership Score": data["_score"].map(format_number),
@@ -337,7 +324,6 @@ def group_metrics(groups: pd.DataFrame, group_column: str) -> pd.DataFrame:
         "_score": data["_score"],
         "_change": data["_change"],
     })
-    return result
 
 
 def select_group(group_column: str, group_name: str) -> None:
@@ -360,13 +346,13 @@ def render_improver_cards(groups: pd.DataFrame, group_column: str, title: str) -
     for _, row in candidates.iterrows():
         name = str(row["Group"])
         status, status_color, status_bg = leadership_status(row["_score"], row["_change"])
-        left, right = st.columns([4, 1])
-        with left:
-            if st.button(name, key=f"card_{group_column}_{name}", type="secondary", use_container_width=True):
+        name_column, values_column = st.columns([4, 1])
+        with name_column:
+            if st.button(name, key=f"improver_{group_column}_{name}", type="secondary", use_container_width=True):
                 select_group(group_column, name)
-            st.markdown(f"<div class='improver-meta'><span class='status-pill' style='color:{status_color};background:{status_bg};'>{status}</span></div>", unsafe_allow_html=True)
-        with right:
-            st.markdown(f"<div class='improver-number' style='color:{score_color(row['_score'])};'>{format_number(row['_score'])}<div class='improver-meta'>Score</div></div><div class='improver-number' style='color:{change_color(row['_change'])};'>{format_signed(row['_change'])}<div class='improver-meta'>5D change</div></div>", unsafe_allow_html=True)
+            st.markdown(f"<span class='status-pill' style='color:{status_color};background:{status_bg};'>{status}</span>", unsafe_allow_html=True)
+        with values_column:
+            st.markdown(f"<div style='font-weight:800;color:{score_color(row['_score'])};'>{format_number(row['_score'])}</div><div style='font-size:.76rem;color:{MUTED};'>Score</div><div style='font-weight:800;color:{GREEN if row['_change'] > 0 else RED};margin-top:.25rem;'>{format_signed(row['_change'])}</div><div style='font-size:.76rem;color:{MUTED};'>5D change</div>", unsafe_allow_html=True)
 
 
 def render_group_selector(metrics: pd.DataFrame, group_column: str, title: str) -> str | None:
@@ -374,24 +360,22 @@ def render_group_selector(metrics: pd.DataFrame, group_column: str, title: str) 
         st.info(f"Prepared {title} snapshot does not contain leadership data.")
         return None
     st.markdown(f"### {title} leadership")
-    st.caption("Click any group name below. Its constituents and the same group’s leadership chart open immediately in the panel on the right.")
-    table = metrics[["Rank", "Leadership Score", "5D Leadership Change", "No. of Stocks", "Status"]]
-    show_table(table)
-    st.markdown("##### Select a group")
-    columns_per_row = 3
-    for start in range(0, len(metrics), columns_per_row):
-        row = metrics.iloc[start : start + columns_per_row]
-        columns = st.columns(columns_per_row)
+    st.caption("Leadership score, five-day change, constituent count and status. Click a group name below to update its constituents and chart in the same tab.")
+    show_table(metrics[["Rank", "Leadership Score", "5D Leadership Change", "No. of Stocks", "Status"]])
+    st.markdown("##### Open constituents + chart")
+    for start in range(0, len(metrics), 3):
+        row = metrics.iloc[start:start + 3]
+        columns = st.columns(3)
         for column, (_, item) in zip(columns, row.iterrows()):
             with column:
                 label = str(item["Group"])
                 if st.button(label, key=f"group_{group_column}_{label}", type="secondary", use_container_width=True):
                     select_group(group_column, label)
-    choices = metrics["Group"].tolist()
+    options = metrics["Group"].tolist()
     state_key = f"selected_{group_column}"
     selected = st.session_state.get(state_key)
-    if selected not in choices:
-        selected = choices[0]
+    if selected not in options:
+        selected = options[0]
         st.session_state[state_key] = selected
     return selected
 
@@ -405,25 +389,14 @@ def constituent_table(stock: pd.DataFrame, group_column: str, group_name: str) -
     data = data[(data["_group"] == group_name) & (data["symbol"] != "")].copy()
     if data.empty:
         return pd.DataFrame()
-    score_column = next((name for name in ["buy_priority_score", "stock_strength_score", "strength_score", "strength"] if name in data.columns), None)
-    if score_column:
-        data["_priority"] = pd.to_numeric(data[score_column], errors="coerce").fillna(0.0)
-        data = data.sort_values("_priority", ascending=False)
-    elif "ret_20d" in data.columns:
-        data = data.sort_values("ret_20d", ascending=False)
+    sort_column = next((name for name in ["buy_priority_score", "stock_strength_score", "strength_score", "strength", "ret_20d"] if name in data.columns), None)
+    if sort_column:
+        data["_sort"] = pd.to_numeric(data[sort_column], errors="coerce").fillna(0.0)
+        data = data.sort_values("_sort", ascending=False)
     data = data.head(MAX_CONSTITUENTS).reset_index(drop=True)
     data.insert(0, "Rank", range(1, len(data) + 1))
     data["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + data["symbol"].astype(str)
-    rename = {
-        "symbol": "Symbol",
-        "close": "Close",
-        "ret_20d": "20D Return",
-        "ret_60d": "60D Return",
-        "gain_6m": "6M Gain",
-        "stock_strength_score": "Strength",
-        "established_buy_setup": "Established setup",
-        "ipo_buy_setup": "IPO setup",
-    }
+    rename = {"symbol": "Symbol", "close": "Close", "ret_20d": "20D Return", "ret_60d": "60D Return", "gain_6m": "6M Gain", "stock_strength_score": "Strength", "established_buy_setup": "Established setup", "ipo_buy_setup": "IPO setup"}
     view = data.rename(columns=rename)
     keep = ["Rank", "Symbol", "Chart", "Close", "20D Return", "60D Return", "6M Gain", "Strength", "Established setup", "IPO setup"]
     view = view[[column for column in keep if column in view.columns]]
@@ -465,12 +438,11 @@ def render_trend(group_column: str, selected_date: pd.Timestamp, group_name: str
 
 
 def render_group_tab(groups: pd.DataFrame, stock: pd.DataFrame, selected_date: pd.Timestamp, group_column: str, title: str) -> None:
-    metrics = group_metrics(groups, group_column)
     render_improver_cards(groups, group_column, title)
     st.divider()
     left, right = st.columns([1.05, 1.25], gap="large")
     with left:
-        selected = render_group_selector(metrics, group_column, title)
+        selected = render_group_selector(group_metrics(groups, group_column), group_column, title)
     with right:
         st.markdown(f"### {title} constituents and chart")
         if selected is None:
@@ -509,8 +481,7 @@ def render_setup_table(data: pd.DataFrame, title: str) -> None:
     frame["Tightness (3D)"] = stock_metric(frame, ["tight_3d_range", "tightness_3d", "range_3d_pct"])
     frame["Volume vs 50D"] = stock_metric(frame, ["vol_ratio_50", "volume_ratio_50", "vol_ratio", "volume_ratio"])
     frame["Prior Move"] = stock_metric(frame, ["gain_6m", "ret_60d", "ret_20d", "ret_120d"])
-    rename = {"symbol": "Symbol", "basic_industry": "Basic Industry", "buy_priority_score": "Priority Score", "ipo_setup_score": "Priority Score"}
-    view = frame.rename(columns=rename)
+    view = frame.rename(columns={"symbol": "Symbol", "basic_industry": "Basic Industry", "buy_priority_score": "Priority Score", "ipo_setup_score": "Priority Score"})
     if "Priority Score" not in view.columns:
         view["Priority Score"] = "—"
     keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Priority Score", "Tightness (3D)", "Volume vs 50D", "Prior Move"]
@@ -540,31 +511,31 @@ def methodology_tab() -> None:
     st.markdown(
         """
 ## Prepared EOD architecture
-GitHub Actions performs all data preparation before this Streamlit app loads: NSE price-history processing, classification joins, stock feature calculation, Basic Industry / Industry / Sector aggregation, ranking, snapshot creation, and output validation. The dashboard reads only the small prepared snapshot for the selected EOD date.
+GitHub Actions prepares NSE price data, joins the verified classification master, calculates stock features, aggregates Basic Industry / Industry / Sector features, calculates leadership and five-session changes, then writes the date-specific snapshots. Streamlit reads these prepared files only.
 
 ## Stock calculations
-For a stock with closing price \(P_t\), the displayed return fields are prepared price changes:
+For closing price \(P_t\), the prepared return measures are based on trading-session price changes:
 
-- **20D Return:** \((P_t / P_{t-20}) - 1\), expressed as a percentage.
-- **60D Return:** \((P_t / P_{t-60}) - 1\), expressed as a percentage.
-- **6M Gain:** the pipeline’s prepared medium-term performance field, normally using approximately six months of trading sessions.
-- **Strength:** the pipeline’s prepared stock-strength score. It is a relative technical-leadership field; higher values represent stronger prepared momentum / strength conditions within the available stock universe.
-- **Established setup** and **IPO setup:** binary rule-based outputs from the stock-feature pipeline. They identify stocks that meet the corresponding upstream setup conditions on the selected EOD date.
-- **Priority Score:** where present in the prepared setup outputs, it is the upstream ranking score. The pipeline uses prepared measures such as range tightness, volume ratio / expansion, prior move, up-down-volume behaviour, and stock strength. Streamlit does not change its formula or weights.
+- **20D Return:** \((P_t / P_{t-20}) - 1\), shown as a percentage.
+- **60D Return:** \((P_t / P_{t-60}) - 1\), shown as a percentage.
+- **6M Gain:** the precomputed medium-term price-performance field, using approximately six months of trading sessions.
+- **Strength:** the EOD pipeline’s stock-level technical leadership score. Higher values indicate stronger prepared relative-strength / momentum conditions.
+- **Established setup** and **IPO setup:** precomputed binary rules identifying stocks that satisfy the respective upstream setup filters on the selected EOD date.
+- **Priority Score:** when present in the prepared setup list, this upstream ranking uses prepared inputs such as range tightness, volume ratio / volume expansion, prior move, up-down-volume behaviour, and strength. The dashboard does not recalculate or change the score.
 
-## Group leadership calculations
-Every stock is classified into a Basic Industry, Industry, and Sector by the classification master. The EOD pipeline aggregates the classified stock features to each group and produces the group feature files.
+## Basic Industry, Industry and Sector leadership
+A classified stock contributes to its Basic Industry, Industry, and Sector. The EOD group-feature pipeline aggregates prepared constituent inputs to produce the group fields.
 
-- **Leadership Score (0–100):** the prepared composite group score. The EOD pipeline combines constituent-level momentum, strength, breadth, and setup-related inputs into a comparable group-level leadership reading. Groups are ranked from highest to lowest current leadership score.
-- **5D Leadership Change:** current prepared leadership score minus the leadership score five available trading sessions earlier. Positive means leadership improved over that window; negative means it weakened.
-- **No. of Stocks:** the prepared number of classified stock constituents contributing to that group-date measurement.
-- **Status:** derived from current leadership and five-day change when the EOD file does not provide its own status field: 70+ is strong leadership; 60–69.9 is positive / building; 50–59.9 is transitional / watchlist; below 50 is weak unless the five-day change is improving.
+- **Leadership Score:** a prepared 0–100 composite reading of group-level constituent momentum, strength, breadth, and setup-related conditions. Groups rank from highest to lowest current score.
+- **5D Leadership Change:** current leadership score minus the score five available trading sessions earlier. A positive value indicates improving leadership over that interval.
+- **No. of Stocks:** the prepared classified constituent count used for the group-date calculation.
+- **Status:** a supplied pipeline status when available; otherwise it is derived from score and five-day change. Scores of 70+ are strong, 60–69.9 are positive / building, 50–59.9 are transitional / watchlist, and below 50 are weak unless their five-day change is improving.
 
-## Navigation and constituent lists
-Clicking a Basic Industry, Industry, or Sector name uses a Streamlit button and sets a single selected group state. The right-hand panel in the same tab then reads only the selected date’s `stock_snapshot.parquet`, filters it to the clicked group, and renders its stock list and leadership trend together. This avoids unreliable cross-tab browser scrolling and prevents stocks from different dates being mixed.
+## Navigation
+Each group name is a real Streamlit control. Clicking it immediately selects that group and updates the constituent stock table and leadership chart in the same tab. The stock list is filtered only from that selected date’s `stock_snapshot.parquet`, so constituents from different dates are never mixed.
 
-## Interpretation limits
-The dashboard is a technical market-breadth and research tool, not investment advice. Rankings can change as price, volume, listing history, corporate actions, and classification coverage change. Review charts, liquidity, results, valuation, disclosures, and risk before making investment decisions.
+## Limits
+This is a technical breadth and research dashboard, not investment advice. Rankings may change as prices, volumes, listings, corporate actions, and classification coverage change. Review liquidity, disclosures, results, valuation, charts, and risk before acting.
         """
     )
 
@@ -611,7 +582,7 @@ def main() -> None:
         if sector.empty:
             st.warning(
                 f"Sector data has not been published for {selected_date:%d %b %Y}. "
-                "Run the updated EOD workflow after `sector_snapshot.parquet` support is deployed, then refresh the app."
+                "Run the updated EOD workflow after sector snapshot generation is deployed, then refresh the app."
             )
         else:
             render_group_tab(sector, stock, selected_date, "sector", "Sector")
