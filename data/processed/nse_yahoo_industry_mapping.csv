@@ -1,147 +1,147 @@
-symbol,company_name,isin,yahoo_ticker,yahoo_sector,yahoo_industry,yahoo_quote_type,classification_status,classification_source,yahoo_failure_reason
-AAKASH,Aakash Exploration Services Limited,INE087Z01024,AAKASH.NS,Energy,Oil & Gas Equipment & Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AARON,Aaron Industries Limited,INE721Z01010,AARON.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ABMINTLLTD,ABM International Limited,INE251C01025,ABMINTLLTD.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ACEINTEG,Ace Integrated Solutions Limited,INE543V01017,ACEINTEG.NS,Industrials,Staffing & Employment Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AGROPHOS,Agro Phos India Limited,INE740V01019,AGROPHOS.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AHLADA,Ahlada Engineers Limited,INE00PV01013,AHLADA.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AIROLAM,Airo Lam limited,INE801L01010,AIROLAM.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AJOONI,Ajooni Biotech Limited,INE820Y01021,AJOONI.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AKASH,Akash Infra-Projects Limited,INE737W01013,AKASH.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-AKG,Akg Exim Limited,INE00Y801016,AKG.NS,Industrials,Industrial Distribution,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ANNAPURNA,Annapurna Swadisht Limited,INE0MGM01017,ANNAPURNA.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ANTGRAPHIC,Antarctica Limited,INE414B01021,ANTGRAPHIC.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-APOLSINHOT,Apollo Sindoori Hotels Limited,INE451F01024,APOLSINHOT.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ARTNIRMAN,Art Nirman Limited,INE738V01013,ARTNIRMAN.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ARVEE,Arvee Laboratories (India) Limited,INE006Z01016,ARVEE.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ASPINWALL,Aspinwall and Company Limited,INE991I01015,ASPINWALL.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BALAXI,BALAXI PHARMACEUTICALS LIMITED,INE618N01022,BALAXI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BANKA,Banka BioLoo Limited,INE862Y01015,BANKA.NS,Industrials,Pollution & Treatment Controls,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BEARDSELL,Beardsell Limited,INE520H01022,BEARDSELL.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BETA,Beta Drugs Limited,INE351Y01019,BETA.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BOHRAIND,Bohra Industries Limited,INE802W01023,BOHRAIND.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-BSE,BSE Limited,INE118H01025,BSE.NS,Financial Services,Financial Data & Stock Exchanges,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-CDSL,Central Depository Services (India) Limited,INE736A01011,CDSL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-CONSOFINVT,Consolidated Finvest & Holdings Limited,INE025A01027,CONSOFINVT.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-CREDITACC,CREDITACCESS GRAMEEN LIMITED,INE741K01010,CREDITACC.NS,Financial Services,Credit Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-CROMPTON,Crompton Greaves Consumer Electricals Limited,INE299U01018,CROMPTON.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-CROWN,Crown Lifters Limited,INE491V01019,CROWN.NS,Industrials,Rental & Leasing Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-DANGEE,Dangee Dums Limited,INE688Y01022,DANGEE.NS,Consumer Cyclical,Restaurants,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-DATAPATTNS,Data Patterns (India) Limited,INE0IX101010,DATAPATTNS.NS,Industrials,Aerospace & Defense,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-DBSTOCKBRO,DB (International) Stock Brokers Limited,INE921B01025,DBSTOCKBRO.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-DCI,Dc Infotech And Communication Limited,INE0A1101019,DCI.NS,Technology,Electronics & Computer Distribution,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-DPSCLTD,DPSC Limited,INE360C01024,DPSCLTD.NS,Utilities,Utilities - Regulated Electric,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-EIFFL,Euro India Fresh Foods Limited,INE546V01010,EIFFL.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ELGIRUBCO,Elgi Rubber Company Limited,INE819L01012,ELGIRUBCO.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-FOCUS,Focus Lighting and Fixtures Limited,INE593W01028,FOCUS.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GANGAFORGE,Ganga Forging Limited,INE691Z01023,GANGAFORGE.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GEEKAYWIRE,Geekay Wires Limited,INE669X01032,GEEKAYWIRE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GICL,Globe International Carriers Limited,INE947T01022,GICL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GKWLIMITED,GKW Limited,INE528A01020,GKWLIMITED.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GLOBAL,Global Education Limited,INE291W01037,GLOBAL.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GLOBE,GLOBE ENTERPRISES (INDIA) LIMITED,INE581X01021,GLOBE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GRADIENTE,Gradiente Infotainment Limited,INE361K01017,GRADIENTE.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GROBTEA,The Grob Tea Company Limited,INE646C01018,GROBTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GTECJAINX,G-TEC JAINX EDUCATION LIMITED,INE586X01012,GTECJAINX.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-GVPTECH,GVP Infotech Limited,INE382T01030,GVPTECH.NS,Technology,Information Technology Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-HECPROJECT,HEC Infra Projects Limited,INE558R01013,HECPROJECT.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-HINDCON,Hindcon Chemicals Limited,INE642Y01029,HINDCON.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ICEMAKE,Ice Make Refrigeration Limited,INE520Y01019,ICEMAKE.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-IRISDOREME,Iris Clothings Limited,INE01GN01025,IRISDOREME.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-JAIPURKURT,Nandani Creation Limited,INE696V01013,JAIPURKURT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-JMA,Jullundur Motor Agency (Delhi) Limited,INE412C01023,JMA.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-JOCIL,Jocil Limited,INE839G01010,JOCIL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KALYANI,Kalyani Commercials Limited,INE610E01010,KALYANI.NS,Consumer Cyclical,Auto & Truck Dealerships,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KAPSTON,Kapston Services Limited,INE542Z01028,KAPSTON.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KIOCL,KIOCL Limited,INE880L01014,KIOCL.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KITEX,Kitex Garments Limited,INE602G01020,KITEX.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KMSUGAR,K.M.Sugar Mills Limited,INE157H01023,KMSUGAR.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KNAGRI,KN Agri Resources Limited,INE0KNW01016,KNAGRI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KOLTEPATIL,Kolte - Patil Developers Limited,INE094I01018,KOLTEPATIL.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KOTARISUG,Kothari Sugars And Chemicals Limited,INE419A01022,KOTARISUG.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KOTHARIPET,Kothari Petrochemicals Limited,INE720A01015,KOTHARIPET.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KOTHARIPRO,Kothari Products Limited,INE823A01017,KOTHARIPRO.NS,Industrials,Conglomerates,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KREBSBIO,Krebs Biochemicals and Industries Limited,INE268B01013,KREBSBIO.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KRISHANA,Krishana Phoschem Limited,INE506W01020,KRISHANA.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KRISHNADEF,Krishna Defence And Allied Industries Limited,INE0J5601015,KRISHNADEF.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KRITIKA,Kritika Wires Limited,INE00Z501029,KRITIKA.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-KSHITIJPOL,Kshitij Polyline Limited,INE013801027,KSHITIJPOL.NS,Industrials,Business Equipment & Supplies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LAGNAM,Lagnam Spintex Limited,INE548Z01017,LAGNAM.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LATTEYS,Latteys Industries Limited,INE262Z01023,LATTEYS.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LAXMICOT,Laxmi Cotspin Limited,INE801V01019,LAXMICOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LEMERITE,Le Merite Exports Limited,INE0G1L01025,LEMERITE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LEXUS,Lexus Granito (India) Limited,INE500X01013,LEXUS.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LFIC,Lakshmi Finance & Industrial Corporation Limited,INE850E01012,LFIC.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LGHL,Laxmi Goldorna House Limited,INE258Y01016,LGHL.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-LIBAS,Libas Consumer Products Limited,INE908V01012,LIBAS.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MACPOWER,Macpower CNC Machines Limited,INE155Z01011,MACPOWER.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MAHESHWARI,Maheshwari Logistics Limited,INE263W01010,MAHESHWARI.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MARINE,Marine Electricals (India) Limited,INE01JE01028,MARINE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MASKINVEST,Mask Investments Limited,INE885F01015,MASKINVEST.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MBAPL,Madhya Bharat Agro Products Limited,INE900L01028,MBAPL.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MCL,M TEK COPPER LIMITED,INE813V01022,MCL.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MITCON,MITCON Consultancy & Engineering Services Limited,INE828O01033,MITCON.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MITTAL,Mittal Life Style Limited,INE997Y01027,MITTAL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MMP,MMP Industries Limited,INE511Y01018,MMP.NS,Basic Materials,Aluminum,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-MOKSH,Moksh Ornaments Limited,INE514Y01020,MOKSH.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NBIFIN,N. B. I. Industrial Finance Company Limited,INE365I01020,NBIFIN.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NDGL,Naga Dhunseri Group Limited,INE756C01015,NDGL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NIRAJISPAT,Niraj Ispat Industries Limited,INE326T01011,NIRAJISPAT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NITIRAJ,Nitiraj Engineers Limited,INE439T01012,NITIRAJ.NS,Technology,Scientific & Technical Instruments,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NOVAAGRI,Nova Agritech Limited,INE02H701025,NOVAAGRI.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-NRL,Nupur Recyclers Limited,INE0JM501013,NRL.NS,Industrials,Waste Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ONGC,Oil & Natural Gas Corporation Limited,INE213A01029,ONGC.NS,Energy,Oil & Gas Integrated,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ONIDA,Onida Electronics Limited,INE831A01028,ONIDA.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ONIXSOLAR,Onix Solar Energy Limited,INE173M01012,ONIXSOLAR.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-OSIAHYPER,Osia Hyper Retail Limited,INE06IR01021,OSIAHYPER.NS,Consumer Cyclical,Department Stores,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-OSWALSEEDS,ShreeOswal Seeds And Chemicals Limited,INE00IK01029,OSWALSEEDS.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PANACHE,Panache Digilife Limited,INE895W01019,PANACHE.NS,Technology,Communication Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PANSARI,Pansari Developers Limited,INE697V01011,PANSARI.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PAR,Par Drugs And Chemicals Limited,INE04LG01015,PAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PKTEA,The Peria Karamalai Tea & Produce Company Limited,INE431F01018,PKTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PRECOT,Precot Limited,INE283A01014,PRECOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-PRITI,Priti International Limited,INE974Z01015,PRITI.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-QMSMEDI,QMS Medical Allied Services Limited,INE0FMW01018,QMSMEDI.NS,Healthcare,Medical Instruments & Supplies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-RAJMET,Rajnandini Metal Limited,INE00KV01022,RAJMET.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-REPL,Rudrabhishek Enterprises Limited,INE364Z01019,REPL.NS,Industrials,Consulting Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-RKEC,RKEC Projects Limited,INE786W01010,RKEC.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-RPPL,Rajshree Polypack Limited,INE760W01023,RPPL.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SAGARDEEP,Sagardeep Alloys Limited,INE976T01013,SAGARDEEP.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SAKAR,Sakar Healthcare Limited,INE732S01012,SAKAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SANGINITA,Sanginita Chemicals Limited,INE753W01010,SANGINITA.NS,Basic Materials,Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SERVOTECH,Servotech Renewable Power System Limited,INE782X01033,SERVOTECH.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SHANTI,Shanti Overseas (India) Limited,INE933X01016,SHANTI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SHIVAUM,Shiv Aum Steels Limited,INE719F01016,SHIVAUM.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SHRADHA,Shradha Realty Limited,INE715Y01031,SHRADHA.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SHRENIK,Shrenik Limited,INE632X01030,SHRENIK.NS,Basic Materials,Paper & Paper Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SIKKO,Sikko Industries Limited,INE112X01025,SIKKO.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SILGO,Silgo Retail Limited,INE01II01013,SILGO.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SILLYMONKS,Silly Monks Entertainment Limited,INE203Y01012,SILLYMONKS.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SINTERCOM,Sintercom India Limited,INE129Z01016,SINTERCOM.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SOLEX,Solex Energy Limited,INE880Y01017,SOLEX.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SONAMLTD,SONAM LIMITED,INE00LM01029,SONAMLTD.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SPCENET,Spacenet Enterprises India Limited,INE970N01027,SPCENET.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SPMLINFRA,SPML Infra Limited,INE937A01023,SPMLINFRA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-STALLION,Stallion India Fluorochemicals Limited,INE0RYC01010,STALLION.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-STEELCITY,Steel City Securities Limited,INE395H01011,STEELCITY.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SUMIT,Sumit Woods Limited,INE748Z01013,SUMIT.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SUPREMEENG,Supreme Engineering Limited,INE319Z01021,SUPREMEENG.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-SVLL,Shree Vasu Logistics Limited,INE00CE01017,SVLL.NS,Industrials,Trucking,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TARACHAND,Tara Chand InfraLogistic Solutions Limited,INE555Z01020,TARACHAND.NS,Industrials,Farm & Heavy Construction Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TEMBO,Tembo Global Industries Limited,INE869Y01028,TEMBO.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-THEJO,Thejo Engineering Limited,INE121N01019,THEJO.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TIRUPATIFL,Tirupati Forge Limited,INE319Y01024,TIRUPATIFL.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TOTAL,Total Transport Systems Limited,INE336X01012,TOTAL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TOUCHWOOD,Touchwood Entertainment Limited,INE486Y01013,TOUCHWOOD.NS,Communication Services,Advertising Agencies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-TSFINV,TSF INVESTMENTS LIMITED,INE202Z01029,TSFINV.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-UNIINFO,Uniinfo Telecom Services Limited,INE481Z01011,UNIINFO.NS,Communication Services,Telecom Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-UNITEDTEA,The United Nilgiri Tea Estates Company Limited,INE458F01011,UNITEDTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-UNIVASTU,Univastu India Limited,INE562X01013,UNIVASTU.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VAISHALI,Vaishali Pharma Limited,INE972X01022,VAISHALI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VARDHACRLC,Vardhman Acrylics Limited,INE116G01013,VARDHACRLC.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VCL,Vaxtex Cotfab Limited,INE098201036,VCL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VERTOZ,Vertoz Limited,INE188Y01031,VERTOZ.NS,Technology,Software - Infrastructure,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VITAL,Vital Chemtech Limited,INE0L4K01016,VITAL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-VIVIANA,Viviana Power Tech Limited,INE0MEG01014,VIVIANA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-WIPL,The Western India Plywoods Limited,INE215F01023,WIPL.NS,Basic Materials,Lumber & Wood Production,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
-ZOTA,Zota Health Care LImited,INE358U01012,ZOTA.NS,Healthcare,Biotechnology,EQUITY,YAHOO_FALLBACK,Yahoo Finance,
+isin,symbol,company_name,yahoo_ticker,yahoo_sector,yahoo_industry,yahoo_quote_type,classification_status,classification_source,yahoo_failure_reason,attempted_at_utc,attempt_count
+INE087Z01024,AAKASH,Aakash Exploration Services Limited,AAKASH.NS,Energy,Oil & Gas Equipment & Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE721Z01010,AARON,Aaron Industries Limited,AARON.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE251C01025,ABMINTLLTD,ABM International Limited,ABMINTLLTD.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE543V01017,ACEINTEG,Ace Integrated Solutions Limited,ACEINTEG.NS,Industrials,Staffing & Employment Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE740V01019,AGROPHOS,Agro Phos India Limited,AGROPHOS.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE00PV01013,AHLADA,Ahlada Engineers Limited,AHLADA.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE801L01010,AIROLAM,Airo Lam limited,AIROLAM.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE820Y01021,AJOONI,Ajooni Biotech Limited,AJOONI.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE737W01013,AKASH,Akash Infra-Projects Limited,AKASH.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE00Y801016,AKG,Akg Exim Limited,AKG.NS,Industrials,Industrial Distribution,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE0MGM01017,ANNAPURNA,Annapurna Swadisht Limited,ANNAPURNA.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE414B01021,ANTGRAPHIC,Antarctica Limited,ANTGRAPHIC.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE451F01024,APOLSINHOT,Apollo Sindoori Hotels Limited,APOLSINHOT.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE738V01013,ARTNIRMAN,Art Nirman Limited,ARTNIRMAN.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE006Z01016,ARVEE,Arvee Laboratories (India) Limited,ARVEE.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
+INE991I01015,ASPINWALL,Aspinwall and Company Limited,ASPINWALL.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE618N01022,BALAXI,BALAXI PHARMACEUTICALS LIMITED,BALAXI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE862Y01015,BANKA,Banka BioLoo Limited,BANKA.NS,Industrials,Pollution & Treatment Controls,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE520H01022,BEARDSELL,Beardsell Limited,BEARDSELL.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE351Y01019,BETA,Beta Drugs Limited,BETA.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE802W01023,BOHRAIND,Bohra Industries Limited,BOHRAIND.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE118H01025,BSE,BSE Limited,BSE.NS,Financial Services,Financial Data & Stock Exchanges,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE736A01011,CDSL,Central Depository Services (India) Limited,CDSL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE025A01027,CONSOFINVT,Consolidated Finvest & Holdings Limited,CONSOFINVT.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE741K01010,CREDITACC,CREDITACCESS GRAMEEN LIMITED,CREDITACC.NS,Financial Services,Credit Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE299U01018,CROMPTON,Crompton Greaves Consumer Electricals Limited,CROMPTON.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE491V01019,CROWN,Crown Lifters Limited,CROWN.NS,Industrials,Rental & Leasing Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE688Y01022,DANGEE,Dangee Dums Limited,DANGEE.NS,Consumer Cyclical,Restaurants,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0IX101010,DATAPATTNS,Data Patterns (India) Limited,DATAPATTNS.NS,Industrials,Aerospace & Defense,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE921B01025,DBSTOCKBRO,DB (International) Stock Brokers Limited,DBSTOCKBRO.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0A1101019,DCI,Dc Infotech And Communication Limited,DCI.NS,Technology,Electronics & Computer Distribution,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE360C01024,DPSCLTD,DPSC Limited,DPSCLTD.NS,Utilities,Utilities - Regulated Electric,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE546V01010,EIFFL,Euro India Fresh Foods Limited,EIFFL.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE819L01012,ELGIRUBCO,Elgi Rubber Company Limited,ELGIRUBCO.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE593W01028,FOCUS,Focus Lighting and Fixtures Limited,FOCUS.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE691Z01023,GANGAFORGE,Ganga Forging Limited,GANGAFORGE.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE669X01032,GEEKAYWIRE,Geekay Wires Limited,GEEKAYWIRE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE947T01022,GICL,Globe International Carriers Limited,GICL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE528A01020,GKWLIMITED,GKW Limited,GKWLIMITED.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE291W01037,GLOBAL,Global Education Limited,GLOBAL.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE581X01021,GLOBE,GLOBE ENTERPRISES (INDIA) LIMITED,GLOBE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE361K01017,GRADIENTE,Gradiente Infotainment Limited,GRADIENTE.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE646C01018,GROBTEA,The Grob Tea Company Limited,GROBTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE586X01012,GTECJAINX,G-TEC JAINX EDUCATION LIMITED,GTECJAINX.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE382T01030,GVPTECH,GVP Infotech Limited,GVPTECH.NS,Technology,Information Technology Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE558R01013,HECPROJECT,HEC Infra Projects Limited,HECPROJECT.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE642Y01029,HINDCON,Hindcon Chemicals Limited,HINDCON.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE520Y01019,ICEMAKE,Ice Make Refrigeration Limited,ICEMAKE.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE01GN01025,IRISDOREME,Iris Clothings Limited,IRISDOREME.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE696V01013,JAIPURKURT,Nandani Creation Limited,JAIPURKURT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE412C01023,JMA,Jullundur Motor Agency (Delhi) Limited,JMA.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE839G01010,JOCIL,Jocil Limited,JOCIL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE610E01010,KALYANI,Kalyani Commercials Limited,KALYANI.NS,Consumer Cyclical,Auto & Truck Dealerships,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE542Z01028,KAPSTON,Kapston Services Limited,KAPSTON.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE880L01014,KIOCL,KIOCL Limited,KIOCL.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE602G01020,KITEX,Kitex Garments Limited,KITEX.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE157H01023,KMSUGAR,K.M.Sugar Mills Limited,KMSUGAR.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0KNW01016,KNAGRI,KN Agri Resources Limited,KNAGRI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE094I01018,KOLTEPATIL,Kolte - Patil Developers Limited,KOLTEPATIL.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE419A01022,KOTARISUG,Kothari Sugars And Chemicals Limited,KOTARISUG.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE720A01015,KOTHARIPET,Kothari Petrochemicals Limited,KOTHARIPET.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE823A01017,KOTHARIPRO,Kothari Products Limited,KOTHARIPRO.NS,Industrials,Conglomerates,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE268B01013,KREBSBIO,Krebs Biochemicals and Industries Limited,KREBSBIO.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE506W01020,KRISHANA,Krishana Phoschem Limited,KRISHANA.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0J5601015,KRISHNADEF,Krishna Defence And Allied Industries Limited,KRISHNADEF.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00Z501029,KRITIKA,Kritika Wires Limited,KRITIKA.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE013801027,KSHITIJPOL,Kshitij Polyline Limited,KSHITIJPOL.NS,Industrials,Business Equipment & Supplies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE548Z01017,LAGNAM,Lagnam Spintex Limited,LAGNAM.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE262Z01023,LATTEYS,Latteys Industries Limited,LATTEYS.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE801V01019,LAXMICOT,Laxmi Cotspin Limited,LAXMICOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0G1L01025,LEMERITE,Le Merite Exports Limited,LEMERITE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE500X01013,LEXUS,Lexus Granito (India) Limited,LEXUS.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE850E01012,LFIC,Lakshmi Finance & Industrial Corporation Limited,LFIC.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE258Y01016,LGHL,Laxmi Goldorna House Limited,LGHL.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE908V01012,LIBAS,Libas Consumer Products Limited,LIBAS.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE155Z01011,MACPOWER,Macpower CNC Machines Limited,MACPOWER.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE263W01010,MAHESHWARI,Maheshwari Logistics Limited,MAHESHWARI.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE01JE01028,MARINE,Marine Electricals (India) Limited,MARINE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE885F01015,MASKINVEST,Mask Investments Limited,MASKINVEST.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE900L01028,MBAPL,Madhya Bharat Agro Products Limited,MBAPL.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE813V01022,MCL,M TEK COPPER LIMITED,MCL.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE828O01033,MITCON,MITCON Consultancy & Engineering Services Limited,MITCON.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE997Y01027,MITTAL,Mittal Life Style Limited,MITTAL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE511Y01018,MMP,MMP Industries Limited,MMP.NS,Basic Materials,Aluminum,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE514Y01020,MOKSH,Moksh Ornaments Limited,MOKSH.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE365I01020,NBIFIN,N. B. I. Industrial Finance Company Limited,NBIFIN.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE756C01015,NDGL,Naga Dhunseri Group Limited,NDGL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE326T01011,NIRAJISPAT,Niraj Ispat Industries Limited,NIRAJISPAT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE439T01012,NITIRAJ,Nitiraj Engineers Limited,NITIRAJ.NS,Technology,Scientific & Technical Instruments,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE02H701025,NOVAAGRI,Nova Agritech Limited,NOVAAGRI.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0JM501013,NRL,Nupur Recyclers Limited,NRL.NS,Industrials,Waste Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE213A01029,ONGC,Oil & Natural Gas Corporation Limited,ONGC.NS,Energy,Oil & Gas Integrated,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE831A01028,ONIDA,Onida Electronics Limited,ONIDA.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE173M01012,ONIXSOLAR,Onix Solar Energy Limited,ONIXSOLAR.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE06IR01021,OSIAHYPER,Osia Hyper Retail Limited,OSIAHYPER.NS,Consumer Cyclical,Department Stores,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00IK01029,OSWALSEEDS,ShreeOswal Seeds And Chemicals Limited,OSWALSEEDS.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE895W01019,PANACHE,Panache Digilife Limited,PANACHE.NS,Technology,Communication Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE697V01011,PANSARI,Pansari Developers Limited,PANSARI.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE04LG01015,PAR,Par Drugs And Chemicals Limited,PAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE431F01018,PKTEA,The Peria Karamalai Tea & Produce Company Limited,PKTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE283A01014,PRECOT,Precot Limited,PRECOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE974Z01015,PRITI,Priti International Limited,PRITI.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0FMW01018,QMSMEDI,QMS Medical Allied Services Limited,QMSMEDI.NS,Healthcare,Medical Instruments & Supplies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00KV01022,RAJMET,Rajnandini Metal Limited,RAJMET.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE364Z01019,REPL,Rudrabhishek Enterprises Limited,REPL.NS,Industrials,Consulting Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE786W01010,RKEC,RKEC Projects Limited,RKEC.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE760W01023,RPPL,Rajshree Polypack Limited,RPPL.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE976T01013,SAGARDEEP,Sagardeep Alloys Limited,SAGARDEEP.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE732S01012,SAKAR,Sakar Healthcare Limited,SAKAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE753W01010,SANGINITA,Sanginita Chemicals Limited,SANGINITA.NS,Basic Materials,Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE782X01033,SERVOTECH,Servotech Renewable Power System Limited,SERVOTECH.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE933X01016,SHANTI,Shanti Overseas (India) Limited,SHANTI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE719F01016,SHIVAUM,Shiv Aum Steels Limited,SHIVAUM.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE715Y01031,SHRADHA,Shradha Realty Limited,SHRADHA.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE632X01030,SHRENIK,Shrenik Limited,SHRENIK.NS,Basic Materials,Paper & Paper Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE112X01025,SIKKO,Sikko Industries Limited,SIKKO.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE01II01013,SILGO,Silgo Retail Limited,SILGO.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE203Y01012,SILLYMONKS,Silly Monks Entertainment Limited,SILLYMONKS.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE129Z01016,SINTERCOM,Sintercom India Limited,SINTERCOM.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE880Y01017,SOLEX,Solex Energy Limited,SOLEX.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00LM01029,SONAMLTD,SONAM LIMITED,SONAMLTD.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE970N01027,SPCENET,Spacenet Enterprises India Limited,SPCENET.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE937A01023,SPMLINFRA,SPML Infra Limited,SPMLINFRA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0RYC01010,STALLION,Stallion India Fluorochemicals Limited,STALLION.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE395H01011,STEELCITY,Steel City Securities Limited,STEELCITY.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE748Z01013,SUMIT,Sumit Woods Limited,SUMIT.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE319Z01021,SUPREMEENG,Supreme Engineering Limited,SUPREMEENG.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00CE01017,SVLL,Shree Vasu Logistics Limited,SVLL.NS,Industrials,Trucking,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE555Z01020,TARACHAND,Tara Chand InfraLogistic Solutions Limited,TARACHAND.NS,Industrials,Farm & Heavy Construction Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE869Y01028,TEMBO,Tembo Global Industries Limited,TEMBO.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE121N01019,THEJO,Thejo Engineering Limited,THEJO.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE319Y01024,TIRUPATIFL,Tirupati Forge Limited,TIRUPATIFL.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE336X01012,TOTAL,Total Transport Systems Limited,TOTAL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE486Y01013,TOUCHWOOD,Touchwood Entertainment Limited,TOUCHWOOD.NS,Communication Services,Advertising Agencies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE202Z01029,TSFINV,TSF INVESTMENTS LIMITED,TSFINV.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE481Z01011,UNIINFO,Uniinfo Telecom Services Limited,UNIINFO.NS,Communication Services,Telecom Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE458F01011,UNITEDTEA,The United Nilgiri Tea Estates Company Limited,UNITEDTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE562X01013,UNIVASTU,Univastu India Limited,UNIVASTU.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE972X01022,VAISHALI,Vaishali Pharma Limited,VAISHALI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE116G01013,VARDHACRLC,Vardhman Acrylics Limited,VARDHACRLC.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE098201036,VCL,Vaxtex Cotfab Limited,VCL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE188Y01031,VERTOZ,Vertoz Limited,VERTOZ.NS,Technology,Software - Infrastructure,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0L4K01016,VITAL,Vital Chemtech Limited,VITAL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0MEG01014,VIVIANA,Viviana Power Tech Limited,VIVIANA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE215F01023,WIPL,The Western India Plywoods Limited,WIPL.NS,Basic Materials,Lumber & Wood Production,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE358U01012,ZOTA,Zota Health Care LImited,ZOTA.NS,Healthcare,Biotechnology,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
