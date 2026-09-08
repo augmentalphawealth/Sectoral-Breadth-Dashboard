@@ -14,26 +14,26 @@ INE414B01021,ANTGRAPHIC,Antarctica Limited,ANTGRAPHIC.NS,Consumer Cyclical,Packa
 INE451F01024,APOLSINHOT,Apollo Sindoori Hotels Limited,APOLSINHOT.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
 INE738V01013,ARTNIRMAN,Art Nirman Limited,ARTNIRMAN.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
 INE006Z01016,ARVEE,Arvee Laboratories (India) Limited,ARVEE.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-07T13:04:17Z,1
-INE991I01015,ASPINWALL,Aspinwall and Company Limited,ASPINWALL.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE618N01022,BALAXI,BALAXI PHARMACEUTICALS LIMITED,BALAXI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE862Y01015,BANKA,Banka BioLoo Limited,BANKA.NS,Industrials,Pollution & Treatment Controls,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE520H01022,BEARDSELL,Beardsell Limited,BEARDSELL.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE351Y01019,BETA,Beta Drugs Limited,BETA.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE802W01023,BOHRAIND,Bohra Industries Limited,BOHRAIND.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE118H01025,BSE,BSE Limited,BSE.NS,Financial Services,Financial Data & Stock Exchanges,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE736A01011,CDSL,Central Depository Services (India) Limited,CDSL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE025A01027,CONSOFINVT,Consolidated Finvest & Holdings Limited,CONSOFINVT.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE991I01015,ASPINWALL,Aspinwall and Company Limited,ASPINWALL.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE618N01022,BALAXI,BALAXI PHARMACEUTICALS LIMITED,BALAXI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE862Y01015,BANKA,Banka BioLoo Limited,BANKA.NS,Industrials,Pollution & Treatment Controls,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE520H01022,BEARDSELL,Beardsell Limited,BEARDSELL.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE351Y01019,BETA,Beta Drugs Limited,BETA.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE802W01023,BOHRAIND,Bohra Industries Limited,BOHRAIND.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE118H01025,BSE,BSE Limited,BSE.NS,Financial Services,Financial Data & Stock Exchanges,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE736A01011,CDSL,Central Depository Services (India) Limited,CDSL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE025A01027,CONSOFINVT,Consolidated Finvest & Holdings Limited,CONSOFINVT.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
 INE741K01010,CREDITACC,CREDITACCESS GRAMEEN LIMITED,CREDITACC.NS,Financial Services,Credit Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE299U01018,CROMPTON,Crompton Greaves Consumer Electricals Limited,CROMPTON.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE491V01019,CROWN,Crown Lifters Limited,CROWN.NS,Industrials,Rental & Leasing Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE688Y01022,DANGEE,Dangee Dums Limited,DANGEE.NS,Consumer Cyclical,Restaurants,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE491V01019,CROWN,Crown Lifters Limited,CROWN.NS,Industrials,Rental & Leasing Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE688Y01022,DANGEE,Dangee Dums Limited,DANGEE.NS,Consumer Cyclical,Restaurants,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
 INE0IX101010,DATAPATTNS,Data Patterns (India) Limited,DATAPATTNS.NS,Industrials,Aerospace & Defense,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE921B01025,DBSTOCKBRO,DB (International) Stock Brokers Limited,DBSTOCKBRO.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE0A1101019,DCI,Dc Infotech And Communication Limited,DCI.NS,Technology,Electronics & Computer Distribution,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE360C01024,DPSCLTD,DPSC Limited,DPSCLTD.NS,Utilities,Utilities - Regulated Electric,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE546V01010,EIFFL,Euro India Fresh Foods Limited,EIFFL.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE819L01012,ELGIRUBCO,Elgi Rubber Company Limited,ELGIRUBCO.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE593W01028,FOCUS,Focus Lighting and Fixtures Limited,FOCUS.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE360C01024,DPSCLTD,DPSC Limited,DPSCLTD.NS,Utilities,Utilities - Regulated Electric,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE546V01010,EIFFL,Euro India Fresh Foods Limited,EIFFL.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE819L01012,ELGIRUBCO,Elgi Rubber Company Limited,ELGIRUBCO.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
+INE593W01028,FOCUS,Focus Lighting and Fixtures Limited,FOCUS.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
 INE691Z01023,GANGAFORGE,Ganga Forging Limited,GANGAFORGE.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE669X01032,GEEKAYWIRE,Geekay Wires Limited,GEEKAYWIRE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE947T01022,GICL,Globe International Carriers Limited,GICL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
