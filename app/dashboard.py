@@ -73,6 +73,12 @@ def handle_scroll():
         del st.session_state["scroll_target"]
 
 
+def sync_state(source_key: str, target_key: str) -> None:
+    """Safely synchronizes two selectboxes so they match perfectly."""
+    if source_key in st.session_state:
+        st.session_state[target_key] = st.session_state[source_key]
+
+
 def clean_text(value: object) -> str:
     if value is None or pd.isna(value): return "Unclassified"
     text = str(value).strip()
@@ -335,10 +341,20 @@ def render_constituents(stock: pd.DataFrame, groups: pd.DataFrame, group_column:
     options = [clean_text(value) for value in ordered.sort_values("_change", ascending=False)[group_column].dropna().unique()]
     
     state_key = f"selected_{group_column}_constituents"
-    selected = st.session_state.get(state_key, options[0] if options else "Unclassified")
-    selected = st.selectbox(f"Select {title}", options, index=options.index(selected) if selected in options else 0, key=f"{state_key}_widget")
-    st.session_state[state_key] = selected
-    st.session_state[f"selected_{group_column}_trend"] = selected
+    trend_key = f"selected_{group_column}_trend"
+
+    # Initialize safely
+    if state_key not in st.session_state or st.session_state[state_key] not in options:
+        st.session_state[state_key] = options[0] if options else "Unclassified"
+
+    # Direct Native Binding 
+    selected = st.selectbox(
+        f"Select {title}", 
+        options, 
+        key=state_key,
+        on_change=sync_state,
+        args=(state_key, trend_key)
+    )
 
     data = stock[stock[group_column].map(clean_text) == selected].copy()
     if data.empty: return
@@ -367,9 +383,19 @@ def render_trend(groups: pd.DataFrame, selected_date: pd.Timestamp, group_kind: 
     ranked["_priority"] = pd.to_numeric(ranked.get("improver_priority", 0.65 * ranked["_score"] + 0.35 * ranked["_change"].clip(lower=0)), errors="coerce").fillna(0.0)
     
     options = [clean_text(v) for v in ranked.sort_values(["_priority", "_change"], ascending=[False, False])[group_column].dropna().unique()]
-    state_key = f"selected_{group_column}_trend"
-    selected = st.session_state.get(state_key, options[0] if options else "Unclassified")
-    selected = st.selectbox(f"View trend for {title}", options, index=options.index(selected) if selected in options else 0, key=f"{state_key}_widget")
+    state_key = f"selected_{group_column}_constituents"
+    trend_key = f"selected_{group_column}_trend"
+
+    if trend_key not in st.session_state or st.session_state[trend_key] not in options:
+        st.session_state[trend_key] = options[0] if options else "Unclassified"
+        
+    selected = st.selectbox(
+        f"View trend for {title}", 
+        options, 
+        key=trend_key,
+        on_change=sync_state,
+        args=(trend_key, state_key)
+    )
     
     selected_row = ranked[ranked[group_column].map(clean_text) == selected]
     score = number(selected_row["_score"].iloc[-1]) if not selected_row.empty else 0.0
