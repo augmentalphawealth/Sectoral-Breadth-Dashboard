@@ -234,6 +234,8 @@ def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
 def show_table(data: pd.DataFrame, height: int, chart_links: bool = False) -> None:
     view = data.copy()
     view.columns = [str(column) for column in view.columns]
+    # Safety feature: Prevent PyArrow duplicate column crashes natively
+    view = view.loc[:, ~view.columns.duplicated(keep="first")]
     config = {"Chart": st.column_config.LinkColumn("Chart", display_text="Open ↗")} if chart_links and "Chart" in view.columns else {}
     st.dataframe(view, use_container_width=True, hide_index=True, height=height, column_config=config)
 
@@ -421,9 +423,17 @@ def top_setups_tab(selected_date: pd.Timestamp, basic: pd.DataFrame) -> None:
         df["Tightness (3D)"] = df.get("tight_3d_range", 0)
         df["Volume vs 50D"] = df.get("vol_ratio_50", 0)
         df["Prior Move"] = df.get("gain_6m", 0)
-        view = df.rename(columns={"symbol":"Symbol", "basic_industry":"Basic Industry", "buy_priority_score":"Priority Score", "ipo_setup_score":"Priority Score"})
+        
+        # Safely extract the priority score to prevent PyArrow duplication crashes
+        if "IPO" in title:
+            df["Priority Score"] = df.get("ipo_setup_score", "—")
+        else:
+            df["Priority Score"] = df.get("buy_priority_score", "—")
+            
+        view = df.rename(columns={"symbol":"Symbol", "basic_industry":"Basic Industry"})
         keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Ind. Members", "Priority Score", "Tightness (3D)", "Volume vs 50D", "Prior Move"]
         view = view[[c for c in keep if c in view.columns]]
+        
         for c in ["Tightness (3D)", "Volume vs 50D", "Prior Move"]:
             if c in view.columns: view[c] = view[c].map(format_percent)
         show_table(view, max(250, 38 * len(view) + 60), chart_links=True)
