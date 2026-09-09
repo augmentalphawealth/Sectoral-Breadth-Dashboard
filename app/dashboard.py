@@ -74,57 +74,43 @@ def handle_scroll():
 
 
 def clean_text(value: object) -> str:
-    if value is None or pd.isna(value):
-        return "Unclassified"
+    if value is None or pd.isna(value): return "Unclassified"
     text = str(value).strip()
     return text if text else "Unclassified"
 
 
 def number(value: object, default: float = 0.0) -> float:
     try:
-        if value is None or pd.isna(value):
-            return default
+        if value is None or pd.isna(value): return default
         return float(value)
-    except (TypeError, ValueError):
-        return default
+    except (TypeError, ValueError): return default
 
 
 def format_number(value: object, decimals: int = 1) -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    try:
-        return f"{float(value):,.{decimals}f}"
-    except (TypeError, ValueError):
-        return "—"
+    if value is None or pd.isna(value): return "—"
+    try: return f"{float(value):,.{decimals}f}"
+    except (TypeError, ValueError): return "—"
 
 
 def format_signed(value: object, decimals: int = 1) -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    try:
-        return f"{float(value):+,.{decimals}f}"
-    except (TypeError, ValueError):
-        return "—"
+    if value is None or pd.isna(value): return "—"
+    try: return f"{float(value):+,.{decimals}f}"
+    except (TypeError, ValueError): return "—"
 
 
 def format_integer(value: object) -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    try:
-        return f"{int(round(float(value))):,}"
-    except (TypeError, ValueError):
-        return "—"
+    if value is None or pd.isna(value): return "—"
+    try: return f"{int(round(float(value))):,}"
+    except (TypeError, ValueError): return "—"
 
 
 def format_percent(value: object) -> str:
-    if value is None or pd.isna(value):
-        return "—"
+    if value is None or pd.isna(value): return "—"
     try:
         raw = float(value)
         percent = raw * 100.0 if abs(raw) <= 1.5 else raw
         return f"{percent:,.1f}%"
-    except (TypeError, ValueError):
-        return "—"
+    except (TypeError, ValueError): return "—"
 
 
 def score_color(value: object) -> str:
@@ -177,15 +163,13 @@ def apply_chart_style(figure: go.Figure, height: int) -> go.Figure:
 @st.cache_data(show_spinner=False)
 def load_dates(path: str, modified: float) -> list[pd.Timestamp]:
     frame = pd.read_parquet(path)
-    dates = sorted(pd.Timestamp(value).normalize() for value in pd.to_datetime(frame["date"], errors="coerce").dropna().unique())
-    return dates
+    return sorted(pd.Timestamp(value).normalize() for value in pd.to_datetime(frame["date"], errors="coerce").dropna().unique())
 
 
 @st.cache_data(show_spinner=False)
 def load_snapshot(path: str, modified: float) -> pd.DataFrame:
     frame = pd.read_parquet(path)
-    if "date" in frame.columns:
-        frame["date"] = pd.to_datetime(frame["date"], errors="coerce").dt.normalize()
+    if "date" in frame.columns: frame["date"] = pd.to_datetime(frame["date"], errors="coerce").dt.normalize()
     return frame
 
 
@@ -195,8 +179,7 @@ def snapshot_path(selected_date: pd.Timestamp, filename: str) -> Path:
 
 def load_selected_snapshot(selected_date: pd.Timestamp, filename: str) -> pd.DataFrame:
     path = snapshot_path(selected_date, filename)
-    if not path.exists():
-        raise FileNotFoundError(f"Prepared snapshot is unavailable: {path.relative_to(ROOT)}")
+    if not path.exists(): raise FileNotFoundError(f"Prepared snapshot is unavailable: {path.relative_to(ROOT)}")
     return load_snapshot(str(path), path.stat().st_mtime)
 
 
@@ -265,16 +248,22 @@ def select_group_everywhere(group_kind: str, group_name: str) -> None:
 def render_improver_cards(frame: pd.DataFrame, group_column: str, title: str) -> None:
     score_column = "leadership_score" if "leadership_score" in frame.columns else "strength_score"
     if score_column not in frame.columns: return
+    
     data = frame.copy()
+    data["members"] = pd.to_numeric(data.get("members", 0), errors="coerce").fillna(0).astype(int)
+    # Cards only focus on groups with >= 5 members to prevent noise from micro-industries
+    data = data[data["members"] >= 5]
+    
     data["_score"] = pd.to_numeric(data[score_column], errors="coerce").fillna(0.0)
     data["_change"] = pd.to_numeric(data.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
     data["_priority"] = pd.to_numeric(data.get("improver_priority", 0.65 * data["_score"] + 0.35 * data["_change"].clip(lower=0)), errors="coerce").fillna(0.0)
     data = data[data["_change"] > 0].sort_values(["_priority", "_change"], ascending=[False, False]).head(TOP_INDUSTRIES).reset_index(drop=True)
     
+    if data.empty: return
     st.markdown(f"### {title} Leadership Improvers")
     for rank, row in data.iterrows():
         name = clean_text(row[group_column])
-        members = format_integer(row.get("members", 0))
+        members = format_integer(row["members"])
         status, status_color, status_bg = leadership_status(row["_score"], row["_change"])
         st.markdown(
             f"<div class='improver-card' style='border-left-color:{status_color};'><div style='display:flex;justify-content:space-between;gap:12px;align-items:start;'><div style='min-width:0;'><div class='improver-name'>{rank + 1}. {name}</div><div class='improver-meta'><span class='status-pill' style='color:{status_color};background:{status_bg};'>{status}</span> | {members} Members</div></div><div style='display:flex;gap:18px;flex-shrink:0;'><div class='improver-number' style='color:{score_color(row["_score"])};'>{format_number(row["_score"])}<div class='improver-meta'>Current score</div></div><div class='improver-number' style='color:{change_color(row["_change"])};'>{format_signed(row["_change"])}<div class='improver-meta'>5-session change</div></div></div></div></div>",
@@ -291,29 +280,46 @@ def render_leadership_table(frame: pd.DataFrame, group_column: str, title: str) 
     data = frame.copy()
     data["_score"] = pd.to_numeric(data[score_column], errors="coerce").fillna(0.0)
     data["_change"] = pd.to_numeric(data.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
-    data = data.sort_values(["_score", "_change"], ascending=[False, False]).reset_index(drop=True)
+    data["members"] = pd.to_numeric(data.get("members", 0), errors="coerce").fillna(0).astype(int)
+    
+    # Split the dataset: >= 5 members vs < 5 members
+    main_data = data[data["members"] >= 5].sort_values(["_score", "_change"], ascending=[False, False]).reset_index(drop=True)
+    small_data = data[data["members"] < 5].sort_values(["_score", "_change"], ascending=[False, False]).reset_index(drop=True)
 
-    st.markdown(f"### {title} Leadership")
-    with st.container(height=550):
-        hcols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
-        hcols[0].markdown("<div class='header-row'>Rank</div>", unsafe_allow_html=True)
-        hcols[1].markdown(f"<div class='header-row'>{title}</div>", unsafe_allow_html=True)
-        hcols[2].markdown("<div class='header-row'>Members</div>", unsafe_allow_html=True)
-        hcols[3].markdown("<div class='header-row'>Score</div>", unsafe_allow_html=True)
-        hcols[4].markdown("<div class='header-row'>5D Chg</div>", unsafe_allow_html=True)
-        hcols[5].markdown("<div class='header-row'>Status</div>", unsafe_allow_html=True)
-        hcols[6].markdown("<div class='header-row'>Action</div>", unsafe_allow_html=True)
+    def build_table(df: pd.DataFrame, table_title: str, is_main: bool):
+        st.markdown(f"### {table_title}")
+        if df.empty:
+            st.info(f"No records found for {table_title}.")
+            return
+            
+        with st.container(height=max(120, min(550, 42 * len(df) + 60))):
+            hcols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
+            hcols[0].markdown("<div class='header-row'>Rank</div>", unsafe_allow_html=True)
+            hcols[1].markdown(f"<div class='header-row'>{title}</div>", unsafe_allow_html=True)
+            hcols[2].markdown("<div class='header-row'>Members</div>", unsafe_allow_html=True)
+            hcols[3].markdown("<div class='header-row'>Score</div>", unsafe_allow_html=True)
+            hcols[4].markdown("<div class='header-row'>5D Chg</div>", unsafe_allow_html=True)
+            hcols[5].markdown("<div class='header-row'>Status</div>", unsafe_allow_html=True)
+            hcols[6].markdown("<div class='header-row'>Action</div>", unsafe_allow_html=True)
 
-        for idx, row in data.iterrows():
-            cols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
-            cols[0].markdown(f"<div class='table-row'>{idx + 1}</div>", unsafe_allow_html=True)
-            cols[1].markdown(f"<div class='table-row'><b>{clean_text(row[group_column])}</b></div>", unsafe_allow_html=True)
-            cols[2].markdown(f"<div class='table-row'>{format_integer(row.get('members', 0))}</div>", unsafe_allow_html=True)
-            cols[3].markdown(f"<div class='table-row' style='color:{score_color(row['_score'])}'><b>{format_number(row['_score'])}</b></div>", unsafe_allow_html=True)
-            cols[4].markdown(f"<div class='table-row'>{change_indicator(row['_change'])}</div>", unsafe_allow_html=True)
-            cols[5].markdown(f"<div class='table-row' style='font-size:0.8rem; color:{MUTED};'>{leadership_status(row['_score'], row['_change'])[0]}</div>", unsafe_allow_html=True)
-            if cols[6].button("↗ Constituents", key=f"tbl_btn_{group_column}_{idx}", type="tertiary"):
-                select_group_everywhere(group_column, row[group_column])
+            for idx, row in df.iterrows():
+                cols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
+                cols[0].markdown(f"<div class='table-row'>{idx + 1}</div>", unsafe_allow_html=True)
+                cols[1].markdown(f"<div class='table-row'><b>{clean_text(row[group_column])}</b></div>", unsafe_allow_html=True)
+                cols[2].markdown(f"<div class='table-row'>{format_integer(row['members'])}</div>", unsafe_allow_html=True)
+                cols[3].markdown(f"<div class='table-row' style='color:{score_color(row['_score'])}'><b>{format_number(row['_score'])}</b></div>", unsafe_allow_html=True)
+                cols[4].markdown(f"<div class='table-row'>{change_indicator(row['_change'])}</div>", unsafe_allow_html=True)
+                cols[5].markdown(f"<div class='table-row' style='font-size:0.8rem; color:{MUTED};'>{leadership_status(row['_score'], row['_change'])[0]}</div>", unsafe_allow_html=True)
+                key_prefix = "main" if is_main else "small"
+                if cols[6].button("↗ Constituents", key=f"tbl_btn_{group_column}_{key_prefix}_{idx}", type="tertiary"):
+                    select_group_everywhere(group_column, row[group_column])
+
+    # Render Main Table
+    build_table(main_data, f"{title} Leadership", is_main=True)
+    
+    # Render Small Table (only if data exists)
+    if not small_data.empty:
+        build_table(small_data, f"Small {title} (< 5 Stocks)", is_main=False)
 
 
 def render_constituents(stock: pd.DataFrame, groups: pd.DataFrame, group_column: str, title: str) -> None:
@@ -321,6 +327,7 @@ def render_constituents(stock: pd.DataFrame, groups: pd.DataFrame, group_column:
     st.markdown(f"### {title} Constituents")
     if group_column not in stock.columns or group_column not in groups.columns: return
 
+    # Dropdown includes ALL industries (both large and small)
     ordered = groups.copy()
     ordered["_change"] = pd.to_numeric(ordered.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
     options = [clean_text(value) for value in ordered.sort_values("_change", ascending=False)[group_column].dropna().unique()]
@@ -395,7 +402,6 @@ def top_setups_tab(selected_date: pd.Timestamp, basic: pd.DataFrame) -> None:
         st.error(str(e))
         return
 
-    # Map member counts for context
     if not basic.empty and "basic_industry" in basic.columns and "members" in basic.columns:
         member_map = basic.set_index("basic_industry")["members"].to_dict()
         established["Ind. Members"] = established.get("basic_industry", pd.Series()).map(lambda x: member_map.get(x, 0))
@@ -433,7 +439,6 @@ def render_intraday_tab():
     st.markdown("### Intraday Sector Movers")
     if intraday_file.exists():
         df = pd.read_parquet(intraday_file)
-        # Check if members exist, else show what is available
         st.dataframe(df, use_container_width=True, hide_index=True)
     else:
         st.info("Intraday sector data is not available. The intraday workflow runs every 30 minutes during market hours.")
