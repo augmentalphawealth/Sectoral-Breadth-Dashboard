@@ -3,8 +3,8 @@ name: sectoral-breadth-dashboard-eod
 on:
   workflow_dispatch:
   schedule:
-    # 12:30 UTC = 6:00 PM IST, Monday to Friday.
-    - cron: "30 12 * * 1-5"
+    # 14:30 UTC = 8:00 PM IST, Monday to Friday. (Guarantees SA repo has finished running)
+    - cron: "30 14 * * 1-5"
 
 permissions:
   contents: write
