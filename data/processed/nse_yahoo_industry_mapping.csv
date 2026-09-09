@@ -34,21 +34,21 @@ INE360C01024,DPSCLTD,DPSC Limited,DPSCLTD.NS,Utilities,Utilities - Regulated Ele
 INE546V01010,EIFFL,Euro India Fresh Foods Limited,EIFFL.NS,Consumer Defensive,Packaged Foods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
 INE819L01012,ELGIRUBCO,Elgi Rubber Company Limited,ELGIRUBCO.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
 INE593W01028,FOCUS,Focus Lighting and Fixtures Limited,FOCUS.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-08T13:05:07Z,1
-INE691Z01023,GANGAFORGE,Ganga Forging Limited,GANGAFORGE.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE669X01032,GEEKAYWIRE,Geekay Wires Limited,GEEKAYWIRE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE947T01022,GICL,Globe International Carriers Limited,GICL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE528A01020,GKWLIMITED,GKW Limited,GKWLIMITED.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE291W01037,GLOBAL,Global Education Limited,GLOBAL.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE581X01021,GLOBE,GLOBE ENTERPRISES (INDIA) LIMITED,GLOBE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE361K01017,GRADIENTE,Gradiente Infotainment Limited,GRADIENTE.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE646C01018,GROBTEA,The Grob Tea Company Limited,GROBTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE586X01012,GTECJAINX,G-TEC JAINX EDUCATION LIMITED,GTECJAINX.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE382T01030,GVPTECH,GVP Infotech Limited,GVPTECH.NS,Technology,Information Technology Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE558R01013,HECPROJECT,HEC Infra Projects Limited,HECPROJECT.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE642Y01029,HINDCON,Hindcon Chemicals Limited,HINDCON.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE520Y01019,ICEMAKE,Ice Make Refrigeration Limited,ICEMAKE.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE01GN01025,IRISDOREME,Iris Clothings Limited,IRISDOREME.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE696V01013,JAIPURKURT,Nandani Creation Limited,JAIPURKURT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE691Z01023,GANGAFORGE,Ganga Forging Limited,GANGAFORGE.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE669X01032,GEEKAYWIRE,Geekay Wires Limited,GEEKAYWIRE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE947T01022,GICL,Globe International Carriers Limited,GICL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE528A01020,GKWLIMITED,GKW Limited,GKWLIMITED.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE291W01037,GLOBAL,Global Education Limited,GLOBAL.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE581X01021,GLOBE,GLOBE ENTERPRISES (INDIA) LIMITED,GLOBE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE361K01017,GRADIENTE,Gradiente Infotainment Limited,GRADIENTE.NS,Communication Services,Entertainment,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE646C01018,GROBTEA,The Grob Tea Company Limited,GROBTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE586X01012,GTECJAINX,G-TEC JAINX EDUCATION LIMITED,GTECJAINX.NS,Consumer Defensive,Education & Training Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE382T01030,GVPTECH,GVP Infotech Limited,GVPTECH.NS,Technology,Information Technology Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE558R01013,HECPROJECT,HEC Infra Projects Limited,HECPROJECT.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE642Y01029,HINDCON,Hindcon Chemicals Limited,HINDCON.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE520Y01019,ICEMAKE,Ice Make Refrigeration Limited,ICEMAKE.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE01GN01025,IRISDOREME,Iris Clothings Limited,IRISDOREME.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
+INE696V01013,JAIPURKURT,Nandani Creation Limited,JAIPURKURT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
 INE412C01023,JMA,Jullundur Motor Agency (Delhi) Limited,JMA.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE839G01010,JOCIL,Jocil Limited,JOCIL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE610E01010,KALYANI,Kalyani Commercials Limited,KALYANI.NS,Consumer Cyclical,Auto & Truck Dealerships,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
