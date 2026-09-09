@@ -1,7 +1,5 @@
 # app/dashboard.py
-# Fast snapshot-only Streamlit dashboard.
-# GitHub Actions prepares every calculation and every date snapshot. This app
-# only reads the selected small snapshot and presents it.
+# Fast snapshot-only Streamlit dashboard with intraday support and deep linking.
 
 from __future__ import annotations
 
@@ -11,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
@@ -52,11 +51,26 @@ st.markdown(
     .status-pill {display:inline-block; padding:.16rem .50rem; border-radius:999px; font-size:.74rem; font-weight:700; white-space:nowrap;}
     div.stButton > button[kind="tertiary"] {padding:0; min-height:0; border:0; color:#1D4ED8; font-size:.74rem; justify-content:flex-start;}
     div.stButton > button[kind="tertiary"]:hover {color:#1E40AF; text-decoration:underline;}
+    .header-row {font-weight:600; font-size:0.85rem; color:#64748B; border-bottom:1px solid #E2E8F0; padding-bottom:0.5rem; margin-bottom:0.5rem;}
+    .table-row {font-size:0.9rem; padding:0.4rem 0; border-bottom:1px solid #F1F5F9;}
     @media (max-width:800px) {.block-container {padding-left:.7rem; padding-right:.7rem;}.improver-name {font-size:.85rem;}.improver-number {font-size:.89rem;}}
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+
+def handle_scroll():
+    if "scroll_target" in st.session_state:
+        target = st.session_state["scroll_target"]
+        js = f"""
+        <script>
+            var el = window.parent.document.getElementById('{target}');
+            if (el) {{ el.scrollIntoView({{behavior: 'smooth', block: 'start'}}); }}
+        </script>
+        """
+        components.html(js, height=0)
+        del st.session_state["scroll_target"]
 
 
 def clean_text(value: object) -> str:
@@ -115,63 +129,45 @@ def format_percent(value: object) -> str:
 
 def score_color(value: object) -> str:
     value = number(value)
-    if value >= 70:
-        return DARK_GREEN
-    if value >= 60:
-        return GREEN
-    if value >= 50:
-        return AMBER
+    if value >= 70: return DARK_GREEN
+    if value >= 60: return GREEN
+    if value >= 50: return AMBER
     return RED
 
 
 def change_color(value: object) -> str:
     value = number(value)
-    if value > 0.05:
-        return GREEN
-    if value < -0.05:
-        return RED
+    if value > 0.05: return GREEN
+    if value < -0.05: return RED
     return MUTED
 
 
 def change_indicator(value: object) -> str:
     value = number(value)
-    if value > 0.05:
-        return f"🟢 {format_signed(value)}"
-    if value < -0.05:
-        return f"🔴 {format_signed(value)}"
+    if value > 0.05: return f"🟢 {format_signed(value)}"
+    if value < -0.05: return f"🔴 {format_signed(value)}"
     return f"⚪ {format_signed(value)}"
 
 
 def leadership_status(score: object, change: object) -> tuple[str, str, str]:
     score_value = number(score)
     change_value = number(change)
-    if score_value >= 70 and change_value > 0:
-        return "Strong leader · Accelerating", DARK_GREEN, LIGHT_GREEN
-    if score_value >= 70:
-        return "Strong leadership", DARK_GREEN, LIGHT_GREEN
-    if score_value >= 60 and change_value > 0:
-        return "Building leadership", GREEN, LIGHT_GREEN
-    if score_value >= 60:
-        return "Positive transition", GREEN, LIGHT_GREEN
-    if score_value >= 50 and change_value > 0:
-        return "Improving · Watchlist", AMBER, LIGHT_AMBER
-    if score_value >= 50:
-        return "Neutral transition", AMBER, LIGHT_AMBER
-    if change_value > 0:
-        return "Improving · Not yet confirmed", AMBER, LIGHT_AMBER
+    if score_value >= 70 and change_value > 0: return "Strong leader · Accelerating", DARK_GREEN, LIGHT_GREEN
+    if score_value >= 70: return "Strong leadership", DARK_GREEN, LIGHT_GREEN
+    if score_value >= 60 and change_value > 0: return "Building leadership", GREEN, LIGHT_GREEN
+    if score_value >= 60: return "Positive transition", GREEN, LIGHT_GREEN
+    if score_value >= 50 and change_value > 0: return "Improving · Watchlist", AMBER, LIGHT_AMBER
+    if score_value >= 50: return "Neutral transition", AMBER, LIGHT_AMBER
+    if change_value > 0: return "Improving · Not confirmed", AMBER, LIGHT_AMBER
     return "Weak leadership", RED, LIGHT_RED
 
 
 def apply_chart_style(figure: go.Figure, height: int) -> go.Figure:
     figure.update_layout(
-        height=height,
-        margin=dict(l=8, r=25, t=45, b=20),
-        font=dict(family="Inter, -apple-system, Segoe UI, sans-serif", size=12, color=INK),
-        title_font=dict(size=14, color=INK),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        showlegend=False,
-        hoverlabel=dict(bgcolor="white", font_color=INK),
+        height=height, margin=dict(l=8, r=25, t=45, b=20),
+        font=dict(family="Inter, -apple-system, sans-serif", size=12, color=INK),
+        title_font=dict(size=14, color=INK), paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)", showlegend=False,
     )
     figure.update_xaxes(showgrid=True, gridcolor="#E2E8F0", zeroline=False)
     figure.update_yaxes(showgrid=False)
@@ -181,11 +177,7 @@ def apply_chart_style(figure: go.Figure, height: int) -> go.Figure:
 @st.cache_data(show_spinner=False)
 def load_dates(path: str, modified: float) -> list[pd.Timestamp]:
     frame = pd.read_parquet(path)
-    if "date" not in frame.columns:
-        raise ValueError("dashboard_dates.parquet is missing the date column")
     dates = sorted(pd.Timestamp(value).normalize() for value in pd.to_datetime(frame["date"], errors="coerce").dropna().unique())
-    if not dates:
-        raise ValueError("dashboard_dates.parquet has no valid dates")
     return dates
 
 
@@ -211,43 +203,23 @@ def load_selected_snapshot(selected_date: pd.Timestamp, filename: str) -> pd.Dat
 def load_trend(group_kind: str, selected_date: pd.Timestamp, group_name: str) -> pd.DataFrame:
     filename = f"{group_kind}_history.parquet"
     path = PROCESSED / f"dashboard_{filename}"
-    if not path.exists():
-        return pd.DataFrame()
+    if not path.exists(): return pd.DataFrame()
     history = load_snapshot(str(path), path.stat().st_mtime)
-    group_column = group_kind
-    if group_column not in history.columns or "date" not in history.columns:
-        return pd.DataFrame()
-    result = history[(history[group_column].map(clean_text) == group_name) & (history["date"] <= selected_date)].copy()
+    if group_kind not in history.columns or "date" not in history.columns: return pd.DataFrame()
+    result = history[(history[group_kind].map(clean_text) == group_name) & (history["date"] <= selected_date)].copy()
     return result.sort_values("date").tail(30)
-
-
-def format_sync_time() -> str:
-    if not SYNC_FILE.exists():
-        return "Not available"
-    text = SYNC_FILE.read_text(encoding="utf-8").strip()
-    if not text:
-        return "Not available"
-    try:
-        timestamp = pd.Timestamp(text.replace("Z", "+00:00"))
-        timestamp = timestamp.tz_localize("Asia/Kolkata") if timestamp.tzinfo is None else timestamp.tz_convert("Asia/Kolkata")
-        return timestamp.strftime("%d %b %Y, %I:%M %p IST")
-    except (TypeError, ValueError):
-        return text.replace("T", " ").replace("Z", "")
 
 
 def resolve_date(requested: object, dates: list[pd.Timestamp]) -> pd.Timestamp:
     requested_date = pd.Timestamp(requested).normalize()
-    if requested_date in dates:
-        return requested_date
+    if requested_date in dates: return requested_date
     earlier = [date for date in dates if date <= requested_date]
     return earlier[-1] if earlier else dates[0]
 
 
 def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
     state_key = "global_analysis_date"
-    widget_key = "global_analysis_date_calendar"
-    if state_key not in st.session_state:
-        st.session_state[state_key] = dates[-1]
+    if state_key not in st.session_state: st.session_state[state_key] = dates[-1]
     selected = resolve_date(st.session_state[state_key], dates)
     st.session_state[state_key] = selected
 
@@ -259,13 +231,8 @@ def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
             st.rerun()
     with calendar:
         requested = st.date_input(
-            "Analysis date",
-            value=selected.date(),
-            min_value=dates[0].date(),
-            max_value=dates[-1].date(),
-            key=f"{widget_key}_{selected.strftime('%Y%m%d')}",
-            label_visibility="collapsed",
-            format="DD/MM/YYYY",
+            "Analysis date", value=selected.date(), min_value=dates[0].date(), max_value=dates[-1].date(),
+            label_visibility="collapsed", format="DD/MM/YYYY"
         )
     with next_button:
         if st.button("›", key="global_next_date", disabled=index == len(dates) - 1, use_container_width=True):
@@ -278,320 +245,229 @@ def global_date_picker(dates: list[pd.Timestamp]) -> pd.Timestamp:
         st.rerun()
     with label:
         st.markdown(f"<div style='padding-top:.35rem; color:{MUTED}; font-size:.82rem;'>Analysis date:<br><b style='color:{INK};'>{resolved.strftime('%d %b %Y')}</b></div>", unsafe_allow_html=True)
-    if pd.Timestamp(requested).normalize() != resolved:
-        st.caption(f"{pd.Timestamp(requested).strftime('%d %b %Y')} has no prepared EOD snapshot. Showing {resolved.strftime('%d %b %Y')}.")
     return resolved
 
 
 def show_table(data: pd.DataFrame, height: int, chart_links: bool = False) -> None:
     view = data.copy()
     view.columns = [str(column) for column in view.columns]
-    view = view.loc[:, ~view.columns.duplicated(keep="first")]
-    config: dict[str, object] = {}
-    if chart_links and "Chart" in view.columns:
-        config["Chart"] = st.column_config.LinkColumn("Chart", display_text="Open ↗")
+    config = {"Chart": st.column_config.LinkColumn("Chart", display_text="Open ↗")} if chart_links and "Chart" in view.columns else {}
     st.dataframe(view, use_container_width=True, hide_index=True, height=height, column_config=config)
-
-
-def get_score_column(frame: pd.DataFrame) -> str:
-    if "leadership_score" in frame.columns:
-        return "leadership_score"
-    if "strength_score" in frame.columns:
-        return "strength_score"
-    return ""
-
-
-def get_change_column(frame: pd.DataFrame) -> str:
-    return "leadership_change_5d" if "leadership_change_5d" in frame.columns else ""
 
 
 def select_group_everywhere(group_kind: str, group_name: str) -> None:
     st.session_state[f"selected_{group_kind}_constituents"] = group_name
     st.session_state[f"selected_{group_kind}_trend"] = group_name
-    st.session_state["selection_notice"] = f"{group_kind.replace('_', ' ').title()}: {group_name}"
+    st.session_state["scroll_target"] = f"constituents_anchor_{group_kind}"
     st.rerun()
 
 
 def render_improver_cards(frame: pd.DataFrame, group_column: str, title: str) -> None:
-    score_column = get_score_column(frame)
-    change_column = get_change_column(frame)
-    if not score_column or not change_column or group_column not in frame.columns:
-        st.info(f"Prepared {title} snapshot does not contain the required leadership fields.")
-        return
+    score_column = "leadership_score" if "leadership_score" in frame.columns else "strength_score"
+    if score_column not in frame.columns: return
     data = frame.copy()
     data["_score"] = pd.to_numeric(data[score_column], errors="coerce").fillna(0.0)
-    data["_change"] = pd.to_numeric(data[change_column], errors="coerce").fillna(0.0)
-    if "improver_priority" in data.columns:
-        data["_priority"] = pd.to_numeric(data["improver_priority"], errors="coerce").fillna(0.0)
-    else:
-        data["_priority"] = 0.65 * data["_score"] + 0.35 * data["_change"].clip(lower=0)
-    data = data[data["_change"] > 0].sort_values(["_priority", "_change", "_score"], ascending=[False, False, False]).head(TOP_INDUSTRIES).reset_index(drop=True)
-    if data.empty:
-        st.info(f"No {title} group improved over the last five available trading sessions.")
-        return
+    data["_change"] = pd.to_numeric(data.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
+    data["_priority"] = pd.to_numeric(data.get("improver_priority", 0.65 * data["_score"] + 0.35 * data["_change"].clip(lower=0)), errors="coerce").fillna(0.0)
+    data = data[data["_change"] > 0].sort_values(["_priority", "_change"], ascending=[False, False]).head(TOP_INDUSTRIES).reset_index(drop=True)
+    
     st.markdown(f"### {title} Leadership Improvers")
     for rank, row in data.iterrows():
         name = clean_text(row[group_column])
+        members = format_integer(row.get("members", 0))
         status, status_color, status_bg = leadership_status(row["_score"], row["_change"])
         st.markdown(
-            f"<div class='improver-card' style='border-left-color:{status_color};'><div style='display:flex;justify-content:space-between;gap:12px;align-items:start;'><div style='min-width:0;'><div class='improver-name'>{rank + 1}. {name}</div><div class='improver-meta'><span class='status-pill' style='color:{status_color};background:{status_bg};'>{status}</span></div></div><div style='display:flex;gap:18px;flex-shrink:0;'><div class='improver-number' style='color:{score_color(row["_score"])};'>{format_number(row["_score"])}<div class='improver-meta'>Current score</div></div><div class='improver-number' style='color:{change_color(row["_change"])};'>{format_signed(row["_change"])}<div class='improver-meta'>5-session change</div></div></div></div></div>",
+            f"<div class='improver-card' style='border-left-color:{status_color};'><div style='display:flex;justify-content:space-between;gap:12px;align-items:start;'><div style='min-width:0;'><div class='improver-name'>{rank + 1}. {name}</div><div class='improver-meta'><span class='status-pill' style='color:{status_color};background:{status_bg};'>{status}</span> | {members} Members</div></div><div style='display:flex;gap:18px;flex-shrink:0;'><div class='improver-number' style='color:{score_color(row["_score"])};'>{format_number(row["_score"])}<div class='improver-meta'>Current score</div></div><div class='improver-number' style='color:{change_color(row["_change"])};'>{format_signed(row["_change"])}<div class='improver-meta'>5-session change</div></div></div></div></div>",
             unsafe_allow_html=True,
         )
-        if st.button("↗ constituents + chart", key=f"open_{group_column}_{rank}_{name}", type="tertiary"):
+        if st.button("↗ Jump to Constituents + Chart", key=f"open_imp_{group_column}_{rank}_{name}", type="tertiary"):
             select_group_everywhere(group_column, name)
 
 
 def render_leadership_table(frame: pd.DataFrame, group_column: str, title: str) -> None:
-    score_column = get_score_column(frame)
-    change_column = get_change_column(frame)
-    if not score_column or group_column not in frame.columns:
-        st.info(f"Prepared {title} snapshot does not contain leadership data.")
-        return
+    score_column = "leadership_score" if "leadership_score" in frame.columns else "strength_score"
+    if score_column not in frame.columns: return
+    
     data = frame.copy()
     data["_score"] = pd.to_numeric(data[score_column], errors="coerce").fillna(0.0)
-    data["_change"] = pd.to_numeric(data[change_column], errors="coerce").fillna(0.0) if change_column else 0.0
+    data["_change"] = pd.to_numeric(data.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
     data = data.sort_values(["_score", "_change"], ascending=[False, False]).reset_index(drop=True)
-    table = pd.DataFrame({
-        "Rank": range(1, len(data) + 1),
-        title: data[group_column].map(clean_text),
-        "Leadership Score": data["_score"].map(format_number),
-        "5D Leadership Change": data["_change"].map(change_indicator),
-        "Status": [leadership_status(score, change)[0] for score, change in zip(data["_score"], data["_change"])],
-    })
-    st.markdown(f"### {title} leadership table")
-    show_table(table, max(320, min(720, 34 * len(table) + 60)))
+
+    st.markdown(f"### {title} Leadership")
+    with st.container(height=550):
+        hcols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
+        hcols[0].markdown("<div class='header-row'>Rank</div>", unsafe_allow_html=True)
+        hcols[1].markdown(f"<div class='header-row'>{title}</div>", unsafe_allow_html=True)
+        hcols[2].markdown("<div class='header-row'>Members</div>", unsafe_allow_html=True)
+        hcols[3].markdown("<div class='header-row'>Score</div>", unsafe_allow_html=True)
+        hcols[4].markdown("<div class='header-row'>5D Chg</div>", unsafe_allow_html=True)
+        hcols[5].markdown("<div class='header-row'>Status</div>", unsafe_allow_html=True)
+        hcols[6].markdown("<div class='header-row'>Action</div>", unsafe_allow_html=True)
+
+        for idx, row in data.iterrows():
+            cols = st.columns([0.6, 2.5, 1, 1.2, 1.2, 2.0, 1.5])
+            cols[0].markdown(f"<div class='table-row'>{idx + 1}</div>", unsafe_allow_html=True)
+            cols[1].markdown(f"<div class='table-row'><b>{clean_text(row[group_column])}</b></div>", unsafe_allow_html=True)
+            cols[2].markdown(f"<div class='table-row'>{format_integer(row.get('members', 0))}</div>", unsafe_allow_html=True)
+            cols[3].markdown(f"<div class='table-row' style='color:{score_color(row['_score'])}'><b>{format_number(row['_score'])}</b></div>", unsafe_allow_html=True)
+            cols[4].markdown(f"<div class='table-row'>{change_indicator(row['_change'])}</div>", unsafe_allow_html=True)
+            cols[5].markdown(f"<div class='table-row' style='font-size:0.8rem; color:{MUTED};'>{leadership_status(row['_score'], row['_change'])[0]}</div>", unsafe_allow_html=True)
+            if cols[6].button("↗ Constituents", key=f"tbl_btn_{group_column}_{idx}", type="tertiary"):
+                select_group_everywhere(group_column, row[group_column])
 
 
 def render_constituents(stock: pd.DataFrame, groups: pd.DataFrame, group_column: str, title: str) -> None:
-    if group_column not in stock.columns or group_column not in groups.columns:
-        st.info(f"No prepared {title} constituent data is available.")
-        return
-    change_column = get_change_column(groups)
+    st.markdown(f"<div id='constituents_anchor_{group_column}' style='padding-top:20px;'></div>", unsafe_allow_html=True)
+    st.markdown(f"### {title} Constituents")
+    if group_column not in stock.columns or group_column not in groups.columns: return
+
     ordered = groups.copy()
-    if change_column:
-        ordered["_change"] = pd.to_numeric(ordered[change_column], errors="coerce").fillna(0.0)
-        ordered = ordered.sort_values("_change", ascending=False)
-    options = [clean_text(value) for value in ordered[group_column].dropna().unique()]
-    if not options:
-        return
+    ordered["_change"] = pd.to_numeric(ordered.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
+    options = [clean_text(value) for value in ordered.sort_values("_change", ascending=False)[group_column].dropna().unique()]
+    
     state_key = f"selected_{group_column}_constituents"
-    selected = st.session_state.get(state_key)
-    if selected not in options:
-        selected = options[0]
-    selected = st.selectbox(f"Select {title} for constituents", options, index=options.index(selected), key=f"{state_key}_widget")
+    selected = st.session_state.get(state_key, options[0] if options else "Unclassified")
+    selected = st.selectbox(f"Select {title}", options, index=options.index(selected) if selected in options else 0, key=f"{state_key}_widget")
     st.session_state[state_key] = selected
     st.session_state[f"selected_{group_column}_trend"] = selected
 
     data = stock[stock[group_column].map(clean_text) == selected].copy()
-    if data.empty:
-        st.info(f"No EOD constituent stock records are available for {selected} on this date.")
-        return
-    if "ret_20d" in data.columns:
-        data = data.sort_values("ret_20d", ascending=False)
-    data = data.head(30).reset_index(drop=True)
+    if data.empty: return
+
+    data = data.sort_values("ret_20d", ascending=False).head(30).reset_index(drop=True)
     data.insert(0, "Rank", range(1, len(data) + 1))
     data["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + data["symbol"].astype(str)
-    rename = {"symbol":"Symbol", "close":"Close", "ret_20d":"20D Return", "ret_60d":"60D Return", "gain_6m":"6M Gain", "stock_strength_score":"Strength"}
-    view = data.rename(columns=rename)
-    keep = ["Rank", "Symbol", "Chart", "Close", "20D Return", "60D Return", "6M Gain", "Strength", "established_buy_setup", "ipo_buy_setup"]
-    view = view[[column for column in keep if column in view.columns]]
-    for column in ["20D Return", "60D Return", "6M Gain"]:
-        if column in view.columns:
-            view[column] = view[column].map(format_percent)
-    for column in ["Close", "Strength"]:
-        if column in view.columns:
-            view[column] = view[column].map(format_number)
-    st.markdown(f"### {title} constituents")
+    
+    view = data.rename(columns={"symbol":"Symbol", "close":"Close", "ret_20d":"20D Return", "ret_60d":"60D Return", "gain_6m":"6M Gain", "stock_strength_score":"Strength"})
+    keep = ["Rank", "Symbol", "Chart", "Close", "20D Return", "60D Return", "6M Gain", "Strength", "established_buy_setup"]
+    view = view[[c for c in keep if c in view.columns]]
+    for c in ["20D Return", "60D Return", "6M Gain"]:
+        if c in view.columns: view[c] = view[c].map(format_percent)
+    for c in ["Close", "Strength"]:
+        if c in view.columns: view[c] = view[c].map(format_number)
     show_table(view, 420, chart_links=True)
 
 
 def render_trend(groups: pd.DataFrame, selected_date: pd.Timestamp, group_kind: str, group_column: str, title: str) -> None:
-    if group_column not in groups.columns:
-        return
-    change_column = get_change_column(groups)
-    score_column = get_score_column(groups)
+    st.markdown(f"### Selected {title.lower()} trend")
+    if group_column not in groups.columns: return
+    
     ranked = groups.copy()
-    if score_column:
-        ranked["_score"] = pd.to_numeric(ranked[score_column], errors="coerce").fillna(0.0)
-    else:
-        ranked["_score"] = 0.0
-    if change_column:
-        ranked["_change"] = pd.to_numeric(ranked[change_column], errors="coerce").fillna(0.0)
-    else:
-        ranked["_change"] = 0.0
+    ranked["_score"] = pd.to_numeric(ranked.get("leadership_score", 0), errors="coerce").fillna(0.0)
+    ranked["_change"] = pd.to_numeric(ranked.get("leadership_change_5d", 0), errors="coerce").fillna(0.0)
     ranked["_priority"] = pd.to_numeric(ranked.get("improver_priority", 0.65 * ranked["_score"] + 0.35 * ranked["_change"].clip(lower=0)), errors="coerce").fillna(0.0)
-    options = [clean_text(value) for value in ranked.sort_values(["_priority", "_change"], ascending=[False, False])[group_column].dropna().unique()]
-    if not options:
-        return
+    
+    options = [clean_text(v) for v in ranked.sort_values(["_priority", "_change"], ascending=[False, False])[group_column].dropna().unique()]
     state_key = f"selected_{group_column}_trend"
-    selected = st.session_state.get(state_key)
-    if selected not in options:
-        selected = options[0]
-    selected = st.selectbox(f"Select {title} trend", options, index=options.index(selected), key=f"{state_key}_widget")
-    st.session_state[state_key] = selected
-
+    selected = st.session_state.get(state_key, options[0] if options else "Unclassified")
+    selected = st.selectbox(f"View trend for {title}", options, index=options.index(selected) if selected in options else 0, key=f"{state_key}_widget")
+    
     selected_row = ranked[ranked[group_column].map(clean_text) == selected]
     score = number(selected_row["_score"].iloc[-1]) if not selected_row.empty else 0.0
     change = number(selected_row["_change"].iloc[-1]) if not selected_row.empty else 0.0
-    regime = clean_text(selected_row["regime"].iloc[-1]) if "regime" in selected_row.columns and not selected_row.empty else "Neutral Transition"
+    
     c1, c2, c3 = st.columns(3)
     c1.metric("Current leadership", format_number(score))
     c2.metric("5-session change", format_signed(change))
-    c3.metric("Current regime", regime)
+    c3.metric("Current regime", clean_text(selected_row["regime"].iloc[-1]) if "regime" in selected_row.columns and not selected_row.empty else "Neutral")
 
     history = load_trend(group_kind, selected_date, selected)
-    if history.empty or "leadership_score" not in history.columns:
-        st.info(f"No prepared trend history is available for {selected}.")
-        return
-    history["_score"] = pd.to_numeric(history["leadership_score"], errors="coerce").fillna(0.0)
-    figure = go.Figure(go.Scatter(
-        x=history["date"], y=history["_score"], mode="lines+markers",
-        line=dict(color=score_color(score), width=3), marker=dict(size=7),
-        hovertemplate="<b>%{x|%d %b %Y}</b><br>Leadership score: %{y:.1f}<extra></extra>",
-    ))
-    for threshold, color in [(70, DARK_GREEN), (60, GREEN), (50, AMBER)]:
-        figure.add_hline(y=threshold, line_dash="dot", line_color=color, opacity=.85)
-    figure.update_layout(title=f"{selected}: Leadership Score trend", xaxis_title=None, yaxis_title="Leadership Score")
-    figure.update_yaxes(range=[0, 100])
-    st.plotly_chart(apply_chart_style(figure, 390), use_container_width=True)
+    if history.empty: return
+    history["_score"] = pd.to_numeric(history.get("leadership_score", 0), errors="coerce").fillna(0.0)
+    
+    fig = go.Figure(go.Scatter(x=history["date"], y=history["_score"], mode="lines+markers", line=dict(color=score_color(score), width=3), marker=dict(size=7)))
+    for y, c in [(70, DARK_GREEN), (60, GREEN), (50, AMBER)]: fig.add_hline(y=y, line_dash="dot", line_color=c, opacity=.85)
+    st.plotly_chart(apply_chart_style(fig.update_layout(title=f"{selected} Trend", yaxis_range=[0, 100]), 390), use_container_width=True)
 
 
 def render_group_tab(groups: pd.DataFrame, stock: pd.DataFrame, selected_date: pd.Timestamp, group_column: str, title: str) -> None:
     render_improver_cards(groups, group_column, title)
     render_leadership_table(groups, group_column, title)
     render_constituents(stock, groups, group_column, title)
-    st.markdown(f"### Selected {title.lower()} trend")
     render_trend(groups, selected_date, group_column, group_column, title)
 
 
-def stock_metric(frame: pd.DataFrame, names: list[str]) -> pd.Series:
-    for column in names:
-        if column in frame.columns:
-            return pd.to_numeric(frame[column], errors="coerce")
-    return pd.Series(0.0, index=frame.index)
-
-
-def render_setup_table(data: pd.DataFrame, title: str) -> None:
-    st.markdown(f"### {title}")
-    if data.empty:
-        st.info(f"No stocks pass the prepared {title.lower()} screen on this date.")
-        return
-    frame = data.copy().head(TOP_STOCKS).reset_index(drop=True)
-    frame.insert(0, "Rank", range(1, len(frame) + 1))
-    frame["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + frame["symbol"].astype(str)
-    frame["Tightness (3D)"] = stock_metric(frame, ["tight_3d_range", "tightness_3d", "range_3d_pct"])
-    frame["Volume vs 50D"] = stock_metric(frame, ["vol_ratio_50", "volume_ratio_50", "vol_ratio", "volume_ratio"])
-    frame["Prior Move"] = stock_metric(frame, ["gain_6m", "ret_60d", "ret_20d", "ret_120d"])
-    rename = {"symbol":"Symbol", "basic_industry":"Basic Industry", "buy_priority_score":"Priority Score", "ipo_setup_score":"Priority Score"}
-    view = frame.rename(columns=rename)
-    if "Priority Score" not in view.columns:
-        view["Priority Score"] = "—"
-    keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Priority Score", "Tightness (3D)", "Volume vs 50D", "Prior Move"]
-    view = view[[column for column in keep if column in view.columns]]
-    if "Priority Score" in view.columns:
-        view["Priority Score"] = view["Priority Score"].map(format_number)
-    for column in ["Tightness (3D)", "Volume vs 50D", "Prior Move"]:
-        if column in view.columns:
-            view[column] = view[column].map(format_percent)
-    show_table(view, max(250, 38 * len(view) + 60), chart_links=True)
-
-
-def top_setups_tab(selected_date: pd.Timestamp) -> None:
+def top_setups_tab(selected_date: pd.Timestamp, basic: pd.DataFrame) -> None:
     try:
         established = load_selected_snapshot(selected_date, "top_buy_candidates.parquet")
         ipo = load_selected_snapshot(selected_date, "ipo_watchlist.parquet")
-    except FileNotFoundError as exc:
-        st.error(str(exc))
+    except FileNotFoundError as e:
+        st.error(str(e))
         return
+
+    # Map member counts for context
+    if not basic.empty and "basic_industry" in basic.columns and "members" in basic.columns:
+        member_map = basic.set_index("basic_industry")["members"].to_dict()
+        established["Ind. Members"] = established.get("basic_industry", pd.Series()).map(lambda x: member_map.get(x, 0))
+        ipo["Ind. Members"] = ipo.get("basic_industry", pd.Series()).map(lambda x: member_map.get(x, 0))
+
     c1, c2, c3 = st.columns(3)
     c1.metric("Established qualified", format_integer(len(established)))
     c2.metric("IPO qualified", format_integer(len(ipo)))
     c3.metric("Scan date", selected_date.strftime("%d %b %Y"))
-    st.caption("Tightness, Volume vs 50D and Prior Move are precomputed GitHub-side values, displayed as percentages with one decimal.")
-    render_setup_table(established, "Top Established Setups")
-    render_setup_table(ipo, "Top IPO Setups")
+
+    def render_setup(data: pd.DataFrame, title: str):
+        st.markdown(f"### {title}")
+        if data.empty: return
+        df = data.copy().head(TOP_STOCKS).reset_index(drop=True)
+        df.insert(0, "Rank", range(1, len(df) + 1))
+        df["Chart"] = "https://in.tradingview.com/chart/?symbol=NSE:" + df["symbol"].astype(str)
+        df["Tightness (3D)"] = df.get("tight_3d_range", 0)
+        df["Volume vs 50D"] = df.get("vol_ratio_50", 0)
+        df["Prior Move"] = df.get("gain_6m", 0)
+        view = df.rename(columns={"symbol":"Symbol", "basic_industry":"Basic Industry", "buy_priority_score":"Priority Score", "ipo_setup_score":"Priority Score"})
+        keep = ["Rank", "Symbol", "Chart", "Basic Industry", "Ind. Members", "Priority Score", "Tightness (3D)", "Volume vs 50D", "Prior Move"]
+        view = view[[c for c in keep if c in view.columns]]
+        for c in ["Tightness (3D)", "Volume vs 50D", "Prior Move"]:
+            if c in view.columns: view[c] = view[c].map(format_percent)
+        show_table(view, max(250, 38 * len(view) + 60), chart_links=True)
+
+    render_setup(established, "Top Established Setups")
+    render_setup(ipo, "Top IPO Setups")
 
 
-def methodology_tab() -> None:
-    st.subheader("Methodology and data architecture")
-    st.markdown(
-        """
-        ## Fast dashboard design
-        GitHub Actions performs feature calculation, ranking, five-session change calculation, snapshot construction, classification updates and validation. Streamlit only reads the selected ready-made snapshot and displays it.
-
-        ## Global date
-        One compact Analysis Date control applies to every tab. The date list comes from `dashboard_dates.parquet`, which contains only dates for which GitHub Actions created prepared snapshots. If a calendar date is unavailable, the dashboard uses the most recent prior prepared EOD date.
-
-        ## Classification hierarchy
-        Sector, Industry and Basic Industry are sourced from the classified master. A hierarchy is complete only when all three are present. No dashboard logic guesses a missing classification. Records without verified mapping remain explicitly `Unclassified` and are tracked by the GitHub classification audit.
-
-        ## Leadership
-        Leadership Score is a 0–100 relative-strength-style measure computed in GitHub Actions. Five-session change is the current score minus the score five available trading sessions earlier. Improver Priority is 65% current leadership plus 35% positive five-session change.
-
-        ## Navigation
-        The `↗ constituents + chart` control selects the same group for both the constituent list and trend chart. The rerun is fast because only a small prepared date snapshot is read.
-
-        ## Stock setups
-        Established and IPO setup lists are produced by GitHub Actions. Tightness (3D), Volume vs 50D and Prior Move are precomputed. They are shown as percentages with one decimal; they require chart context and therefore do not use simplistic red/green flags.
-
-        ## Limits
-        This dashboard is a research tool, not a trade recommendation. Data availability depends on EOD source coverage, exchange holidays, corporate actions and classification-source publication timing.
-        """
-    )
+def render_intraday_tab():
+    intraday_file = PROCESSED / "intraday_sector_movers.parquet"
+    stocks_file = PROCESSED / "intraday_top_stocks.parquet"
+    
+    st.markdown("### Intraday Sector Movers")
+    if intraday_file.exists():
+        df = pd.read_parquet(intraday_file)
+        # Check if members exist, else show what is available
+        st.dataframe(df, use_container_width=True, hide_index=True)
+    else:
+        st.info("Intraday sector data is not available. The intraday workflow runs every 30 minutes during market hours.")
+        
+    st.markdown("### Intraday Top Stocks")
+    if stocks_file.exists():
+        stdf = pd.read_parquet(stocks_file)
+        st.dataframe(stdf, use_container_width=True, hide_index=True)
+    else:
+        st.info("Intraday stocks data is not available.")
 
 
 def main() -> None:
+    handle_scroll()
     if not DATES_FILE.exists() or not SNAPSHOT_ROOT.exists():
-        st.error("Prepared snapshot data is not available yet. Run the EOD GitHub Actions workflow once after deploying the new pipeline.")
+        st.error("Prepared snapshot data is not available yet. Run the EOD GitHub Actions workflow.")
         st.stop()
 
-    try:
-        dates = load_dates(str(DATES_FILE), DATES_FILE.stat().st_mtime)
-    except Exception as exc:
-        st.error(f"Could not load prepared dashboard dates: {exc}")
-        st.stop()
-
+    dates = load_dates(str(DATES_FILE), DATES_FILE.stat().st_mtime)
     st.title("NSE Industry Momentum Monitor")
-    st.caption(f"Last data refresh: {format_sync_time()}")
     selected_date = global_date_picker(dates)
 
-    try:
-        basic = load_selected_snapshot(selected_date, "basic_industry_snapshot.parquet")
-        industry = load_selected_snapshot(selected_date, "industry_snapshot.parquet")
-        stock = load_selected_snapshot(selected_date, "stock_snapshot.parquet")
-    except Exception as exc:
-        st.error(f"Prepared data for {selected_date.strftime('%d %b %Y')} could not be loaded: {exc}")
-        st.stop()
+    basic = load_selected_snapshot(selected_date, "basic_industry_snapshot.parquet")
+    industry = load_selected_snapshot(selected_date, "industry_snapshot.parquet")
+    stock = load_selected_snapshot(selected_date, "stock_snapshot.parquet")
+    sector = load_snapshot(str(snapshot_path(selected_date, "sector_snapshot.parquet")), 0) if snapshot_path(selected_date, "sector_snapshot.parquet").exists() else pd.DataFrame()
 
-    # Sector is stored in the stock snapshot. Sector aggregate output is also
-    # available in dashboard_sector_history.parquet for trends. Until a
-    # sector_snapshot is written, this simple current-date aggregation is only
-    # display grouping, not a scoring calculation.
-    sector = pd.DataFrame()
-    sector_snapshot = snapshot_path(selected_date, "sector_snapshot.parquet")
-    if sector_snapshot.exists():
-        sector = load_snapshot(str(sector_snapshot), sector_snapshot.stat().st_mtime)
-
-    tabs = st.tabs(["Industry Monitor", "Sector", "Industry", "Top Setups", "Methodology"])
-    with tabs[0]:
-        c1, c2, c3 = st.columns(3)
-        change_column = get_change_column(basic)
-        changes = pd.to_numeric(basic[change_column], errors="coerce").fillna(0.0) if change_column else pd.Series(dtype=float)
-        c1.metric("Industries tracked", format_integer(len(basic)))
-        c2.metric("Leadership improving", format_integer((changes > 0).sum()))
-        c3.metric("Leadership weakening", format_integer((changes < 0).sum()))
-        render_group_tab(basic, stock, selected_date, "basic_industry", "Basic Industry")
-    with tabs[1]:
-        if sector.empty:
-            st.info("Prepared Sector snapshot is not available for this date yet. Run the upgraded EOD workflow after the snapshot builder has been updated to publish sector snapshots.")
-        else:
-            render_group_tab(sector, stock, selected_date, "sector", "Sector")
-    with tabs[2]:
-        render_group_tab(industry, stock, selected_date, "industry", "Industry")
-    with tabs[3]:
-        top_setups_tab(selected_date)
-    with tabs[4]:
-        methodology_tab()
+    tabs = st.tabs(["Industry Monitor", "Sector", "Industry", "Top Setups", "Intraday (Live)", "Methodology"])
+    with tabs[0]: render_group_tab(basic, stock, selected_date, "basic_industry", "Basic Industry")
+    with tabs[1]: render_group_tab(sector, stock, selected_date, "sector", "Sector") if not sector.empty else st.info("Sector snapshot missing.")
+    with tabs[2]: render_group_tab(industry, stock, selected_date, "industry", "Industry")
+    with tabs[3]: top_setups_tab(selected_date, basic)
+    with tabs[4]: render_intraday_tab()
+    with tabs[5]: st.write("GitHub Actions builds everything. Streamlit only reads and displays.")
 
 
 if __name__ == "__main__":
