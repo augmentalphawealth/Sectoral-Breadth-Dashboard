@@ -49,27 +49,27 @@ INE642Y01029,HINDCON,Hindcon Chemicals Limited,HINDCON.NS,Basic Materials,Specia
 INE520Y01019,ICEMAKE,Ice Make Refrigeration Limited,ICEMAKE.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
 INE01GN01025,IRISDOREME,Iris Clothings Limited,IRISDOREME.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
 INE696V01013,JAIPURKURT,Nandani Creation Limited,JAIPURKURT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-09T13:03:53Z,1
-INE412C01023,JMA,Jullundur Motor Agency (Delhi) Limited,JMA.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE839G01010,JOCIL,Jocil Limited,JOCIL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE610E01010,KALYANI,Kalyani Commercials Limited,KALYANI.NS,Consumer Cyclical,Auto & Truck Dealerships,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE542Z01028,KAPSTON,Kapston Services Limited,KAPSTON.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE412C01023,JMA,Jullundur Motor Agency (Delhi) Limited,JMA.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE839G01010,JOCIL,Jocil Limited,JOCIL.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE610E01010,KALYANI,Kalyani Commercials Limited,KALYANI.NS,Consumer Cyclical,Auto & Truck Dealerships,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE542Z01028,KAPSTON,Kapston Services Limited,KAPSTON.NS,Industrials,Specialty Business Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE880L01014,KIOCL,KIOCL Limited,KIOCL.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE602G01020,KITEX,Kitex Garments Limited,KITEX.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE157H01023,KMSUGAR,K.M.Sugar Mills Limited,KMSUGAR.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE0KNW01016,KNAGRI,KN Agri Resources Limited,KNAGRI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE0KNW01016,KNAGRI,KN Agri Resources Limited,KNAGRI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE094I01018,KOLTEPATIL,Kolte - Patil Developers Limited,KOLTEPATIL.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE419A01022,KOTARISUG,Kothari Sugars And Chemicals Limited,KOTARISUG.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE720A01015,KOTHARIPET,Kothari Petrochemicals Limited,KOTHARIPET.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE419A01022,KOTARISUG,Kothari Sugars And Chemicals Limited,KOTARISUG.NS,Consumer Defensive,Confectioners,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE720A01015,KOTHARIPET,Kothari Petrochemicals Limited,KOTHARIPET.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE823A01017,KOTHARIPRO,Kothari Products Limited,KOTHARIPRO.NS,Industrials,Conglomerates,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE268B01013,KREBSBIO,Krebs Biochemicals and Industries Limited,KREBSBIO.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE506W01020,KRISHANA,Krishana Phoschem Limited,KRISHANA.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE0J5601015,KRISHNADEF,Krishna Defence And Allied Industries Limited,KRISHNADEF.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE00Z501029,KRITIKA,Kritika Wires Limited,KRITIKA.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE013801027,KSHITIJPOL,Kshitij Polyline Limited,KSHITIJPOL.NS,Industrials,Business Equipment & Supplies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE548Z01017,LAGNAM,Lagnam Spintex Limited,LAGNAM.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE262Z01023,LATTEYS,Latteys Industries Limited,LATTEYS.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE801V01019,LAXMICOT,Laxmi Cotspin Limited,LAXMICOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE0G1L01025,LEMERITE,Le Merite Exports Limited,LEMERITE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE506W01020,KRISHANA,Krishana Phoschem Limited,KRISHANA.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE0J5601015,KRISHNADEF,Krishna Defence And Allied Industries Limited,KRISHNADEF.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE00Z501029,KRITIKA,Kritika Wires Limited,KRITIKA.NS,Basic Materials,Steel,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE013801027,KSHITIJPOL,Kshitij Polyline Limited,KSHITIJPOL.NS,Industrials,Business Equipment & Supplies,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE548Z01017,LAGNAM,Lagnam Spintex Limited,LAGNAM.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE262Z01023,LATTEYS,Latteys Industries Limited,LATTEYS.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE801V01019,LAXMICOT,Laxmi Cotspin Limited,LAXMICOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
+INE0G1L01025,LEMERITE,Le Merite Exports Limited,LEMERITE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE500X01013,LEXUS,Lexus Granito (India) Limited,LEXUS.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE850E01012,LFIC,Lakshmi Finance & Industrial Corporation Limited,LFIC.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE258Y01016,LGHL,Laxmi Goldorna House Limited,LGHL.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
