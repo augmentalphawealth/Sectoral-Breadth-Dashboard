@@ -70,21 +70,21 @@ INE548Z01017,LAGNAM,Lagnam Spintex Limited,LAGNAM.NS,Consumer Cyclical,Textile M
 INE262Z01023,LATTEYS,Latteys Industries Limited,LATTEYS.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE801V01019,LAXMICOT,Laxmi Cotspin Limited,LAXMICOT.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
 INE0G1L01025,LEMERITE,Le Merite Exports Limited,LEMERITE.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-10T13:03:26Z,1
-INE500X01013,LEXUS,Lexus Granito (India) Limited,LEXUS.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE850E01012,LFIC,Lakshmi Finance & Industrial Corporation Limited,LFIC.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE258Y01016,LGHL,Laxmi Goldorna House Limited,LGHL.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE908V01012,LIBAS,Libas Consumer Products Limited,LIBAS.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE155Z01011,MACPOWER,Macpower CNC Machines Limited,MACPOWER.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE263W01010,MAHESHWARI,Maheshwari Logistics Limited,MAHESHWARI.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE01JE01028,MARINE,Marine Electricals (India) Limited,MARINE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE885F01015,MASKINVEST,Mask Investments Limited,MASKINVEST.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE900L01028,MBAPL,Madhya Bharat Agro Products Limited,MBAPL.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE813V01022,MCL,M TEK COPPER LIMITED,MCL.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE828O01033,MITCON,MITCON Consultancy & Engineering Services Limited,MITCON.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE997Y01027,MITTAL,Mittal Life Style Limited,MITTAL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE511Y01018,MMP,MMP Industries Limited,MMP.NS,Basic Materials,Aluminum,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE514Y01020,MOKSH,Moksh Ornaments Limited,MOKSH.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE365I01020,NBIFIN,N. B. I. Industrial Finance Company Limited,NBIFIN.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE500X01013,LEXUS,Lexus Granito (India) Limited,LEXUS.NS,Industrials,Building Products & Equipment,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE850E01012,LFIC,Lakshmi Finance & Industrial Corporation Limited,LFIC.NS,Financial Services,Asset Management,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE258Y01016,LGHL,Laxmi Goldorna House Limited,LGHL.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE908V01012,LIBAS,Libas Consumer Products Limited,LIBAS.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE155Z01011,MACPOWER,Macpower CNC Machines Limited,MACPOWER.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE263W01010,MAHESHWARI,Maheshwari Logistics Limited,MAHESHWARI.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE01JE01028,MARINE,Marine Electricals (India) Limited,MARINE.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE885F01015,MASKINVEST,Mask Investments Limited,MASKINVEST.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE900L01028,MBAPL,Madhya Bharat Agro Products Limited,MBAPL.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE813V01022,MCL,M TEK COPPER LIMITED,MCL.NS,Basic Materials,Copper,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE828O01033,MITCON,MITCON Consultancy & Engineering Services Limited,MITCON.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE997Y01027,MITTAL,Mittal Life Style Limited,MITTAL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE511Y01018,MMP,MMP Industries Limited,MMP.NS,Basic Materials,Aluminum,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE514Y01020,MOKSH,Moksh Ornaments Limited,MOKSH.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
+INE365I01020,NBIFIN,N. B. I. Industrial Finance Company Limited,NBIFIN.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-11T13:04:46Z,1
 INE756C01015,NDGL,Naga Dhunseri Group Limited,NDGL.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE326T01011,NIRAJISPAT,Niraj Ispat Industries Limited,NIRAJISPAT.NS,Consumer Cyclical,Apparel Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE439T01012,NITIRAJ,Nitiraj Engineers Limited,NITIRAJ.NS,Technology,Scientific & Technical Instruments,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
