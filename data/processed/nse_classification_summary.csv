@@ -1,8 +1,8 @@
 generated_at_utc,report_type,classification_status,classification_source,stock_count,metric,value
-2026-09-11T13:31:54Z,coverage,,,,complete_hierarchy_percent,95.0
-2026-09-11T13:31:54Z,coverage,,,,complete_hierarchy_records,2425.0
-2026-09-11T13:31:54Z,coverage,,,,incomplete_hierarchy_records,128.0
-2026-09-11T13:31:54Z,coverage,,,,total_records,2553.0
-2026-09-11T13:31:54Z,status_source,BSE_RETRY,,53,,
-2026-09-11T13:31:54Z,status_source,CLASSIFIED,BSE equityMetaInfo,2425,,
-2026-09-11T13:31:54Z,status_source,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),75,,
+2026-09-14T13:43:22Z,coverage,,,,complete_hierarchy_percent,95.0
+2026-09-14T13:43:22Z,coverage,,,,complete_hierarchy_records,2425.0
+2026-09-14T13:43:22Z,coverage,,,,incomplete_hierarchy_records,128.0
+2026-09-14T13:43:22Z,coverage,,,,total_records,2553.0
+2026-09-14T13:43:22Z,status_source,BSE_RETRY,,38,,
+2026-09-14T13:43:22Z,status_source,CLASSIFIED,BSE equityMetaInfo,2425,,
+2026-09-14T13:43:22Z,status_source,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),90,,
