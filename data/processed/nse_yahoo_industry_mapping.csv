@@ -104,22 +104,22 @@ INE974Z01015,PRITI,Priti International Limited,PRITI.NS,Consumer Cyclical,"Furni
 INE0FMW01018,QMSMEDI,QMS Medical Allied Services Limited,QMSMEDI.NS,Healthcare,Medical Instruments & Supplies,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-14T13:07:53Z,1
 INE00KV01022,RAJMET,Rajnandini Metal Limited,RAJMET.NS,Basic Materials,Copper,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-14T13:07:53Z,1
 INE364Z01019,REPL,Rudrabhishek Enterprises Limited,REPL.NS,Industrials,Consulting Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-14T13:07:53Z,1
-INE786W01010,RKEC,RKEC Projects Limited,RKEC.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE760W01023,RPPL,Rajshree Polypack Limited,RPPL.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE976T01013,SAGARDEEP,Sagardeep Alloys Limited,SAGARDEEP.NS,Basic Materials,Copper,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE732S01012,SAKAR,Sakar Healthcare Limited,SAKAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE753W01010,SANGINITA,Sanginita Chemicals Limited,SANGINITA.NS,Basic Materials,Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE782X01033,SERVOTECH,Servotech Renewable Power System Limited,SERVOTECH.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE933X01016,SHANTI,Shanti Overseas (India) Limited,SHANTI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE719F01016,SHIVAUM,Shiv Aum Steels Limited,SHIVAUM.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE715Y01031,SHRADHA,Shradha Realty Limited,SHRADHA.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE632X01030,SHRENIK,Shrenik Limited,SHRENIK.NS,Basic Materials,Paper & Paper Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE112X01025,SIKKO,Sikko Industries Limited,SIKKO.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE01II01013,SILGO,Silgo Retail Limited,SILGO.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE203Y01012,SILLYMONKS,Silly Monks Entertainment Limited,SILLYMONKS.NS,Communication Services,Entertainment,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE129Z01016,SINTERCOM,Sintercom India Limited,SINTERCOM.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE786W01010,RKEC,RKEC Projects Limited,RKEC.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE760W01023,RPPL,Rajshree Polypack Limited,RPPL.NS,Consumer Cyclical,Packaging & Containers,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE976T01013,SAGARDEEP,Sagardeep Alloys Limited,SAGARDEEP.NS,Basic Materials,Copper,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE732S01012,SAKAR,Sakar Healthcare Limited,SAKAR.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE753W01010,SANGINITA,Sanginita Chemicals Limited,SANGINITA.NS,Basic Materials,Chemicals,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE782X01033,SERVOTECH,Servotech Renewable Power System Limited,SERVOTECH.NS,Industrials,Electrical Equipment & Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE933X01016,SHANTI,Shanti Overseas (India) Limited,SHANTI.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE719F01016,SHIVAUM,Shiv Aum Steels Limited,SHIVAUM.NS,Basic Materials,Steel,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE715Y01031,SHRADHA,Shradha Realty Limited,SHRADHA.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE632X01030,SHRENIK,Shrenik Limited,SHRENIK.NS,Basic Materials,Paper & Paper Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE112X01025,SIKKO,Sikko Industries Limited,SIKKO.NS,Basic Materials,Agricultural Inputs,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE01II01013,SILGO,Silgo Retail Limited,SILGO.NS,Consumer Cyclical,Luxury Goods,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE203Y01012,SILLYMONKS,Silly Monks Entertainment Limited,SILLYMONKS.NS,Communication Services,Entertainment,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
+INE129Z01016,SINTERCOM,Sintercom India Limited,SINTERCOM.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
 INE880Y01017,SOLEX,Solex Energy Limited,SOLEX.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE00LM01029,SONAMLTD,SONAM LIMITED,SONAMLTD.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE00LM01029,SONAMLTD,SONAM LIMITED,SONAMLTD.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
 INE970N01027,SPCENET,Spacenet Enterprises India Limited,SPCENET.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE937A01023,SPMLINFRA,SPML Infra Limited,SPMLINFRA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE0RYC01010,STALLION,Stallion India Fluorochemicals Limited,STALLION.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
