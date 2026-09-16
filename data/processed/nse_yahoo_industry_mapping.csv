@@ -120,23 +120,23 @@ INE203Y01012,SILLYMONKS,Silly Monks Entertainment Limited,SILLYMONKS.NS,Communic
 INE129Z01016,SINTERCOM,Sintercom India Limited,SINTERCOM.NS,Consumer Cyclical,Auto Parts,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
 INE880Y01017,SOLEX,Solex Energy Limited,SOLEX.NS,Technology,Solar,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE00LM01029,SONAMLTD,SONAM LIMITED,SONAMLTD.NS,Consumer Cyclical,"Furnishings, Fixtures & Appliances",EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-15T17:24:25Z,1
-INE970N01027,SPCENET,Spacenet Enterprises India Limited,SPCENET.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE970N01027,SPCENET,Spacenet Enterprises India Limited,SPCENET.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
 INE937A01023,SPMLINFRA,SPML Infra Limited,SPMLINFRA.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE0RYC01010,STALLION,Stallion India Fluorochemicals Limited,STALLION.NS,Basic Materials,Specialty Chemicals,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE395H01011,STEELCITY,Steel City Securities Limited,STEELCITY.NS,Financial Services,Capital Markets,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE748Z01013,SUMIT,Sumit Woods Limited,SUMIT.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE319Z01021,SUPREMEENG,Supreme Engineering Limited,SUPREMEENG.NS,Basic Materials,Steel,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE00CE01017,SVLL,Shree Vasu Logistics Limited,SVLL.NS,Industrials,Trucking,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE555Z01020,TARACHAND,Tara Chand InfraLogistic Solutions Limited,TARACHAND.NS,Industrials,Farm & Heavy Construction Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE869Y01028,TEMBO,Tembo Global Industries Limited,TEMBO.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE121N01019,THEJO,Thejo Engineering Limited,THEJO.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE319Y01024,TIRUPATIFL,Tirupati Forge Limited,TIRUPATIFL.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE336X01012,TOTAL,Total Transport Systems Limited,TOTAL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE486Y01013,TOUCHWOOD,Touchwood Entertainment Limited,TOUCHWOOD.NS,Communication Services,Advertising Agencies,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE202Z01029,TSFINV,TSF INVESTMENTS LIMITED,TSFINV.NS,Financial Services,Asset Management,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE481Z01011,UNIINFO,Uniinfo Telecom Services Limited,UNIINFO.NS,Communication Services,Telecom Services,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE458F01011,UNITEDTEA,The United Nilgiri Tea Estates Company Limited,UNITEDTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
-INE562X01013,UNIVASTU,Univastu India Limited,UNIVASTU.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
+INE395H01011,STEELCITY,Steel City Securities Limited,STEELCITY.NS,Financial Services,Capital Markets,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE748Z01013,SUMIT,Sumit Woods Limited,SUMIT.NS,Real Estate,Real Estate - Development,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE319Z01021,SUPREMEENG,Supreme Engineering Limited,SUPREMEENG.NS,Basic Materials,Steel,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE00CE01017,SVLL,Shree Vasu Logistics Limited,SVLL.NS,Industrials,Trucking,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE555Z01020,TARACHAND,Tara Chand InfraLogistic Solutions Limited,TARACHAND.NS,Industrials,Farm & Heavy Construction Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE869Y01028,TEMBO,Tembo Global Industries Limited,TEMBO.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE121N01019,THEJO,Thejo Engineering Limited,THEJO.NS,Industrials,Specialty Industrial Machinery,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE319Y01024,TIRUPATIFL,Tirupati Forge Limited,TIRUPATIFL.NS,Industrials,Metal Fabrication,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE336X01012,TOTAL,Total Transport Systems Limited,TOTAL.NS,Industrials,Integrated Freight & Logistics,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE486Y01013,TOUCHWOOD,Touchwood Entertainment Limited,TOUCHWOOD.NS,Communication Services,Advertising Agencies,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE202Z01029,TSFINV,TSF INVESTMENTS LIMITED,TSFINV.NS,Financial Services,Asset Management,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE481Z01011,UNIINFO,Uniinfo Telecom Services Limited,UNIINFO.NS,Communication Services,Telecom Services,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE458F01011,UNITEDTEA,The United Nilgiri Tea Estates Company Limited,UNITEDTEA.NS,Consumer Defensive,Farm Products,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
+INE562X01013,UNIVASTU,Univastu India Limited,UNIVASTU.NS,Industrials,Engineering & Construction,EQUITY,YAHOO_RETRY,Yahoo Finance profile (hierarchy incomplete),Yahoo provided sector/industry but no verified Basic Industry mapping,2026-09-16T17:24:57Z,1
 INE972X01022,VAISHALI,Vaishali Pharma Limited,VAISHALI.NS,Healthcare,Drug Manufacturers - Specialty & Generic,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE116G01013,VARDHACRLC,Vardhman Acrylics Limited,VARDHACRLC.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
 INE098201036,VCL,Vaxtex Cotfab Limited,VCL.NS,Consumer Cyclical,Textile Manufacturing,EQUITY,YAHOO_FALLBACK,Yahoo Finance,,,0
