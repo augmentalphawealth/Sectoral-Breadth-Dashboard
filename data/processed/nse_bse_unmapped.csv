@@ -1,9 +1,1 @@
 symbol,company_name,series,isin,listing_date,sector,industry,basic_industry,classification_status,classification_source,classification_failure_reason,bse_attempt_count,bse_last_attempt_utc,bse_code,fallback_bse_attempted,yahoo_attempted,report_generated_at_utc
-VAISHALI,Vaishali Pharma Limited,EQ,INE972X01022,2020-01-15,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-VARDHACRLC,Vardhman Acrylics Limited,BE,INE116G01013,2003-09-30,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-VCL,Vaxtex Cotfab Limited,BE,INE098201036,2022-04-19,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-VERTOZ,Vertoz Limited,BE,INE188Y01031,2020-05-14,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-VITAL,Vital Chemtech Limited,BE,INE0L4K01016,2026-03-11,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-VIVIANA,Viviana Power Tech Limited,BE,INE0MEG01014,2026-06-02,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-WIPL,The Western India Plywoods Limited,EQ,INE215F01023,2017-04-17,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
-ZOTA,Zota Health Care LImited,EQ,INE358U01012,2019-08-19,,,,BSE_RETRY,,No BSE code found for ISIN,7,2026-09-16T17:18:24Z,,YES,YES,2026-09-17T17:18:54Z
