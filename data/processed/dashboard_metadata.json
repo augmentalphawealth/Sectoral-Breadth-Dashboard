@@ -1,9 +1,9 @@
 {
   "basic_industry": {
-    "rows": 362731,
+    "rows": 362916,
     "groups": 186,
     "start_date": "2018-04-02",
-    "latest_date": "2026-09-22",
+    "latest_date": "2026-09-23",
     "file": "dashboard_basic_industry_history.parquet",
     "columns": [
       "basic_industry",
@@ -44,10 +44,10 @@
     ]
   },
   "industry": {
-    "rows": 123969,
+    "rows": 124028,
     "groups": 59,
     "start_date": "2018-04-02",
-    "latest_date": "2026-09-22",
+    "latest_date": "2026-09-23",
     "file": "dashboard_industry_history.parquet",
     "columns": [
       "industry",
@@ -88,10 +88,10 @@
     ]
   },
   "sector": {
-    "rows": 27320,
+    "rows": 27333,
     "groups": 13,
     "start_date": "2018-04-02",
-    "latest_date": "2026-09-22",
+    "latest_date": "2026-09-23",
     "file": "dashboard_sector_history.parquet",
     "columns": [
       "sector",
@@ -131,5 +131,5 @@
       "nh_nl_net"
     ]
   },
-  "generated_at_utc": "2026-09-22T18:18:26Z"
+  "generated_at_utc": "2026-09-23T18:38:36Z"
 }
