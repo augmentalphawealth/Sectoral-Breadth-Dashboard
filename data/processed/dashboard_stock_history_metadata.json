@@ -1,9 +1,9 @@
 {
-  "generated_at_utc":"2026-11-12T21:39:52Z",
-  "rows":422225,
+  "generated_at_utc":"2026-11-13T21:02:38Z",
+  "rows":422390,
   "symbols":2291,
   "dates":200,
-  "start_date":"2026-01-22",
-  "latest_date":"2026-11-12",
+  "start_date":"2026-01-23",
+  "latest_date":"2026-11-13",
   "streamlit_usage":"Do not load in Streamlit; use per-date dashboard snapshots instead."
 }
